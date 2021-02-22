@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\VDT.Core.DependencyInjection\VDT.Core.DependencyInjection.csproj" />
+  </ItemGroup>
+
 </Project>

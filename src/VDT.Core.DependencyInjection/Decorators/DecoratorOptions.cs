@@ -7,7 +7,11 @@ namespace VDT.Core.DependencyInjection.Decorators {
         private readonly List<DecoratorPolicy> decorators = new List<DecoratorPolicy>();
 
         public void AddDecorator<TDecorator>() where TDecorator : class, IDecorator {
-            AddDecorator<TDecorator>(methodInfo => true);
+            AddDecorator<TDecorator>(m => true);
+        }
+
+        public void AddDecorator<TDecorator>(MethodInfo methodInfo) where TDecorator : class, IDecorator {
+            AddDecorator<TDecorator>(m => m == methodInfo);
         }
 
         public void AddDecorator<TDecorator>(Func<MethodInfo, bool> shouldInterceptFunc) where TDecorator : class, IDecorator {

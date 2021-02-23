@@ -3,20 +3,22 @@ using System;
 
 namespace VDT.Core.DependencyInjection.Decorators {
     public static class ServiceCollectionExtensions {
-        public static IServiceCollection AddScoped<TService, TImplementation, TMethodDecorator>(this IServiceCollection services)
+        public static IServiceCollection AddScoped<TService, TImplementation>(this IServiceCollection services, Action<DecoratorOptions<TService>> setupAction)
             where TService : class
-            where TImplementation : class, TService
-            where TMethodDecorator : IDecorator {
-
-            return services.AddScoped<TService, TImplementation>();
+            where TImplementation : class, TService {
+                        
+            return services
+                .AddScoped<TImplementation, TImplementation>()
+                .AddScoped<TService, TImplementation>(serviceProvider => serviceProvider.GetRequiredService<TImplementation>());
         }
 
-        public static IServiceCollection AddScoped<TService, TImplementation, TMethodDecorator>(this IServiceCollection services, Func<IServiceProvider, TImplementation> implementationFactory)
+        public static IServiceCollection AddScoped<TService, TImplementation>(this IServiceCollection services, Func<IServiceProvider, TImplementation> implementationFactory, Action<DecoratorOptions<TService>> setupAction)
             where TService : class
-            where TImplementation : class, TService
-            where TMethodDecorator : IDecorator {
+            where TImplementation : class, TService {
 
-            return services.AddScoped<TService, TImplementation>(implementationFactory);
+            return services
+                .AddScoped<TImplementation, TImplementation>(implementationFactory)
+                .AddScoped<TService, TImplementation>(serviceProvider => serviceProvider.GetRequiredService<TImplementation>());
         }
     }
 }

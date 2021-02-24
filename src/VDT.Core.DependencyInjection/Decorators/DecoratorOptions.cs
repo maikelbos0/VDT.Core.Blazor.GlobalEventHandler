@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 
 namespace VDT.Core.DependencyInjection.Decorators {
-    public class DecoratorOptions<TService> where TService : class {
+    public sealed class DecoratorOptions<TService> where TService : class {
         private readonly List<DecoratorPolicy> decorators = new List<DecoratorPolicy>();
 
         public void AddDecorator<TDecorator>() where TDecorator : class, IDecorator {

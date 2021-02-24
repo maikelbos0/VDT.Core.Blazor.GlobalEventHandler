@@ -3,7 +3,7 @@ using System;
 using System.Reflection;
 
 namespace VDT.Core.DependencyInjection.Decorators {
-    internal class DecoratorInterceptor : IInterceptor {
+    internal sealed class DecoratorInterceptor : IInterceptor {
         private readonly IDecorator decorator;
         private readonly Func<MethodInfo, bool> predicate;
 

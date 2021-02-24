@@ -13,7 +13,7 @@ namespace VDT.Core.DependencyInjection.Decorators {
         internal abstract IDecorator GetDecorator(IServiceProvider serviceProvider);
     }
 
-    internal class DecoratorPolicy<TDecorator> : DecoratorPolicy where TDecorator : class, IDecorator {
+    internal sealed class DecoratorPolicy<TDecorator> : DecoratorPolicy where TDecorator : class, IDecorator {
         internal DecoratorPolicy(Func<MethodInfo, bool> predicate) : base(predicate) { }
 
         internal override IDecorator GetDecorator(IServiceProvider serviceProvider) {

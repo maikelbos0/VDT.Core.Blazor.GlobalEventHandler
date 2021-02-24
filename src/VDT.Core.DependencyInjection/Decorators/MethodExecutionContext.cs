@@ -2,7 +2,7 @@
 using System.Reflection;
 
 namespace VDT.Core.DependencyInjection.Decorators {
-    public class MethodExecutionContext {
+    public sealed class MethodExecutionContext {
         public Type TargetType { get; }
         public object Target { get; }
         public MethodInfo Method { get; }

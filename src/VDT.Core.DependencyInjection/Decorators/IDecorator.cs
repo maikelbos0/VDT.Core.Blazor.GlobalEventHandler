@@ -1,7 +1,9 @@
-﻿namespace VDT.Core.DependencyInjection.Decorators {
+﻿using System;
+
+namespace VDT.Core.DependencyInjection.Decorators {
     public interface IDecorator {
-        void BeforeExecute() { }
-        void AfterExecute() { }
-        void OnError() { }
+        void BeforeExecute(MethodExecutionContext context) { }
+        void AfterExecute(MethodExecutionContext context) { }
+        void OnError(MethodExecutionContext context, Exception exception) { }
     }
 }

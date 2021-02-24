@@ -1,26 +1,35 @@
 ﻿using Castle.DynamicProxy;
 using NSubstitute;
 using System;
+using System.Reflection;
 using VDT.Core.DependencyInjection.Decorators;
 using Xunit;
 
 namespace VDT.Core.DependencyInjection.Tests.Decorators {
     public sealed class DecoratorInterceptorTests {
-        public class Test {
+        private readonly IDecorator decorator;
+        private readonly DecoratorInterceptor interceptor;
+        private readonly TestTarget target;
+        private readonly TestTarget proxy;
+
+        public class TestTarget {
             public virtual void Success() { }
             public virtual void Error() => throw new InvalidOperationException("Error class called");
+            public virtual void TestContext<TFoo>(TFoo foo, string bar) { }
+        }
+
+        public DecoratorInterceptorTests() {
+            decorator = Substitute.For<IDecorator>();
+            interceptor = new DecoratorInterceptor(decorator, method => true);
+            target = new TestTarget();
+            proxy = new ProxyGenerator().CreateClassProxyWithTarget(target, interceptor);
         }
 
         [Fact]
         public void BeforeExecute_Is_Called() {
-            var decorator = Substitute.For<IDecorator>();
-            var interceptor = new DecoratorInterceptor(decorator, method => true);
-            var target = new Test();
-            var proxy = new ProxyGenerator().CreateClassProxyWithTarget(target, interceptor);
-
             proxy.Success();
 
-            decorator.Received().BeforeExecute(Arg.Is<MethodExecutionContext>(context => AssertValidMethodExecutionContext(context)));
+            decorator.Received().BeforeExecute(Arg.Any<MethodExecutionContext>());
         }
 
         [Fact]
@@ -33,17 +42,24 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
             throw new System.NotImplementedException();
         }
 
-        private bool AssertValidMethodExecutionContext(MethodExecutionContext context) {
+        [Fact]
+        public void MethodExecutionContext_Is_Correct() {
+            MethodExecutionContext context = null;
+            decorator.BeforeExecute(Arg.Do<MethodExecutionContext>(c => context = c));
 
+            proxy.TestContext(15, "Bar");
 
-            return true;
+            Assert.Equal(typeof(TestTarget), context.TargetType);
+            Assert.Equal(target, context.Target);
+            Assert.Equal(typeof(TestTarget).GetMethod(nameof(TestTarget.TestContext)).MakeGenericMethod(typeof(int)), context.Method);
+            Assert.Equal(new object[] { 15, "Bar" }, context.Arguments);
+            Assert.Equal(new[] { typeof(int) }, context.GenericArguments);
         }
 
         /*
          * TODO
          * Check should be called
          * Async tests with and without return types
-         * Check if MethodExecutionContext is filled
          * Check if Exception is filled
          * Test ServiceCollectionExtensions
          * Test DecoratorOptions (check different overloads of should be called)

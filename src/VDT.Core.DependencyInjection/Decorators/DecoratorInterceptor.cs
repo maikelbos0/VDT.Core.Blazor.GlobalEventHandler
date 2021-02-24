@@ -14,7 +14,7 @@ namespace VDT.Core.DependencyInjection.Decorators {
 
         public void Intercept(IInvocation invocation) {
             if (ShouldIntercept(invocation.Method)) {
-                var context = new MethodExecutionContext(invocation.TargetType, invocation.TargetType, invocation.Method, invocation.Arguments, invocation.GenericArguments);
+                var context = new MethodExecutionContext(invocation.TargetType, invocation.InvocationTarget, invocation.Method, invocation.Arguments, invocation.GenericArguments);
 
                 decorator.BeforeExecute(context);
 

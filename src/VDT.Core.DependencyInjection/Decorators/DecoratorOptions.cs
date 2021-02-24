@@ -10,8 +10,8 @@ namespace VDT.Core.DependencyInjection.Decorators {
             AddDecorator<TDecorator>(m => true);
         }
 
-        public void AddDecorator<TDecorator>(MethodInfo methodInfo) where TDecorator : class, IDecorator {
-            AddDecorator<TDecorator>(m => m == methodInfo);
+        public void AddDecorator<TDecorator>(MethodInfo method) where TDecorator : class, IDecorator {
+            AddDecorator<TDecorator>(m => m == method);
         }
 
         public void AddDecorator<TDecorator>(Func<MethodInfo, bool> shouldInterceptFunc) where TDecorator : class, IDecorator {

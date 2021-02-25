@@ -1,7 +1,6 @@
 ﻿using Castle.DynamicProxy;
 using NSubstitute;
 using System;
-using System.Reflection;
 using VDT.Core.DependencyInjection.Decorators;
 using Xunit;
 
@@ -34,12 +33,16 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
 
         [Fact]
         public void AfterExecute_Is_Called() {
-            throw new System.NotImplementedException();
+            proxy.Success();
+
+            decorator.Received().AfterExecute(Arg.Any<MethodExecutionContext>());
         }
 
         [Fact]
         public void OnError_Is_Called() {
-            throw new System.NotImplementedException();
+            Assert.Throws<InvalidOperationException>(proxy.Error);
+
+            decorator.Received().OnError(Arg.Any<MethodExecutionContext>(), Arg.Any<InvalidOperationException>());
         }
 
         [Fact]
@@ -60,7 +63,6 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
          * TODO
          * Check should be called
          * Async tests with and without return types
-         * Check if Exception is filled
          * Test ServiceCollectionExtensions
          * Test DecoratorOptions (check different overloads of should be called)
          */

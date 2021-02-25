@@ -13,13 +13,17 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
         private readonly TestTarget proxy;
 
         public class TestTarget {
-            public virtual bool Success() {
+            public virtual bool ReturnSuccess() {
                 return true;
             }
 
-            public virtual async Task<bool> SuccessAsync() {
+            public virtual async Task SuccessAsync() {
                 await Task.Delay(200);
-                return true; 
+            }
+
+            public virtual async Task<bool> ReturnSuccessAsync() {
+                await Task.Delay(200);
+                return true;
             }
 
             public virtual void Error() {
@@ -31,7 +35,7 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
                 throw new InvalidOperationException("Error class called");
             }
 
-            public virtual void TestContext<TFoo>(TFoo foo, string bar) { 
+            public virtual void TestContext<TFoo>(TFoo foo, string bar) {
             }
         }
 
@@ -44,14 +48,14 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
 
         [Fact]
         public void BeforeExecute_Is_Called() {
-            Assert.True(proxy.Success());
+            Assert.True(proxy.ReturnSuccess());
 
             decorator.Received().BeforeExecute(Arg.Any<MethodExecutionContext>());
         }
 
         [Fact]
         public void AfterExecute_Is_Called() {
-            Assert.True(proxy.Success());
+            Assert.True(proxy.ReturnSuccess());
 
             decorator.Received().AfterExecute(Arg.Any<MethodExecutionContext>());
         }
@@ -65,7 +69,7 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
 
         [Fact]
         public async Task BeforeExecute_Is_Called_Async() {
-            Assert.True(await proxy.SuccessAsync());
+            await proxy.SuccessAsync();
 
             decorator.Received().BeforeExecute(Arg.Any<MethodExecutionContext>());
         }
@@ -73,6 +77,24 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
         [Fact]
         public async Task AfterExecute_Is_Called_Async() {
             var task = proxy.SuccessAsync();
+
+            decorator.DidNotReceiveWithAnyArgs().AfterExecute(default);
+
+            await task;
+
+            decorator.Received().AfterExecute(Arg.Any<MethodExecutionContext>());
+        }
+
+        [Fact]
+        public async Task BeforeExecute_Is_Called_Async_With_Return_Value() {
+            Assert.True(await proxy.ReturnSuccessAsync());
+
+            decorator.Received().BeforeExecute(Arg.Any<MethodExecutionContext>());
+        }
+
+        [Fact]
+        public async Task AfterExecute_Is_Called_Async_With_Return_Value() {
+            var task = proxy.ReturnSuccessAsync();
 
             decorator.DidNotReceiveWithAnyArgs().AfterExecute(default);
 
@@ -107,7 +129,7 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
             var interceptor = new DecoratorInterceptor(decorator, method => false);
             var proxy = new ProxyGenerator().CreateClassProxyWithTarget(target, interceptor);
 
-            proxy.Success();
+            proxy.ReturnSuccess();
 
             decorator.DidNotReceiveWithAnyArgs().BeforeExecute(default);
         }

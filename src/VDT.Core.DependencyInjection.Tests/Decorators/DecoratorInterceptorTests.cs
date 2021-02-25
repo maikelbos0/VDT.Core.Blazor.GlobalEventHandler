@@ -1,6 +1,7 @@
 ﻿using Castle.DynamicProxy;
 using NSubstitute;
 using System;
+using System.Threading.Tasks;
 using VDT.Core.DependencyInjection.Decorators;
 using Xunit;
 
@@ -12,9 +13,26 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
         private readonly TestTarget proxy;
 
         public class TestTarget {
-            public virtual void Success() { }
-            public virtual void Error() => throw new InvalidOperationException("Error class called");
-            public virtual void TestContext<TFoo>(TFoo foo, string bar) { }
+            public virtual bool Success() {
+                return true;
+            }
+
+            public virtual async Task<bool> SuccessAsync() {
+                await Task.Delay(200);
+                return true; 
+            }
+
+            public virtual void Error() {
+                throw new InvalidOperationException("Error class called");
+            }
+
+            public virtual async Task ErrorAsync() {
+                await Task.Delay(200);
+                throw new InvalidOperationException("Error class called");
+            }
+
+            public virtual void TestContext<TFoo>(TFoo foo, string bar) { 
+            }
         }
 
         public DecoratorInterceptorTests() {
@@ -26,14 +44,14 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
 
         [Fact]
         public void BeforeExecute_Is_Called() {
-            proxy.Success();
+            Assert.True(proxy.Success());
 
             decorator.Received().BeforeExecute(Arg.Any<MethodExecutionContext>());
         }
 
         [Fact]
         public void AfterExecute_Is_Called() {
-            proxy.Success();
+            Assert.True(proxy.Success());
 
             decorator.Received().AfterExecute(Arg.Any<MethodExecutionContext>());
         }
@@ -41,6 +59,31 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
         [Fact]
         public void OnError_Is_Called() {
             Assert.Throws<InvalidOperationException>(proxy.Error);
+
+            decorator.Received().OnError(Arg.Any<MethodExecutionContext>(), Arg.Any<InvalidOperationException>());
+        }
+
+        [Fact]
+        public async Task BeforeExecute_Is_Called_Async() {
+            Assert.True(await proxy.SuccessAsync());
+
+            decorator.Received().BeforeExecute(Arg.Any<MethodExecutionContext>());
+        }
+
+        [Fact]
+        public async Task AfterExecute_Is_Called_Async() {
+            var task = proxy.SuccessAsync();
+
+            decorator.DidNotReceiveWithAnyArgs().AfterExecute(default);
+
+            Assert.True(await task);
+
+            decorator.Received().AfterExecute(Arg.Any<MethodExecutionContext>());
+        }
+
+        [Fact]
+        public async Task OnError_Is_Called_Async() {
+            await Assert.ThrowsAsync<InvalidOperationException>(proxy.ErrorAsync);
 
             decorator.Received().OnError(Arg.Any<MethodExecutionContext>(), Arg.Any<InvalidOperationException>());
         }
@@ -71,7 +114,6 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
 
         /*
          * TODO
-         * Async tests with and without return types
          * Test ServiceCollectionExtensions
          * Test DecoratorOptions (check different overloads of should be called)
          */

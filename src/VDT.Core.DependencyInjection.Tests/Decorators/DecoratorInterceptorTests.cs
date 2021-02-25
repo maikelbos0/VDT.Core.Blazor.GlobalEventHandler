@@ -59,9 +59,18 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
             Assert.Equal(new[] { typeof(int) }, context.GenericArguments);
         }
 
+        [Fact]
+        public void Dont_Decorate_When_Predicate_Is_False() {
+            var interceptor = new DecoratorInterceptor(decorator, method => false);
+            var proxy = new ProxyGenerator().CreateClassProxyWithTarget(target, interceptor);
+
+            proxy.Success();
+
+            decorator.DidNotReceiveWithAnyArgs().BeforeExecute(default);
+        }
+
         /*
          * TODO
-         * Check should be called
          * Async tests with and without return types
          * Test ServiceCollectionExtensions
          * Test DecoratorOptions (check different overloads of should be called)

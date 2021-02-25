@@ -5,9 +5,9 @@ using System.Reflection;
 namespace VDT.Core.DependencyInjection.Decorators {
     internal sealed class DecoratorInterceptor : IInterceptor {
         private readonly IDecorator decorator;
-        private readonly Func<MethodInfo, bool> predicate;
+        private readonly Predicate<MethodInfo> predicate;
 
-        internal DecoratorInterceptor(IDecorator decorator, Func<MethodInfo, bool> predicate) {
+        internal DecoratorInterceptor(IDecorator decorator, Predicate<MethodInfo> predicate) {
             this.decorator = decorator;
             this.predicate = predicate;
         }

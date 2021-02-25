@@ -4,9 +4,9 @@ using System.Reflection;
 
 namespace VDT.Core.DependencyInjection.Decorators {
     internal abstract class DecoratorPolicy {
-        internal Func<MethodInfo, bool> Predicate { get; }
+        internal Predicate<MethodInfo> Predicate { get; }
 
-        internal DecoratorPolicy(Func<MethodInfo, bool> predicate) {
+        internal DecoratorPolicy(Predicate<MethodInfo> predicate) {
             Predicate = predicate;
         }
 
@@ -14,7 +14,7 @@ namespace VDT.Core.DependencyInjection.Decorators {
     }
 
     internal sealed class DecoratorPolicy<TDecorator> : DecoratorPolicy where TDecorator : class, IDecorator {
-        internal DecoratorPolicy(Func<MethodInfo, bool> predicate) : base(predicate) { }
+        internal DecoratorPolicy(Predicate<MethodInfo> predicate) : base(predicate) { }
 
         internal override IDecorator GetDecorator(IServiceProvider serviceProvider) {
             return serviceProvider.GetRequiredService<TDecorator>();

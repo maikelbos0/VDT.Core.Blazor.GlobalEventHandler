@@ -14,8 +14,8 @@ namespace VDT.Core.DependencyInjection.Decorators {
             AddDecorator<TDecorator>(m => m == method);
         }
 
-        public void AddDecorator<TDecorator>(Predicate<MethodInfo> shouldInterceptFunc) where TDecorator : class, IDecorator {
-            decorators.Add(new DecoratorPolicy<TDecorator>(shouldInterceptFunc));
+        public void AddDecorator<TDecorator>(Predicate<MethodInfo> predicate) where TDecorator : class, IDecorator {
+            decorators.Add(new DecoratorPolicy<TDecorator>(predicate));
         }
     }
 }

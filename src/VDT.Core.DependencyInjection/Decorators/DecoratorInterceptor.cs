@@ -1,6 +1,7 @@
 ﻿using Castle.DynamicProxy;
 using System;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace VDT.Core.DependencyInjection.Decorators {
     internal sealed class DecoratorInterceptor : IInterceptor {
@@ -13,27 +14,44 @@ namespace VDT.Core.DependencyInjection.Decorators {
         }
 
         public void Intercept(IInvocation invocation) {
-            if (ShouldIntercept(invocation.Method)) {
+            if (ShouldDecorate(invocation.Method)) {
                 var context = new MethodExecutionContext(invocation.TargetType, invocation.InvocationTarget, invocation.Method, invocation.Arguments, invocation.GenericArguments);
 
-                decorator.BeforeExecute(context);
-
-                try {
-                    invocation.Proceed();
+                if (IsAsync(invocation.Method)) {
+                    _ = DecorateAsync(invocation, context);
                 }
-                catch (Exception ex) {
-                    decorator.OnError(context, ex);
-                    throw;
+                else {
+                    Decorate(invocation, context);
                 }
-
-                decorator.AfterExecute(context);
             }
             else {
                 invocation.Proceed();
             }
         }
 
-        private bool ShouldIntercept(MethodInfo methodInfo) {
+        private async Task DecorateAsync(IInvocation invocation, MethodExecutionContext context) {
+
+        }
+
+        private void Decorate(IInvocation invocation, MethodExecutionContext context) {
+            decorator.BeforeExecute(context);
+
+            try {
+                invocation.Proceed();
+            }
+            catch (Exception ex) {
+                decorator.OnError(context, ex);
+                throw;
+            }
+
+            decorator.AfterExecute(context);
+        }
+
+        private bool IsAsync(MethodInfo method) {
+            return method.ReturnType == typeof(Task) || (method.ReturnType.IsGenericType && method.ReturnType.GetGenericTypeDefinition() == typeof(Task<>));
+        }
+
+        private bool ShouldDecorate(MethodInfo methodInfo) {
             return predicate(methodInfo);
         }
     }

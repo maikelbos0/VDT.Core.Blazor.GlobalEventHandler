@@ -30,7 +30,19 @@ namespace VDT.Core.DependencyInjection.Decorators {
         }
 
         private async Task DecorateAsync(IInvocation invocation, MethodExecutionContext context) {
+            decorator.BeforeExecute(context);
 
+            try {
+                invocation.Proceed();
+
+                await (Task)invocation.ReturnValue;
+            }
+            catch (Exception ex) {
+                decorator.OnError(context, ex);
+                throw;
+            }
+
+            decorator.AfterExecute(context);
         }
 
         private void Decorate(IInvocation invocation, MethodExecutionContext context) {

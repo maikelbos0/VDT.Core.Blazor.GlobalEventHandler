@@ -121,6 +121,39 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
 
 
 
+    public class SyncWithoutReturnValueTarget {
+        public virtual void Success() {
+        }
+
+        public virtual void Error() {
+            throw new InvalidOperationException("Error class called");
+        }
+
+        public virtual void VerifyContext<TFoo>(TFoo foo, string bar) {
+        }
+    }
+
+    public class SyncWithoutReturnValueDecoratorInterceptorTests : DecoratorInterceptorTests<SyncWithoutReturnValueTarget> {
+        public override Task Success(SyncWithoutReturnValueTarget target) {
+            target.Success();
+
+            return Task.CompletedTask;
+        }
+
+        public override Task Error(SyncWithoutReturnValueTarget target) {
+            Assert.Throws<InvalidOperationException>(() => target.Error());
+
+            return Task.CompletedTask;
+        }
+
+        public override Task VerifyContext(SyncWithoutReturnValueTarget target) {
+            target.VerifyContext(42, "Foo");
+
+            return Task.CompletedTask;
+        }
+    }
+
+
 
     public sealed class DecoratorInterceptorTests {
         private readonly IDecorator decorator;

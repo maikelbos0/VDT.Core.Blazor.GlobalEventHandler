@@ -6,6 +6,122 @@ using VDT.Core.DependencyInjection.Decorators;
 using Xunit;
 
 namespace VDT.Core.DependencyInjection.Tests.Decorators {
+    public abstract class DecoratorInterceptorTests<TTarget> where TTarget : class, new() {
+        private readonly IDecorator decorator;
+        private readonly DecoratorInterceptor interceptor;
+        private readonly TTarget target;
+        private readonly TTarget proxy;
+
+        public DecoratorInterceptorTests() {
+            decorator = Substitute.For<IDecorator>();
+            interceptor = new DecoratorInterceptor(decorator, method => true);
+            target = new TTarget();
+            proxy = new ProxyGenerator().CreateClassProxyWithTarget(target, interceptor);
+        }
+
+        public abstract Task Success(TTarget target);
+        public abstract Task Error(TTarget target);
+        public abstract Task VerifyContext(TTarget target);
+
+        [Fact]
+        public async Task BeforeExecute_Is_Called() {
+            MethodExecutionContext context = null;
+
+            decorator.BeforeExecute(Arg.Do<MethodExecutionContext>(ctx => context = ctx));
+
+            await Success(proxy);
+
+            decorator.Received().BeforeExecute(Arg.Any<MethodExecutionContext>());
+        }
+
+        [Fact]
+        public void BeforeExecute_MethodExecutionContext_Is_Correct() {
+            MethodExecutionContext context = null;
+            decorator.BeforeExecute(Arg.Do<MethodExecutionContext>(c => context = c));
+
+            VerifyContext(proxy);
+
+            Assert.Equal(typeof(TTarget), context.TargetType);
+            Assert.Equal(target, context.Target);
+            Assert.Equal(typeof(TTarget), context.Method.DeclaringType);
+            Assert.Equal(new object[] { 42, "Foo" }, context.Arguments);
+            Assert.Equal(new[] { typeof(int) }, context.GenericArguments);
+        }
+
+        [Fact]
+        public async Task AfterExecute_Is_Called() {
+            await Success(proxy);
+
+            decorator.Received().AfterExecute(Arg.Any<MethodExecutionContext>());
+        }
+
+        [Fact]
+        public void AfterExecute_MethodExecutionContext_Is_Correct() {
+            MethodExecutionContext context = null;
+            decorator.AfterExecute(Arg.Do<MethodExecutionContext>(c => context = c));
+
+            VerifyContext(proxy);
+
+            Assert.Equal(typeof(TTarget), context.TargetType);
+            Assert.Equal(target, context.Target);
+            Assert.Equal(typeof(TTarget), context.Method.DeclaringType);
+            Assert.Equal(new object[] { 42, "Foo" }, context.Arguments);
+            Assert.Equal(new[] { typeof(int) }, context.GenericArguments);
+        }
+
+        [Fact]
+        public async Task OnError_Is_Called() {
+            await Error(proxy);
+
+            decorator.Received().OnError(Arg.Any<MethodExecutionContext>(), Arg.Any<InvalidOperationException>());
+        }
+    }
+
+
+
+
+
+
+
+
+    public class SyncWithReturnValueTarget {
+        public virtual bool Success() {
+            return true;
+        }
+
+        public virtual bool Error() {
+            throw new InvalidOperationException("Error class called");
+        }
+
+        public virtual bool VerifyContext<TFoo>(TFoo foo, string bar) {
+            return true;
+        }
+    }
+
+    public class SyncWithReturnValueDecoratorInterceptorTests : DecoratorInterceptorTests<SyncWithReturnValueTarget> {
+        public override Task Success(SyncWithReturnValueTarget target) {
+            Assert.True(target.Success());
+
+            return Task.CompletedTask;
+        }
+
+        public override Task Error(SyncWithReturnValueTarget target) {
+            Assert.Throws<InvalidOperationException>(() => target.Error());
+
+            return Task.CompletedTask;
+        }
+
+        public override Task VerifyContext(SyncWithReturnValueTarget target) {
+            Assert.True(target.VerifyContext(42, "Foo"));
+
+            return Task.CompletedTask;
+        }
+    }
+
+
+
+
+
     public sealed class DecoratorInterceptorTests {
         private readonly IDecorator decorator;
         private readonly DecoratorInterceptor interceptor;
@@ -136,6 +252,7 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
 
         /*
          * TODO
+         * Test multiple decorators in async especially
          * Test ServiceCollectionExtensions
          * Test DecoratorOptions (check different overloads of should be called)
          */

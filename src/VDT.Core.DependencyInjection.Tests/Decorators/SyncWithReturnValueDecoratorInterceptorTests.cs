@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Xunit;
 
 namespace VDT.Core.DependencyInjection.Tests.Decorators {
-    public class SyncWithReturnValueDecoratorInterceptorTests : DecoratorInterceptorTests<SyncWithReturnValueTarget> {
+    public sealed class SyncWithReturnValueDecoratorInterceptorTests : DecoratorInterceptorTests<SyncWithReturnValueTarget> {
         public override Task Success(SyncWithReturnValueTarget target) {
             Assert.True(target.Success());
 

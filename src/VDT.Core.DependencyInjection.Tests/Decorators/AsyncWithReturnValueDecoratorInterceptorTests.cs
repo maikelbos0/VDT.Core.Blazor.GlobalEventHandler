@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Xunit;
 
 namespace VDT.Core.DependencyInjection.Tests.Decorators {
-    public class AsyncWithReturnValueDecoratorInterceptorTests : DecoratorInterceptorTests<AsyncWithReturnValueTarget> {
+    public sealed class AsyncWithReturnValueDecoratorInterceptorTests : DecoratorInterceptorTests<AsyncWithReturnValueTarget> {
         public override async Task Success(AsyncWithReturnValueTarget target) {
             Assert.True(await target.Success());
         }

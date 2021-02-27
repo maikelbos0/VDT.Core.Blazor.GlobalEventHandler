@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace VDT.Core.DependencyInjection.Decorators {
     public sealed class DecoratorOptions<TService> where TService : class {
-        private readonly List<DecoratorPolicy> decorators = new List<DecoratorPolicy>();
+        internal List<DecoratorPolicy> Policies { get; } = new List<DecoratorPolicy>();
 
         public void AddDecorator<TDecorator>() where TDecorator : class, IDecorator {
             AddDecorator<TDecorator>(m => true);
@@ -15,7 +15,7 @@ namespace VDT.Core.DependencyInjection.Decorators {
         }
 
         public void AddDecorator<TDecorator>(Predicate<MethodInfo> predicate) where TDecorator : class, IDecorator {
-            decorators.Add(new DecoratorPolicy<TDecorator>(predicate));
+            Policies.Add(new DecoratorPolicy<TDecorator>(predicate));
         }
     }
 }

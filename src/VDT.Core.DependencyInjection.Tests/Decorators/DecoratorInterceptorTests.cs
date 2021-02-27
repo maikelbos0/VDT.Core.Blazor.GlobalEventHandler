@@ -11,10 +11,11 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
         private readonly DecoratorInterceptor interceptor;
         private readonly TTarget target;
         private readonly TTarget proxy;
+        private bool shouldIntercept = true;
 
         public DecoratorInterceptorTests() {
             decorator = Substitute.For<IDecorator>();
-            interceptor = new DecoratorInterceptor(decorator, method => true);
+            interceptor = new DecoratorInterceptor(decorator, method => shouldIntercept);
             target = new TTarget();
             proxy = new ProxyGenerator().CreateClassProxyWithTarget(target, interceptor);
         }
@@ -49,6 +50,15 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
         }
 
         [Fact]
+        public async Task BeforeExecute_Is_Not_Called_When_Predicate_Is_False() {
+            shouldIntercept = false;
+
+            await Success(proxy);
+
+            decorator.DidNotReceiveWithAnyArgs().BeforeExecute(default);
+        }
+
+        [Fact]
         public async Task AfterExecute_Is_Called() {
             await Success(proxy);
 
@@ -70,53 +80,36 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
         }
 
         [Fact]
+        public async Task AfterExecute_Is_Not_Called_When_Predicate_Is_False() {
+            shouldIntercept = false;
+
+            await Success(proxy);
+
+            decorator.DidNotReceiveWithAnyArgs().AfterExecute(default);
+        }
+
+        [Fact]
         public async Task OnError_Is_Called() {
             await Error(proxy);
 
             decorator.Received().OnError(Arg.Any<MethodExecutionContext>(), Arg.Any<InvalidOperationException>());
         }
-    }
-
-
-
-
-
-
-    public sealed class DecoratorInterceptorTests {
-        private readonly IDecorator decorator;
-        private readonly DecoratorInterceptor interceptor;
-        private readonly TestTarget target;
-        private readonly TestTarget proxy;
-
-        public class TestTarget {
-            public virtual bool ReturnSuccess() {
-                return true;
-            }
-        }
-
-        public DecoratorInterceptorTests() {
-            decorator = Substitute.For<IDecorator>();
-            interceptor = new DecoratorInterceptor(decorator, method => true);
-            target = new TestTarget();
-            proxy = new ProxyGenerator().CreateClassProxyWithTarget(target, interceptor);
-        }
 
         [Fact]
-        public void Dont_Decorate_When_Predicate_Is_False() {
-            var interceptor = new DecoratorInterceptor(decorator, method => false);
-            var proxy = new ProxyGenerator().CreateClassProxyWithTarget(target, interceptor);
+        public async Task OnError_Is_Not_Called_When_Predicate_Is_False() {
+            shouldIntercept = false;
 
-            proxy.ReturnSuccess();
+            await Error(proxy);
 
-            decorator.DidNotReceiveWithAnyArgs().BeforeExecute(default);
+            decorator.DidNotReceiveWithAnyArgs().OnError(default, default);
         }
-
-        /*
-         * TODO
-         * Test multiple decorators in async especially
-         * Test ServiceCollectionExtensions
-         * Test DecoratorOptions (check different overloads of should be called)
-         * Turn on null checks?
-         */
     }
+
+    /*
+     * TODO
+     * Test multiple decorators in async especially
+     * Test ServiceCollectionExtensions
+     * Test DecoratorOptions (check different overloads of should be called)
+     * Turn on null checks?
+     */
 }

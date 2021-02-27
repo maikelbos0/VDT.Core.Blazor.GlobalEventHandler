@@ -191,7 +191,36 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
     }
 
 
+    public class AsyncWithoutReturnValueTarget {
+        public virtual async Task Success() {
+            await Task.Delay(100);
+        }
 
+        public virtual async Task Error() {
+            await Task.Delay(100);
+
+            throw new InvalidOperationException("Error class called");
+        }
+
+        public virtual async Task VerifyContext<TFoo>(TFoo foo, string bar) {
+            await Task.Delay(100);
+        }
+    }
+
+
+    public class AsyncWithoutReturnValueDecoratorInterceptorTests : DecoratorInterceptorTests<AsyncWithoutReturnValueTarget> {
+        public override async Task Success(AsyncWithoutReturnValueTarget target) {
+            await target.Success();
+        }
+
+        public override async Task Error(AsyncWithoutReturnValueTarget target) {
+            await Assert.ThrowsAsync<InvalidOperationException>(() => target.Error());
+        }
+
+        public override async Task VerifyContext(AsyncWithoutReturnValueTarget target) {
+            await target.VerifyContext(42, "Foo");
+        }
+    }
 
 
 

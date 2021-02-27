@@ -35,11 +35,11 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
         }
 
         [Fact]
-        public void BeforeExecute_MethodExecutionContext_Is_Correct() {
+        public async Task BeforeExecute_MethodExecutionContext_Is_Correct() {
             MethodExecutionContext context = null;
             decorator.BeforeExecute(Arg.Do<MethodExecutionContext>(c => context = c));
 
-            VerifyContext(proxy);
+            await VerifyContext(proxy);
 
             Assert.Equal(typeof(TTarget), context.TargetType);
             Assert.Equal(target, context.Target);
@@ -56,11 +56,11 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
         }
 
         [Fact]
-        public void AfterExecute_MethodExecutionContext_Is_Correct() {
+        public async Task AfterExecute_MethodExecutionContext_Is_Correct() {
             MethodExecutionContext context = null;
             decorator.AfterExecute(Arg.Do<MethodExecutionContext>(c => context = c));
 
-            VerifyContext(proxy);
+            await VerifyContext(proxy);
 
             Assert.Equal(typeof(TTarget), context.TargetType);
             Assert.Equal(target, context.Target);
@@ -152,6 +152,49 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
             return Task.CompletedTask;
         }
     }
+
+
+
+    public class AsyncWithReturnValueTarget {
+        public virtual async Task<bool> Success() {
+            await Task.Delay(100);
+
+            return true;
+        }
+
+        public virtual async Task<bool> Error() {
+            await Task.Delay(100);
+
+            throw new InvalidOperationException("Error class called");
+        }
+
+        public virtual async Task<bool> VerifyContext<TFoo>(TFoo foo, string bar) {
+            await Task.Delay(100);
+
+            return true;
+        }
+    }
+
+
+    public class AsyncWithReturnValueDecoratorInterceptorTests : DecoratorInterceptorTests<AsyncWithReturnValueTarget> {
+        public override async Task Success(AsyncWithReturnValueTarget target) {
+            Assert.True(await target.Success());
+        }
+
+        public override async Task Error(AsyncWithReturnValueTarget target) {
+            await Assert.ThrowsAsync<InvalidOperationException>(() => target.Error());
+        }
+
+        public override async Task VerifyContext(AsyncWithReturnValueTarget target) {
+            Assert.True(await target.VerifyContext(42, "Foo"));
+        }
+    }
+
+
+
+
+
+
 
 
 
@@ -288,6 +331,7 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
          * Test multiple decorators in async especially
          * Test ServiceCollectionExtensions
          * Test DecoratorOptions (check different overloads of should be called)
+         * Turn on null checks?
          */
     }
 }

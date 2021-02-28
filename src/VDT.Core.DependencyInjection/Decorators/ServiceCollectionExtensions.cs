@@ -61,7 +61,7 @@ namespace VDT.Core.DependencyInjection.Decorators {
             var isInterface = typeof(TService).IsInterface;
 
             return serviceProvider => {
-                var target = serviceProvider.GetService<TImplementationService>();
+                var target = serviceProvider.GetRequiredService<TImplementationService>();
                 var decorators = options.Policies.Select(p => new DecoratorInterceptor(p.GetDecorator(serviceProvider), p.Predicate)).ToArray();
 
                 if (isInterface) {

@@ -1,4 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Reflection;
+using System.Threading.Tasks;
 using VDT.Core.DependencyInjection.Decorators;
 using Xunit;
 
@@ -44,6 +47,55 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
             Assert.Equal("Foo", proxy.GetValue());
 
             Assert.Equal(2, decorator.Calls);
+        }
+
+        public class Invocation {
+            public object? ReturnValue { get; set; }
+        }
+
+        [Fact]
+        public async Task Test2() {
+            var invocation = new Invocation {
+                ReturnValue = GetValue()
+            };
+
+            var continuationGenerator = typeof(ServiceCollectionExtensionsTests).GetMethod(nameof(Wrap), BindingFlags.NonPublic | BindingFlags.Instance)!;
+
+            continuationGenerator = continuationGenerator.MakeGenericMethod(typeof(string))!;
+
+            continuationGenerator.Invoke(this, new object[] { invocation, invocation.ReturnValue });
+
+            var result = await (Task<string>)invocation.ReturnValue!;
+
+        }
+
+        private void Wrap<TResult>(Invocation invocation, Task<TResult> task) {
+            Func<Task<TResult>> continuation = async () => {
+                Before();
+
+                await task;
+
+                After();
+
+                return task.Result;
+            };
+
+            invocation.ReturnValue = continuation();
+        }
+
+
+        private void Before() {
+
+        }
+
+        private void After() {
+
+        }
+
+        public async Task<string> GetValue() {
+            await Task.Delay(100);
+
+            return "Foo";
         }
     }
 }

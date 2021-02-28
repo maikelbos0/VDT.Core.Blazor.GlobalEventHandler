@@ -4,48 +4,71 @@ using System.Linq;
 
 namespace VDT.Core.DependencyInjection.Decorators {
     public static class ServiceCollectionExtensions {
-        public static IServiceCollection AddScoped<TService, TImplementation>(this IServiceCollection services, Action<DecoratorOptions<TService>> setupAction)
+        public static IServiceCollection AddScoped<TService, TImplementationService, TImplementation>(this IServiceCollection services, Action<DecoratorOptions<TService>> setupAction)
             where TService : class
-            where TImplementation : class, TService {
+            where TImplementationService : class, TService
+            where TImplementation : class, TImplementationService {
+
+            VerifyRegistration<TService, TImplementationService>();
+
+            var options = GetDecoratorOptions(setupAction);
+            var proxyFactory = GetDecoratedProxyFactory<TService, TImplementation>(options);
+
+            return services
+                .AddScoped<TImplementationService, TImplementation>()
+                .AddScoped<TService, TService>(proxyFactory);
+        }
+
+        public static IServiceCollection AddScoped<TService, TImplementationService, TImplementation>(this IServiceCollection services, Func<IServiceProvider, TImplementation> implementationFactory, Action<DecoratorOptions<TService>> setupAction)
+            where TService : class
+            where TImplementationService : class, TService
+            where TImplementation : class, TImplementationService {
+
+            VerifyRegistration<TService, TImplementationService>();
+
+            var options = GetDecoratorOptions(setupAction);
+            var proxyFactory = GetDecoratedProxyFactory<TService, TImplementation>(options);
+
+            return services
+                .AddScoped<TImplementationService, TImplementation>(implementationFactory)
+                .AddScoped<TService, TService>(proxyFactory);
+        }
+
+        private static void VerifyRegistration<TService, TImplementationService>()
+            where TService : class
+            where TImplementationService : class, TService {
+
+            if (typeof(TService) == typeof(TImplementationService)) {
+                throw new ServiceRegistrationException($"Implementation service type '{typeof(TImplementationService).FullName}' can not be equal to service type '{typeof(TService).FullName}'.");
+            }
+        }
+
+        private static DecoratorOptions<TService> GetDecoratorOptions<TService>(Action<DecoratorOptions<TService>> setupAction)
+            where TService : class {
 
             var options = new DecoratorOptions<TService>();
 
             setupAction(options);
 
-            return services
-                .AddScoped<TService, TImplementation>()
-                .AddScoped<TService, TService>(GetDecoratedProxyFactory<TService, TImplementation>(options));
+            return options;
         }
 
-        public static IServiceCollection AddScoped<TService, TImplementation>(this IServiceCollection services, Func<IServiceProvider, TImplementation> implementationFactory, Action<DecoratorOptions<TService>> setupAction)
+        private static Func<IServiceProvider, TService> GetDecoratedProxyFactory<TService, TImplementationService>(DecoratorOptions<TService> options)
             where TService : class
-            where TImplementation : class, TService {
-
-            var options = new DecoratorOptions<TService>();
-
-            setupAction(options);
-
-            return services
-                .AddScoped<TService, TImplementation>(implementationFactory)
-                .AddScoped<TService, TService>(GetDecoratedProxyFactory<TService, TImplementation>(options));
-        }
-
-        private static Func<IServiceProvider, TService> GetDecoratedProxyFactory<TService, TImplementation>(DecoratorOptions<TService> options)
-            where TService : class
-            where TImplementation : class, TService {
+            where TImplementationService : class, TService {
 
             var generator = new Castle.DynamicProxy.ProxyGenerator();
             var isInterface = typeof(TService).IsInterface;
 
             return serviceProvider => {
-                var target = serviceProvider.GetServices<TService>().Single(s => s is TImplementation);
+                var target = serviceProvider.GetService<TImplementationService>();
                 var decorators = options.Policies.Select(p => new DecoratorInterceptor(p.GetDecorator(serviceProvider), p.Predicate)).ToArray();
 
                 if (isInterface) {
-                    return generator.CreateInterfaceProxyWithTarget(target, decorators);
+                    return generator.CreateInterfaceProxyWithTarget<TService>(target, decorators);
                 }
                 else {
-                    return generator.CreateClassProxyWithTarget(target, decorators);
+                    return generator.CreateClassProxyWithTarget<TService>(target, decorators);
                 }
             };
         }

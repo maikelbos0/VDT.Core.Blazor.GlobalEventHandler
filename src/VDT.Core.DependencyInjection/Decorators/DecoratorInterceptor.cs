@@ -18,7 +18,7 @@ namespace VDT.Core.DependencyInjection.Decorators {
                 var context = new MethodExecutionContext(invocation.TargetType, invocation.InvocationTarget, invocation.Method, invocation.Arguments, invocation.GenericArguments);
 
                 if (IsAsync(invocation.Method)) {
-                    _ = DecorateAsync(invocation, context);
+                    DecorateAsync(invocation, context);
                 }
                 else {
                     Decorate(invocation, context);
@@ -29,20 +29,24 @@ namespace VDT.Core.DependencyInjection.Decorators {
             }
         }
 
-        private async Task DecorateAsync(IInvocation invocation, MethodExecutionContext context) {
+        private void DecorateAsync(IInvocation invocation, MethodExecutionContext context) {
             decorator.BeforeExecute(context);
 
-            try {
-                invocation.Proceed();
+            invocation.Proceed();
 
-                await (Task)invocation.ReturnValue;
-            }
-            catch (Exception ex) {
-                decorator.OnError(context, ex);
-                throw;
-            }
+            Func<Task> continuation = async () => {
+                try {
+                    await (Task)invocation.ReturnValue;
+                }
+                catch (Exception ex) {
+                    decorator.OnError(context, ex);
+                    throw;
+                }
 
-            decorator.AfterExecute(context);
+                decorator.AfterExecute(context);
+            };
+
+            invocation.ReturnValue = continuation();
         }
 
         private void Decorate(IInvocation invocation, MethodExecutionContext context) {

@@ -26,10 +26,6 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
 
         [Fact]
         public async Task BeforeExecute_Is_Called() {
-            MethodExecutionContext context = null;
-
-            decorator.BeforeExecute(Arg.Do<MethodExecutionContext>(ctx => context = ctx));
-
             await Success(proxy);
 
             decorator.Received().BeforeExecute(Arg.Any<MethodExecutionContext>());
@@ -37,11 +33,12 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
 
         [Fact]
         public async Task BeforeExecute_MethodExecutionContext_Is_Correct() {
-            MethodExecutionContext context = null;
+            MethodExecutionContext context = null!;
             decorator.BeforeExecute(Arg.Do<MethodExecutionContext>(c => context = c));
 
             await VerifyContext(proxy);
 
+            Assert.NotNull(context);
             Assert.Equal(typeof(TTarget), context.TargetType);
             Assert.Equal(target, context.Target);
             Assert.Equal(typeof(TTarget), context.Method.DeclaringType);
@@ -55,7 +52,7 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
 
             await Success(proxy);
 
-            decorator.DidNotReceiveWithAnyArgs().BeforeExecute(default);
+            decorator.DidNotReceiveWithAnyArgs().BeforeExecute(Arg.Any<MethodExecutionContext>());
         }
 
         [Fact]
@@ -67,11 +64,12 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
 
         [Fact]
         public async Task AfterExecute_MethodExecutionContext_Is_Correct() {
-            MethodExecutionContext context = null;
+            MethodExecutionContext context = null!;
             decorator.AfterExecute(Arg.Do<MethodExecutionContext>(c => context = c));
 
             await VerifyContext(proxy);
 
+            Assert.NotNull(context);
             Assert.Equal(typeof(TTarget), context.TargetType);
             Assert.Equal(target, context.Target);
             Assert.Equal(typeof(TTarget), context.Method.DeclaringType);
@@ -85,7 +83,7 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
 
             await Success(proxy);
 
-            decorator.DidNotReceiveWithAnyArgs().AfterExecute(default);
+            decorator.DidNotReceiveWithAnyArgs().AfterExecute(Arg.Any<MethodExecutionContext>());
         }
 
         [Fact]
@@ -101,15 +99,12 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
 
             await Error(proxy);
 
-            decorator.DidNotReceiveWithAnyArgs().OnError(default, default);
+            decorator.DidNotReceiveWithAnyArgs().OnError(Arg.Any<MethodExecutionContext>(), Arg.Any<Exception>());
         }
     }
 
     /*
      * TODO
      * Test multiple decorators in async especially
-     * Test ServiceCollectionExtensions
-     * Test DecoratorOptions (check different overloads of should be called)
-     * Turn on null checks?
      */
 }

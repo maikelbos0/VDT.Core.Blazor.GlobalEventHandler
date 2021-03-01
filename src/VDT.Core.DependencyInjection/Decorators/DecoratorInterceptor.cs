@@ -34,7 +34,20 @@ namespace VDT.Core.DependencyInjection.Decorators {
 
             invocation.Proceed();
 
-            Func<Task> continuation = async () => {
+            if (HasReturnValue(invocation.Method)) {
+
+                var continuationGenerator = typeof(DecoratorInterceptor).GetMethod(nameof(SetWrappedResultTask), BindingFlags.NonPublic | BindingFlags.Instance)?
+                    .MakeGenericMethod(context.Method.ReturnType.GetGenericArguments()) ?? throw new InvalidOperationException($"Method '{nameof(DecoratorInterceptor)}.{nameof(SetWrappedResultTask)}' was not found.");
+
+                continuationGenerator.Invoke(this, new object[] { invocation, context });
+            }
+            else {
+                invocation.ReturnValue = GetWrappedTask(invocation, context)();
+            }
+        }
+
+        private Func<Task> GetWrappedTask(IInvocation invocation, MethodExecutionContext context) {
+            return async () => {
                 try {
                     await (Task)invocation.ReturnValue;
                 }
@@ -45,8 +58,24 @@ namespace VDT.Core.DependencyInjection.Decorators {
 
                 decorator.AfterExecute(context);
             };
+        }
 
-            invocation.ReturnValue = continuation();
+        private void SetWrappedResultTask<TResult>(IInvocation invocation, MethodExecutionContext context) {
+            invocation.ReturnValue = ((Func<Task<TResult>>)(async () => {
+                var task = (Task<TResult>)invocation.ReturnValue;
+
+                try {
+                    await task;
+                }
+                catch (Exception ex) {
+                    decorator.OnError(context, ex);
+                    throw;
+                }
+
+                decorator.AfterExecute(context);
+
+                return task.Result;
+            }))();
         }
 
         private void Decorate(IInvocation invocation, MethodExecutionContext context) {
@@ -61,6 +90,10 @@ namespace VDT.Core.DependencyInjection.Decorators {
             }
 
             decorator.AfterExecute(context);
+        }
+
+        private bool HasReturnValue(MethodInfo method) {
+            return method.ReturnType != typeof(void) && method.ReturnType != typeof(Task);
         }
 
         private bool IsAsync(MethodInfo method) {

@@ -17,6 +17,8 @@ namespace VDT.Core.DependencyInjection.Decorators {
             if (ShouldDecorate(invocation.Method)) {
                 var context = new MethodExecutionContext(invocation.TargetType, invocation.InvocationTarget, invocation.Method, invocation.Arguments, invocation.GenericArguments);
 
+                decorator.BeforeExecute(context);
+
                 if (IsAsync(invocation.Method)) {
                     DecorateAsync(invocation, context);
                 }
@@ -30,24 +32,21 @@ namespace VDT.Core.DependencyInjection.Decorators {
         }
 
         private void DecorateAsync(IInvocation invocation, MethodExecutionContext context) {
-            decorator.BeforeExecute(context);
-
             invocation.Proceed();
 
             if (HasReturnValue(invocation.Method)) {
+                var decorator = typeof(DecoratorInterceptor).GetMethod(nameof(DecorateTaskWithResult), BindingFlags.NonPublic | BindingFlags.Instance)?
+                    .MakeGenericMethod(context.Method.ReturnType.GetGenericArguments()) ?? throw new InvalidOperationException($"Method '{nameof(DecoratorInterceptor)}.{nameof(DecorateTaskWithResult)}' was not found.");
 
-                var continuationGenerator = typeof(DecoratorInterceptor).GetMethod(nameof(SetWrappedResultTask), BindingFlags.NonPublic | BindingFlags.Instance)?
-                    .MakeGenericMethod(context.Method.ReturnType.GetGenericArguments()) ?? throw new InvalidOperationException($"Method '{nameof(DecoratorInterceptor)}.{nameof(SetWrappedResultTask)}' was not found.");
-
-                continuationGenerator.Invoke(this, new object[] { invocation, context });
+                decorator.Invoke(this, new object[] { invocation, context });
             }
             else {
-                invocation.ReturnValue = GetWrappedTask(invocation, context)();
+                DecorateTask(invocation, context);
             }
         }
 
-        private Func<Task> GetWrappedTask(IInvocation invocation, MethodExecutionContext context) {
-            return async () => {
+        private void DecorateTask(IInvocation invocation, MethodExecutionContext context) {
+            invocation.ReturnValue = ((Func<Task>)(async () => {
                 try {
                     await (Task)invocation.ReturnValue;
                 }
@@ -57,10 +56,10 @@ namespace VDT.Core.DependencyInjection.Decorators {
                 }
 
                 decorator.AfterExecute(context);
-            };
+            }))();
         }
 
-        private void SetWrappedResultTask<TResult>(IInvocation invocation, MethodExecutionContext context) {
+        private void DecorateTaskWithResult<TResult>(IInvocation invocation, MethodExecutionContext context) {
             invocation.ReturnValue = ((Func<Task<TResult>>)(async () => {
                 var task = (Task<TResult>)invocation.ReturnValue;
 
@@ -79,8 +78,6 @@ namespace VDT.Core.DependencyInjection.Decorators {
         }
 
         private void Decorate(IInvocation invocation, MethodExecutionContext context) {
-            decorator.BeforeExecute(context);
-
             try {
                 invocation.Proceed();
             }

@@ -1,44 +1,35 @@
 ﻿using Castle.DynamicProxy;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 
 namespace VDT.Core.DependencyInjection.Decorators {
     internal sealed class DecoratorInterceptor : IInterceptor {
-        private static MethodInfo decorateTaskWithResultMethod = typeof(DecoratorInterceptor).GetMethod(nameof(DecorateTaskWithResult), BindingFlags.NonPublic | BindingFlags.Instance) ?? throw new InvalidOperationException($"Method '{nameof(DecoratorInterceptor)}.{nameof(DecorateTaskWithResult)}' was not found.");
+        private static MethodInfo decorateTaskWithResultMethod = typeof(DecoratorInterceptor).GetMethod(nameof(DecorateTaskWithResult), BindingFlags.NonPublic | BindingFlags.Static) ?? throw new InvalidOperationException($"Method '{nameof(DecoratorInterceptor)}.{nameof(DecorateTaskWithResult)}' was not found.");
+        private static Dictionary<MethodInfo, Action<IDecorator, IInvocation, MethodExecutionContext>> decoratorActions = new Dictionary<MethodInfo, Action<IDecorator, IInvocation, MethodExecutionContext>>();
 
-        private static MethodInfo GetDecorateTaskWithResultMethod(MethodInfo method) {
-            return decorateTaskWithResultMethod.MakeGenericMethod(method.ReturnType.GetGenericArguments());
-        }
-
-        private readonly IDecorator decorator;
-        private readonly Predicate<MethodInfo> predicate;
-
-        internal DecoratorInterceptor(IDecorator decorator, Predicate<MethodInfo> predicate) {
-            this.decorator = decorator;
-            this.predicate = predicate;
-        }
-
-        public void Intercept(IInvocation invocation) {
-            if (ShouldDecorate(invocation.Method)) {
-                var context = new MethodExecutionContext(invocation.TargetType, invocation.InvocationTarget, invocation.Method, invocation.Arguments, invocation.GenericArguments);
-
-                if (invocation.Method.ReturnType == typeof(Task)) {
-                    DecorateTask(invocation, context);
+        private static Action<IDecorator, IInvocation, MethodExecutionContext> GetDecoratorAction(MethodInfo method) {
+            if (!decoratorActions.TryGetValue(method, out var action)) {
+                if (method.ReturnType == typeof(Task)) {
+                    action = DecorateTask;
                 }
-                else if (invocation.Method.ReturnType.IsGenericType && invocation.Method.ReturnType.GetGenericTypeDefinition() == typeof(Task<>)) {
-                    GetDecorateTaskWithResultMethod(invocation.Method).Invoke(this, new object[] { invocation, context });
+                else if (method.ReturnType.IsGenericType && method.ReturnType.GetGenericTypeDefinition() == typeof(Task<>)) {
+                    action = (Action<IDecorator, IInvocation, MethodExecutionContext>)decorateTaskWithResultMethod
+                        .MakeGenericMethod(method.ReturnType.GetGenericArguments())
+                        .CreateDelegate(typeof(Action<IDecorator, IInvocation, MethodExecutionContext>));
                 }
                 else {
-                    Decorate(invocation, context);
+                    action = Decorate;
                 }
+
+                decoratorActions[method] = action;
             }
-            else {
-                invocation.Proceed();
-            }
+
+            return action;
         }
 
-        private void DecorateTask(IInvocation invocation, MethodExecutionContext context) {
+        private static void DecorateTask(IDecorator decorator, IInvocation invocation, MethodExecutionContext context) {
             decorator.BeforeExecute(context);
 
             invocation.Proceed();
@@ -55,7 +46,7 @@ namespace VDT.Core.DependencyInjection.Decorators {
             }))();
         }
 
-        private void DecorateTaskWithResult<TResult>(IInvocation invocation, MethodExecutionContext context) {
+        private static void DecorateTaskWithResult<TResult>(IDecorator decorator, IInvocation invocation, MethodExecutionContext context) {
             decorator.BeforeExecute(context);
 
             invocation.Proceed();
@@ -76,7 +67,7 @@ namespace VDT.Core.DependencyInjection.Decorators {
             }))();
         }
 
-        private void Decorate(IInvocation invocation, MethodExecutionContext context) {
+        private static void Decorate(IDecorator decorator, IInvocation invocation, MethodExecutionContext context) {
             decorator.BeforeExecute(context);
 
             try {
@@ -88,6 +79,26 @@ namespace VDT.Core.DependencyInjection.Decorators {
             }
 
             decorator.AfterExecute(context);
+        }
+
+        private readonly IDecorator decorator;
+        private readonly Predicate<MethodInfo> predicate;
+
+        internal DecoratorInterceptor(IDecorator decorator, Predicate<MethodInfo> predicate) {
+            this.decorator = decorator;
+            this.predicate = predicate;
+        }
+
+        public void Intercept(IInvocation invocation) {
+            if (ShouldDecorate(invocation.Method)) {
+                var context = new MethodExecutionContext(invocation.TargetType, invocation.InvocationTarget, invocation.Method, invocation.Arguments, invocation.GenericArguments);
+                var decoratorAction = GetDecoratorAction(invocation.Method);
+
+                decoratorAction(decorator, invocation, context);
+            }
+            else {
+                invocation.Proceed();
+            }
         }
 
         private bool ShouldDecorate(MethodInfo methodInfo) {

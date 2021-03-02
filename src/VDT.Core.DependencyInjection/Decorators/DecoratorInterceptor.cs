@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace VDT.Core.DependencyInjection.Decorators {
     internal sealed class DecoratorInterceptor : IInterceptor {
-        private static MethodInfo decorateTaskWithResultMethod = typeof(DecoratorInterceptor).GetMethod(nameof(DecorateTaskWithResult), BindingFlags.NonPublic | BindingFlags.Static) ?? throw new InvalidOperationException($"Method '{nameof(DecoratorInterceptor)}.{nameof(DecorateTaskWithResult)}' was not found.");
-        private static Dictionary<MethodInfo, Action<IDecorator, IInvocation, MethodExecutionContext>> decoratorActions = new Dictionary<MethodInfo, Action<IDecorator, IInvocation, MethodExecutionContext>>();
+        private static readonly MethodInfo decorateTaskWithResultMethod = typeof(DecoratorInterceptor).GetMethod(nameof(DecorateTaskWithResult), BindingFlags.NonPublic | BindingFlags.Static) ?? throw new InvalidOperationException($"Method '{nameof(DecoratorInterceptor)}.{nameof(DecorateTaskWithResult)}' was not found.");
+        private static readonly Dictionary<MethodInfo, Action<IDecorator, IInvocation, MethodExecutionContext>> decoratorActions = new Dictionary<MethodInfo, Action<IDecorator, IInvocation, MethodExecutionContext>>();
 
         private static Action<IDecorator, IInvocation, MethodExecutionContext> GetDecoratorAction(MethodInfo method) {
             if (!decoratorActions.TryGetValue(method, out var action)) {

@@ -5,6 +5,12 @@ using System.Threading.Tasks;
 
 namespace VDT.Core.DependencyInjection.Decorators {
     internal sealed class DecoratorInterceptor : IInterceptor {
+        private static MethodInfo decorateTaskWithResultMethod = typeof(DecoratorInterceptor).GetMethod(nameof(DecorateTaskWithResult), BindingFlags.NonPublic | BindingFlags.Instance) ?? throw new InvalidOperationException($"Method '{nameof(DecoratorInterceptor)}.{nameof(DecorateTaskWithResult)}' was not found.");
+
+        private static MethodInfo GetDecorateTaskWithResultMethod(MethodInfo method) {
+            return decorateTaskWithResultMethod.MakeGenericMethod(method.ReturnType.GetGenericArguments());
+        }
+
         private readonly IDecorator decorator;
         private readonly Predicate<MethodInfo> predicate;
 
@@ -16,18 +22,12 @@ namespace VDT.Core.DependencyInjection.Decorators {
         public void Intercept(IInvocation invocation) {
             if (ShouldDecorate(invocation.Method)) {
                 var context = new MethodExecutionContext(invocation.TargetType, invocation.InvocationTarget, invocation.Method, invocation.Arguments, invocation.GenericArguments);
-                var method = invocation.Method;
 
-                decorator.BeforeExecute(context);
-
-                if (method.ReturnType == typeof(Task)) {
+                if (invocation.Method.ReturnType == typeof(Task)) {
                     DecorateTask(invocation, context);
                 }
-                else if (method.ReturnType.IsGenericType && method.ReturnType.GetGenericTypeDefinition() == typeof(Task<>)) {
-                    var decorator = typeof(DecoratorInterceptor).GetMethod(nameof(DecorateTaskWithResult), BindingFlags.NonPublic | BindingFlags.Instance)?
-                        .MakeGenericMethod(context.Method.ReturnType.GetGenericArguments()) ?? throw new InvalidOperationException($"Method '{nameof(DecoratorInterceptor)}.{nameof(DecorateTaskWithResult)}' was not found.");
-
-                    decorator.Invoke(this, new object[] { invocation, context });
+                else if (invocation.Method.ReturnType.IsGenericType && invocation.Method.ReturnType.GetGenericTypeDefinition() == typeof(Task<>)) {
+                    GetDecorateTaskWithResultMethod(invocation.Method).Invoke(this, new object[] { invocation, context });
                 }
                 else {
                     Decorate(invocation, context);
@@ -39,8 +39,9 @@ namespace VDT.Core.DependencyInjection.Decorators {
         }
 
         private void DecorateTask(IInvocation invocation, MethodExecutionContext context) {
-            invocation.Proceed();
+            decorator.BeforeExecute(context);
 
+            invocation.Proceed();
             invocation.ReturnValue = ((Func<Task>)(async () => {
                 try {
                     await (Task)invocation.ReturnValue;
@@ -55,8 +56,9 @@ namespace VDT.Core.DependencyInjection.Decorators {
         }
 
         private void DecorateTaskWithResult<TResult>(IInvocation invocation, MethodExecutionContext context) {
-            invocation.Proceed();
+            decorator.BeforeExecute(context);
 
+            invocation.Proceed();
             invocation.ReturnValue = ((Func<Task<TResult>>)(async () => {
                 var task = (Task<TResult>)invocation.ReturnValue;
 
@@ -75,6 +77,8 @@ namespace VDT.Core.DependencyInjection.Decorators {
         }
 
         private void Decorate(IInvocation invocation, MethodExecutionContext context) {
+            decorator.BeforeExecute(context);
+
             try {
                 invocation.Proceed();
             }

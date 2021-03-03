@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 using VDT.Core.DependencyInjection.Decorators;
 using Xunit;
 
@@ -15,7 +16,7 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
         }
 
         [Fact]
-        public void AddScoped_Adds_DecoratorInjectors() {
+        public async Task AddScoped_Adds_DecoratorInjectors() {
             services.AddScoped<IServiceCollectionTarget, ServiceCollectionTarget, ServiceCollectionTarget>(options => {
                 options.AddDecorator<TestDecorator>();
                 options.AddDecorator<TestDecorator>();
@@ -24,13 +25,13 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
             var serviceProvider = services.BuildServiceProvider();
             var proxy = serviceProvider.GetRequiredService<IServiceCollectionTarget>();
 
-            Assert.Equal("Bar", proxy.GetValue());
+            Assert.Equal("Bar", await proxy.GetValue());
 
             Assert.Equal(2, decorator.Calls);
         }
 
         [Fact]
-        public void AddScoped_With_Factory_Adds_DecoratorInjectors() {
+        public async Task AddScoped_With_Factory_Adds_DecoratorInjectors() {
             services.AddScoped<IServiceCollectionTarget, ServiceCollectionTarget, ServiceCollectionTarget>(serviceProvider => new ServiceCollectionTarget {
                 Value = "Foo"
             }, options => {
@@ -41,7 +42,7 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
             var serviceProvider = services.BuildServiceProvider();
             var proxy = serviceProvider.GetRequiredService<IServiceCollectionTarget>();
 
-            Assert.Equal("Foo", proxy.GetValue());
+            Assert.Equal("Foo", await proxy.GetValue());
 
             Assert.Equal(2, decorator.Calls);
         }

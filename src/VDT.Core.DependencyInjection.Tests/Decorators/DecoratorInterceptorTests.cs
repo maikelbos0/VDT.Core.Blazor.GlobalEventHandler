@@ -105,6 +105,9 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
 
     /*
      * TODO
-     * Test multiple decorators in async especially
+     * Add XML comments
+     * Expand registration functions for transient and singleton
+     * Write appropriate tests for new registrations
+     * Figure out if async delays are needed
      */
 }

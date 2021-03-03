@@ -5,7 +5,7 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
         public string Value { get; set; } = "Bar";
 
         public async Task<string> GetValue() {
-            await Task.Delay(100);
+            await Task.Delay(1);
 
             return Value;
         }

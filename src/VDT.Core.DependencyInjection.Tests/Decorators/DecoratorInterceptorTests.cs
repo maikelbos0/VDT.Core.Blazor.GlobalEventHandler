@@ -108,6 +108,5 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
      * Add XML comments
      * Expand registration functions for transient and singleton
      * Write appropriate tests for new registrations
-     * Figure out if async delays are needed
      */
 }

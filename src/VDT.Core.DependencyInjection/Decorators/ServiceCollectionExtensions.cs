@@ -17,7 +17,7 @@ namespace VDT.Core.DependencyInjection.Decorators {
             where TImplementation : class, TImplementationService {
 
             return services
-                .AddProxy<TService, TImplementationService>(proxyFactory => services.AddScoped(proxyFactory), setupAction)
+                .AddProxy<TService, TImplementationService>((services, proxyFactory) => services.AddScoped(proxyFactory), setupAction)
                 .AddScoped<TImplementationService, TImplementation>();
         }
 
@@ -34,11 +34,11 @@ namespace VDT.Core.DependencyInjection.Decorators {
             where TImplementation : class, TImplementationService {
 
             return services
-                .AddProxy<TService, TImplementationService>(proxyFactory => services.AddScoped(proxyFactory), setupAction)
+                .AddProxy<TService, TImplementationService>((services, proxyFactory) => services.AddScoped(proxyFactory), setupAction)
                 .AddScoped<TImplementationService, TImplementation>(implementationFactory);
         }
 
-        private static IServiceCollection AddProxy<TService, TImplementationService>(this IServiceCollection services, Func<Func<IServiceProvider, TService>, IServiceCollection> registerProxy, Action<DecoratorOptions<TService>> setupAction)
+        private static IServiceCollection AddProxy<TService, TImplementationService>(this IServiceCollection services, Func<IServiceCollection, Func<IServiceProvider, TService>, IServiceCollection> registerProxy, Action<DecoratorOptions<TService>> setupAction)
             where TService : class
             where TImplementationService : class, TService {
 
@@ -47,7 +47,7 @@ namespace VDT.Core.DependencyInjection.Decorators {
             var options = GetDecoratorOptions(setupAction);
             var proxyFactory = GetDecoratedProxyFactory<TService, TImplementationService>(options);
 
-            return registerProxy(proxyFactory);
+            return registerProxy(services, proxyFactory);
         }
 
         private static void VerifyRegistration<TService, TImplementationService>()

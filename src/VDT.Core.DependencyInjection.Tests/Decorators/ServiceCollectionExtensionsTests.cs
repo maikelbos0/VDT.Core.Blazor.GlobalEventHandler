@@ -106,6 +106,35 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
         }
 
         [Fact]
+        public void AddScoped_Returns_Same_Object_Within_Same_Scope() {
+            services.AddScoped<IServiceCollectionTarget, ServiceCollectionTarget>(options => { });
+
+            var serviceProvider = services.BuildServiceProvider();
+            var proxy = serviceProvider.GetRequiredService<IServiceCollectionTarget>();
+
+            using (var scope = serviceProvider.CreateScope()) {
+                Assert.Same(scope.ServiceProvider.GetRequiredService<IServiceCollectionTarget>(), scope.ServiceProvider.GetRequiredService<IServiceCollectionTarget>());
+            }
+        }
+
+        [Fact]
+        public void AddScoped_Returns_New_Object_Within_Different_Scopes() {
+            services.AddScoped<IServiceCollectionTarget, ServiceCollectionTarget>(options => { });
+
+            var serviceProvider = services.BuildServiceProvider();
+            var proxy = serviceProvider.GetRequiredService<IServiceCollectionTarget>();
+            IServiceCollectionTarget scopedTarget;
+
+            using (var scope = serviceProvider.CreateScope()) {
+                scopedTarget = scope.ServiceProvider.GetRequiredService<IServiceCollectionTarget>();
+            }
+
+            using (var scope = serviceProvider.CreateScope()) {
+                Assert.NotSame(scopedTarget, scope.ServiceProvider.GetRequiredService<IServiceCollectionTarget>());
+            }
+        }
+
+        [Fact]
         public async Task Registering_With_Base_Class_Adds_DecoratorInjectors() {
             services.AddScoped<ServiceCollectionTargetBase, ServiceCollectionTarget>(options => {
                 options.AddDecorator<TestDecorator>();

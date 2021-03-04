@@ -16,14 +16,9 @@ namespace VDT.Core.DependencyInjection.Decorators {
             where TImplementationService : class, TService
             where TImplementation : class, TImplementationService {
 
-            VerifyRegistration<TService, TImplementationService>();
-
-            var options = GetDecoratorOptions(setupAction);
-            var proxyFactory = GetDecoratedProxyFactory<TService, TImplementationService>(options);
-
             return services
-                .AddScoped<TImplementationService, TImplementation>()
-                .AddScoped<TService, TService>(proxyFactory);
+                .AddProxy<TService, TImplementationService>(proxyFactory => services.AddScoped(proxyFactory), setupAction)
+                .AddScoped<TImplementationService, TImplementation>();
         }
 
         public static IServiceCollection AddScoped<TService, TImplementation>(this IServiceCollection services, Func<IServiceProvider, TImplementation> implementationFactory, Action<DecoratorOptions<TService>> setupAction)
@@ -38,14 +33,21 @@ namespace VDT.Core.DependencyInjection.Decorators {
             where TImplementationService : class, TService
             where TImplementation : class, TImplementationService {
 
+            return services
+                .AddProxy<TService, TImplementationService>(proxyFactory => services.AddScoped(proxyFactory), setupAction)
+                .AddScoped<TImplementationService, TImplementation>(implementationFactory);
+        }
+
+        private static IServiceCollection AddProxy<TService, TImplementationService>(this IServiceCollection services, Func<Func<IServiceProvider, TService>, IServiceCollection> registerProxy, Action<DecoratorOptions<TService>> setupAction)
+            where TService : class
+            where TImplementationService : class, TService {
+
             VerifyRegistration<TService, TImplementationService>();
 
             var options = GetDecoratorOptions(setupAction);
             var proxyFactory = GetDecoratedProxyFactory<TService, TImplementationService>(options);
 
-            return services
-                .AddScoped<TImplementationService, TImplementation>(implementationFactory)
-                .AddScoped<TService, TService>(proxyFactory);
+            return registerProxy(proxyFactory);
         }
 
         private static void VerifyRegistration<TService, TImplementationService>()
@@ -61,7 +63,6 @@ namespace VDT.Core.DependencyInjection.Decorators {
             where TService : class {
 
             var options = new DecoratorOptions<TService>();
-
             setupAction(options);
 
             return options;

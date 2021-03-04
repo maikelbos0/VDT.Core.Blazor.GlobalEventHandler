@@ -104,5 +104,20 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
                 Value = "Foo"
             }, options => { }));
         }
+
+        [Fact]
+        public async Task Registering_With_Base_Class_Adds_DecoratorInjectors() {
+            services.AddScoped<ServiceCollectionTargetBase, ServiceCollectionTarget>(options => {
+                options.AddDecorator<TestDecorator>();
+                options.AddDecorator<TestDecorator>();
+            });
+
+            var serviceProvider = services.BuildServiceProvider();
+            var proxy = serviceProvider.GetRequiredService<ServiceCollectionTargetBase>();
+
+            Assert.Equal("Bar", await proxy.GetValue());
+
+            Assert.Equal(2, decorator.Calls);
+        }
     }
 }

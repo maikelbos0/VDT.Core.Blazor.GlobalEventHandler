@@ -106,7 +106,6 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
     /*
      * TODO
      * Add XML comments
-     * Expand registration functions for transient and singleton
-     * Write appropriate tests for new registrations
+     * Add attribute-based registration
      */
 }

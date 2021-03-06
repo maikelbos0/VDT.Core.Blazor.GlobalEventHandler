@@ -110,7 +110,6 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
             services.AddTransient<IServiceCollectionTarget, ServiceCollectionTarget>(options => { });
 
             var serviceProvider = services.BuildServiceProvider();
-            var proxy = serviceProvider.GetRequiredService<IServiceCollectionTarget>();
 
             Assert.NotSame(serviceProvider.GetRequiredService<IServiceCollectionTarget>(), serviceProvider.GetRequiredService<IServiceCollectionTarget>());
         }
@@ -210,7 +209,6 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
             services.AddScoped<IServiceCollectionTarget, ServiceCollectionTarget>(options => { });
 
             var serviceProvider = services.BuildServiceProvider();
-            var proxy = serviceProvider.GetRequiredService<IServiceCollectionTarget>();
 
             using (var scope = serviceProvider.CreateScope()) {
                 Assert.Same(scope.ServiceProvider.GetRequiredService<IServiceCollectionTarget>(), scope.ServiceProvider.GetRequiredService<IServiceCollectionTarget>());
@@ -222,7 +220,6 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
             services.AddScoped<IServiceCollectionTarget, ServiceCollectionTarget>(options => { });
 
             var serviceProvider = services.BuildServiceProvider();
-            var proxy = serviceProvider.GetRequiredService<IServiceCollectionTarget>();
             IServiceCollectionTarget scopedTarget;
 
             using (var scope = serviceProvider.CreateScope()) {
@@ -232,6 +229,105 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
             using (var scope = serviceProvider.CreateScope()) {
                 Assert.NotSame(scopedTarget, scope.ServiceProvider.GetRequiredService<IServiceCollectionTarget>());
             }
+        }
+
+        [Fact]
+        public async Task AddSingleton_Adds_DecoratorInjectors() {
+            services.AddSingleton<IServiceCollectionTarget, ServiceCollectionTarget>(options => {
+                options.AddDecorator<TestDecorator>();
+                options.AddDecorator<TestDecorator>();
+            });
+
+            var serviceProvider = services.BuildServiceProvider();
+            var proxy = serviceProvider.GetRequiredService<IServiceCollectionTarget>();
+
+            Assert.Equal("Bar", await proxy.GetValue());
+
+            Assert.Equal(2, decorator.Calls);
+        }
+
+        [Fact]
+        public void AddSingleton_Throws_Exception_For_Equal_Service_And_Implementation() {
+            Assert.Throws<ServiceRegistrationException>(() => services.AddSingleton<ServiceCollectionTarget, ServiceCollectionTarget>(options => { }));
+        }
+
+        [Fact]
+        public async Task AddSingleton_With_ImplementationTarget_Adds_DecoratorInjectors() {
+            services.AddSingleton<IServiceCollectionTarget, IServiceCollectionTargetImplementation, ServiceCollectionTarget>(options => {
+                options.AddDecorator<TestDecorator>();
+                options.AddDecorator<TestDecorator>();
+            });
+
+            var serviceProvider = services.BuildServiceProvider();
+            var proxy = serviceProvider.GetRequiredService<IServiceCollectionTarget>();
+
+            Assert.Equal("Bar", await proxy.GetValue());
+
+            Assert.Equal(2, decorator.Calls);
+            Assert.Null(serviceProvider.GetService<ServiceCollectionTarget>());
+        }
+
+        [Fact]
+        public void AddSingleton_With_ImplementationTarget_Throws_Exception_For_Equal_Service_And_ImplementationService() {
+            Assert.Throws<ServiceRegistrationException>(() => services.AddSingleton<IServiceCollectionTarget, IServiceCollectionTarget, ServiceCollectionTarget>(options => { }));
+        }
+
+        [Fact]
+        public async Task AddSingleton_With_Factory_Adds_DecoratorInjectors() {
+            services.AddSingleton<IServiceCollectionTarget, ServiceCollectionTarget>(serviceProvider => new ServiceCollectionTarget {
+                Value = "Foo"
+            }, options => {
+                options.AddDecorator<TestDecorator>();
+                options.AddDecorator<TestDecorator>();
+            });
+
+            var serviceProvider = services.BuildServiceProvider();
+            var proxy = serviceProvider.GetRequiredService<IServiceCollectionTarget>();
+
+            Assert.Equal("Foo", await proxy.GetValue());
+
+            Assert.Equal(2, decorator.Calls);
+        }
+
+        [Fact]
+        public void AddSingleton_With_Factory_Throws_Exception_For_Equal_Service_And_Implementation() {
+            Assert.Throws<ServiceRegistrationException>(() => services.AddSingleton<ServiceCollectionTarget, ServiceCollectionTarget>(serviceProvider => new ServiceCollectionTarget {
+                Value = "Foo"
+            }, options => { }));
+        }
+
+        [Fact]
+        public async Task AddSingleton_With_ImplementationTarget_And_Factory_Adds_DecoratorInjectors() {
+            services.AddSingleton<IServiceCollectionTarget, IServiceCollectionTargetImplementation, ServiceCollectionTarget>(serviceProvider => new ServiceCollectionTarget {
+                Value = "Foo"
+            }, options => {
+                options.AddDecorator<TestDecorator>();
+                options.AddDecorator<TestDecorator>();
+            });
+
+            var serviceProvider = services.BuildServiceProvider();
+            var proxy = serviceProvider.GetRequiredService<IServiceCollectionTarget>();
+
+            Assert.Equal("Foo", await proxy.GetValue());
+
+            Assert.Equal(2, decorator.Calls);
+            Assert.Null(serviceProvider.GetService<ServiceCollectionTarget>());
+        }
+
+        [Fact]
+        public void AddSingleton_With_ImplementationTarget_And_Factory_Throws_Exception_For_Equal_Service_And_ImplementationService() {
+            Assert.Throws<ServiceRegistrationException>(() => services.AddSingleton<IServiceCollectionTarget, IServiceCollectionTarget, ServiceCollectionTarget>(serviceProvider => new ServiceCollectionTarget {
+                Value = "Foo"
+            }, options => { }));
+        }
+
+        [Fact]
+        public void AddSingleton_Always_Returns_Same_Object() {
+            services.AddSingleton<IServiceCollectionTarget, ServiceCollectionTarget>(options => { });
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            Assert.Same(serviceProvider.GetRequiredService<IServiceCollectionTarget>(), serviceProvider.GetRequiredService<IServiceCollectionTarget>());
         }
 
         [Fact]

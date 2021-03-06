@@ -72,6 +72,40 @@ namespace VDT.Core.DependencyInjection.Decorators {
                 .AddScoped<TImplementationService, TImplementation>(implementationFactory);
         }
 
+        public static IServiceCollection AddSingleton<TService, TImplementation>(this IServiceCollection services, Action<DecoratorOptions<TService>> setupAction)
+            where TService : class
+            where TImplementation : class, TService {
+
+            return services.AddSingleton<TService, TImplementation, TImplementation>(setupAction);
+        }
+
+        public static IServiceCollection AddSingleton<TService, TImplementationService, TImplementation>(this IServiceCollection services, Action<DecoratorOptions<TService>> setupAction)
+            where TService : class
+            where TImplementationService : class, TService
+            where TImplementation : class, TImplementationService {
+
+            return services
+                .AddProxy<TService, TImplementationService>((services, proxyFactory) => services.AddSingleton(proxyFactory), setupAction)
+                .AddSingleton<TImplementationService, TImplementation>();
+        }
+
+        public static IServiceCollection AddSingleton<TService, TImplementation>(this IServiceCollection services, Func<IServiceProvider, TImplementation> implementationFactory, Action<DecoratorOptions<TService>> setupAction)
+            where TService : class
+            where TImplementation : class, TService {
+
+            return services.AddSingleton<TService, TImplementation, TImplementation>(implementationFactory, setupAction);
+        }
+
+        public static IServiceCollection AddSingleton<TService, TImplementationService, TImplementation>(this IServiceCollection services, Func<IServiceProvider, TImplementation> implementationFactory, Action<DecoratorOptions<TService>> setupAction)
+            where TService : class
+            where TImplementationService : class, TService
+            where TImplementation : class, TImplementationService {
+
+            return services
+                .AddProxy<TService, TImplementationService>((services, proxyFactory) => services.AddSingleton(proxyFactory), setupAction)
+                .AddSingleton<TImplementationService, TImplementation>(implementationFactory);
+        }
+
         private static IServiceCollection AddProxy<TService, TImplementationService>(this IServiceCollection services, Func<IServiceCollection, Func<IServiceProvider, TService>, IServiceCollection> registerProxy, Action<DecoratorOptions<TService>> setupAction)
             where TService : class
             where TImplementationService : class, TService {

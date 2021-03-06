@@ -16,6 +16,106 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
         }
 
         [Fact]
+        public async Task AddTransient_Adds_DecoratorInjectors() {
+            services.AddTransient<IServiceCollectionTarget, ServiceCollectionTarget>(options => {
+                options.AddDecorator<TestDecorator>();
+                options.AddDecorator<TestDecorator>();
+            });
+
+            var serviceProvider = services.BuildServiceProvider();
+            var proxy = serviceProvider.GetRequiredService<IServiceCollectionTarget>();
+
+            Assert.Equal("Bar", await proxy.GetValue());
+
+            Assert.Equal(2, decorator.Calls);
+        }
+
+        [Fact]
+        public void AddTransient_Throws_Exception_For_Equal_Service_And_Implementation() {
+            Assert.Throws<ServiceRegistrationException>(() => services.AddTransient<ServiceCollectionTarget, ServiceCollectionTarget>(options => { }));
+        }
+
+        [Fact]
+        public async Task AddTransient_With_ImplementationTarget_Adds_DecoratorInjectors() {
+            services.AddTransient<IServiceCollectionTarget, IServiceCollectionTargetImplementation, ServiceCollectionTarget>(options => {
+                options.AddDecorator<TestDecorator>();
+                options.AddDecorator<TestDecorator>();
+            });
+
+            var serviceProvider = services.BuildServiceProvider();
+            var proxy = serviceProvider.GetRequiredService<IServiceCollectionTarget>();
+
+            Assert.Equal("Bar", await proxy.GetValue());
+
+            Assert.Equal(2, decorator.Calls);
+            Assert.Null(serviceProvider.GetService<ServiceCollectionTarget>());
+        }
+
+        [Fact]
+        public void AddTransient_With_ImplementationTarget_Throws_Exception_For_Equal_Service_And_ImplementationService() {
+            Assert.Throws<ServiceRegistrationException>(() => services.AddTransient<IServiceCollectionTarget, IServiceCollectionTarget, ServiceCollectionTarget>(options => { }));
+        }
+
+        [Fact]
+        public async Task AddTransient_With_Factory_Adds_DecoratorInjectors() {
+            services.AddTransient<IServiceCollectionTarget, ServiceCollectionTarget>(serviceProvider => new ServiceCollectionTarget {
+                Value = "Foo"
+            }, options => {
+                options.AddDecorator<TestDecorator>();
+                options.AddDecorator<TestDecorator>();
+            });
+
+            var serviceProvider = services.BuildServiceProvider();
+            var proxy = serviceProvider.GetRequiredService<IServiceCollectionTarget>();
+
+            Assert.Equal("Foo", await proxy.GetValue());
+
+            Assert.Equal(2, decorator.Calls);
+        }
+
+        [Fact]
+        public void AddTransient_With_Factory_Throws_Exception_For_Equal_Service_And_Implementation() {
+            Assert.Throws<ServiceRegistrationException>(() => services.AddTransient<ServiceCollectionTarget, ServiceCollectionTarget>(serviceProvider => new ServiceCollectionTarget {
+                Value = "Foo"
+            }, options => { }));
+        }
+
+        [Fact]
+        public async Task AddTransient_With_ImplementationTarget_And_Factory_Adds_DecoratorInjectors() {
+            services.AddTransient<IServiceCollectionTarget, IServiceCollectionTargetImplementation, ServiceCollectionTarget>(serviceProvider => new ServiceCollectionTarget {
+                Value = "Foo"
+            }, options => {
+                options.AddDecorator<TestDecorator>();
+                options.AddDecorator<TestDecorator>();
+            });
+
+            var serviceProvider = services.BuildServiceProvider();
+            var proxy = serviceProvider.GetRequiredService<IServiceCollectionTarget>();
+
+            Assert.Equal("Foo", await proxy.GetValue());
+
+            Assert.Equal(2, decorator.Calls);
+            Assert.Null(serviceProvider.GetService<ServiceCollectionTarget>());
+        }
+
+        [Fact]
+        public void AddTransient_With_ImplementationTarget_And_Factory_Throws_Exception_For_Equal_Service_And_ImplementationService() {
+            Assert.Throws<ServiceRegistrationException>(() => services.AddTransient<IServiceCollectionTarget, IServiceCollectionTarget, ServiceCollectionTarget>(serviceProvider => new ServiceCollectionTarget {
+                Value = "Foo"
+            }, options => { }));
+        }
+
+        [Fact]
+        public void AddTransient_Always_Returns_New_Object() {
+            services.AddTransient<IServiceCollectionTarget, ServiceCollectionTarget>(options => { });
+
+            var serviceProvider = services.BuildServiceProvider();
+            var proxy = serviceProvider.GetRequiredService<IServiceCollectionTarget>();
+
+            Assert.NotSame(serviceProvider.GetRequiredService<IServiceCollectionTarget>(), serviceProvider.GetRequiredService<IServiceCollectionTarget>());
+        }
+
+        [Fact]
         public async Task AddScoped_Adds_DecoratorInjectors() {
             services.AddScoped<IServiceCollectionTarget, ServiceCollectionTarget>(options => {
                 options.AddDecorator<TestDecorator>();

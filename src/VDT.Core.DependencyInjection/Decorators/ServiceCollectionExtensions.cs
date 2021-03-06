@@ -4,6 +4,40 @@ using System.Linq;
 
 namespace VDT.Core.DependencyInjection.Decorators {
     public static class ServiceCollectionExtensions {
+        public static IServiceCollection AddTransient<TService, TImplementation>(this IServiceCollection services, Action<DecoratorOptions<TService>> setupAction)
+            where TService : class
+            where TImplementation : class, TService {
+
+            return services.AddTransient<TService, TImplementation, TImplementation>(setupAction);
+        }
+
+        public static IServiceCollection AddTransient<TService, TImplementationService, TImplementation>(this IServiceCollection services, Action<DecoratorOptions<TService>> setupAction)
+            where TService : class
+            where TImplementationService : class, TService
+            where TImplementation : class, TImplementationService {
+
+            return services
+                .AddProxy<TService, TImplementationService>((services, proxyFactory) => services.AddTransient(proxyFactory), setupAction)
+                .AddTransient<TImplementationService, TImplementation>();
+        }
+
+        public static IServiceCollection AddTransient<TService, TImplementation>(this IServiceCollection services, Func<IServiceProvider, TImplementation> implementationFactory, Action<DecoratorOptions<TService>> setupAction)
+            where TService : class
+            where TImplementation : class, TService {
+
+            return services.AddTransient<TService, TImplementation, TImplementation>(implementationFactory, setupAction);
+        }
+
+        public static IServiceCollection AddTransient<TService, TImplementationService, TImplementation>(this IServiceCollection services, Func<IServiceProvider, TImplementation> implementationFactory, Action<DecoratorOptions<TService>> setupAction)
+            where TService : class
+            where TImplementationService : class, TService
+            where TImplementation : class, TImplementationService {
+
+            return services
+                .AddProxy<TService, TImplementationService>((services, proxyFactory) => services.AddTransient(proxyFactory), setupAction)
+                .AddTransient<TImplementationService, TImplementation>(implementationFactory);
+        }
+
         public static IServiceCollection AddScoped<TService, TImplementation>(this IServiceCollection services, Action<DecoratorOptions<TService>> setupAction)
             where TService : class
             where TImplementation : class, TService {

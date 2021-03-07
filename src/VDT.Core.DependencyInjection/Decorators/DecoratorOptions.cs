@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace VDT.Core.DependencyInjection.Decorators {
@@ -8,6 +9,8 @@ namespace VDT.Core.DependencyInjection.Decorators {
     /// </summary>
     /// <typeparam name="TService">The type of the service to add decorators to</typeparam>
     public sealed class DecoratorOptions<TService> where TService : class {
+        private static readonly MethodInfo addDecoratorMethod = typeof(DecoratorOptions<TService>).GetMethod(nameof(AddDecorator), BindingFlags.Public | BindingFlags.Instance, null, new[] { typeof(MethodInfo) }, null) ?? throw new InvalidOperationException($"Method '{nameof(DecoratorOptions<TService>)}.{nameof(AddDecorator)}' was not found.");
+
         internal List<DecoratorPolicy> Policies { get; } = new List<DecoratorPolicy>();        
 
         /// <summary>
@@ -40,7 +43,17 @@ namespace VDT.Core.DependencyInjection.Decorators {
         /// Adds decorators based on implementations of the <see cref="IDecorateAttribute{TDecorator}"/> interface
         /// </summary>
         public void AddAttributeDecorators() {
+            var methodDecorators = typeof(TService)
+                .GetMethods()
+                .SelectMany(m => m.GetCustomAttributes().Select(a => new {
+                    Method = m,
+                    Interface = a.GetType().GetInterfaces().SingleOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IDecorateAttribute<>))
+                }))
+                .Where(d => d.Interface != null);
 
+            foreach (var methodDecorator in methodDecorators) {
+                addDecoratorMethod.MakeGenericMethod(methodDecorator.Interface.GetGenericArguments()).Invoke(this, new object[] { methodDecorator.Method });
+            }
         }
     }
 }

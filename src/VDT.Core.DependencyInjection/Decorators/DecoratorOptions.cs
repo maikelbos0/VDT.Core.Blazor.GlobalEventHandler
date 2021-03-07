@@ -8,7 +8,7 @@ namespace VDT.Core.DependencyInjection.Decorators {
     /// </summary>
     /// <typeparam name="TService">The type of the service to add decorators to</typeparam>
     public sealed class DecoratorOptions<TService> where TService : class {
-        internal List<DecoratorPolicy> Policies { get; } = new List<DecoratorPolicy>();
+        internal List<DecoratorPolicy> Policies { get; } = new List<DecoratorPolicy>();        
 
         /// <summary>
         /// Add a decorator for all methods of <typeparamref name="TService"/>
@@ -34,6 +34,13 @@ namespace VDT.Core.DependencyInjection.Decorators {
         /// <param name="predicate">The predicate that methods are tested against to see if <typeparamref name="TDecorator"/> should be used</param>
         public void AddDecorator<TDecorator>(Predicate<MethodInfo> predicate) where TDecorator : class, IDecorator {
             Policies.Add(new DecoratorPolicy<TDecorator>(predicate));
+        }
+
+        /// <summary>
+        /// Adds decorators based on implementations of the <see cref="IDecorateAttribute{TDecorator}"/> interface
+        /// </summary>
+        public void AddAttributeDecorators() {
+
         }
     }
 }

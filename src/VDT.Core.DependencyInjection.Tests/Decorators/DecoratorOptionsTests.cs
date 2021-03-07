@@ -36,5 +36,14 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
             Assert.True(options.Policies.Single().Predicate(decoratedMethod));
             Assert.False(options.Policies.Single().Predicate(undecoratedMethod));
         }
+
+        [Fact]
+        public void AddAttributeDecorators_Works() {
+            options.AddAttributeDecorators();
+
+            Assert.Single(options.Policies);
+            Assert.True(options.Policies.Single().Predicate(decoratedMethod));
+            Assert.False(options.Policies.Single().Predicate(undecoratedMethod));
+        }
     }
 }

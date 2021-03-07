@@ -105,7 +105,6 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
 
     /*
      * TODO
-     * Add XML comments
      * Add attribute-based registration
      */
 }

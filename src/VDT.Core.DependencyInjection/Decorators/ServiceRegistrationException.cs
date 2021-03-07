@@ -1,8 +1,11 @@
 ﻿using System;
 
 namespace VDT.Core.DependencyInjection.Decorators {
+    /// <summary>
+    /// Represents errors that occur during decorated service registration
+    /// </summary>
     public class ServiceRegistrationException : Exception {
-        public ServiceRegistrationException(string message) : base(message) {
+        internal ServiceRegistrationException(string message) : base(message) {
         }
     }
 }

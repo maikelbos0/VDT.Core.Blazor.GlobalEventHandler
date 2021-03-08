@@ -5,11 +5,24 @@ using VDT.Core.DependencyInjection.Decorators;
 
 namespace VDT.Core.DependencyInjection {
     public static class ServiceCollectionExtensions {
+        /// <summary>
+        /// Provides a mechanism to register all services found in <paramref name="assembly"/> marked with <see cref="TransientServiceAttribute"/>, <see cref="ScopedServiceAttribute"/> or <see cref="SingletonServiceAttribute"/>
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> to add the services to</param>
+        /// <param name="assembly">The <see cref="Assembly"/> in which to look for services</param>
+        /// <returns>A reference to this instance after the operation has completed</returns>
         public static IServiceCollection AddAttributeServices(this IServiceCollection services, Assembly assembly) {
             return services;
         }
 
-        public static IServiceCollection AddAttributeServices(this IServiceCollection services, Assembly assembly, Action<DecoratorOptions> setupAction) {
+        /// <summary>
+        /// Provides a mechanism to register all services found in <paramref name="assembly"/> marked with <see cref="TransientServiceAttribute"/>, <see cref="ScopedServiceAttribute"/> or <see cref="SingletonServiceAttribute"/>
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> to add the services to</param>
+        /// <param name="assembly">The <see cref="Assembly"/> in which to look for services</param>
+        /// <param name="decoratorSetupAction">The action that sets up the decorators for these services</param>
+        /// <returns>A reference to this instance after the operation has completed</returns>
+        public static IServiceCollection AddAttributeServices(this IServiceCollection services, Assembly assembly, Action<DecoratorOptions> decoratorSetupAction) {
             return services;
         }
     }

@@ -1,4 +1,9 @@
-﻿namespace VDT.Core.DependencyInjection.Tests {
+﻿using VDT.Core.DependencyInjection.Tests.Decorators;
+
+namespace VDT.Core.DependencyInjection.Tests {
     [ScopedService(typeof(ScopedServiceTarget))]
-    public interface IScopedServiceTarget { }
+    public interface IScopedServiceTarget {
+        [TestDecorator]
+        public string GetValue();
+    }
 }

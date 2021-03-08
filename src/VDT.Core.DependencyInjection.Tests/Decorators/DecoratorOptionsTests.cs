@@ -6,7 +6,7 @@ using Xunit;
 
 namespace VDT.Core.DependencyInjection.Tests.Decorators {
     public sealed class DecoratorOptionsTests {
-        private readonly DecoratorOptions<DecoratorOptionsTarget> options = new DecoratorOptions<DecoratorOptionsTarget>();
+        private readonly DecoratorOptions options = new DecoratorOptions(typeof(DecoratorOptionsTarget));
         private readonly MethodInfo decoratedMethod = typeof(DecoratorOptionsTarget).GetMethod(nameof(DecoratorOptionsTarget.Decorated)) ?? throw new InvalidOperationException($"Method '{nameof(DecoratorOptionsTarget)}.{nameof(DecoratorOptionsTarget.Decorated)}' was not found.");
         private readonly MethodInfo undecoratedMethod = typeof(DecoratorOptionsTarget).GetMethod(nameof(DecoratorOptionsTarget.Undecorated)) ?? throw new InvalidOperationException($"Method '{nameof(DecoratorOptionsTarget)}.{nameof(DecoratorOptionsTarget.Undecorated)}' was not found.");
 

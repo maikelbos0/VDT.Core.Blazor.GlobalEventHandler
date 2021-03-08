@@ -7,11 +7,16 @@ namespace VDT.Core.DependencyInjection.Decorators {
     /// <summary>
     /// Options to set up decorators to a service
     /// </summary>
-    /// <typeparam name="TService">The type of the service to add decorators to</typeparam>
-    public sealed class DecoratorOptions<TService> where TService : class {
-        private static readonly MethodInfo addDecoratorMethod = typeof(DecoratorOptions<TService>).GetMethod(nameof(AddDecorator), BindingFlags.Public | BindingFlags.Instance, null, new[] { typeof(MethodInfo) }, null) ?? throw new InvalidOperationException($"Method '{nameof(DecoratorOptions<TService>)}.{nameof(AddDecorator)}' was not found.");
+    public sealed class DecoratorOptions {
+        private static readonly MethodInfo addDecoratorMethod = typeof(DecoratorOptions).GetMethod(nameof(AddDecorator), BindingFlags.Public | BindingFlags.Instance, null, new[] { typeof(MethodInfo) }, null) ?? throw new InvalidOperationException($"Method '{nameof(DecoratorOptions)}.{nameof(AddDecorator)}' was not found.");
 
-        internal List<DecoratorPolicy> Policies { get; } = new List<DecoratorPolicy>();        
+        private readonly Type type;
+
+        internal List<DecoratorPolicy> Policies { get; } = new List<DecoratorPolicy>();
+
+        internal DecoratorOptions(Type type) {
+            this.type = type;
+        }
 
         /// <summary>
         /// Add a decorator for all methods of <typeparamref name="TService"/>
@@ -43,7 +48,7 @@ namespace VDT.Core.DependencyInjection.Decorators {
         /// Adds decorators based on implementations of the <see cref="IDecorateAttribute{TDecorator}"/> interface
         /// </summary>
         public void AddAttributeDecorators() {
-            var methodDecorators = typeof(TService)
+            var methodDecorators = type
                 .GetMethods()
                 .SelectMany(m => m.GetCustomAttributes().Select(a => new {
                     Method = m,

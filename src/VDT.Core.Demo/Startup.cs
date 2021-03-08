@@ -1,12 +1,16 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using VDT.Core.DependencyInjection.Decorators;
+using VDT.Core.Demo.Decorators;
 
 namespace VDT.Core.Demo {
     public class Startup {
         public void ConfigureServices(IServiceCollection services) {
+            services.AddSingleton<LogDecorator>();
+            services.AddScoped<IDemo, Demo>(options => options.AddAttributeDecorators());
+            services.AddControllers();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
@@ -15,11 +19,9 @@ namespace VDT.Core.Demo {
             }
 
             app.UseRouting();
-
+            
             app.UseEndpoints(endpoints => {
-                endpoints.MapGet("/", async context => {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllers();
             });
         }
     }

@@ -102,9 +102,4 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
             decorator.DidNotReceiveWithAnyArgs().OnError(Arg.Any<MethodExecutionContext>(), Arg.Any<Exception>());
         }
     }
-
-    /*
-     * TODO
-     * Add attribute-based registration
-     */
 }

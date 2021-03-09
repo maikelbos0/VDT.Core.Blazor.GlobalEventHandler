@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
+using VDT.Core.DependencyInjection.Decorators;
 
 namespace VDT.Core.DependencyInjection {
     /// <summary>
@@ -14,5 +16,9 @@ namespace VDT.Core.DependencyInjection {
         internal ServiceAttribute(Type implementationType) {
             ImplementationType = implementationType;
         }
+
+        internal abstract void Register(IServiceCollection services, Type serviceType);
+
+        internal abstract void Register(IServiceCollection services, Type serviceType, Action<DecoratorOptions> decoratorSetupAction);
     }
 }

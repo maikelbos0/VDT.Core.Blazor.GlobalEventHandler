@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace VDT.Core.DependencyInjection {
     /// <summary>
@@ -11,5 +12,11 @@ namespace VDT.Core.DependencyInjection {
         /// <param name="implementationType">The type to use as implementation for this service</param>
         /// <remarks>When using decorators, the type specified in <paramref name="implementationType"/> must differ from the service type</remarks>
         public TransientServiceAttribute(Type implementationType) : base(implementationType) { }
+
+        internal override void Register(IServiceCollection services, Type serviceType) {
+        }
+
+        internal override void Register(IServiceCollection services, Type serviceType, Action<Decorators.DecoratorOptions> decoratorSetupAction) {
+        }
     }
 }

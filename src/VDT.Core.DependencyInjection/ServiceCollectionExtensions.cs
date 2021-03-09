@@ -6,8 +6,6 @@ using VDT.Core.DependencyInjection.Decorators;
 
 namespace VDT.Core.DependencyInjection {
     public static class ServiceCollectionExtensions {
-        private static readonly MethodInfo addScopedMethod = typeof(ServiceCollectionServiceExtensions).GetMethod(nameof(ServiceCollectionServiceExtensions.AddScoped), 2, BindingFlags.Public | BindingFlags.Static, null, new Type[] { typeof(IServiceCollection) }, null) ?? throw new InvalidOperationException($"Method '{nameof(ServiceCollectionServiceExtensions)}.{nameof(ServiceCollectionServiceExtensions.AddScoped)}' was not found.");
-
         /// <summary>
         /// Provides a mechanism to register all services found in <paramref name="assembly"/> marked with <see cref="TransientServiceAttribute"/>, <see cref="ScopedServiceAttribute"/> or <see cref="SingletonServiceAttribute"/>
         /// </summary>
@@ -15,16 +13,16 @@ namespace VDT.Core.DependencyInjection {
         /// <param name="assembly">The <see cref="Assembly"/> in which to look for services</param>
         /// <returns>A reference to this instance after the operation has completed</returns>
         public static IServiceCollection AddAttributeServices(this IServiceCollection services, Assembly assembly) {
-            var s = assembly
+            var attributeServices = assembly
                 .GetTypes()
                 .Select(t => new {
-                    Service = t,
+                    ServiceType = t,
                     Attribute = t.GetCustomAttribute<ServiceAttribute>()
                 })
                 .Where(s => s.Attribute != null);
 
-            foreach (var v in s) {
-                addScopedMethod.MakeGenericMethod(v.Service, v.Attribute!.ImplementationType).Invoke(null, new object[] { services });
+            foreach (var service in attributeServices) {
+                service.Attribute!.Register(services, service.ServiceType);
             }
 
             return services;
@@ -41,4 +39,4 @@ namespace VDT.Core.DependencyInjection {
             return services;
         }
     }
-}
+ }

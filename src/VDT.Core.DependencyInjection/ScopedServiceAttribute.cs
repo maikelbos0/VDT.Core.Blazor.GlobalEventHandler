@@ -22,6 +22,7 @@ namespace VDT.Core.DependencyInjection {
         }
 
         internal override void Register(IServiceCollection services, Type serviceType, Action<Decorators.DecoratorOptions> decoratorSetupAction) {
+            addDecoratedServiceMethod.MakeGenericMethod(serviceType, ImplementationType).Invoke(null, new object[] { services, decoratorSetupAction });
         }
     }
 }

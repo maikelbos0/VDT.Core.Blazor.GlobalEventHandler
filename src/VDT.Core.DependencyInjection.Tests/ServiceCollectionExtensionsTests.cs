@@ -15,6 +15,52 @@ namespace VDT.Core.DependencyInjection.Tests {
         }
 
         [Fact]
+        public void AddAttributeServices_Adds_Transient_Services() {
+            services.AddAttributeServices(typeof(ServiceCollectionExtensionsTests).Assembly);
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            var service = serviceProvider.GetRequiredService<ITransientServiceTarget>();
+
+            Assert.IsType<TransientServiceTarget>(service);
+        }
+
+        [Fact]
+        public void AddAttributeServices_Transient_Always_Returns_New_Object() {
+            services.AddAttributeServices(typeof(ServiceCollectionExtensionsTests).Assembly);
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            using (var scope = serviceProvider.CreateScope()) {
+                Assert.NotSame(scope.ServiceProvider.GetRequiredService<ITransientServiceTarget>(), scope.ServiceProvider.GetRequiredService<ITransientServiceTarget>());
+            }
+        }
+
+        [Fact]
+        public void AddAttributeServices_Adds_Transient_Services_With_Decorators() {
+            services.AddAttributeServices(typeof(ServiceCollectionExtensionsTests).Assembly, options => options.AddAttributeDecorators());
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            var proxy = serviceProvider.GetRequiredService<ITransientServiceTarget>();
+
+            Assert.Equal("Bar", proxy.GetValue());
+
+            Assert.Equal(1, decorator.Calls);
+        }
+
+        [Fact]
+        public void AddAttributeServices_Transient_With_Decorators_Always_Returns_New_Object() {
+            services.AddAttributeServices(typeof(ServiceCollectionExtensionsTests).Assembly, options => options.AddAttributeDecorators());
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            using (var scope = serviceProvider.CreateScope()) {
+                Assert.NotSame(scope.ServiceProvider.GetRequiredService<ITransientServiceTarget>(), scope.ServiceProvider.GetRequiredService<ITransientServiceTarget>());
+            }
+        }
+
+        [Fact]
         public void AddAttributeServices_Adds_Scoped_Services() {
             services.AddAttributeServices(typeof(ServiceCollectionExtensionsTests).Assembly);
 
@@ -90,6 +136,48 @@ namespace VDT.Core.DependencyInjection.Tests {
             using (var scope = serviceProvider.CreateScope()) {
                 Assert.NotSame(scopedTarget, scope.ServiceProvider.GetRequiredService<IScopedServiceTarget>());
             }
+        }
+
+        [Fact]
+        public void AddAttributeServices_Adds_Singleton_Services() {
+            services.AddAttributeServices(typeof(ServiceCollectionExtensionsTests).Assembly);
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            var service = serviceProvider.GetRequiredService<ISingletonServiceTarget>();
+
+            Assert.IsType<SingletonServiceTarget>(service);
+        }
+
+        [Fact]
+        public void AddAttributeServices_Singleton_Always_Returns_Same_Object() {
+            services.AddAttributeServices(typeof(ServiceCollectionExtensionsTests).Assembly);
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            Assert.Same(serviceProvider.GetRequiredService<ISingletonServiceTarget>(), serviceProvider.GetRequiredService<ISingletonServiceTarget>());
+        }
+
+        [Fact]
+        public void AddAttributeServices_Adds_Singleton_Services_With_Decorators() {
+            services.AddAttributeServices(typeof(ServiceCollectionExtensionsTests).Assembly, options => options.AddAttributeDecorators());
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            var proxy = serviceProvider.GetRequiredService<ISingletonServiceTarget>();
+
+            Assert.Equal("Bar", proxy.GetValue());
+
+            Assert.Equal(1, decorator.Calls);
+        }
+
+        [Fact]
+        public void AddAttributeServices_Singleton_With_Decorators_Always_Returns_Same_Object() {
+            services.AddAttributeServices(typeof(ServiceCollectionExtensionsTests).Assembly, options => options.AddAttributeDecorators());
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            Assert.Same(serviceProvider.GetRequiredService<ISingletonServiceTarget>(), serviceProvider.GetRequiredService<ISingletonServiceTarget>());
         }
     }
 }

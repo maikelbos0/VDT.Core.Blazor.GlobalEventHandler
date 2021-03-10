@@ -326,8 +326,15 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
             services.AddSingleton<IServiceCollectionTarget, ServiceCollectionTarget>(options => { });
 
             var serviceProvider = services.BuildServiceProvider();
+            IServiceCollectionTarget singletonTarget;
 
-            Assert.Same(serviceProvider.GetRequiredService<IServiceCollectionTarget>(), serviceProvider.GetRequiredService<IServiceCollectionTarget>());
+            using (var scope = serviceProvider.CreateScope()) {
+                singletonTarget = scope.ServiceProvider.GetRequiredService<IServiceCollectionTarget>();
+            }
+
+            using (var scope = serviceProvider.CreateScope()) {
+                Assert.Same(singletonTarget, scope.ServiceProvider.GetRequiredService<IServiceCollectionTarget>());
+            }
         }
 
         [Fact]

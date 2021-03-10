@@ -154,8 +154,15 @@ namespace VDT.Core.DependencyInjection.Tests {
             services.AddAttributeServices(typeof(ServiceCollectionExtensionsTests).Assembly);
 
             var serviceProvider = services.BuildServiceProvider();
+            ISingletonServiceTarget singletonTarget;
 
-            Assert.Same(serviceProvider.GetRequiredService<ISingletonServiceTarget>(), serviceProvider.GetRequiredService<ISingletonServiceTarget>());
+            using (var scope = serviceProvider.CreateScope()) {
+                singletonTarget = scope.ServiceProvider.GetRequiredService<ISingletonServiceTarget>();
+            }
+
+            using (var scope = serviceProvider.CreateScope()) {
+                Assert.Same(singletonTarget, scope.ServiceProvider.GetRequiredService<ISingletonServiceTarget>());
+            }
         }
 
         [Fact]
@@ -176,8 +183,15 @@ namespace VDT.Core.DependencyInjection.Tests {
             services.AddAttributeServices(typeof(ServiceCollectionExtensionsTests).Assembly, options => options.AddAttributeDecorators());
 
             var serviceProvider = services.BuildServiceProvider();
+            ISingletonServiceTarget singletonTarget;
 
-            Assert.Same(serviceProvider.GetRequiredService<ISingletonServiceTarget>(), serviceProvider.GetRequiredService<ISingletonServiceTarget>());
+            using (var scope = serviceProvider.CreateScope()) {
+                singletonTarget = scope.ServiceProvider.GetRequiredService<ISingletonServiceTarget>();
+            }
+
+            using (var scope = serviceProvider.CreateScope()) {
+                Assert.Same(singletonTarget, scope.ServiceProvider.GetRequiredService<ISingletonServiceTarget>());
+            }
         }
     }
 }

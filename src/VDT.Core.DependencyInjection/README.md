@@ -14,6 +14,32 @@ services from the `Startup` class to the services themselves. Simply mark your s
 `[ScopedService]` and `SingletonService` attributes to indicate that a service should be registered and call the
 appropriate overload to `ServiceCollectionExtensions.AddAttributeServices` register all services in an assembly.
 
+### Example
+
+```
+[ScopedService(typeof(Example))]
+public interface IExample {
+    void Foo();
+}
+
+public class Example {
+    public void Foo() {
+        // ...
+    }
+}
+
+public class Startup {
+    public void ConfigureServices(IServiceCollection services) {        
+        services.AddAttributeServices(typeof(Startup).Assembly);
+        // ...
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
+        // ...
+    }
+}
+```
+
 ## Decorators
 
 The extension methods `Decorators.ServiceCollectionExtensions.AddTransient`,

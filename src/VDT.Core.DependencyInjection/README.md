@@ -29,7 +29,7 @@ public class Example {
 }
 
 public class Startup {
-    public void ConfigureServices(IServiceCollection services) {        
+    public void ConfigureServices(IServiceCollection services) {
         services.AddAttributeServices(typeof(Startup).Assembly);
         // ...
     }
@@ -50,3 +50,56 @@ of the `Decorators.IDecorator` interface. This interface has three methods:
 - BeforeExecute allows you to execute code before execution of the decorated method
 - AfterExecute allows you to execute code after execution of the decorated method
 - OnError allows you to execute code if the decorated method throws an error
+
+There are two ways to inject decorators into your services: you can apply a custom attribute to the methods on the
+service you want decorated, or you can provide predicates with decorator types when registering the services.
+
+### Example
+
+```
+public class LogDecorator : IDecorator {
+    public void BeforeExecute(MethodExecutionContext context) {
+        Debug.WriteLine($"Executing '{context.TargetType.FullName}.{context.Method.Name}'");
+    }
+
+    public void AfterExecute(MethodExecutionContext context) {
+        Debug.WriteLine($"Executed '{context.TargetType.FullName}.{context.Method.Name}'");
+    }
+
+    public void OnError(MethodExecutionContext context, System.Exception exception) {
+        Debug.WriteLine($"Failed to execute '{context.TargetType.FullName}.{context.Method.Name}': {exception.Message}");
+    }
+}
+
+// For attribute based decoration
+[AttributeUsage(AttributeTargets.Method)]
+public class LogAttribute : Attribute, IDecorateAttribute<LogDecorator> {
+}
+
+public interface IExample {
+    [Log]
+    void Foo();
+}
+
+public class Example {
+    public void Foo() {
+        // ...
+    }
+}
+
+public class Startup {
+    public void ConfigureServices(IServiceCollection services) {
+        // Register explicitly in Startup
+        services.AddScoped<IExample, Example>(options => options.AddDecorator<LogDecorator>(method => method.Name == "Foo");
+
+        // Register using attributes
+        services.AddScoped<IExample, Example>(options => options.AddAttributeDecorators());
+
+        // ...
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
+        // ...
+    }
+}
+```

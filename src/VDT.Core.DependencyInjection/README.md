@@ -30,7 +30,12 @@ public class Example {
 
 public class Startup {
     public void ConfigureServices(IServiceCollection services) {
+        // Register all classes in an assembly
         services.AddAttributeServices(typeof(Startup).Assembly);
+
+        // Register all classes and apply decorators
+        services.AddAttributeServices(typeof(Startup).Assembly, options => options.AddAttributeDecorators());
+
         // ...
     }
 

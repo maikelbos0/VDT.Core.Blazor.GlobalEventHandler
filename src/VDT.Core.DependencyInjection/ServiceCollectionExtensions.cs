@@ -6,6 +6,9 @@ using System.Reflection;
 using VDT.Core.DependencyInjection.Decorators;
 
 namespace VDT.Core.DependencyInjection {
+    /// <summary>
+    /// Extension methods for adding services to an <see cref="IServiceCollection"/> based on attributes
+    /// </summary>
     public static class ServiceCollectionExtensions {
         /// <summary>
         /// Provides a mechanism to register all services found in <paramref name="assembly"/> marked with <see cref="TransientServiceAttribute"/>, <see cref="ScopedServiceAttribute"/> or <see cref="SingletonServiceAttribute"/>

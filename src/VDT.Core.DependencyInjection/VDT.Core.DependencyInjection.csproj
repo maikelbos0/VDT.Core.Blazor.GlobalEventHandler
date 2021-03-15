@@ -8,7 +8,7 @@
 
   <PropertyGroup>
     <PackageId>VDT.Core.DependencyInjection</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Title>VDT.Core.DependencyInjection</Title>
     <Description>Dependency injection extensions for attribute based service registration and decorator pattern</Description>
     <Authors>Maikel Bos</Authors>
@@ -17,6 +17,10 @@
     <Tags>Dependency injection, DI, attributes, decorators, decorator pattern</Tags>
     <ProjectUrl>https://github.com/maikelbos0/VDT.Core</ProjectUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

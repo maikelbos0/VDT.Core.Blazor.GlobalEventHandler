@@ -19,26 +19,26 @@ namespace VDT.Core.DependencyInjection.Decorators {
         }
 
         /// <summary>
-        /// Add a decorator for all methods of <typeparamref name="TService"/>
+        /// Add a decorator for all methods of the services being registered
         /// </summary>
-        /// <typeparam name="TDecorator">Type of the decorator to add to <typeparamref name="TService"/></typeparam>
+        /// <typeparam name="TDecorator">Type of the decorator to add to the services being registered</typeparam>
         public void AddDecorator<TDecorator>() where TDecorator : class, IDecorator {
             AddDecorator<TDecorator>(m => true);
         }
 
         /// <summary>
-        /// Add a decorator for <paramref name="method"/> of <typeparamref name="TService"/>
+        /// Add a decorator for <paramref name="method"/>
         /// </summary>
-        /// <typeparam name="TDecorator">Type of the decorator to add to <typeparamref name="TService"/></typeparam>
-        /// <param name="method">The method of <typeparamref name="TService"/> that should use <typeparamref name="TDecorator"/></param>
+        /// <typeparam name="TDecorator">Type of the decorator to add to the services being registered</typeparam>
+        /// <param name="method">The method that should be decorated by <typeparamref name="TDecorator"/></param>
         public void AddDecorator<TDecorator>(MethodInfo method) where TDecorator : class, IDecorator {
             AddDecorator<TDecorator>(m => m == method);
         }
 
         /// <summary>
-        /// Add a decorator for all methods of <typeparamref name="TService"/> that match <paramref name="predicate"/>
+        /// Add a decorator for all methods of the services being registered that match <paramref name="predicate"/>
         /// </summary>
-        /// <typeparam name="TDecorator">Type of the decorator to add to <typeparamref name="TService"/></typeparam>
+        /// <typeparam name="TDecorator">Type of the decorator to add to the services being registered</typeparam>
         /// <param name="predicate">The predicate that methods are tested against to see if <typeparamref name="TDecorator"/> should be used</param>
         public void AddDecorator<TDecorator>(Predicate<MethodInfo> predicate) where TDecorator : class, IDecorator {
             Policies.Add(new DecoratorPolicy<TDecorator>(predicate));

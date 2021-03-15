@@ -1,10 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Reflection;
 using VDT.Core.DependencyInjection.Decorators;
 
 namespace VDT.Core.DependencyInjection {
     /// <summary>
-    /// Marks a service to be registered when calling <see cref="ServiceCollectionExtensions.AddAttributeServices"/>
+    /// Marks a service to be registered when calling <see cref="ServiceCollectionExtensions.AddAttributeServices(IServiceCollection, Assembly)"/>
+    /// or <see cref="ServiceCollectionExtensions.AddAttributeServices(IServiceCollection, Assembly, Action{DecoratorOptions})"/>
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public abstract class ServiceAttribute : Attribute {

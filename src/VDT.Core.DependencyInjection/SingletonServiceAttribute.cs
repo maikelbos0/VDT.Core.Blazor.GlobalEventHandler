@@ -4,7 +4,8 @@ using System.Reflection;
 
 namespace VDT.Core.DependencyInjection {
     /// <summary>
-    /// Marks a service to be registered as a singleton service when calling <see cref="ServiceCollectionExtensions.AddAttributeServices"/>
+    /// Marks a service to be registered as a singleton service when calling <see cref="ServiceCollectionExtensions.AddAttributeServices(IServiceCollection, Assembly)"/>
+    /// or <see cref="ServiceCollectionExtensions.AddAttributeServices(IServiceCollection, Assembly, Action{Decorators.DecoratorOptions})"/>
     /// </summary>
     public sealed class SingletonServiceAttribute : ServiceAttribute {
         private static readonly MethodInfo addServiceMethod = typeof(ServiceCollectionServiceExtensions)
@@ -14,7 +15,8 @@ namespace VDT.Core.DependencyInjection {
             .GetMethod(nameof(Decorators.ServiceCollectionExtensions.AddSingleton), 2, BindingFlags.Public | BindingFlags.Static, typeof(IServiceCollection), typeof(Action<Decorators.DecoratorOptions>));
 
         /// <summary>
-        /// Marks a service to be registered as a singleton service when calling <see cref="ServiceCollectionExtensions.AddAttributeServices"/>
+        /// Marks a service to be registered as a singleton service when calling <see cref="ServiceCollectionExtensions.AddAttributeServices(IServiceCollection, Assembly)"/>
+        /// or <see cref="ServiceCollectionExtensions.AddAttributeServices(IServiceCollection, Assembly, Action{Decorators.DecoratorOptions})"/>
         /// </summary>
         /// <param name="implementationType">The type to use as implementation for this service</param>
         /// <remarks>When using decorators, the type specified in <paramref name="implementationType"/> must differ from the service type</remarks>

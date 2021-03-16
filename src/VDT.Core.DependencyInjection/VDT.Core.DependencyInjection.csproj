@@ -11,12 +11,12 @@
     <Version>1.1.0</Version>
     <Title>VDT.Core.DependencyInjection</Title>
     <Description>Dependency injection extensions for attribute based service registration and decorator pattern</Description>
-    <ReleaseNotes>Added support for .NET Standard 2.1 and .NET 5</ReleaseNotes>
+    <PackageReleaseNotes>Added support for .NET Standard 2.1 and .NET 5</PackageReleaseNotes>
     <Authors>Maikel Bos</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright © 2021 Maikel Bos</Copyright>
-    <Tags>Dependency injection, DI, attributes, decorators, decorator pattern</Tags>
-    <ProjectUrl>https://github.com/maikelbos0/VDT.Core</ProjectUrl>
+    <PackageTags>Dependency injection, DI, attributes, decorators, decorator pattern</PackageTags>
+    <PackageProjectUrl>https://github.com/maikelbos0/VDT.Core</PackageProjectUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   

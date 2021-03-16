@@ -57,7 +57,7 @@ namespace VDT.Core.DependencyInjection.Decorators {
                 .Where(d => d.Interface != null);
 
             foreach (var methodDecorator in methodDecorators) {
-                addDecoratorMethod.MakeGenericMethod(methodDecorator.Interface.GetGenericArguments()).Invoke(this, new object[] { methodDecorator.Method });
+                addDecoratorMethod.MakeGenericMethod(methodDecorator.Interface!.GetGenericArguments()).Invoke(this, new object[] { methodDecorator.Method });
             }
         }
     }

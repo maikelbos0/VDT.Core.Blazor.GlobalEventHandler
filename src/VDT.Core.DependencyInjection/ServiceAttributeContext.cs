@@ -5,7 +5,7 @@ namespace VDT.Core.DependencyInjection {
         internal Type Type { get; }
         internal ServiceAttribute Attribute { get; }
 
-        public ServiceAttributeContext(Type type, ServiceAttribute attribute) {
+        internal ServiceAttributeContext(Type type, ServiceAttribute attribute) {
             Type = type;
             Attribute = attribute;
         }

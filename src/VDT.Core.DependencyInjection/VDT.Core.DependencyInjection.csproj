@@ -8,9 +8,10 @@
   
   <PropertyGroup>
     <PackageId>VDT.Core.DependencyInjection</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.1.0</Version>
     <Title>VDT.Core.DependencyInjection</Title>
     <Description>Dependency injection extensions for attribute based service registration and decorator pattern</Description>
+    <ReleaseNotes>Added support for .NET Standard 2.1 and .NET 5</ReleaseNotes>
     <Authors>Maikel Bos</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright © 2021 Maikel Bos</Copyright>

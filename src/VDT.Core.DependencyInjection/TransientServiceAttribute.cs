@@ -15,19 +15,26 @@ namespace VDT.Core.DependencyInjection {
             .GetMethod(nameof(Decorators.ServiceCollectionExtensions.AddTransient), 2, BindingFlags.Public | BindingFlags.Static, typeof(IServiceCollection), typeof(Action<Decorators.DecoratorOptions>));
 
         /// <summary>
+        /// The type to use as implementation for this service
+        /// </summary>
+        public Type ImplementationType { get; }
+
+        /// <summary>
         /// Marks a service to be registered as a transient service when calling <see cref="ServiceCollectionExtensions.AddAttributeServices(IServiceCollection, Assembly)"/>
         /// or <see cref="ServiceCollectionExtensions.AddAttributeServices(IServiceCollection, Assembly, Action{Decorators.DecoratorOptions})"/>
         /// </summary>
         /// <param name="implementationType">The type to use as implementation for this service</param>
         /// <remarks>When using decorators, the type specified in <paramref name="implementationType"/> must differ from the service type</remarks>
-        public TransientServiceAttribute(Type implementationType) : base(implementationType) { }
-
-        internal override void Register(IServiceCollection services, Type serviceType) {
-            addServiceMethod.MakeGenericMethod(serviceType, ImplementationType).Invoke(null, new object[] { services });
+        public TransientServiceAttribute(Type implementationType) {
+            ImplementationType = implementationType;
         }
 
-        internal override void Register(IServiceCollection services, Type serviceType, Action<Decorators.DecoratorOptions> decoratorSetupAction) {
-            addDecoratedServiceMethod.MakeGenericMethod(serviceType, ImplementationType).Invoke(null, new object[] { services, decoratorSetupAction });
+        internal override void Register(IServiceCollection services, Type type) {
+            addServiceMethod.MakeGenericMethod(type, ImplementationType).Invoke(null, new object[] { services });
+        }
+
+        internal override void Register(IServiceCollection services, Type type, Action<Decorators.DecoratorOptions> decoratorSetupAction) {
+            addDecoratedServiceMethod.MakeGenericMethod(type, ImplementationType).Invoke(null, new object[] { services, decoratorSetupAction });
         }
     }
 }

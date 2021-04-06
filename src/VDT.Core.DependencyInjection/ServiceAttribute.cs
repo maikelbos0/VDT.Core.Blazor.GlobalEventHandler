@@ -10,17 +10,8 @@ namespace VDT.Core.DependencyInjection {
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public abstract class ServiceAttribute : Attribute {
-        /// <summary>
-        /// The type to use as implementation for this service
-        /// </summary>
-        public Type ImplementationType { get; }
+        internal abstract void Register(IServiceCollection services, Type type);
 
-        internal ServiceAttribute(Type implementationType) {
-            ImplementationType = implementationType;
-        }
-
-        internal abstract void Register(IServiceCollection services, Type serviceType);
-
-        internal abstract void Register(IServiceCollection services, Type serviceType, Action<DecoratorOptions> decoratorSetupAction);
+        internal abstract void Register(IServiceCollection services, Type type, Action<DecoratorOptions> decoratorSetupAction);
     }
 }

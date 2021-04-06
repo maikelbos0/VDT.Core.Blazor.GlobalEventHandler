@@ -193,5 +193,83 @@ namespace VDT.Core.DependencyInjection.Tests {
                 Assert.Same(singletonTarget, scope.ServiceProvider.GetRequiredService<ISingletonServiceTarget>());
             }
         }
+
+        [Fact]
+        public void AddAttributeServices_Adds_Scoped_Implementations() {
+            services.AddAttributeServices(typeof(ServiceCollectionExtensionsTests).Assembly);
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            var service = serviceProvider.GetRequiredService<IScopedImplementationTarget>();
+
+            Assert.IsType<ScopedImplementationTarget>(service);
+        }
+
+        [Fact]
+        public void AddAttributeServices_Scoped_Implementation_Returns_Same_Object_Within_Same_Scope() {
+            services.AddAttributeServices(typeof(ServiceCollectionExtensionsTests).Assembly);
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            using (var scope = serviceProvider.CreateScope()) {
+                Assert.Same(scope.ServiceProvider.GetRequiredService<IScopedImplementationTarget>(), scope.ServiceProvider.GetRequiredService<IScopedImplementationTarget>());
+            }
+        }
+
+        [Fact]
+        public void AddAttributeServices_Scoped_Implementation_Returns_New_Object_Within_Different_Scopes() {
+            services.AddAttributeServices(typeof(ServiceCollectionExtensionsTests).Assembly);
+
+            var serviceProvider = services.BuildServiceProvider();
+            IScopedImplementationTarget scopedTarget;
+
+            using (var scope = serviceProvider.CreateScope()) {
+                scopedTarget = scope.ServiceProvider.GetRequiredService<IScopedImplementationTarget>();
+            }
+
+            using (var scope = serviceProvider.CreateScope()) {
+                Assert.NotSame(scopedTarget, scope.ServiceProvider.GetRequiredService<IScopedImplementationTarget>());
+            }
+        }
+
+        [Fact]
+        public void AddAttributeServices_Adds_Scoped_Implementations_With_Decorators() {
+            services.AddAttributeServices(typeof(ServiceCollectionExtensionsTests).Assembly, options => options.AddAttributeDecorators());
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            var proxy = serviceProvider.GetRequiredService<IScopedImplementationTarget>();
+
+            Assert.Equal("Bar", proxy.GetValue());
+
+            Assert.Equal(1, decorator.Calls);
+        }
+
+        [Fact]
+        public void AddAttributeServices_Scoped_Implementation_With_Decorators_Returns_Same_Object_Within_Same_Scope() {
+            services.AddAttributeServices(typeof(ServiceCollectionExtensionsTests).Assembly, options => options.AddAttributeDecorators());
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            using (var scope = serviceProvider.CreateScope()) {
+                Assert.Same(scope.ServiceProvider.GetRequiredService<IScopedImplementationTarget>(), scope.ServiceProvider.GetRequiredService<IScopedImplementationTarget>());
+            }
+        }
+
+        [Fact]
+        public void AddAttributeServices_Scoped_Implementation_With_Decorators_Returns_New_Object_Within_Different_Scopes() {
+            services.AddAttributeServices(typeof(ServiceCollectionExtensionsTests).Assembly, options => options.AddAttributeDecorators());
+
+            var serviceProvider = services.BuildServiceProvider();
+            IScopedImplementationTarget scopedTarget;
+
+            using (var scope = serviceProvider.CreateScope()) {
+                scopedTarget = scope.ServiceProvider.GetRequiredService<IScopedImplementationTarget>();
+            }
+
+            using (var scope = serviceProvider.CreateScope()) {
+                Assert.NotSame(scopedTarget, scope.ServiceProvider.GetRequiredService<IScopedImplementationTarget>());
+            }
+        }
     }
 }

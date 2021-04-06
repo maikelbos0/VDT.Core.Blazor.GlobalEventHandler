@@ -14,6 +14,9 @@ namespace VDT.Core.DependencyInjection.Tests {
             services.AddSingleton(decorator);
         }
 
+
+        // TODO divide into attribute tests
+
         [Fact]
         public void AddAttributeServices_Adds_Transient_Services() {
             services.AddAttributeServices(typeof(ServiceCollectionExtensionsTests).Assembly);

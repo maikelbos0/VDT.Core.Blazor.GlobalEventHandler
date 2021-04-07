@@ -2,16 +2,16 @@
 using Xunit;
 
 namespace VDT.Core.DependencyInjection.Tests {
-    public class ScopedImplementationServiceAttributeTests : ServiceAttributeTests {
+    public class ScopedServiceImplementationAttributeTests : ServiceAttributeTests {
         [Fact]
         public void AddAttributeServices_Adds_Services() {
             services.AddAttributeServices(typeof(ServiceAttributeTests).Assembly);
 
             var serviceProvider = services.BuildServiceProvider();
 
-            var service = serviceProvider.GetRequiredService<IScopedImplementationTarget>();
+            var service = serviceProvider.GetRequiredService<IScopedServiceImplementationTarget>();
 
-            Assert.IsType<ScopedImplementationTarget>(service);
+            Assert.IsType<ScopedServiceImplementationTarget>(service);
         }
 
         [Fact]
@@ -21,7 +21,7 @@ namespace VDT.Core.DependencyInjection.Tests {
             var serviceProvider = services.BuildServiceProvider();
 
             using (var scope = serviceProvider.CreateScope()) {
-                Assert.Same(scope.ServiceProvider.GetRequiredService<IScopedImplementationTarget>(), scope.ServiceProvider.GetRequiredService<IScopedImplementationTarget>());
+                Assert.Same(scope.ServiceProvider.GetRequiredService<IScopedServiceImplementationTarget>(), scope.ServiceProvider.GetRequiredService<IScopedServiceImplementationTarget>());
             }
         }
 
@@ -30,14 +30,14 @@ namespace VDT.Core.DependencyInjection.Tests {
             services.AddAttributeServices(typeof(ServiceAttributeTests).Assembly);
 
             var serviceProvider = services.BuildServiceProvider();
-            IScopedImplementationTarget scopedTarget;
+            IScopedServiceImplementationTarget scopedTarget;
 
             using (var scope = serviceProvider.CreateScope()) {
-                scopedTarget = scope.ServiceProvider.GetRequiredService<IScopedImplementationTarget>();
+                scopedTarget = scope.ServiceProvider.GetRequiredService<IScopedServiceImplementationTarget>();
             }
 
             using (var scope = serviceProvider.CreateScope()) {
-                Assert.NotSame(scopedTarget, scope.ServiceProvider.GetRequiredService<IScopedImplementationTarget>());
+                Assert.NotSame(scopedTarget, scope.ServiceProvider.GetRequiredService<IScopedServiceImplementationTarget>());
             }
         }
 
@@ -47,7 +47,7 @@ namespace VDT.Core.DependencyInjection.Tests {
 
             var serviceProvider = services.BuildServiceProvider();
 
-            var proxy = serviceProvider.GetRequiredService<IScopedImplementationTarget>();
+            var proxy = serviceProvider.GetRequiredService<IScopedServiceImplementationTarget>();
 
             Assert.Equal("Bar", proxy.GetValue());
 
@@ -61,7 +61,7 @@ namespace VDT.Core.DependencyInjection.Tests {
             var serviceProvider = services.BuildServiceProvider();
 
             using (var scope = serviceProvider.CreateScope()) {
-                Assert.Same(scope.ServiceProvider.GetRequiredService<IScopedImplementationTarget>(), scope.ServiceProvider.GetRequiredService<IScopedImplementationTarget>());
+                Assert.Same(scope.ServiceProvider.GetRequiredService<IScopedServiceImplementationTarget>(), scope.ServiceProvider.GetRequiredService<IScopedServiceImplementationTarget>());
             }
         }
 
@@ -70,14 +70,14 @@ namespace VDT.Core.DependencyInjection.Tests {
             services.AddAttributeServices(typeof(ServiceAttributeTests).Assembly, options => options.AddAttributeDecorators());
 
             var serviceProvider = services.BuildServiceProvider();
-            IScopedImplementationTarget scopedTarget;
+            IScopedServiceImplementationTarget scopedTarget;
 
             using (var scope = serviceProvider.CreateScope()) {
-                scopedTarget = scope.ServiceProvider.GetRequiredService<IScopedImplementationTarget>();
+                scopedTarget = scope.ServiceProvider.GetRequiredService<IScopedServiceImplementationTarget>();
             }
 
             using (var scope = serviceProvider.CreateScope()) {
-                Assert.NotSame(scopedTarget, scope.ServiceProvider.GetRequiredService<IScopedImplementationTarget>());
+                Assert.NotSame(scopedTarget, scope.ServiceProvider.GetRequiredService<IScopedServiceImplementationTarget>());
             }
         }
     }

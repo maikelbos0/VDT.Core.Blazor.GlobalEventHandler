@@ -1,4 +1,6 @@
 ﻿namespace VDT.Core.DependencyInjection.Decorators {
+    // TODO: allow decorators on implementations
+
     /// <summary>
     /// Provides a mechanism for indicating with attributes which decorators to use on a method
     /// </summary>

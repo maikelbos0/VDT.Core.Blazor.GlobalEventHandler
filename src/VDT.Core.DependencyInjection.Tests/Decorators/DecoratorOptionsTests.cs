@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using VDT.Core.DependencyInjection.Decorators;
 using Xunit;
 
@@ -14,36 +12,36 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
         public void AddDecorator_Without_Predicate_Works() {
             options.AddDecorator<TestDecorator>();
 
-            Assert.Single(options.Policies);
-            Assert.True(options.Policies.Single().Predicate(decoratedMethod));
-            Assert.True(options.Policies.Single().Predicate(undecoratedMethod));
+            var policy = Assert.Single(options.Policies);
+            Assert.True(policy.Predicate(decoratedMethod));
+            Assert.True(policy.Predicate(undecoratedMethod));
         }
 
         [Fact]
         public void AddDecorator_With_MethodInfo_Works() {
             options.AddDecorator<TestDecorator>(decoratedMethod);
 
-            Assert.Single(options.Policies);
-            Assert.True(options.Policies.Single().Predicate(decoratedMethod));
-            Assert.False(options.Policies.Single().Predicate(undecoratedMethod));
+            var policy = Assert.Single(options.Policies);
+            Assert.True(policy.Predicate(decoratedMethod));
+            Assert.False(policy.Predicate(undecoratedMethod));
         }
 
         [Fact]
         public void AddDecorator_With_Predicate_Works() {
             options.AddDecorator<TestDecorator>(m => m == decoratedMethod);
 
-            Assert.Single(options.Policies);
-            Assert.True(options.Policies.Single().Predicate(decoratedMethod));
-            Assert.False(options.Policies.Single().Predicate(undecoratedMethod));
+            var policy = Assert.Single(options.Policies);
+            Assert.True(policy.Predicate(decoratedMethod));
+            Assert.False(policy.Predicate(undecoratedMethod));
         }
 
         [Fact]
         public void AddAttributeDecorators_Works() {
             options.AddAttributeDecorators();
 
-            Assert.Single(options.Policies);
-            Assert.True(options.Policies.Single().Predicate(decoratedMethod));
-            Assert.False(options.Policies.Single().Predicate(undecoratedMethod));
+            var policy = Assert.Single(options.Policies);
+            Assert.True(policy.Predicate(decoratedMethod));
+            Assert.False(policy.Predicate(undecoratedMethod));
         }
     }
 }

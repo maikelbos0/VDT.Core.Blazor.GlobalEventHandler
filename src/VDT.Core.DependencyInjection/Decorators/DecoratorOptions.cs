@@ -10,12 +10,14 @@ namespace VDT.Core.DependencyInjection.Decorators {
     public sealed class DecoratorOptions {
         private static readonly MethodInfo addDecoratorMethod = typeof(DecoratorOptions).GetMethod(nameof(AddDecorator), 1, BindingFlags.Public | BindingFlags.Instance, typeof(MethodInfo));
 
-        private readonly Type type;
+        private readonly Type serviceType;
+        private readonly Type implementationType;
 
         internal List<DecoratorPolicy> Policies { get; } = new List<DecoratorPolicy>();
 
-        internal DecoratorOptions(Type type) {
-            this.type = type;
+        internal DecoratorOptions(Type serviceType, Type implementationType) {
+            this.serviceType = serviceType;
+            this.implementationType = implementationType;
         }
 
         /// <summary>
@@ -48,7 +50,7 @@ namespace VDT.Core.DependencyInjection.Decorators {
         /// Adds decorators based on implementations of the <see cref="IDecorateAttribute{TDecorator}"/> interface
         /// </summary>
         public void AddAttributeDecorators() {
-            var methodDecorators = type
+            var methodDecorators = serviceType
                 .GetMethods()
                 .SelectMany(m => m.GetCustomAttributes().Select(a => new {
                     Method = m,

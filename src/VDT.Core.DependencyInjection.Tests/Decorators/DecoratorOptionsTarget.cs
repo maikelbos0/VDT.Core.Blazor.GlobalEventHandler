@@ -1,9 +1,9 @@
 ﻿namespace VDT.Core.DependencyInjection.Tests.Decorators {
     public class DecoratorOptionsTarget : IDecoratorOptionsTarget {
-        [TestDecorator]
         public void ServiceDecorated() {
         }
 
+        [TestDecorator]
         public void ImplementationDecorated() {
         }
 

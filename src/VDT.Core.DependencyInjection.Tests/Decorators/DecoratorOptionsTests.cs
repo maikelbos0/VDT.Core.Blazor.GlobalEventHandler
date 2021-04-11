@@ -48,5 +48,17 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
             Assert.True(policy.Predicate(implementationDecoratedMethod));
             Assert.False(policy.Predicate(undecoratedMethod));
         }
+
+        [Fact]
+        public void AddAttributeDecorators_Works_For_Class_Service() {
+            var options = new DecoratorOptions(typeof(DecoratorOptionsTargetBase), typeof(DecoratorOptionsTarget));
+
+            options.AddAttributeDecorators();
+
+            var policy = Assert.Single(options.Policies);
+            Assert.True(policy.Predicate(typeof(DecoratorOptionsTargetBase).GetMethod(nameof(IDecoratorOptionsTarget.ServiceDecorated), 0, BindingFlags.Public | BindingFlags.Instance)));
+            Assert.True(policy.Predicate(implementationDecoratedMethod));
+            Assert.False(policy.Predicate(undecoratedMethod));
+        }
     }
 }

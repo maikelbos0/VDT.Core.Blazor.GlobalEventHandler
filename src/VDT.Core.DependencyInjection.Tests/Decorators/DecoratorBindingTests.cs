@@ -12,7 +12,7 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
                 null!
             );
 
-            Assert.Equal(binding.ServiceMethod, typeof(IDecoratorBindingTarget).GetMethod(nameof(IDecoratorBindingTarget.Method), 0, BindingFlags.Public | BindingFlags.Instance));
+            Assert.Equal(binding.GetServiceMethod(), typeof(IDecoratorBindingTarget).GetMethod(nameof(IDecoratorBindingTarget.Method), 0, BindingFlags.Public | BindingFlags.Instance));
         }
 
         [Fact]
@@ -23,7 +23,18 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
                 null!
             );
 
-            Assert.Equal(binding.ServiceMethod, typeof(IDecoratorBindingTarget).GetMethod(nameof(IDecoratorBindingTarget.Method), 0, BindingFlags.Public | BindingFlags.Instance));
+            Assert.Equal(binding.GetServiceMethod(), typeof(IDecoratorBindingTarget).GetMethod(nameof(IDecoratorBindingTarget.Method), 0, BindingFlags.Public | BindingFlags.Instance));
+        }
+
+        [Fact]
+        public void ServiceMethod_Resolves_Correctly_To_Null_When_Missing_On_Interface() {
+            var binding = new DecoratorBinding(
+                typeof(DecoratorBindingTarget).GetMethod(nameof(DecoratorBindingTarget.ImplementationMethod), 0, BindingFlags.Public | BindingFlags.Instance),
+                typeof(IDecoratorBindingTarget),
+                null!
+            );
+
+            Assert.Null(binding.GetServiceMethod());
         }
 
         [Fact]
@@ -34,7 +45,18 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
                 null!
             );
 
-            Assert.Equal(binding.ServiceMethod, typeof(DecoratorBindingTargetAbstractBase).GetMethod(nameof(DecoratorBindingTargetAbstractBase.Method), 0, BindingFlags.Public | BindingFlags.Instance));
+            Assert.Equal(binding.GetServiceMethod(), typeof(DecoratorBindingTargetAbstractBase).GetMethod(nameof(DecoratorBindingTargetAbstractBase.Method), 0, BindingFlags.Public | BindingFlags.Instance));
+        }
+
+        [Fact]
+        public void ServiceMethod_Resolves_Correctly_To_Null_When_Missing_On_Abstract_Base_Class() {
+            var binding = new DecoratorBinding(
+                typeof(DecoratorBindingTarget).GetMethod(nameof(DecoratorBindingTarget.ImplementationMethod), 0, BindingFlags.Public | BindingFlags.Instance),
+                typeof(DecoratorBindingTargetAbstractBase),
+                null!
+            );
+
+            Assert.Null(binding.GetServiceMethod());
         }
 
         [Fact]
@@ -45,7 +67,18 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
                 null!
             );
 
-            Assert.Equal(binding.ServiceMethod, typeof(DecoratorBindingTargetBase).GetMethod(nameof(DecoratorBindingTargetBase.Method), 0, BindingFlags.Public | BindingFlags.Instance));
+            Assert.Equal(binding.GetServiceMethod(), typeof(DecoratorBindingTargetBase).GetMethod(nameof(DecoratorBindingTargetBase.Method), 0, BindingFlags.Public | BindingFlags.Instance));
+        }
+
+        [Fact]
+        public void ServiceMethod_Resolves_Correctly_To_Null_When_Missing_On_Base_Class() {
+            var binding = new DecoratorBinding(
+                typeof(DecoratorBindingTarget).GetMethod(nameof(DecoratorBindingTarget.ImplementationMethod), 0, BindingFlags.Public | BindingFlags.Instance),
+                typeof(DecoratorBindingTargetBase),
+                null!
+            );
+
+            Assert.Null(binding.GetServiceMethod());
         }
     }
 
@@ -63,5 +96,6 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
 
     public class DecoratorBindingTarget : DecoratorBindingTargetBase, IDecoratorBindingTarget {
         public override void Method() { }
+        public void ImplementationMethod() { }
     }
 }

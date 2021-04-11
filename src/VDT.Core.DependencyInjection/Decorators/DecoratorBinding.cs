@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 
 namespace VDT.Core.DependencyInjection.Decorators {
@@ -29,7 +30,13 @@ namespace VDT.Core.DependencyInjection.Decorators {
                 }
             }
             else {
-                // base class mapping
+                var baseType = Method.DeclaringType?.BaseType;
+
+                while (baseType != null && baseType != ServiceType) {
+                    baseType = baseType.BaseType;
+                }
+
+                return baseType?.GetMethods().SingleOrDefault(m => m.GetBaseDefinition() == Method.GetBaseDefinition());
             }
 
             return null;

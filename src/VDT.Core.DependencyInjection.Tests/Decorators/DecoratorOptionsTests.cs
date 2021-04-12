@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Linq;
+using System.Reflection;
 using VDT.Core.DependencyInjection.Decorators;
 using Xunit;
 
@@ -43,22 +44,9 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
         public void AddAttributeDecorators_Works() {
             options.AddAttributeDecorators();
 
-            var policy = Assert.Single(options.Policies);
-            Assert.True(policy.Predicate(serviceDecoratedMethod));
-            Assert.True(policy.Predicate(implementationDecoratedMethod));
-            Assert.False(policy.Predicate(undecoratedMethod));
-        }
-
-        [Fact]
-        public void AddAttributeDecorators_Works_For_Class_Service() {
-            var options = new DecoratorOptions(typeof(DecoratorOptionsTargetBase), typeof(DecoratorOptionsTarget));
-
-            options.AddAttributeDecorators();
-
-            var policy = Assert.Single(options.Policies);
-            Assert.True(policy.Predicate(typeof(DecoratorOptionsTargetBase).GetMethod(nameof(IDecoratorOptionsTarget.ServiceDecorated), 0, BindingFlags.Public | BindingFlags.Instance)));
-            Assert.True(policy.Predicate(implementationDecoratedMethod));
-            Assert.False(policy.Predicate(undecoratedMethod));
+            Assert.Single(options.Policies.Where(policy => policy.Predicate(serviceDecoratedMethod)));
+            Assert.Single(options.Policies.Where(policy => policy.Predicate(implementationDecoratedMethod)));
+            Assert.Empty(options.Policies.Where(policy => policy.Predicate(undecoratedMethod)));
         }
     }
 }

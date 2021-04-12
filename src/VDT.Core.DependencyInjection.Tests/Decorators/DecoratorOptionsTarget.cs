@@ -1,13 +1,13 @@
 ﻿namespace VDT.Core.DependencyInjection.Tests.Decorators {
-    public class DecoratorOptionsTarget : DecoratorOptionsTargetBase, IDecoratorOptionsTarget {
+    public class DecoratorOptionsTarget : IDecoratorOptionsTarget {
         [TestDecorator]
-        public override void ImplementationDecorated() {
+        public void ImplementationDecorated() {
         }
 
-        public override void ServiceDecorated() {
+        public void ServiceDecorated() {
         }
 
-        public override void Undecorated() {
+        public void Undecorated() {
         }
     }
 }

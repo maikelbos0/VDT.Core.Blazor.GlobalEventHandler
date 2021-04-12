@@ -81,21 +81,4 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
             Assert.Null(binding.GetServiceMethod());
         }
     }
-
-    public interface IDecoratorBindingTarget {
-        void Method();
-    }
-
-    public abstract class DecoratorBindingTargetAbstractBase {
-        public abstract void Method();
-    }
-
-    public class DecoratorBindingTargetBase : DecoratorBindingTargetAbstractBase {
-        public override void Method() { }
-    }
-
-    public class DecoratorBindingTarget : DecoratorBindingTargetBase, IDecoratorBindingTarget {
-        public override void Method() { }
-        public void ImplementationMethod() { }
-    }
 }

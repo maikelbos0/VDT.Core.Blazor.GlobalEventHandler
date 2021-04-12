@@ -50,17 +50,29 @@ namespace VDT.Core.DependencyInjection.Decorators {
         /// Adds decorators based on implementations of the <see cref="IDecorateAttribute{TDecorator}"/> interface
         /// </summary>
         public void AddAttributeDecorators() {
-            var methodDecorators = serviceType
+            var bindings = new List<DecoratorBinding>();
+
+            bindings.AddRange(GetDecorators(serviceType));
+            bindings.AddRange(GetDecorators(implementationType));
+
+            foreach (var binding in bindings) {
+                var serviceMethod = binding.GetServiceMethod();
+
+                if (serviceMethod != null) {
+                    addDecoratorMethod.MakeGenericMethod(binding.DecoratorType).Invoke(this, new object[] { serviceMethod });
+                }
+            }
+        }
+
+        private IEnumerable<DecoratorBinding> GetDecorators(Type type) {
+            return type
                 .GetMethods()
                 .SelectMany(m => m.GetCustomAttributes().Select(a => new {
                     Method = m,
                     Interface = a.GetType().GetInterfaces().SingleOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IDecorateAttribute<>))
                 }))
-                .Where(d => d.Interface != null);
-
-            foreach (var methodDecorator in methodDecorators) {
-                addDecoratorMethod.MakeGenericMethod(methodDecorator.Interface!.GetGenericArguments()).Invoke(this, new object[] { methodDecorator.Method });
-            }
+                .Where(d => d.Interface != null)
+                .Select(d => new DecoratorBinding(d.Method, serviceType, d.Interface!.GetGenericArguments().First()));
         }
     }
 }

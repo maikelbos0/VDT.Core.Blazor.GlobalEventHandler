@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 
 namespace VDT.Core.DependencyInjection.Decorators {
-    internal class DecoratorBinding {
+    internal sealed class DecoratorBinding {
         internal MethodInfo Method { get; }
         internal Type ServiceType { get; }
         internal Type DecoratorType { get; }

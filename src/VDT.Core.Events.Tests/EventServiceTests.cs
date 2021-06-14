@@ -1,4 +1,5 @@
-﻿using NSubstitute;
+﻿using Microsoft.Extensions.DependencyInjection;
+using NSubstitute;
 using System;
 using Xunit;
 
@@ -59,6 +60,68 @@ namespace VDT.Core.Events.Tests {
             service.Dispatch(new FooEvent());
 
             handler.DidNotReceive().Handle(Arg.Any<BarEvent>());
+        }
+
+        [Fact]
+        public void Dispatch_Calls_EventHandler_From_ServiceProvider() {
+            var handler = Substitute.For<IEventHandler<FooEvent>>();
+            var serviceProvider = new ServiceCollection()
+                .AddSingleton(handler)
+                .BuildServiceProvider();
+            var service = new EventService(serviceProvider);
+            var @event = new FooEvent();
+
+            service.Dispatch(@event);
+
+            handler.Received(1).Handle(@event);
+        }
+
+        [Fact]
+        public void Dispatch_Calls_All_EventHandlers_From_ServiceProvider() {
+            var handler1 = Substitute.For<IEventHandler<FooEvent>>();
+            var handler2 = Substitute.For<IEventHandler<FooEvent>>();
+            var serviceProvider = new ServiceCollection()
+                .AddSingleton(handler1)
+                .AddSingleton(handler2)
+                .BuildServiceProvider();
+            var service = new EventService(serviceProvider);
+            var @event = new FooEvent();
+
+            service.Dispatch(@event);
+
+            handler1.Received(1).Handle(@event);
+            handler2.Received(1).Handle(@event);
+        }
+
+        [Fact]
+        public void Dispatch_Calls_Only_EventHandlers_From_ServiceProvider_For_Correct_Event_Type() {
+            var handler = Substitute.For<IEventHandler<BarEvent>>();
+            var serviceProvider = new ServiceCollection()
+                .AddSingleton(handler)
+                .BuildServiceProvider();
+            var service = new EventService(serviceProvider);
+
+            service.Dispatch(new FooEvent());
+
+            handler.DidNotReceive().Handle(Arg.Any<BarEvent>());
+        }
+
+        [Fact]
+        public void Dispatch_Calls_Both_EventHandler_From_ServiceProvider_And_Manually_Registered() {
+            var handler1 = Substitute.For<IEventHandler<FooEvent>>();
+            var handler2 = Substitute.For<IEventHandler<FooEvent>>();
+            var serviceProvider = new ServiceCollection()
+                .AddSingleton(handler1)
+                .BuildServiceProvider();
+            var service = new EventService(serviceProvider);
+            var @event = new FooEvent();
+
+            service.RegisterHandler(handler2);
+
+            service.Dispatch(@event);
+
+            handler1.Received(1).Handle(@event);
+            handler2.Received(1).Handle(@event);
         }
     }
 }

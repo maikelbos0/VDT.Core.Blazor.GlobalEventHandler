@@ -1,4 +1,5 @@
 ﻿using NSubstitute;
+using System;
 using Xunit;
 
 namespace VDT.Core.Events.Tests {
@@ -9,8 +10,8 @@ namespace VDT.Core.Events.Tests {
         [Fact]
         public void Dispatch_Calls_Registered_EventHandler() {
             var service = new EventService();
-            var handler = Substitute.For<IEventHandler<FooEvent>>();
             var @event = new FooEvent();
+            var handler = Substitute.For<IEventHandler<FooEvent>>();
 
             service.RegisterHandler(handler);
 
@@ -20,11 +21,24 @@ namespace VDT.Core.Events.Tests {
         }
 
         [Fact]
+        public void Dispatch_Calls_Registered_EventHandler_Action() {
+            var service = new EventService();
+            var @event = new FooEvent();
+            var handler = Substitute.For<Action<FooEvent>>();
+
+            service.RegisterHandler(handler);
+
+            service.Dispatch(@event);
+
+            handler.Received(1).Invoke(@event);
+        }
+
+        [Fact]
         public void Dispatch_Calls_All_Registered_EventHandlers() {
             var service = new EventService();
+            var @event = new FooEvent();
             var handler1 = Substitute.For<IEventHandler<FooEvent>>();
             var handler2 = Substitute.For<IEventHandler<FooEvent>>();
-            var @event = new FooEvent();
 
             service.RegisterHandler(handler1);
             service.RegisterHandler(handler2);

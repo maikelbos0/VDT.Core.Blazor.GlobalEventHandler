@@ -6,7 +6,7 @@ namespace VDT.Core.Events {
     /// <summary>
     /// Service for registering and dispatching events
     /// </summary>
-    public class EventService {
+    public class EventService : IEventService {
         private readonly Dictionary<Type, List<object>> eventHandlers = new Dictionary<Type, List<object>>();
 
         /// <summary>
@@ -29,6 +29,7 @@ namespace VDT.Core.Events {
         /// </summary>
         /// <typeparam name="TEvent">Type of the event to handle</typeparam>
         /// <param name="action">Handler action that handles the event</param>
+        /// <remarks>Multiple event handlers can be registered for the same event type</remarks>
         public void RegisterHandler<TEvent>(Action<TEvent> action) {
             RegisterHandler(new ActionEventHandler<TEvent>(action));
         }

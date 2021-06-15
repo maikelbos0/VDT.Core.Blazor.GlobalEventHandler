@@ -123,5 +123,20 @@ namespace VDT.Core.Events.Tests {
             handler1.Received(1).Handle(@event);
             handler2.Received(1).Handle(@event);
         }
+
+        [Fact]
+        public void Dispatch_Only_Manually_Registered_Succeeds_When_ServiceProvider_Available() {
+            var handler = Substitute.For<IEventHandler<FooEvent>>();
+            var serviceProvider = new ServiceCollection()
+                .BuildServiceProvider();
+            var service = new EventService(serviceProvider);
+            var @event = new FooEvent();
+
+            service.RegisterHandler(handler);
+
+            service.Dispatch(@event);
+
+            handler.Received(1).Handle(@event);
+        }
     }
 }

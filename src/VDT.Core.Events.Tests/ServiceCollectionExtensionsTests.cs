@@ -1,5 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using NSubstitute;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Xunit;
 
@@ -38,6 +41,36 @@ namespace VDT.Core.Events.Tests {
                 .BuildServiceProvider();
 
             Assert.NotNull(fieldInfo.GetValue(serviceProvider.GetRequiredService<IEventService>()));
+        }
+
+        [Fact]
+        public void AddScheduledEventService_Adds_ScheduledEventService_As_HostedService() {
+            var serviceProvider = new ServiceCollection()
+                .AddEventService()
+                .AddScheduledEventService()
+                .BuildServiceProvider();
+
+            var hostedServices = serviceProvider.GetServices<IHostedService>();
+
+            Assert.IsType<ScheduledEventService>(Assert.Single(hostedServices));
+        }
+
+        [Fact]
+        public void AddScheduledEventService_Adds_ScheduledEventService_With_Scheduled_Events() {
+            var fieldInfo = typeof(ScheduledEventService).GetField("scheduledEvents", BindingFlags.Instance | BindingFlags.NonPublic) ?? throw new InvalidOperationException($"Field '{nameof(ScheduledEventService)}.scheduledEvents' was not found.");
+            var scheduledEvent = Substitute.For<IScheduledEvent>();
+            var serviceProvider = new ServiceCollection()
+                .AddScoped(serviceProvider => scheduledEvent)
+                .AddEventService()
+                .AddScheduledEventService()
+                .BuildServiceProvider();
+
+            var hostedServices = serviceProvider.GetServices<IHostedService>();
+            var scheduledEventService = Assert.IsType<ScheduledEventService>(Assert.Single(hostedServices));
+            var scheduledEvents = fieldInfo.GetValue(scheduledEventService);
+
+            Assert.NotNull(scheduledEvents);
+            Assert.Single((List<IScheduledEvent>)fieldInfo.GetValue(scheduledEventService)!);
         }
     }
 }

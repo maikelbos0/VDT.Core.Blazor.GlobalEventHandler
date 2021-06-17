@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,6 +12,8 @@ namespace VDT.Core.Events {
     /// Service for dispatching events to an <see cref="IEventService"/> on a schedule
     /// </summary>
     public class ScheduledEventService : BackgroundService {
+        private static readonly MethodInfo dispatchMethod = typeof(IEventService).GetMethod(nameof(IEventService.Dispatch)) ?? throw new InvalidOperationException($"Method '{nameof(IEventService)}.{nameof(IEventService.Dispatch)}' was not found.");
+
         private readonly IEventService eventService;
         private List<IScheduledEvent> scheduledEvents = new List<IScheduledEvent>();
 
@@ -42,8 +45,7 @@ namespace VDT.Core.Events {
         }
 
         internal void Dispatch(IScheduledEvent scheduledEvent) {
-            //eventService.Dispatch(scheduledEvent);
-            throw new NotImplementedException();
+            dispatchMethod.MakeGenericMethod(scheduledEvent.GetType()).Invoke(eventService, new object[] { scheduledEvent });
         }
 
         /// <summary>

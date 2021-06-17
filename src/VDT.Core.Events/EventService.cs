@@ -2,12 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace VDT.Core.Events {
     /// <summary>
     /// Service for registering and dispatching events
     /// </summary>
     public sealed class EventService : IEventService {
+        private static readonly MethodInfo dispatchMethod = typeof(EventService).GetMethod(nameof(EventService.Dispatch), 1) ?? throw new InvalidOperationException($"Method '{nameof(EventService)}.{nameof(IEventService.Dispatch)}' was not found.");
+
         private readonly Dictionary<Type, List<object>> eventHandlers = new Dictionary<Type, List<object>>();
         private readonly IServiceProvider? serviceProvider;
 
@@ -47,6 +50,15 @@ namespace VDT.Core.Events {
         /// <remarks>Multiple event handlers can be registered for the same event type</remarks>
         public void RegisterHandler<TEvent>(Action<TEvent> action) {
             RegisterHandler(new ActionEventHandler<TEvent>(action));
+        }
+
+        /// <summary>
+        /// Dispatch an event by its object type and trigger all registered event handlers for that event
+        /// </summary>
+        /// <param name="event">Event to handle</param>
+        /// <remarks>Event type is automatically resolved from the event object</remarks>
+        public void Dispatch(object @event) {
+            dispatchMethod.MakeGenericMethod(@event.GetType()).Invoke(this, new object[] { @event });
         }
 
         /// <summary>

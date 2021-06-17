@@ -138,5 +138,19 @@ namespace VDT.Core.Events.Tests {
 
             handler.Received(1).Handle(@event);
         }
+
+
+        [Fact]
+        public void Dispatch_Object_Dispatches_Correctly() {
+            var eventHandler = Substitute.For<IEventHandler<FooEvent>>();
+            var eventService = new EventService();
+            var scheduledEvent = (object)new FooEvent();
+
+            eventService.RegisterHandler(eventHandler);
+
+            eventService.Dispatch(scheduledEvent);
+
+            eventHandler.Received(1).Handle(Arg.Any<FooEvent>());
+        }
     }
 }

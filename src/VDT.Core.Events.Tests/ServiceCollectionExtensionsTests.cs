@@ -44,7 +44,7 @@ namespace VDT.Core.Events.Tests {
         }
 
         [Fact]
-        public void AddScheduledEventService_Adds_ScheduledEventService_As_HostedService() {
+        public void AddScheduledEventService_Adds_ScheduledEventBackgroundService_As_HostedService() {
             var serviceProvider = new ServiceCollection()
                 .AddEventService()
                 .AddScheduledEventService()
@@ -52,7 +52,34 @@ namespace VDT.Core.Events.Tests {
 
             var hostedServices = serviceProvider.GetServices<IHostedService>();
 
-            Assert.IsType<ScheduledEventService>(Assert.Single(hostedServices));
+            Assert.IsType<ScheduledEventBackgroundService>(Assert.Single(hostedServices));
+        }
+
+        [Fact]
+        public void AddScheduledEventService_Adds_ScheduledEventService() {
+            var serviceProvider = new ServiceCollection()
+                .AddEventService()
+                .AddScheduledEventService()
+                .BuildServiceProvider();
+
+            Assert.IsType<ScheduledEventService>(serviceProvider.GetRequiredService<IScheduledEventService>());
+        }
+
+        [Fact]
+        public void AddEventService_Adds_ScheduledEventService_As_Singleton() {
+            var serviceProvider = new ServiceCollection()
+                .AddEventService()
+                .AddScheduledEventService()
+                .BuildServiceProvider();
+            IScheduledEventService service;
+
+            using (var scope = serviceProvider.CreateScope()) {
+                service = scope.ServiceProvider.GetRequiredService<IScheduledEventService>();
+            }
+
+            using (var scope = serviceProvider.CreateScope()) {
+                Assert.Same(service, scope.ServiceProvider.GetRequiredService<IScheduledEventService>());
+            }
         }
 
         [Fact]
@@ -65,12 +92,10 @@ namespace VDT.Core.Events.Tests {
                 .AddScheduledEventService()
                 .BuildServiceProvider();
 
-            var hostedServices = serviceProvider.GetServices<IHostedService>();
-            var scheduledEventService = Assert.IsType<ScheduledEventService>(Assert.Single(hostedServices));
-            var scheduledEvents = fieldInfo.GetValue(scheduledEventService);
+            var scheduledEvents = fieldInfo.GetValue(serviceProvider.GetRequiredService<IScheduledEventService>());
 
             Assert.NotNull(scheduledEvents);
-            Assert.Single((List<IScheduledEvent>)fieldInfo.GetValue(scheduledEventService)!);
+            Assert.Single((List<IScheduledEvent>)scheduledEvents!);
         }
     }
 }

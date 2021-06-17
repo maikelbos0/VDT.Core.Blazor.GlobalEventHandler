@@ -16,13 +16,15 @@ namespace VDT.Core.Events {
         }
 
         /// <summary>
-        /// Add a <see cref="ScheduledEventService"/> to an <see cref="IServiceCollection"/> as an <see cref="IHostedService"/>
+        /// Add an <see cref="IScheduledEventService"/> and a <see cref="BackgroundService"/> to execute it to an <see cref="IServiceCollection"/>
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> to add the services to</param>
         /// <returns>A reference to this instance after the operation has completed</returns>
         /// <remarks>Registration of an <see cref="IEventService"/> implementation is required for this hosted service</remarks>
         public static IServiceCollection AddScheduledEventService(this IServiceCollection services) {
-            return services.AddHostedService<ScheduledEventService>();
+            return services
+                .AddSingleton<IScheduledEventService, ScheduledEventService>()
+                .AddHostedService<ScheduledEventBackgroundService>();
         }
     }
 }

@@ -1,17 +1,14 @@
-﻿using Microsoft.Extensions.Hosting;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace VDT.Core.Events {
-    // TODO split the scheduler service and the background job
-
     /// <summary>
-    /// Service for dispatching events to an <see cref="IEventService"/> on a schedule
+    /// Service for registering and dispatching events on a schedule to an <see cref="IEventService"/>
     /// </summary>
-    public class ScheduledEventService : BackgroundService {
+    public sealed class ScheduledEventService : IScheduledEventService, IDisposable {
         private static readonly MethodInfo dispatchMethod = typeof(IEventService).GetMethod(nameof(IEventService.Dispatch)) ?? throw new InvalidOperationException($"Method '{nameof(IEventService)}.{nameof(IEventService.Dispatch)}' was not found.");
 
         private readonly IEventService eventService;
@@ -38,21 +35,18 @@ namespace VDT.Core.Events {
         /// <summary>
         /// Start the operation of dispatching the scheduled events
         /// </summary>
-        /// <param name="stoppingToken">Triggered when <see cref="IHostedService.StopAsync(CancellationToken)"/> is called</param>
+        /// <param name="stoppingToken">Triggered when dispatching should stop</param>
         /// <returns>A <see cref="Task"/> that represents the operation of dispatching the scheduled events</returns>
-        protected override Task ExecuteAsync(CancellationToken stoppingToken) {
+        public Task ExecuteAsync(CancellationToken stoppingToken) {
             throw new NotImplementedException();
         }
 
+        // TODO see if this can become private and we can test Dispatch in another way
         internal void Dispatch(IScheduledEvent scheduledEvent) {
             dispatchMethod.MakeGenericMethod(scheduledEvent.GetType()).Invoke(eventService, new object[] { scheduledEvent });
         }
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources
-        /// </summary>
-        public override void Dispose() {
-            base.Dispose();
+        void IDisposable.Dispose() {
         }
     }
 }

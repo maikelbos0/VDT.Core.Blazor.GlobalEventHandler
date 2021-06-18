@@ -33,13 +33,15 @@ namespace VDT.Core.Events {
         /// <typeparam name="TEvent">Type of the event to handle</typeparam>
         /// <param name="handler">Handler that handles the event</param>
         /// <remarks>Multiple event handlers can be registered for the same event type</remarks>
-        public void RegisterHandler<TEvent>(IEventHandler<TEvent> handler) {
+        public IEventService RegisterHandler<TEvent>(IEventHandler<TEvent> handler) {
             if (!eventHandlers.TryGetValue(typeof(TEvent), out var handlers)) {
                 handlers = new List<object>();
                 eventHandlers.Add(typeof(TEvent), handlers);
             }
 
             handlers.Add(handler);
+
+            return this;
         }
 
         /// <summary>
@@ -48,8 +50,8 @@ namespace VDT.Core.Events {
         /// <typeparam name="TEvent">Type of the event to handle</typeparam>
         /// <param name="action">Handler action that handles the event</param>
         /// <remarks>Multiple event handlers can be registered for the same event type</remarks>
-        public void RegisterHandler<TEvent>(Action<TEvent> action) {
-            RegisterHandler(new ActionEventHandler<TEvent>(action));
+        public IEventService RegisterHandler<TEvent>(Action<TEvent> action) {
+            return RegisterHandler(new ActionEventHandler<TEvent>(action));
         }
 
         /// <summary>

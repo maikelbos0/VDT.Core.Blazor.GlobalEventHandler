@@ -26,13 +26,13 @@ namespace VDT.Core.Events {
         /// </summary>
         /// <param name="event">Event to handle</param>
         /// <remarks>Event type is automatically resolved from the event object</remarks>
-        void Dispatch(object @event);
+        void DispatchObject(object @event);
 
         /// <summary>
         /// Dispatch an event and trigger all registered event handlers for that event
         /// </summary>
         /// <typeparam name="TEvent">Type of the event to handle</typeparam>
         /// <param name="event">Event to handle</param>
-        void Dispatch<TEvent>(TEvent @event);
+        void DispatchEvent<TEvent>(TEvent @event);
     }
 }

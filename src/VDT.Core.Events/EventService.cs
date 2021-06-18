@@ -9,7 +9,7 @@ namespace VDT.Core.Events {
     /// Service for registering and dispatching events
     /// </summary>
     public sealed class EventService : IEventService {
-        private static readonly MethodInfo dispatchMethod = typeof(EventService).GetMethod(nameof(EventService.Dispatch), 1) ?? throw new InvalidOperationException($"Method '{nameof(EventService)}.{nameof(IEventService.Dispatch)}' was not found.");
+        private static readonly MethodInfo dispatchMethod = typeof(EventService).GetMethod(nameof(EventService.DispatchEvent)) ?? throw new InvalidOperationException($"Method '{nameof(EventService)}.{nameof(IEventService.DispatchEvent)}' was not found.");
 
         private readonly Dictionary<Type, List<object>> eventHandlers = new Dictionary<Type, List<object>>();
         private readonly IServiceProvider? serviceProvider;
@@ -53,20 +53,21 @@ namespace VDT.Core.Events {
         }
 
         /// <summary>
-        /// Dispatch an event by its object type and trigger all registered event handlers for that event
+        /// Dispatch an object by its exact type and trigger all registered event handlers for that event type
         /// </summary>
-        /// <param name="event">Event to handle</param>
+        /// <param name="object">Event to handle</param>
         /// <remarks>Event type is automatically resolved from the event object</remarks>
-        public void Dispatch(object @event) {
-            dispatchMethod.MakeGenericMethod(@event.GetType()).Invoke(this, new object[] { @event });
+        public void DispatchObject(object @object) {
+            dispatchMethod.MakeGenericMethod(@object.GetType()).Invoke(this, new object[] { @object });
         }
 
         /// <summary>
-        /// Dispatch an event and trigger all registered event handlers for that event
+        /// Dispatch an event and trigger all registered event handlers for that event type
         /// </summary>
         /// <typeparam name="TEvent">Type of the event to handle</typeparam>
         /// <param name="event">Event to handle</param>
-        public void Dispatch<TEvent>(TEvent @event) {
+        /// <remarks>Event type is the (inferred) type parameter <typeparamref name="TEvent"/></remarks>
+        public void DispatchEvent<TEvent>(TEvent @event) {
             if (eventHandlers.TryGetValue(typeof(TEvent), out var handlers)) {
                 foreach (var handler in handlers.Cast<IEventHandler<TEvent>>()) {
                     handler.Handle(@event);

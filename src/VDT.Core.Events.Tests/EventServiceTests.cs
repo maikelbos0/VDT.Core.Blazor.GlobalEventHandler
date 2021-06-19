@@ -64,6 +64,60 @@ namespace VDT.Core.Events.Tests {
         }
 
         [Fact]
+        public async Task DispatchEvent_Calls_Registered_AsyncEventHandler() {
+            var service = new EventService();
+            var @event = new FooEvent();
+            var handler = Substitute.For<IAsyncEventHandler<FooEvent>>();
+
+            service.RegisterHandler(handler);
+
+            await service.DispatchEvent(@event);
+
+            await handler.Received(1).HandleAsync(@event);
+        }
+
+        [Fact]
+        public async Task DispatchEvent_Calls_Registered_AsyncEventHandler_Action() {
+            var service = new EventService();
+            var @event = new FooEvent();
+            var handler = Substitute.For<Func<FooEvent, Task>>();
+
+            service.RegisterHandler(handler);
+
+            await service.DispatchEvent(@event);
+
+            await handler.Received(1).Invoke(@event);
+        }
+
+        [Fact]
+        public async Task DispatchEvent_Calls_All_Registered_AsyncEventHandlers() {
+            var service = new EventService();
+            var @event = new FooEvent();
+            var handler1 = Substitute.For<IAsyncEventHandler<FooEvent>>();
+            var handler2 = Substitute.For<IAsyncEventHandler<FooEvent>>();
+
+            service.RegisterHandler(handler1);
+            service.RegisterHandler(handler2);
+
+            await service.DispatchEvent(@event);
+
+            await handler1.Received(1).HandleAsync(@event);
+            await handler2.Received(1).HandleAsync(@event);
+        }
+
+        [Fact]
+        public async Task DispatchEvent_Calls_Only_AsyncEventHandlers_For_Correct_Event_Type() {
+            var service = new EventService();
+            var handler = Substitute.For<IAsyncEventHandler<BarEvent>>();
+
+            service.RegisterHandler(handler);
+
+            await service.DispatchEvent(new FooEvent());
+
+            await handler.DidNotReceive().HandleAsync(Arg.Any<BarEvent>());
+        }
+
+        [Fact]
         public async Task DispatchEvent_Calls_EventHandler_From_ServiceProvider() {
             var handler = Substitute.For<IEventHandler<FooEvent>>();
             var serviceProvider = new ServiceCollection()
@@ -108,21 +162,47 @@ namespace VDT.Core.Events.Tests {
         }
 
         [Fact]
-        public async Task DispatchEvent_Calls_Both_EventHandler_From_ServiceProvider_And_Manually_Registered() {
-            var handler1 = Substitute.For<IEventHandler<FooEvent>>();
-            var handler2 = Substitute.For<IEventHandler<FooEvent>>();
+        public async Task DispatchEvent_Calls_AsyncEventHandler_From_ServiceProvider() {
+            var handler = Substitute.For<IAsyncEventHandler<FooEvent>>();
             var serviceProvider = new ServiceCollection()
-                .AddSingleton(handler1)
+                .AddSingleton(handler)
                 .BuildServiceProvider();
             var service = new EventService(serviceProvider);
             var @event = new FooEvent();
 
-            service.RegisterHandler(handler2);
+            await service.DispatchEvent(@event);
+
+            await handler.Received(1).HandleAsync(@event);
+        }
+
+        [Fact]
+        public async Task DispatchEvent_Calls_All_AsyncEventHandlers_From_ServiceProvider() {
+            var handler1 = Substitute.For<IAsyncEventHandler<FooEvent>>();
+            var handler2 = Substitute.For<IAsyncEventHandler<FooEvent>>();
+            var serviceProvider = new ServiceCollection()
+                .AddSingleton(handler1)
+                .AddSingleton(handler2)
+                .BuildServiceProvider();
+            var service = new EventService(serviceProvider);
+            var @event = new FooEvent();
 
             await service.DispatchEvent(@event);
 
-            handler1.Received(1).Handle(@event);
-            handler2.Received(1).Handle(@event);
+            await handler1.Received(1).HandleAsync(@event);
+            await handler2.Received(1).HandleAsync(@event);
+        }
+
+        [Fact]
+        public async Task DispatchEvent_Calls_Only_AsyncEventHandlers_From_ServiceProvider_For_Correct_Event_Type() {
+            var handler = Substitute.For<IAsyncEventHandler<BarEvent>>();
+            var serviceProvider = new ServiceCollection()
+                .AddSingleton(handler)
+                .BuildServiceProvider();
+            var service = new EventService(serviceProvider);
+
+            await service.DispatchEvent(new FooEvent());
+
+            await handler.DidNotReceive().HandleAsync(Arg.Any<BarEvent>());
         }
 
         [Fact]

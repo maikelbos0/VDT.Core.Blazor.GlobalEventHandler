@@ -119,7 +119,9 @@ namespace VDT.Core.Events {
                     handler.Handle(@event);
                 }
 
-                // TODO async provider handlers
+                foreach (var asyncHandler in serviceProvider.GetServices<IAsyncEventHandler<TEvent>>()) {
+                    await asyncHandler.HandleAsync(@event);
+                }
             }
         }
     }

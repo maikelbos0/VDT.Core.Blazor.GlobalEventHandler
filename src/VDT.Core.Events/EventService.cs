@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace VDT.Core.Events {
     /// <summary>
@@ -12,6 +13,7 @@ namespace VDT.Core.Events {
         private static readonly MethodInfo dispatchMethod = typeof(EventService).GetMethod(nameof(EventService.DispatchEvent)) ?? throw new InvalidOperationException($"Method '{nameof(EventService)}.{nameof(IEventService.DispatchEvent)}' was not found.");
 
         private readonly Dictionary<Type, List<object>> eventHandlers = new Dictionary<Type, List<object>>();
+        private readonly Dictionary<Type, List<object>> asyncEventHandlers = new Dictionary<Type, List<object>>();
         private readonly IServiceProvider? serviceProvider;
 
         /// <summary>
@@ -45,6 +47,23 @@ namespace VDT.Core.Events {
         }
 
         /// <summary>
+        /// Register an event handler
+        /// </summary>
+        /// <typeparam name="TEvent">Type of the event to handle</typeparam>
+        /// <param name="asyncHandler">Handler that handles the event</param>
+        /// <remarks>Multiple event handlers can be registered for the same event type</remarks>
+        public IEventService RegisterHandler<TEvent>(IAsyncEventHandler<TEvent> asyncHandler) {
+            if (!asyncEventHandlers.TryGetValue(typeof(TEvent), out var asyncHandlers)) {
+                asyncHandlers = new List<object>();
+                asyncEventHandlers.Add(typeof(TEvent), asyncHandlers);
+            }
+
+            asyncHandlers.Add(asyncHandler);
+
+            return this;
+        }
+
+        /// <summary>
         /// Register an action as an event handler
         /// </summary>
         /// <typeparam name="TEvent">Type of the event to handle</typeparam>
@@ -54,13 +73,15 @@ namespace VDT.Core.Events {
             return RegisterHandler(new ActionEventHandler<TEvent>(action));
         }
 
+        // TODO async action handlers
+
         /// <summary>
         /// Dispatch an object by its exact type and trigger all registered event handlers for that event type
         /// </summary>
         /// <param name="object">Event to handle</param>
         /// <remarks>Event type is automatically resolved from the event object</remarks>
-        public void DispatchObject(object @object) {
-            dispatchMethod.MakeGenericMethod(@object.GetType()).Invoke(this, new object[] { @object });
+        public async Task DispatchObject(object @object) {
+            await (Task)dispatchMethod.MakeGenericMethod(@object.GetType()).Invoke(this, new object[] { @object })!;
         }
 
         /// <summary>
@@ -69,10 +90,16 @@ namespace VDT.Core.Events {
         /// <typeparam name="TEvent">Type of the event to handle</typeparam>
         /// <param name="event">Event to handle</param>
         /// <remarks>Event type is the (inferred) type parameter <typeparamref name="TEvent"/></remarks>
-        public void DispatchEvent<TEvent>(TEvent @event) {
+        public async Task DispatchEvent<TEvent>(TEvent @event) {
             if (eventHandlers.TryGetValue(typeof(TEvent), out var handlers)) {
                 foreach (var handler in handlers.Cast<IEventHandler<TEvent>>()) {
                     handler.Handle(@event);
+                }
+            }
+
+            if (asyncEventHandlers.TryGetValue(typeof(TEvent), out var asyncHandlers)) {
+                foreach (var asyncHandler in asyncHandlers.Cast<IAsyncEventHandler<TEvent>>()) {
+                    await asyncHandler.HandleAsync(@event);
                 }
             }
 
@@ -80,6 +107,8 @@ namespace VDT.Core.Events {
                 foreach (var handler in serviceProvider.GetServices<IEventHandler<TEvent>>()) {
                     handler.Handle(@event);
                 }
+
+                // TODO async provider handlers
             }
         }
     }

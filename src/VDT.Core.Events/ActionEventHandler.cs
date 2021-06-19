@@ -8,8 +8,8 @@ namespace VDT.Core.Events {
             this.action = action;
         }
 
-        public void Handle(TEvent domainEvent) {
-            action(domainEvent);
+        public void Handle(TEvent @event) {
+            action(@event);
         }
     }
 }

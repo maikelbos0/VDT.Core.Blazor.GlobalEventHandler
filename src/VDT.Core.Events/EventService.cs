@@ -73,12 +73,22 @@ namespace VDT.Core.Events {
             return RegisterHandler(new ActionEventHandler<TEvent>(action));
         }
 
-        // TODO async action handlers
+
+        /// <summary>
+        /// Register an action as an event handler
+        /// </summary>
+        /// <typeparam name="TEvent">Type of the event to handle</typeparam>
+        /// <param name="action">Handler action that handles the event</param>
+        /// <remarks>Multiple event handlers can be registered for the same event type</remarks>
+        public IEventService RegisterHandler<TEvent>(Func<TEvent, Task> action) {
+            return RegisterHandler(new AsyncActionEventHandler<TEvent>(action));
+        }
 
         /// <summary>
         /// Dispatch an object by its exact type and trigger all registered event handlers for that event type
         /// </summary>
         /// <param name="object">Event to handle</param>
+        /// <returns>A <see cref="Task"/> that represents the operation of handling the event</returns>
         /// <remarks>Event type is automatically resolved from the event object</remarks>
         public async Task DispatchObject(object @object) {
             await (Task)dispatchMethod.MakeGenericMethod(@object.GetType()).Invoke(this, new object[] { @object })!;
@@ -89,6 +99,7 @@ namespace VDT.Core.Events {
         /// </summary>
         /// <typeparam name="TEvent">Type of the event to handle</typeparam>
         /// <param name="event">Event to handle</param>
+        /// <returns>A <see cref="Task"/> that represents the operation of handling the event</returns>
         /// <remarks>Event type is the (inferred) type parameter <typeparamref name="TEvent"/></remarks>
         public async Task DispatchEvent<TEvent>(TEvent @event) {
             if (eventHandlers.TryGetValue(typeof(TEvent), out var handlers)) {

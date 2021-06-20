@@ -11,9 +11,9 @@ namespace VDT.Core.Events {
         string CronExpression { get; }
 
         /// <summary>
-        /// 
+        /// Indicates whether or not the cron expression that defines the schedule includes seconds or only has minute precision
         /// </summary>
-        bool CronExpressionIncludingSeconds { get; }
+        bool CronExpressionIncludesSeconds { get; }
         
         /// <summary>
         /// Date and time the event was last dispatched; if null the current date and time is assumed

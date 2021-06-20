@@ -6,7 +6,7 @@ namespace VDT.Core.Events {
         internal static TimeSpan GetTimeToNextDispatch(this IScheduledEvent scheduledEvent, DateTime utcNow) {
             var previousDispatch = (scheduledEvent.PreviousDispatch ?? utcNow).ToUniversalTime();
             var crontabSchedule = CrontabSchedule.Parse(scheduledEvent.CronExpression, new CrontabSchedule.ParseOptions {
-                IncludingSeconds = scheduledEvent.CronExpressionIncludingSeconds
+                IncludingSeconds = scheduledEvent.CronExpressionIncludesSeconds
             });
 
             var time = crontabSchedule.GetNextOccurrence(previousDispatch).ToUniversalTime() - utcNow;

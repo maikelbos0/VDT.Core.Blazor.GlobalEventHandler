@@ -12,7 +12,6 @@ namespace VDT.Core.Events {
         private readonly IEventService eventService;
         private readonly ConcurrentQueue<IScheduledEvent> scheduledEvents = new ConcurrentQueue<IScheduledEvent>();
         private readonly Dictionary<IScheduledEvent, Task> scheduledEventRunners = new Dictionary<IScheduledEvent, Task>();
-        private CancellationToken? stoppingToken;
 
         /// <summary>
         /// Create a scheduled event service
@@ -41,24 +40,18 @@ namespace VDT.Core.Events {
         /// <param name="stoppingToken">Triggered when dispatching should stop</param>
         /// <returns>A <see cref="Task"/> that represents the operation of dispatching the scheduled events</returns>
         public async Task ExecuteAsync(CancellationToken stoppingToken) {
-            if (this.stoppingToken.HasValue) {
-                return;
-            }
-
-            this.stoppingToken = stoppingToken;
-
             while (!stoppingToken.IsCancellationRequested) {
                 while (scheduledEvents.TryDequeue(out var scheduledEvent)) {
-                    scheduledEventRunners.Add(scheduledEvent, Run(scheduledEvent));
+                    scheduledEventRunners.Add(scheduledEvent, Run(scheduledEvent, stoppingToken));
                 }
 
                 await Task.Delay(10);
             }
         }
 
-        private async Task Run(IScheduledEvent scheduledEvent) {
-            while (stoppingToken != null && !stoppingToken.Value.IsCancellationRequested) {
-                await Task.Delay(scheduledEvent.GetTimeToNextDispatch(DateTime.UtcNow), stoppingToken.Value);
+        private async Task Run(IScheduledEvent scheduledEvent, CancellationToken stoppingToken) {
+            while (stoppingToken != null && !stoppingToken.IsCancellationRequested) {
+                await Task.Delay(scheduledEvent.GetTimeToNextDispatch(DateTime.UtcNow), stoppingToken);
 
                 //_ = eventService.DispatchObject(scheduledEvent);
             }

@@ -95,7 +95,7 @@ namespace VDT.Core.Events.Tests {
             var scheduledEvents = fieldInfo.GetValue(serviceProvider.GetRequiredService<IScheduledEventService>());
 
             Assert.NotNull(scheduledEvents);
-            Assert.Single((List<IScheduledEvent>)scheduledEvents!);
+            Assert.Single((IEnumerable<IScheduledEvent>)scheduledEvents!);
         }
     }
 }

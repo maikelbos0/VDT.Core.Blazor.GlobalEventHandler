@@ -57,11 +57,11 @@ namespace VDT.Core.Events {
         }
 
         private async Task Run(IScheduledEvent scheduledEvent) {
-            //while (stoppingToken != null && !stoppingToken.Value.IsCancellationRequested) {
-            //    await Task.Delay(scheduledEvent.GetTimeToNextDispatch(DateTime.UtcNow), stoppingToken.Value);
+            while (stoppingToken != null && !stoppingToken.Value.IsCancellationRequested) {
+                await Task.Delay(scheduledEvent.GetTimeToNextDispatch(DateTime.UtcNow), stoppingToken.Value);
 
-            //    _ = eventService.DispatchObject(scheduledEvent);
-            //}
+                //_ = eventService.DispatchObject(scheduledEvent);
+            }
         }
 
         void IDisposable.Dispose() {

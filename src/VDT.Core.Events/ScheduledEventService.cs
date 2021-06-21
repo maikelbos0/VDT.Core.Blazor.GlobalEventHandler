@@ -50,7 +50,7 @@ namespace VDT.Core.Events {
         }
 
         private async Task Run(IScheduledEvent scheduledEvent, CancellationToken stoppingToken) {
-            while (stoppingToken != null && !stoppingToken.IsCancellationRequested) {
+            while (!stoppingToken.IsCancellationRequested) {
                 await Task.Delay(scheduledEvent.GetTimeToNextDispatch(DateTime.UtcNow), stoppingToken);
 
                 //_ = eventService.DispatchObject(scheduledEvent);

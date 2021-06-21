@@ -23,6 +23,7 @@ namespace VDT.Core.Events {
         /// <remarks>Registration of an <see cref="IEventService"/> implementation is required for this hosted service</remarks>
         public static IServiceCollection AddScheduledEventService(this IServiceCollection services) {
             return services
+                .AddSingleton<IDateTimeService, DateTimeService>()
                 .AddSingleton<IScheduledEventService, ScheduledEventService>()
                 .AddHostedService<ScheduledEventBackgroundService>();
         }

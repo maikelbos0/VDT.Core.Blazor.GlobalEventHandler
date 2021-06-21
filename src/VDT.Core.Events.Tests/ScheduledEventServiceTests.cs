@@ -13,8 +13,9 @@ namespace VDT.Core.Events.Tests {
         public void Constructor_Adds_ScheduledEvent() {
             var fieldInfo = typeof(ScheduledEventService).GetField("scheduledEvents", BindingFlags.Instance | BindingFlags.NonPublic) ?? throw new InvalidOperationException($"Field '{nameof(ScheduledEventService)}.scheduledEvents' was not found.");
             var eventService = Substitute.For<IEventService>();
+            var dateTimeService = Substitute.For<IDateTimeService>();
             var @event = Substitute.For<IScheduledEvent>();
-            var service = new ScheduledEventService(eventService, new[] { @event });
+            var service = new ScheduledEventService(eventService, dateTimeService, new[] { @event });
 
             var scheduledEvents = (IEnumerable<IScheduledEvent>?)fieldInfo.GetValue(service);
 
@@ -26,8 +27,9 @@ namespace VDT.Core.Events.Tests {
         public void AddScheduledEvent_Adds_ScheduledEvent() {
             var fieldInfo = typeof(ScheduledEventService).GetField("scheduledEvents", BindingFlags.Instance | BindingFlags.NonPublic) ?? throw new InvalidOperationException($"Field '{nameof(ScheduledEventService)}.scheduledEvents' was not found.");
             var eventService = Substitute.For<IEventService>();
+            var dateTimeService = Substitute.For<IDateTimeService>();
             var @event = Substitute.For<IScheduledEvent>();
-            var service = new ScheduledEventService(eventService, new[] { @event });
+            var service = new ScheduledEventService(eventService, dateTimeService, new[] { @event });
 
             var scheduledEvents = (IEnumerable<IScheduledEvent>?)fieldInfo.GetValue(service);
 
@@ -40,10 +42,12 @@ namespace VDT.Core.Events.Tests {
         public async Task ExecuteAsync_Creates_Task_For_ScheduledEvent() {
             var fieldInfo = typeof(ScheduledEventService).GetField("scheduledEventRunners", BindingFlags.Instance | BindingFlags.NonPublic) ?? throw new InvalidOperationException($"Field '{nameof(ScheduledEventService)}.scheduledEventRunners' was not found.");
             var eventService = Substitute.For<IEventService>();
+            var dateTimeService = Substitute.For<IDateTimeService>();
             var @event = Substitute.For<IScheduledEvent>();
-            var service = new ScheduledEventService(eventService, new[] { @event });
+            var service = new ScheduledEventService(eventService, dateTimeService, new[] { @event });
             var tokenSource = new CancellationTokenSource();
 
+            dateTimeService.UtcNow.Returns(DateTime.MinValue.ToUniversalTime());
             @event.CronExpression.Returns("* * * * *");
 
             var task = service.ExecuteAsync(tokenSource.Token);
@@ -62,10 +66,12 @@ namespace VDT.Core.Events.Tests {
         public async Task Cancelling_ExecuteAsync_Stops_Tasks() {
             var fieldInfo = typeof(ScheduledEventService).GetField("scheduledEventRunners", BindingFlags.Instance | BindingFlags.NonPublic) ?? throw new InvalidOperationException($"Field '{nameof(ScheduledEventService)}.scheduledEventRunners' was not found.");
             var eventService = Substitute.For<IEventService>();
+            var dateTimeService = Substitute.For<IDateTimeService>();
             var @event = Substitute.For<IScheduledEvent>();
-            var service = new ScheduledEventService(eventService, Enumerable.Empty<IScheduledEvent>());
+            var service = new ScheduledEventService(eventService, dateTimeService, Enumerable.Empty<IScheduledEvent>());
             var tokenSource = new CancellationTokenSource();
 
+            dateTimeService.UtcNow.Returns(DateTime.MinValue.ToUniversalTime());
             @event.CronExpression.Returns("* * * * *");
             service.AddScheduledEvent(@event);
 

@@ -8,8 +8,9 @@ namespace VDT.Core.Events {
     /// <summary>
     /// Service for registering and dispatching events on a schedule to an <see cref="IEventService"/>
     /// </summary>
-    public sealed class ScheduledEventService : IScheduledEventService, IDisposable {
+    public sealed class ScheduledEventService : IScheduledEventService {
         private readonly IEventService eventService;
+        private readonly IDateTimeService dateTimeService;
         private readonly ConcurrentQueue<IScheduledEvent> scheduledEvents = new ConcurrentQueue<IScheduledEvent>();
         private readonly Dictionary<IScheduledEvent, Task> scheduledEventRunners = new Dictionary<IScheduledEvent, Task>();
 
@@ -17,9 +18,11 @@ namespace VDT.Core.Events {
         /// Create a scheduled event service
         /// </summary>
         /// <param name="eventService">Service that handles dispatched events</param>
+        /// <param name="dateTimeService">Service for static date and time values</param>
         /// <param name="scheduledEvents">Events that should be dispatched on a schedule</param>
-        public ScheduledEventService(IEventService eventService, IEnumerable<IScheduledEvent> scheduledEvents) {
+        public ScheduledEventService(IEventService eventService, IDateTimeService dateTimeService, IEnumerable<IScheduledEvent> scheduledEvents) {
             this.eventService = eventService;
+            this.dateTimeService = dateTimeService;
 
             foreach (var scheduledEvent in scheduledEvents) {
                 this.scheduledEvents.Enqueue(scheduledEvent);
@@ -51,13 +54,10 @@ namespace VDT.Core.Events {
 
         private async Task Run(IScheduledEvent scheduledEvent, CancellationToken stoppingToken) {
             while (!stoppingToken.IsCancellationRequested) {
-                await Task.Delay(scheduledEvent.GetTimeToNextDispatch(DateTime.UtcNow), stoppingToken);
+                await Task.Delay(scheduledEvent.GetTimeToNextDispatch(dateTimeService.UtcNow), stoppingToken);
 
                 //_ = eventService.DispatchObject(scheduledEvent);
             }
-        }
-
-        void IDisposable.Dispose() {
         }
     }
 }

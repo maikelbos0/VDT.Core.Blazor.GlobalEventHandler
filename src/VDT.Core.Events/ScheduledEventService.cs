@@ -11,6 +11,7 @@ namespace VDT.Core.Events {
     public sealed class ScheduledEventService : IScheduledEventService {
         private readonly IEventService eventService;
         private readonly IDateTimeService dateTimeService;
+        private readonly ITaskService taskService;
         private readonly ConcurrentQueue<IScheduledEvent> scheduledEvents = new ConcurrentQueue<IScheduledEvent>();
         private readonly Dictionary<IScheduledEvent, Task> scheduledEventRunners = new Dictionary<IScheduledEvent, Task>();
 
@@ -19,11 +20,13 @@ namespace VDT.Core.Events {
         /// </summary>
         /// <param name="eventService">Service that handles dispatched events</param>
         /// <param name="dateTimeService">Service for static date and time values</param>
+        /// <param name="taskService"></param>
         /// <param name="scheduledEvents">Events that should be dispatched on a schedule</param>
-        public ScheduledEventService(IEventService eventService, IDateTimeService dateTimeService, IEnumerable<IScheduledEvent> scheduledEvents) {
+        public ScheduledEventService(IEventService eventService, IDateTimeService dateTimeService, ITaskService taskService, IEnumerable<IScheduledEvent> scheduledEvents) {
             this.eventService = eventService;
             this.dateTimeService = dateTimeService;
 
+            this.taskService = taskService;
             foreach (var scheduledEvent in scheduledEvents) {
                 this.scheduledEvents.Enqueue(scheduledEvent);
             }
@@ -48,13 +51,13 @@ namespace VDT.Core.Events {
                     scheduledEventRunners.Add(scheduledEvent, Run(scheduledEvent, stoppingToken));
                 }
 
-                await Task.Delay(10);
+                await taskService.Delay(TimeSpan.FromMilliseconds(10), CancellationToken.None);
             }
         }
 
         private async Task Run(IScheduledEvent scheduledEvent, CancellationToken stoppingToken) {
             while (!stoppingToken.IsCancellationRequested) {
-                await Task.Delay(scheduledEvent.GetTimeToNextDispatch(dateTimeService.UtcNow), stoppingToken);
+                await taskService.Delay(scheduledEvent.GetTimeToNextDispatch(dateTimeService.UtcNow), stoppingToken);
 
                 //_ = eventService.DispatchObject(scheduledEvent);
             }

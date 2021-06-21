@@ -2,7 +2,7 @@
 
 namespace VDT.Core.Events {
     /// <summary>
-    /// Service for static date and time values
+    /// Service for static date and time members
     /// </summary>
     public interface IDateTimeService {
         /// <summary>

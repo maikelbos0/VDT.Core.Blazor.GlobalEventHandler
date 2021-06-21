@@ -25,6 +25,7 @@ namespace VDT.Core.Events {
             return services
                 .AddSingleton<IDateTimeService, DateTimeService>()
                 .AddSingleton<IScheduledEventService, ScheduledEventService>()
+                .AddSingleton<ITaskService, TaskService>()
                 .AddHostedService<ScheduledEventBackgroundService>();
         }
     }

@@ -53,6 +53,8 @@ namespace VDT.Core.Events {
 
                 await taskService.Delay(TimeSpan.FromMilliseconds(10), CancellationToken.None);
             }
+
+            await Task.WhenAll(scheduledEventRunners.Values);
         }
 
         private async Task Run(IScheduledEvent scheduledEvent, CancellationToken stoppingToken) {

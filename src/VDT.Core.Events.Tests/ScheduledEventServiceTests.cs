@@ -98,7 +98,7 @@ namespace VDT.Core.Events.Tests {
         }
 
         [Fact]
-        public async Task ExecuteAsync_Dispatches_Events() {
+        public async Task ExecuteAsync_Dispatches_Event() {
             var eventService = Substitute.For<IEventService>();
             var dateTimeService = Substitute.For<IDateTimeService>();
             var taskService = Substitute.For<ITaskService>();
@@ -110,13 +110,15 @@ namespace VDT.Core.Events.Tests {
             taskService.Delay(Arg.Any<TimeSpan>(), Arg.Any<CancellationToken>()).Returns(Task.Delay(1));
             service.AddScheduledEvent(@event);
 
+            var delay = TimeSpan.FromSeconds(Math.Ceiling(dateTimeService.UtcNow.TimeOfDay.TotalSeconds)) - dateTimeService.UtcNow.TimeOfDay;
             var task = service.ExecuteAsync(tokenSource.Token);
 
             tokenSource.Cancel();
 
             await task;
 
-            await taskService.Received().Delay(TimeSpan.FromSeconds(Math.Ceiling(dateTimeService.UtcNow.TimeOfDay.TotalSeconds)) - dateTimeService.UtcNow.TimeOfDay, tokenSource.Token);
+            Assert.Equal(dateTimeService.UtcNow, @event.PreviousDispatch);            
+            await taskService.Received().Delay(delay, tokenSource.Token);
             await eventService.Received().DispatchObject(@event);
         }
     }

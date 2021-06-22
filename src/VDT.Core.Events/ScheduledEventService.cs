@@ -62,6 +62,7 @@ namespace VDT.Core.Events {
                 await taskService.Delay(scheduledEvent.GetTimeToNextDispatch(dateTimeService.UtcNow), stoppingToken);
 
                 _ = eventService.DispatchObject(scheduledEvent);
+                scheduledEvent.PreviousDispatch = dateTimeService.UtcNow;
             }
         }
     }

@@ -59,7 +59,7 @@ namespace VDT.Core.Events {
             while (!stoppingToken.IsCancellationRequested) {
                 await taskService.Delay(scheduledEvent.GetTimeToNextDispatch(dateTimeService.UtcNow), stoppingToken);
 
-                //_ = eventService.DispatchObject(scheduledEvent);
+                _ = eventService.DispatchObject(scheduledEvent);
             }
         }
     }

@@ -6,12 +6,16 @@
 
 <p>A test for connecting to the server API.</p>
 
-<p>Server said: @result</p>
+<button class="btn btn-primary" @onclick="CallApi">Call API</button>
+
+@if (result != null) {
+    <p>Server said: @result</p>
+}
 
 @code {
     private string? result;
 
-    protected override async Task OnInitializedAsync() {
+    private async Task CallApi() {
         var response = await HttpClient.GetAsync("/api/Demo/Execute");
 
         result = await response.Content.ReadAsStringAsync();

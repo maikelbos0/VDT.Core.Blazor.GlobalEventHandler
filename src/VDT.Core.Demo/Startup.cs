@@ -10,6 +10,7 @@ namespace VDT.Core.Demo {
         public void ConfigureServices(IServiceCollection services) {
             services.AddSingleton<LogDecorator>();
             services.AddAttributeServices(typeof(Startup).Assembly, options => options.AddAttributeDecorators());
+            services.AddCors();
             services.AddControllers();
         }
 
@@ -17,9 +18,10 @@ namespace VDT.Core.Demo {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseRouting();
             
+            app.UseCors(builder => builder.WithOrigins("https://localhost:44390"));
+            app.UseRouting();
+
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
             });

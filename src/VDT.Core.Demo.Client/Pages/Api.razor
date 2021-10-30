@@ -1,0 +1,19 @@
+﻿@page "/api"
+
+@inject HttpClient HttpClient 
+
+<h1>VDT.Core.Demo.Client - API</h1>
+
+<p>A test for connecting to the server API.</p>
+
+<p>Server said: @result</p>
+
+@code {
+    private string? result;
+
+    protected override async Task OnInitializedAsync() {
+        var response = await HttpClient.GetAsync("/api/Demo/Execute");
+
+        result = await response.Content.ReadAsStringAsync();
+    }
+}

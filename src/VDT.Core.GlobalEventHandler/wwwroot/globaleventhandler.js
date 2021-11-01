@@ -44,7 +44,7 @@ function GetResizeEventHandler(dotNetObjectReference) {
 
 export function unregister(dotNetObjectReference) {
     for (const type in handlers[dotNetObjectReference]) {
-        window.addEventListener(type, handlers[dotNetObjectReference][type]);
+        window.removeEventListener(type, handlers[dotNetObjectReference][type]);
     }
 
     delete handlers[dotNetObjectReference];

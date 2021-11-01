@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.DependencyInjectio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.DependencyInjection.Tests", "VDT.Core.DependencyInjection.Tests\VDT.Core.DependencyInjection.Tests.csproj", "{1558C37B-3065-416F-8735-CA8C72376F55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDT.Core.Demo.Client", "VDT.Core.Demo.Client\VDT.Core.Demo.Client.csproj", "{C976E9CF-D11A-438D-945F-6CDFC45A6A22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.Demo.Client", "VDT.Core.Demo.Client\VDT.Core.Demo.Client.csproj", "{C976E9CF-D11A-438D-945F-6CDFC45A6A22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDT.Core.GlobalEventHandler", "VDT.Core.GlobalEventHandler\VDT.Core.GlobalEventHandler.csproj", "{7516D99F-F731-4190-8BD5-EA7B26493D53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{C976E9CF-D11A-438D-945F-6CDFC45A6A22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C976E9CF-D11A-438D-945F-6CDFC45A6A22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C976E9CF-D11A-438D-945F-6CDFC45A6A22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7516D99F-F731-4190-8BD5-EA7B26493D53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7516D99F-F731-4190-8BD5-EA7B26493D53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7516D99F-F731-4190-8BD5-EA7B26493D53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7516D99F-F731-4190-8BD5-EA7B26493D53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

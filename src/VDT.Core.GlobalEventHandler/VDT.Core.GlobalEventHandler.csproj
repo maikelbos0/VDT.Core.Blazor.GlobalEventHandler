@@ -5,6 +5,19 @@
     <Nullable>enable</Nullable>
     <WarningsAsErrors>nullable</WarningsAsErrors>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>VDT.Core.GlobalEventHandler</PackageId>
+    <Version>1.0.0</Version>
+    <Title>VDT.Core.GlobalEventHandler</Title>
+    <Description>Blazor component that allows you to handle global window level events in your application</Description>
+    <Authors>Maikel Bos</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright © 2021 Maikel Bos</Copyright>
+    <PackageTags>Events, event handling, event handler, keydown, keyup, window events, global events, window event handlers, global event handlers</PackageTags>
+    <PackageProjectUrl>https://github.com/maikelbos0/VDT.Core</PackageProjectUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
   
   <ItemGroup>
     <SupportedPlatform Include="browser" />

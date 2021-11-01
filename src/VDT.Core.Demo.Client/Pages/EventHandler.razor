@@ -1,7 +1,39 @@
 ﻿@page "/eventhandler"
 
+<GlobalEventHandler OnWindowKeyDown="@OnWindowKeyDown" />
+
 <h1>VDT.Core.Demo.Client - GlobalEventHandler</h1>
 
 <p>A test for handling window level events in Blazor.</p>
 
-<GlobalEventHandler />
+<div class="row">
+
+    @if (keyDownEventArgs != null) {
+        <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+            <h2>Last key down event:</h2>
+
+            <ul>
+                <li>Alt key: @keyDownEventArgs.AltKey</li>
+                <li>Code: @keyDownEventArgs.Code</li>
+                <li>Ctrl key: @keyDownEventArgs.CtrlKey</li>
+                <li>Key: @keyDownEventArgs.Key</li>
+                <li>Location: @keyDownEventArgs.Location</li>
+                <li>Meta key: @keyDownEventArgs.MetaKey</li>
+                <li>Repeat: @keyDownEventArgs.Repeat</li>
+                <li>Shift key: @keyDownEventArgs.ShiftKey</li>
+                <li>Type: @keyDownEventArgs.Type</li>
+            </ul>
+        </div>
+    }
+
+</div>
+
+@code {
+    private KeyboardEventArgs? keyDownEventArgs;
+
+    public Task OnWindowKeyDown(KeyboardEventArgs args) {
+        this.keyDownEventArgs = args;
+
+        return Task.CompletedTask;
+    }
+}

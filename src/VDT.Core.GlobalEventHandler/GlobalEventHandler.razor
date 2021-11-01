@@ -1,3 +1,33 @@
-﻿<div>
-    This Blazor component is defined in the <strong>VDT.Core.GlobalEventHandler</strong> package.
-</div>
+﻿@implements IAsyncDisposable
+@inject IJSRuntime JSRuntime
+
+@code {
+    private IJSObjectReference? moduleReference;
+    private DotNetObjectReference<GlobalEventHandler>? dotNetObjectReference;
+
+    [Parameter]
+    public EventCallback<KeyboardEventArgs> OnWindowKeyDown { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
+        if (firstRender) {
+            moduleReference = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/VDT.Core.GlobalEventHandler/globaleventhandler.js");
+            dotNetObjectReference = DotNetObjectReference.Create(this);
+
+            await moduleReference.InvokeVoidAsync("register", dotNetObjectReference);
+        }
+    }
+
+    [JSInvokable]
+    public async Task OnKeyDown(KeyboardEventArgs args) {
+        await OnWindowKeyDown.InvokeAsync(args);
+    }
+
+    public async ValueTask DisposeAsync() {
+        if (moduleReference != null) {
+            await moduleReference.InvokeVoidAsync("unregister", dotNetObjectReference);
+            await moduleReference.DisposeAsync();
+        }
+
+        dotNetObjectReference?.Dispose();
+    }
+}

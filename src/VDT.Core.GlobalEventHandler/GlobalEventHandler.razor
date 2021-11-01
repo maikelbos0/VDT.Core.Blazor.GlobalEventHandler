@@ -8,6 +8,9 @@
     [Parameter]
     public EventCallback<KeyboardEventArgs> OnWindowKeyDown { get; set; }
 
+    [Parameter]
+    public EventCallback<KeyboardEventArgs> OnWindowKeyUp { get; set; }
+
     protected override async Task OnAfterRenderAsync(bool firstRender) {
         if (firstRender) {
             moduleReference = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/VDT.Core.GlobalEventHandler/globaleventhandler.js");
@@ -20,6 +23,11 @@
     [JSInvokable]
     public async Task OnKeyDown(KeyboardEventArgs args) {
         await OnWindowKeyDown.InvokeAsync(args);
+    }
+
+    [JSInvokable]
+    public async Task OnKeyUp(KeyboardEventArgs args) {
+        await OnWindowKeyUp.InvokeAsync(args);
     }
 
     public async ValueTask DisposeAsync() {

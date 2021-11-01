@@ -1,9 +1,24 @@
 ﻿
 let handlers = {};
 
-export function register(dotNetObjectReference) {
-    let keyDownHandler = function (e) {
-        dotNetObjectReference.invokeMethodAsync("OnKeyDown", {
+export function register(dotNetObjectReference) {    
+    handlers[dotNetObjectReference] = GetEventHandlers(dotNetObjectReference);
+
+    for (const type in handlers[dotNetObjectReference]) {
+        window.addEventListener(type, handlers[dotNetObjectReference][type]);
+    }
+}
+
+function GetEventHandlers(dotNetObjectReference) {
+    return {
+        'keydown': GetKeyboardEventHandler(dotNetObjectReference, 'keydown', 'OnKeyDown'),
+        'keyup': GetKeyboardEventHandler(dotNetObjectReference, 'keyup', 'OnKeyUp')
+    };
+}
+
+function GetKeyboardEventHandler(dotNetObjectReference, type, handlerReference) {
+    return function (e) {
+        dotNetObjectReference.invokeMethodAsync(handlerReference, {
             altKey: e.altKey,
             code: e.code,
             ctrlKey: e.ctrlKey,
@@ -12,16 +27,15 @@ export function register(dotNetObjectReference) {
             metaKey: e.metaKey,
             repeat: e.repeat,
             shiftKey: e.shiftKey,
-            type: 'keydown'
+            type: type
         });
     }
-
-    handlers[dotNetObjectReference] = keyDownHandler;
-
-    window.addEventListener("keydown", keyDownHandler);
 }
 
 export function unregister(dotNetObjectReference) {
-    window.removeEventListener("keydown", handlers[dotNetObjectReference]);
+    for (const type in handlers[dotNetObjectReference]) {
+        window.addEventListener(type, handlers[dotNetObjectReference][type]);
+    }
+
     delete handlers[dotNetObjectReference];
 }

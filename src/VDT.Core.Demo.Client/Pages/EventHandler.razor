@@ -1,6 +1,6 @@
 ﻿@page "/eventhandler"
 
-<GlobalEventHandler OnWindowKeyDown="@OnWindowKeyDown" />
+<GlobalEventHandler OnWindowKeyDown="@OnWindowKeyDown" OnWindowKeyUp="@OnWindowKeyUp" />
 
 <h1>VDT.Core.Demo.Client - GlobalEventHandler</h1>
 
@@ -10,7 +10,7 @@
 
     @if (keyDownEventArgs != null) {
         <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-            <h2>Last key down event:</h2>
+            <h2>Last key down event</h2>
 
             <ul>
                 <li>Alt key: @keyDownEventArgs.AltKey</li>
@@ -26,13 +26,39 @@
         </div>
     }
 
+    @if (keyUpEventArgs != null) {
+        <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+            <h2>Last key up event</h2>
+
+            <ul>
+                <li>Alt key: @keyUpEventArgs.AltKey</li>
+                <li>Code: @keyUpEventArgs.Code</li>
+                <li>Ctrl key: @keyUpEventArgs.CtrlKey</li>
+                <li>Key: @keyUpEventArgs.Key</li>
+                <li>Location: @keyUpEventArgs.Location</li>
+                <li>Meta key: @keyUpEventArgs.MetaKey</li>
+                <li>Repeat: @keyUpEventArgs.Repeat</li>
+                <li>Shift key: @keyUpEventArgs.ShiftKey</li>
+                <li>Type: @keyUpEventArgs.Type</li>
+            </ul>
+        </div>
+    }
+
+
 </div>
 
 @code {
     private KeyboardEventArgs? keyDownEventArgs;
+    private KeyboardEventArgs? keyUpEventArgs;
 
     public Task OnWindowKeyDown(KeyboardEventArgs args) {
-        this.keyDownEventArgs = args;
+        keyDownEventArgs = args;
+
+        return Task.CompletedTask;
+    }
+
+    public Task OnWindowKeyUp(KeyboardEventArgs args) {
+        keyUpEventArgs = args;
 
         return Task.CompletedTask;
     }

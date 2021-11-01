@@ -12,7 +12,8 @@ export function register(dotNetObjectReference) {
 function GetEventHandlers(dotNetObjectReference) {
     return {
         'keydown': GetKeyboardEventHandler(dotNetObjectReference, 'keydown', 'OnKeyDown'),
-        'keyup': GetKeyboardEventHandler(dotNetObjectReference, 'keyup', 'OnKeyUp')
+        'keyup': GetKeyboardEventHandler(dotNetObjectReference, 'keyup', 'OnKeyUp'),
+        'resize': GetResizeEventHandler(dotNetObjectReference)
     };
 }
 
@@ -28,6 +29,15 @@ function GetKeyboardEventHandler(dotNetObjectReference, type, handlerReference) 
             repeat: e.repeat,
             shiftKey: e.shiftKey,
             type: type
+        });
+    }
+}
+
+function GetResizeEventHandler(dotNetObjectReference) {
+    return function () {
+        dotNetObjectReference.invokeMethodAsync('OnResize', {
+            width: window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            height: window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
         });
     }
 }

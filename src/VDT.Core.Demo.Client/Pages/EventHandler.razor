@@ -1,6 +1,6 @@
 ﻿@page "/eventhandler"
 
-<GlobalEventHandler OnWindowKeyDown="@OnWindowKeyDown" OnWindowKeyUp="@OnWindowKeyUp" />
+<GlobalEventHandler OnWindowKeyDown="@OnWindowKeyDown" OnWindowKeyUp="@OnWindowKeyUp" OnWindowResize="@OnWindowResize" />
 
 <h1>VDT.Core.Demo.Client - GlobalEventHandler</h1>
 
@@ -44,11 +44,23 @@
         </div>
     }
 
+    @if (resizeEventArgs != null) {
+        <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+            <h2>Last resize event</h2>
+
+            <ul>
+                <li>Width: @resizeEventArgs.Width</li>
+                <li>Height: @resizeEventArgs.Height</li>
+            </ul>
+        </div>
+    }
+
 </div>
 
 @code {
     private KeyboardEventArgs? keyDownEventArgs;
     private KeyboardEventArgs? keyUpEventArgs;
+    private ResizeEventArgs? resizeEventArgs;
 
     public Task OnWindowKeyDown(KeyboardEventArgs args) {
         keyDownEventArgs = args;
@@ -60,5 +72,9 @@
         keyUpEventArgs = args;
 
         return Task.CompletedTask;
+    }
+
+    public void OnWindowResize(ResizeEventArgs args) {
+        resizeEventArgs = args;
     }
 }

@@ -11,15 +11,15 @@ Blazor component that allows you to handle global window level events in your ap
 To register event handlers, simply include the GlobalEventHandler component on your page and register your event handler with the event in the component
 that you want to handle. The available events are:
 
-- `OnWindowKeyDown`
-- `OnWindowKeyUp`
-- `OnWindowResize`
-- `OnWindowClick`
+- `OnWindowKeyDown` which provides an optional `KeyboardEventArgs` parameter
+- `OnWindowKeyUp` which provides an optional `KeyboardEventArgs` parameter
+- `OnWindowResize` which provides an optional `ResizeEventArgs` parameter
+- `OnWindowClick` which provides an optional `MouseEventArgs` parameter
 
 ### Example
 
 ```
-<GlobalEventHandler OnWindowKeyDown="@OnWindowKeyDown" />
+<GlobalEventHandler OnWindowKeyDown="@OnWindowKeyDown" OnWindowResize="@OnWindowResize" />
 
 @if (keyDownEventArgs != null) {
     <h2>Last key down event</h2>
@@ -37,13 +37,29 @@ that you want to handle. The available events are:
     </ul>
 }
 
+@if (resizeEventArgs != null) {
+    <h2>Last resize event</h2>
+
+    <ul>
+        <li>Width: @resizeEventArgs.Width</li>
+        <li>Height: @resizeEventArgs.Height</li>
+    </ul>
+}
+
 @code {
     private KeyboardEventArgs? keyDownEventArgs;
-
-    public Task OnWindowKeyDown(KeyboardEventArgs args) {
+    private ResizeEventArgs? resizeEventArgs;
+    
+    // Handlers can be asynchronous ...
+    public async Task OnWindowKeyDown(KeyboardEventArgs args) {
         keyDownEventArgs = args;
 
-        return Task.CompletedTask;
+        await Task.CompletedTask;
+    }    
+
+    // ... Or synchronous
+    public void OnWindowResize(ResizeEventArgs args) {
+        resizeEventArgs = args;
     }
 }
 ```

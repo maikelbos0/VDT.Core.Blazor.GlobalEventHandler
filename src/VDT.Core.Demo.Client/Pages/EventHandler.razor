@@ -1,6 +1,6 @@
 ﻿@page "/eventhandler"
 
-<GlobalEventHandler OnWindowKeyDown="@OnWindowKeyDown" OnWindowKeyUp="@OnWindowKeyUp" OnWindowClick="@OnWindowClick" OnWindowResize="@OnWindowResize"/>
+<GlobalEventHandler OnWindowKeyDown="@OnWindowKeyDown" OnWindowKeyUp="@OnWindowKeyUp" OnWindowClick="@OnWindowClick" OnWindowResize="@OnWindowResize" />
 
 <h1>VDT.Core.Demo.Client - GlobalEventHandler</h1>
 
@@ -102,16 +102,16 @@
     private MouseEventArgs? clickEventArgs;
     private ResizeEventArgs? resizeEventArgs;
 
-    public Task OnWindowKeyDown(KeyboardEventArgs args) {
+    public async Task OnWindowKeyDown(KeyboardEventArgs args) {
         keyDownEventArgs = args;
 
-        return Task.CompletedTask;
+        await Task.CompletedTask;
     }
 
-    public Task OnWindowKeyUp(KeyboardEventArgs args) {
+    public async Task OnWindowKeyUp(KeyboardEventArgs args) {
         keyUpEventArgs = args;
 
-        return Task.CompletedTask;
+        await Task.CompletedTask;
     }
 
     public void OnWindowClick(MouseEventArgs args) {

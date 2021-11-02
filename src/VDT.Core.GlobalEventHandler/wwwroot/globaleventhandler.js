@@ -1,7 +1,7 @@
 ﻿
 let handlers = {};
 
-export function register(dotNetObjectReference) {    
+function register(dotNetObjectReference) {    
     handlers[dotNetObjectReference] = GetEventHandlers(dotNetObjectReference);
 
     for (const type in handlers[dotNetObjectReference]) {
@@ -13,6 +13,7 @@ function GetEventHandlers(dotNetObjectReference) {
     return {
         'keydown': GetKeyboardEventHandler(dotNetObjectReference, 'keydown', 'OnKeyDown'),
         'keyup': GetKeyboardEventHandler(dotNetObjectReference, 'keyup', 'OnKeyUp'),
+        'click': GetMouseEventHandler(dotNetObjectReference, 'click', 'OnClick'),
         'resize': GetResizeEventHandler(dotNetObjectReference)
     };
 }
@@ -33,6 +34,27 @@ function GetKeyboardEventHandler(dotNetObjectReference, type, handlerReference) 
     }
 }
 
+function GetMouseEventHandler(dotNetObjectReference, type, handlerReference) {
+    return function (e) {
+        dotNetObjectReference.invokeMethodAsync(handlerReference, {
+            altKey: e.altKey,
+            button: e.button,
+            buttons: e.buttons,
+            clientX: e.clientX,
+            clientY: e.clientY,
+            ctrlKey: e.ctrlKey,
+            detail: e.detail,
+            metaKey: e.metaKey,
+            offsetX: e.offsetX,
+            offsetY: e.offsetY,
+            screenX: e.screenX,
+            screenY: e.screenY,
+            shiftKey: e.shiftKey,
+            type: type
+        });
+    }
+}
+
 function GetResizeEventHandler(dotNetObjectReference) {
     return function () {
         dotNetObjectReference.invokeMethodAsync('OnResize', {
@@ -42,10 +64,12 @@ function GetResizeEventHandler(dotNetObjectReference) {
     }
 }
 
-export function unregister(dotNetObjectReference) {
+function unregister(dotNetObjectReference) {
     for (const type in handlers[dotNetObjectReference]) {
         window.removeEventListener(type, handlers[dotNetObjectReference][type]);
     }
 
     delete handlers[dotNetObjectReference];
 }
+
+export { register, unregister };

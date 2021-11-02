@@ -1,6 +1,6 @@
 ﻿@page "/eventhandler"
 
-<GlobalEventHandler OnWindowKeyDown="@OnWindowKeyDown" OnWindowKeyUp="@OnWindowKeyUp" OnWindowResize="@OnWindowResize" />
+<GlobalEventHandler OnWindowKeyDown="@OnWindowKeyDown" OnWindowKeyUp="@OnWindowKeyUp" OnWindowClick="@OnWindowClick" OnWindowResize="@OnWindowResize"/>
 
 <h1>VDT.Core.Demo.Client - GlobalEventHandler</h1>
 
@@ -52,6 +52,33 @@
         </div>
     }
 
+    @if (clickEventArgs != null) {
+        <div class="col-12 col-lg-6 col-xl-4 mb-4">
+            <div class="card text-dark bg-light">
+                <div class="card-body">
+                    <h2 class="card-title">Last click</h2>
+
+                    <ul class="card-text">
+                        <li>Alt key: @clickEventArgs.AltKey</li>
+                        <li>Button: @clickEventArgs.Button</li>
+                        <li>Buttons: @clickEventArgs.Buttons</li>
+                        <li>Client X: @clickEventArgs.ClientX</li>
+                        <li>Client Y: @clickEventArgs.ClientY</li>
+                        <li>Ctrl key: @clickEventArgs.CtrlKey</li>
+                        <li>Detail: @clickEventArgs.Detail</li>
+                        <li>Meta key: @clickEventArgs.MetaKey</li>
+                        <li>Offset X: @clickEventArgs.OffsetX</li>
+                        <li>Offset Y: @clickEventArgs.OffsetY</li>
+                        <li>Screen X: @clickEventArgs.ScreenX</li>
+                        <li>Screen Y: @clickEventArgs.ScreenY</li>
+                        <li>Shift key: @clickEventArgs.ShiftKey</li>
+                        <li>Type: @clickEventArgs.Type</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+
     @if (resizeEventArgs != null) {
         <div class="col-12 col-lg-6 col-xl-4 mb-4">
             <div class="card text-dark bg-light">
@@ -72,6 +99,7 @@
 @code {
     private KeyboardEventArgs? keyDownEventArgs;
     private KeyboardEventArgs? keyUpEventArgs;
+    private MouseEventArgs? clickEventArgs;
     private ResizeEventArgs? resizeEventArgs;
 
     public Task OnWindowKeyDown(KeyboardEventArgs args) {
@@ -84,6 +112,10 @@
         keyUpEventArgs = args;
 
         return Task.CompletedTask;
+    }
+
+    public void OnWindowClick(MouseEventArgs args) {
+        clickEventArgs = args;
     }
 
     public void OnWindowResize(ResizeEventArgs args) {

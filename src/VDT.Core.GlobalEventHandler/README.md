@@ -19,7 +19,7 @@ that you want to handle. The available events are:
 ### Example
 
 ```
-<GlobalEventHandler OnWindowKeyDown="@OnWindowKeyDown" OnWindowResize="@OnWindowResize" />
+<GlobalEventHandler OnWindowKeyDown="@OnWindowKeyDown" OnWindowResize="@OnWindowResize" OnWindowClick="@OnWindowClick" />
 
 @if (keyDownEventArgs != null) {
     <h2>Last key down event</h2>
@@ -46,9 +46,14 @@ that you want to handle. The available events are:
     </ul>
 }
 
+@if (clicked) {
+    <h2>Clicked</h2>
+}
+
 @code {
     private KeyboardEventArgs? keyDownEventArgs;
     private ResizeEventArgs? resizeEventArgs;
+    private bool clicked = false;
     
     // Handlers can be asynchronous ...
     public async Task OnWindowKeyDown(KeyboardEventArgs args) {
@@ -60,6 +65,11 @@ that you want to handle. The available events are:
     // ... Or synchronous
     public void OnWindowResize(ResizeEventArgs args) {
         resizeEventArgs = args;
+    }
+
+    // EventArgs are optional
+    public void OnWindowClick() {
+        clicked = true;
     }
 }
 ```

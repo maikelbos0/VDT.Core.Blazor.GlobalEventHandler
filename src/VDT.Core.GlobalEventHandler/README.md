@@ -13,6 +13,8 @@ that you want to handle. The available events are:
 
 - `OnWindowKeyDown`
 - `OnWindowKeyUp`
+- `OnWindowResize`
+- `OnWindowClick`
 
 ### Example
 

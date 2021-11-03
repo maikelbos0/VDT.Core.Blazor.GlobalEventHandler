@@ -1,24 +1,25 @@
-﻿
-let handlers = {};
+﻿let handlers = {};
 
-function register(dotNetObjectReference) {    
+function register(dotNetObjectReference, win) {
+    win = win || window;
+
     handlers[dotNetObjectReference] = GetEventHandlers(dotNetObjectReference);
 
     for (const type in handlers[dotNetObjectReference]) {
-        window.addEventListener(type, handlers[dotNetObjectReference][type]);
+        win.addEventListener(type, handlers[dotNetObjectReference][type]);
     }
 }
 
 function GetEventHandlers(dotNetObjectReference) {
     return {
-        'keydown': GetKeyboardEventHandler(dotNetObjectReference, 'keydown', 'OnKeyDown'),
-        'keyup': GetKeyboardEventHandler(dotNetObjectReference, 'keyup', 'OnKeyUp'),
-        'click': GetMouseEventHandler(dotNetObjectReference, 'click', 'OnClick'),
-        'resize': GetResizeEventHandler(dotNetObjectReference)
+        'keydown': getKeyboardEventHandler(dotNetObjectReference, 'keydown', 'OnKeyDown'),
+        'keyup': getKeyboardEventHandler(dotNetObjectReference, 'keyup', 'OnKeyUp'),
+        'click': getMouseEventHandler(dotNetObjectReference, 'click', 'OnClick'),
+        'resize': getResizeEventHandler(dotNetObjectReference)
     };
 }
 
-function GetKeyboardEventHandler(dotNetObjectReference, type, handlerReference) {
+function getKeyboardEventHandler(dotNetObjectReference, type, handlerReference) {
     return function (e) {
         dotNetObjectReference.invokeMethodAsync(handlerReference, {
             altKey: e.altKey,
@@ -34,7 +35,7 @@ function GetKeyboardEventHandler(dotNetObjectReference, type, handlerReference) 
     }
 }
 
-function GetMouseEventHandler(dotNetObjectReference, type, handlerReference) {
+function getMouseEventHandler(dotNetObjectReference, type, handlerReference) {
     return function (e) {
         dotNetObjectReference.invokeMethodAsync(handlerReference, {
             altKey: e.altKey,
@@ -55,7 +56,7 @@ function GetMouseEventHandler(dotNetObjectReference, type, handlerReference) {
     }
 }
 
-function GetResizeEventHandler(dotNetObjectReference) {
+function getResizeEventHandler(dotNetObjectReference) {
     return function () {
         dotNetObjectReference.invokeMethodAsync('OnResize', {
             width: window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
@@ -64,9 +65,11 @@ function GetResizeEventHandler(dotNetObjectReference) {
     }
 }
 
-function unregister(dotNetObjectReference) {
+function unregister(dotNetObjectReference, win) {
+    win = win || window;
+
     for (const type in handlers[dotNetObjectReference]) {
-        window.removeEventListener(type, handlers[dotNetObjectReference][type]);
+        win.removeEventListener(type, handlers[dotNetObjectReference][type]);
     }
 
     delete handlers[dotNetObjectReference];

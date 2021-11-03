@@ -1,0 +1,7 @@
+{
+  "Framework": "jasmine",
+  "Engine": "Chrome",
+  "Tests": [
+    { "Includes": [ "*.js" ] }
+  ]
+}

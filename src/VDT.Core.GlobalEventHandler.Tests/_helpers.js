@@ -19,7 +19,7 @@
         invocations: [],
 
         invokeMethodAsync: function (handlerReference, eventArgs) {
-            invocations.push({
+            this.invocations.push({
                 handlerReference: handlerReference,
                 eventArgs: eventArgs
             });

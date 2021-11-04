@@ -5,6 +5,9 @@
     { "Path": "_helpers.js" }
   ],
   "Tests": [
-    { "Includes": [ "*.js" ] }
+    {
+      "Includes": [ "*.js" ],
+      "Excludes": [ "_*.js" ]
+    }
   ]
 }

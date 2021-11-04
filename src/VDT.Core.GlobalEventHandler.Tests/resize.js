@@ -1,28 +1,18 @@
-﻿var win = {
-    eventListeners: {},
-
-    addEventListener: function (type, listener) {
-        this.eventListeners[type] = listener;
-    }
-};
-
-var dotNetObjectReference = {
-    invocations: [],
-
-    invokeMethodAsync: function (handlerReference, eventArgs) {
-        invocations.push({
-            handlerReference: handlerReference,
-            eventArgs: eventArgs
-        });
-    }
-};
-
-describe('resize', function () {
+﻿describe('resize', function () {
     it('event handler gets registered', async function () {
-        var globaleventhandler = await import('../VDT.Core.GlobalEventHandler/wwwroot/globaleventhandler.js');
+        var globaleventhandler = await _helpers.getGlobaleventhandler();
 
-        globaleventhandler.register(dotNetObjectReference, win);
+        globaleventhandler.register(_helpers.dotNetObjectReference, _helpers.window);
 
-        expect(typeof win.eventListeners["resize"]).toEqual('function');
+        expect(typeof _helpers.window.eventListeners['resize']).toEqual('function');
+    });
+
+    it('event handler gets unregistered', async function () {
+        var globaleventhandler = await _helpers.getGlobaleventhandler();
+
+        globaleventhandler.register(_helpers.dotNetObjectReference, _helpers.window);
+        globaleventhandler.unregister(_helpers.dotNetObjectReference, _helpers.window);
+
+        expect(typeof _helpers.window.eventListeners['resize']).toEqual('undefined');
     });
 });

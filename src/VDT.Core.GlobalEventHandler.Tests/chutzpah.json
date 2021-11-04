@@ -1,6 +1,9 @@
 {
   "Framework": "jasmine",
   "Engine": "Chrome",
+  "References": [
+    { "Path": "_helpers.js" }
+  ],
   "Tests": [
     { "Includes": [ "*.js" ] }
   ]

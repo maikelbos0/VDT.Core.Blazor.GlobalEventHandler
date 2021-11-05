@@ -33,7 +33,7 @@
         }));
 
         expect(_helpers.dotNetObjectReference.invocations.length).toEqual(1);
-        expect(_helpers.dotNetObjectReference.invocations[0].handlerReference).toEqual('OnKeyUp');
+        expect(_helpers.dotNetObjectReference.invocations[0].handlerReference).toEqual('InvokeKeyUp');
         expect(_helpers.dotNetObjectReference.invocations[0].eventArgs).toEqual({
             altKey: true,
             code: 'Digit1',

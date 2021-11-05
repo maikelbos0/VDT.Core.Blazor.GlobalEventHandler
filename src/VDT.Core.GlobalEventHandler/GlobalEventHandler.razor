@@ -6,16 +6,16 @@
     private DotNetObjectReference<GlobalEventHandler>? dotNetObjectReference;
 
     [Parameter]
-    public EventCallback<KeyboardEventArgs> OnWindowKeyDown { get; set; }
+    public EventCallback<KeyboardEventArgs> OnKeyDown { get; set; }
 
     [Parameter]
-    public EventCallback<KeyboardEventArgs> OnWindowKeyUp { get; set; }
+    public EventCallback<KeyboardEventArgs> OnKeyUp { get; set; }
 
     [Parameter]
-    public EventCallback<ResizeEventArgs> OnWindowResize { get; set; }
+    public EventCallback<ResizeEventArgs> OnResize { get; set; }
 
     [Parameter]
-    public EventCallback<MouseEventArgs> OnWindowClick { get; set; }
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender) {
         if (firstRender) {
@@ -27,23 +27,23 @@
     }
 
     [JSInvokable]
-    public async Task OnKeyDown(KeyboardEventArgs args) {
-        await OnWindowKeyDown.InvokeAsync(args);
+    public async Task InvokeKeyDown(KeyboardEventArgs args) {
+        await OnKeyDown.InvokeAsync(args);
     }
 
     [JSInvokable]
-    public async Task OnKeyUp(KeyboardEventArgs args) {
-        await OnWindowKeyUp.InvokeAsync(args);
+    public async Task InvokeKeyUp(KeyboardEventArgs args) {
+        await OnKeyUp.InvokeAsync(args);
     }
 
     [JSInvokable]
-    public async Task OnResize(ResizeEventArgs args) {
-        await OnWindowResize.InvokeAsync(args);
+    public async Task InvokeResize(ResizeEventArgs args) {
+        await OnResize.InvokeAsync(args);
     }
 
     [JSInvokable]
-    public async Task OnClick(MouseEventArgs args) {
-        await OnWindowClick.InvokeAsync(args);
+    public async Task InvokeClick(MouseEventArgs args) {
+        await OnClick.InvokeAsync(args);
     }
 
     public async ValueTask DisposeAsync() {

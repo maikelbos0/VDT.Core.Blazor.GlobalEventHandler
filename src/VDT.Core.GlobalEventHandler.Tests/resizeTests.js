@@ -24,7 +24,7 @@
         _helpers.window.eventListeners['resize']();
 
         expect(_helpers.dotNetObjectReference.invocations.length).toEqual(1);
-        expect(_helpers.dotNetObjectReference.invocations[0].handlerReference).toEqual('OnResize');
+        expect(_helpers.dotNetObjectReference.invocations[0].handlerReference).toEqual('InvokeResize');
         expect(_helpers.dotNetObjectReference.invocations[0].eventArgs).toEqual({
             width: 800,
             height: 600

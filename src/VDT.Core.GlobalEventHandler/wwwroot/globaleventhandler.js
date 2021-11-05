@@ -12,9 +12,9 @@ function register(dotNetObjectReference, win) {
 
 function GetEventHandlers(dotNetObjectReference) {
     return {
-        'keydown': getKeyboardEventHandler(dotNetObjectReference, 'keydown', 'OnKeyDown'),
-        'keyup': getKeyboardEventHandler(dotNetObjectReference, 'keyup', 'OnKeyUp'),
-        'click': getMouseEventHandler(dotNetObjectReference, 'click', 'OnClick'),
+        'keydown': getKeyboardEventHandler(dotNetObjectReference, 'keydown', 'InvokeKeyDown'),
+        'keyup': getKeyboardEventHandler(dotNetObjectReference, 'keyup', 'InvokeKeyUp'),
+        'click': getMouseEventHandler(dotNetObjectReference, 'click', 'InvokeClick'),
         'resize': getResizeEventHandler(dotNetObjectReference)
     };
 }
@@ -58,7 +58,7 @@ function getMouseEventHandler(dotNetObjectReference, type, handlerReference) {
 
 function getResizeEventHandler(dotNetObjectReference) {
     return function () {
-        dotNetObjectReference.invokeMethodAsync('OnResize', {
+        dotNetObjectReference.invokeMethodAsync('InvokeResize', {
             width: window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
             height: window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
         });

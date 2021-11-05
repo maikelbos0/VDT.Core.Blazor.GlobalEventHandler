@@ -16,7 +16,7 @@
         expect(_helpers.window.eventListeners['resize']).toBeUndefined();
     });
 
-    it('resize event invokes handler', async function () {
+    it('event invokes handler', async function () {
         var globaleventhandler = await _helpers.getGlobaleventhandler();
 
         globaleventhandler.register(_helpers.dotNetObjectReference, _helpers.window);
@@ -29,5 +29,5 @@
             width: 800,
             height: 600
         });
-    })
+    });
 });

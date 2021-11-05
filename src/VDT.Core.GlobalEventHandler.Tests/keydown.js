@@ -1,10 +1,10 @@
-﻿describe('click', function () {
+﻿describe('keydown', function () {
     it('event handler gets registered', async function () {
         var globaleventhandler = await _helpers.getGlobaleventhandler();
 
         globaleventhandler.register(_helpers.dotNetObjectReference, _helpers.window);
 
-        expect(typeof _helpers.window.eventListeners['click']).toEqual('function');
+        expect(typeof _helpers.window.eventListeners['keydown']).toEqual('function');
     });
 
     it('event handler gets unregistered', async function () {
@@ -13,7 +13,7 @@
         globaleventhandler.register(_helpers.dotNetObjectReference, _helpers.window);
         globaleventhandler.unregister(_helpers.dotNetObjectReference, _helpers.window);
 
-        expect(_helpers.window.eventListeners['click']).toBeUndefined();
+        expect(_helpers.window.eventListeners['keydown']).toBeUndefined();
     });
 
     it('event invokes handler', async function () {
@@ -21,37 +21,29 @@
 
         globaleventhandler.register(_helpers.dotNetObjectReference, _helpers.window);
 
-        _helpers.window.eventListeners['click'](new MouseEvent(null, {
+        _helpers.window.eventListeners['keydown'](new KeyboardEvent(null, {
             altKey: true,
-            button: 0,
-            buttons: 0,
-            clientX: 10,
-            clientY: 20,
+            code: 'Digit1',
             ctrlKey: true,
-            detail: 2,
+            key: '1',
+            location: 0,
             metaKey: true,
-            screenX: 30,
-            screenY: 40,
+            repeat: true,
             shiftKey: true
         }));
 
         expect(_helpers.dotNetObjectReference.invocations.length).toEqual(1);
-        expect(_helpers.dotNetObjectReference.invocations[0].handlerReference).toEqual('OnClick');
+        expect(_helpers.dotNetObjectReference.invocations[0].handlerReference).toEqual('OnKeyDown');
         expect(_helpers.dotNetObjectReference.invocations[0].eventArgs).toEqual({
             altKey: true,
-            button: 0,
-            buttons: 0,
-            clientX: 10,
-            clientY: 20,
+            code: 'Digit1',
             ctrlKey: true,
-            detail: 2,
+            key: '1',
+            location: 0,
             metaKey: true,
-            offsetX: 10,
-            offsetY: 20,
-            screenX: 30,
-            screenY: 40,
+            repeat: true,
             shiftKey: true,
-            type: 'click'
+            type: 'keydown'
         });
     });
 });

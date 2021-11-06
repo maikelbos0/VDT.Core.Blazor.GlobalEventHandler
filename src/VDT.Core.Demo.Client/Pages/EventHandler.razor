@@ -1,6 +1,6 @@
 ﻿@page "/eventhandler"
 
-<GlobalEventHandler OnKeyDown="@OnWindowKeyDown" OnKeyUp="@OnWindowKeyUp" OnClick="@OnWindowClick" OnResize="@OnWindowResize" />
+<GlobalEventHandler OnKeyDown="@OnWindowKeyDown" OnKeyUp="@OnWindowKeyUp" OnResize="@OnWindowResize" OnClick="@OnWindowClick" OnMouseDown="@OnWindowMouseDown" />
 
 <h1>VDT.Core.Demo.Client - GlobalEventHandler</h1>
 
@@ -52,6 +52,21 @@
         </div>
     }
 
+    @if (resizeEventArgs != null) {
+        <div class="col-12 col-lg-6 col-xl-4 mb-4">
+            <div class="card text-dark bg-light">
+                <div class="card-body">
+                    <h2 class="card-title">Last resize event</h2>
+
+                    <ul class="card-text">
+                        <li>Width: @resizeEventArgs.Width</li>
+                        <li>Height: @resizeEventArgs.Height</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+
     @if (clickEventArgs != null) {
         <div class="col-12 col-lg-6 col-xl-4 mb-4">
             <div class="card text-dark bg-light">
@@ -79,15 +94,27 @@
         </div>
     }
 
-    @if (resizeEventArgs != null) {
+    @if (mouseDownEventArgs != null) {
         <div class="col-12 col-lg-6 col-xl-4 mb-4">
             <div class="card text-dark bg-light">
                 <div class="card-body">
-                    <h2 class="card-title">Last resize event</h2>
+                    <h2 class="card-title">Last mouseDown</h2>
 
                     <ul class="card-text">
-                        <li>Width: @resizeEventArgs.Width</li>
-                        <li>Height: @resizeEventArgs.Height</li>
+                        <li>Alt key: @mouseDownEventArgs.AltKey</li>
+                        <li>Button: @mouseDownEventArgs.Button</li>
+                        <li>Buttons: @mouseDownEventArgs.Buttons</li>
+                        <li>Client X: @mouseDownEventArgs.ClientX</li>
+                        <li>Client Y: @mouseDownEventArgs.ClientY</li>
+                        <li>Ctrl key: @mouseDownEventArgs.CtrlKey</li>
+                        <li>Detail: @mouseDownEventArgs.Detail</li>
+                        <li>Meta key: @mouseDownEventArgs.MetaKey</li>
+                        <li>Offset X: @mouseDownEventArgs.OffsetX</li>
+                        <li>Offset Y: @mouseDownEventArgs.OffsetY</li>
+                        <li>Screen X: @mouseDownEventArgs.ScreenX</li>
+                        <li>Screen Y: @mouseDownEventArgs.ScreenY</li>
+                        <li>Shift key: @mouseDownEventArgs.ShiftKey</li>
+                        <li>Type: @mouseDownEventArgs.Type</li>
                     </ul>
                 </div>
             </div>
@@ -99,8 +126,9 @@
 @code {
     private KeyboardEventArgs? keyDownEventArgs;
     private KeyboardEventArgs? keyUpEventArgs;
-    private MouseEventArgs? clickEventArgs;
     private ResizeEventArgs? resizeEventArgs;
+    private MouseEventArgs? clickEventArgs;
+    private MouseEventArgs? mouseDownEventArgs;
 
     public async Task OnWindowKeyDown(KeyboardEventArgs args) {
         keyDownEventArgs = args;
@@ -114,11 +142,15 @@
         await Task.CompletedTask;
     }
 
+    public void OnWindowResize(ResizeEventArgs args) {
+        resizeEventArgs = args;
+    }
+
     public void OnWindowClick(MouseEventArgs args) {
         clickEventArgs = args;
     }
 
-    public void OnWindowResize(ResizeEventArgs args) {
-        resizeEventArgs = args;
+    public void OnWindowMouseDown(MouseEventArgs args) {
+        mouseDownEventArgs = args;
     }
 }

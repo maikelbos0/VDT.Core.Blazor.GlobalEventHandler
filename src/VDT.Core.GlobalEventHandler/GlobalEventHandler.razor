@@ -17,6 +17,9 @@
     [Parameter]
     public EventCallback<MouseEventArgs> OnClick { get; set; }
 
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnMouseDown { get; set; }
+
     protected override async Task OnAfterRenderAsync(bool firstRender) {
         if (firstRender) {
             moduleReference = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/VDT.Core.GlobalEventHandler/globaleventhandler.js");
@@ -44,6 +47,11 @@
     [JSInvokable]
     public async Task InvokeClick(MouseEventArgs args) {
         await OnClick.InvokeAsync(args);
+    }
+
+    [JSInvokable]
+    public async Task InvokeMouseDown(MouseEventArgs args) {
+        await OnMouseDown.InvokeAsync(args);
     }
 
     public async ValueTask DisposeAsync() {

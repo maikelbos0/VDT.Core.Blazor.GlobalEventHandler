@@ -68,5 +68,21 @@ namespace VDT.Core.GlobalEventHandler.Tests {
 
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public async Task GlobalEventHandler_InvokeMouseDown_Invokes_OnMouseDown_Handler() {
+            using var context = new TestContext();
+
+            context.JSInterop.SetupModule("./_content/VDT.Core.GlobalEventHandler/globaleventhandler.js").SetupVoid("register", _ => true);
+
+            MouseEventArgs expected = new MouseEventArgs();
+            MouseEventArgs actual = null!;
+
+            var handler = context.RenderComponent<GlobalEventHandler>(parameters => parameters.Add(p => p.OnMouseDown, (args) => actual = args));
+
+            await handler.Instance.InvokeMouseDown(expected);
+
+            Assert.Equal(expected, actual);
+        }
     }
 }

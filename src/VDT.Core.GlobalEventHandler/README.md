@@ -11,15 +11,16 @@ Blazor component that allows you to handle global window level events in your ap
 To register event handlers, simply include the GlobalEventHandler component on your page and register your event handler with the event in the component
 that you want to handle. The available events are:
 
-- `OnWindowKeyDown` which provides an optional `KeyboardEventArgs` parameter
-- `OnWindowKeyUp` which provides an optional `KeyboardEventArgs` parameter
-- `OnWindowResize` which provides an optional `ResizeEventArgs` parameter
-- `OnWindowClick` which provides an optional `MouseEventArgs` parameter
+- `OnKeyDown` which provides an optional `KeyboardEventArgs` parameter
+- `OnKeyUp` which provides an optional `KeyboardEventArgs` parameter
+- `OnResize` which provides an optional `ResizeEventArgs` parameter
+- `OnClick` which provides an optional `MouseEventArgs` parameter
+- `OnMouseDown` which provides an optional `MouseEventArgs` parameter
 
 ### Example
 
 ```
-<GlobalEventHandler OnWindowKeyDown="@OnWindowKeyDown" OnWindowResize="@OnWindowResize" OnWindowClick="@OnWindowClick" />
+<GlobalEventHandler OnKeyDown="@OnWindowKeyDown" OnResize="@OnWindowResize" OnClick="@OnWindowClick" />
 
 @if (keyDownEventArgs != null) {
     <h2>Last key down event</h2>

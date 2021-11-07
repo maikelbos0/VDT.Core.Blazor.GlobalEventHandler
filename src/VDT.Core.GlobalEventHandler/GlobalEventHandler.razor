@@ -23,6 +23,9 @@
     [Parameter]
     public EventCallback<MouseEventArgs> OnMouseUp { get; set; }
 
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnMouseMove { get; set; }
+
     protected override async Task OnAfterRenderAsync(bool firstRender) {
         if (firstRender) {
             moduleReference = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/VDT.Core.GlobalEventHandler/globaleventhandler.js");
@@ -60,6 +63,11 @@
     [JSInvokable]
     public async Task InvokeMouseUp(MouseEventArgs args) {
         await OnMouseUp.InvokeAsync(args);
+    }
+
+    [JSInvokable]
+    public async Task InvokeMouseMove(MouseEventArgs args) {
+        await OnMouseMove.InvokeAsync(args);
     }
 
     public async ValueTask DisposeAsync() {

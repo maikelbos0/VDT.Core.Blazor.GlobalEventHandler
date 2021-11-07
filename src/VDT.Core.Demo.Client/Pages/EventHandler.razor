@@ -1,6 +1,12 @@
 ﻿@page "/eventhandler"
 
-<GlobalEventHandler OnKeyDown="@OnWindowKeyDown" OnKeyUp="@OnWindowKeyUp" OnResize="@OnWindowResize" OnClick="@OnWindowClick" OnMouseDown="@OnWindowMouseDown" OnMouseUp="@OnWindowMouseUp" />
+<GlobalEventHandler OnKeyDown="@OnWindowKeyDown"
+                    OnKeyUp="@OnWindowKeyUp"
+                    OnResize="@OnWindowResize"
+                    OnClick="@OnWindowClick"
+                    OnMouseDown="@OnWindowMouseDown"
+                    OnMouseUp="@OnWindowMouseUp"
+                    OnMouseMove="@OnWindowMouseMove" />
 
 <h1>VDT.Core.Demo.Client - GlobalEventHandler</h1>
 
@@ -148,6 +154,33 @@
         </div>
     }
 
+    @if (mouseMoveEventArgs != null) {
+        <div class="col-12 col-lg-6 col-xl-4 mb-4">
+            <div class="card text-dark bg-light">
+                <div class="card-body">
+                    <h2 class="card-title">Last mouseMove</h2>
+
+                    <ul class="card-text">
+                        <li>Alt key: @mouseMoveEventArgs.AltKey</li>
+                        <li>Button: @mouseMoveEventArgs.Button</li>
+                        <li>Buttons: @mouseMoveEventArgs.Buttons</li>
+                        <li>Client X: @mouseMoveEventArgs.ClientX</li>
+                        <li>Client Y: @mouseMoveEventArgs.ClientY</li>
+                        <li>Ctrl key: @mouseMoveEventArgs.CtrlKey</li>
+                        <li>Detail: @mouseMoveEventArgs.Detail</li>
+                        <li>Meta key: @mouseMoveEventArgs.MetaKey</li>
+                        <li>Offset X: @mouseMoveEventArgs.OffsetX</li>
+                        <li>Offset Y: @mouseMoveEventArgs.OffsetY</li>
+                        <li>Screen X: @mouseMoveEventArgs.ScreenX</li>
+                        <li>Screen Y: @mouseMoveEventArgs.ScreenY</li>
+                        <li>Shift key: @mouseMoveEventArgs.ShiftKey</li>
+                        <li>Type: @mouseMoveEventArgs.Type</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+
 </div>
 
 @code {
@@ -157,6 +190,7 @@
     private MouseEventArgs? clickEventArgs;
     private MouseEventArgs? mouseDownEventArgs;
     private MouseEventArgs? mouseUpEventArgs;
+    private MouseEventArgs? mouseMoveEventArgs;
 
     public async Task OnWindowKeyDown(KeyboardEventArgs args) {
         keyDownEventArgs = args;
@@ -184,5 +218,9 @@
 
     public void OnWindowMouseUp(MouseEventArgs args) {
         mouseUpEventArgs = args;
+    }
+
+    public void OnWindowMouseMove(MouseEventArgs args) {
+        mouseMoveEventArgs = args;
     }
 }

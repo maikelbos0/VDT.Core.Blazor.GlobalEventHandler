@@ -17,6 +17,7 @@ that you want to handle. The available events are:
 - `OnClick` which provides an optional `MouseEventArgs` parameter
 - `OnMouseDown` which provides an optional `MouseEventArgs` parameter
 - `OnMouseUp` which provides an optional `MouseEventArgs` parameter
+- `OnMouseMove` which provides an optional `MouseEventArgs` parameter
 
 ### Example
 

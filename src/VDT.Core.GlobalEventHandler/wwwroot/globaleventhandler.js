@@ -14,9 +14,10 @@ function GetEventHandlers(dotNetObjectReference) {
     return {
         'keydown': getKeyboardEventHandler(dotNetObjectReference, 'keydown', 'InvokeKeyDown'),
         'keyup': getKeyboardEventHandler(dotNetObjectReference, 'keyup', 'InvokeKeyUp'),
+        'resize': getResizeEventHandler(dotNetObjectReference),
         'click': getMouseEventHandler(dotNetObjectReference, 'click', 'InvokeClick'),
         'mousedown': getMouseEventHandler(dotNetObjectReference, 'mousedown', 'InvokeMouseDown'),
-        'resize': getResizeEventHandler(dotNetObjectReference)
+        'mouseup': getMouseEventHandler(dotNetObjectReference, 'mouseup', 'InvokeMouseUp')
     };
 }
 

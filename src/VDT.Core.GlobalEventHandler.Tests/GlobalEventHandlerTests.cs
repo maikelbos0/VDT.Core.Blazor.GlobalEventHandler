@@ -84,5 +84,21 @@ namespace VDT.Core.GlobalEventHandler.Tests {
 
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public async Task GlobalEventHandler_InvokeMouseUp_Invokes_OnMouseUp_Handler() {
+            using var context = new TestContext();
+
+            context.JSInterop.SetupModule("./_content/VDT.Core.GlobalEventHandler/globaleventhandler.js").SetupVoid("register", _ => true);
+
+            MouseEventArgs expected = new MouseEventArgs();
+            MouseEventArgs actual = null!;
+
+            var handler = context.RenderComponent<GlobalEventHandler>(parameters => parameters.Add(p => p.OnMouseUp, (args) => actual = args));
+
+            await handler.Instance.InvokeMouseUp(expected);
+
+            Assert.Equal(expected, actual);
+        }
     }
 }

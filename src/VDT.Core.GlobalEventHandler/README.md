@@ -16,6 +16,7 @@ that you want to handle. The available events are:
 - `OnResize` which provides an optional `ResizeEventArgs` parameter
 - `OnClick` which provides an optional `MouseEventArgs` parameter
 - `OnMouseDown` which provides an optional `MouseEventArgs` parameter
+- `OnMouseUp` which provides an optional `MouseEventArgs` parameter
 
 ### Example
 

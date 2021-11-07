@@ -1,6 +1,6 @@
 ﻿@page "/eventhandler"
 
-<GlobalEventHandler OnKeyDown="@OnWindowKeyDown" OnKeyUp="@OnWindowKeyUp" OnResize="@OnWindowResize" OnClick="@OnWindowClick" OnMouseDown="@OnWindowMouseDown" />
+<GlobalEventHandler OnKeyDown="@OnWindowKeyDown" OnKeyUp="@OnWindowKeyUp" OnResize="@OnWindowResize" OnClick="@OnWindowClick" OnMouseDown="@OnWindowMouseDown" OnMouseUp="@OnWindowMouseUp" />
 
 <h1>VDT.Core.Demo.Client - GlobalEventHandler</h1>
 
@@ -121,6 +121,33 @@
         </div>
     }
 
+    @if (mouseUpEventArgs != null) {
+        <div class="col-12 col-lg-6 col-xl-4 mb-4">
+            <div class="card text-dark bg-light">
+                <div class="card-body">
+                    <h2 class="card-title">Last mouseUp</h2>
+
+                    <ul class="card-text">
+                        <li>Alt key: @mouseUpEventArgs.AltKey</li>
+                        <li>Button: @mouseUpEventArgs.Button</li>
+                        <li>Buttons: @mouseUpEventArgs.Buttons</li>
+                        <li>Client X: @mouseUpEventArgs.ClientX</li>
+                        <li>Client Y: @mouseUpEventArgs.ClientY</li>
+                        <li>Ctrl key: @mouseUpEventArgs.CtrlKey</li>
+                        <li>Detail: @mouseUpEventArgs.Detail</li>
+                        <li>Meta key: @mouseUpEventArgs.MetaKey</li>
+                        <li>Offset X: @mouseUpEventArgs.OffsetX</li>
+                        <li>Offset Y: @mouseUpEventArgs.OffsetY</li>
+                        <li>Screen X: @mouseUpEventArgs.ScreenX</li>
+                        <li>Screen Y: @mouseUpEventArgs.ScreenY</li>
+                        <li>Shift key: @mouseUpEventArgs.ShiftKey</li>
+                        <li>Type: @mouseUpEventArgs.Type</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+
 </div>
 
 @code {
@@ -129,6 +156,7 @@
     private ResizeEventArgs? resizeEventArgs;
     private MouseEventArgs? clickEventArgs;
     private MouseEventArgs? mouseDownEventArgs;
+    private MouseEventArgs? mouseUpEventArgs;
 
     public async Task OnWindowKeyDown(KeyboardEventArgs args) {
         keyDownEventArgs = args;
@@ -152,5 +180,9 @@
 
     public void OnWindowMouseDown(MouseEventArgs args) {
         mouseDownEventArgs = args;
+    }
+
+    public void OnWindowMouseUp(MouseEventArgs args) {
+        mouseUpEventArgs = args;
     }
 }

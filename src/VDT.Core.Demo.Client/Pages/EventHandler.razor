@@ -7,7 +7,8 @@
                     OnMouseDown="@OnWindowMouseDown"
                     OnMouseUp="@OnWindowMouseUp"
                     OnMouseMove="@OnWindowMouseMove"
-                    OnContextMenu="@OnWindowContextMenu" />
+                    OnContextMenu="@OnWindowContextMenu"
+                    OnDoubleClick="@OnWindowDoubleClick" />
 
 <h1>VDT.Core.Demo.Client - GlobalEventHandler</h1>
 
@@ -186,7 +187,7 @@
         <div class="col-12 col-lg-6 col-xl-4 mb-4">
             <div class="card text-dark bg-light">
                 <div class="card-body">
-                    <h2 class="card-title">Last contextMenu</h2>
+                    <h2 class="card-title">Last context menu click</h2>
 
                     <ul class="card-text">
                         <li>Alt key: @contextMenuEventArgs.AltKey</li>
@@ -209,6 +210,33 @@
         </div>
     }
 
+    @if (doubleClickEventArgs != null) {
+        <div class="col-12 col-lg-6 col-xl-4 mb-4">
+            <div class="card text-dark bg-light">
+                <div class="card-body">
+                    <h2 class="card-title">Last double click</h2>
+
+                    <ul class="card-text">
+                        <li>Alt key: @doubleClickEventArgs.AltKey</li>
+                        <li>Button: @doubleClickEventArgs.Button</li>
+                        <li>Buttons: @doubleClickEventArgs.Buttons</li>
+                        <li>Client X: @doubleClickEventArgs.ClientX</li>
+                        <li>Client Y: @doubleClickEventArgs.ClientY</li>
+                        <li>Ctrl key: @doubleClickEventArgs.CtrlKey</li>
+                        <li>Detail: @doubleClickEventArgs.Detail</li>
+                        <li>Meta key: @doubleClickEventArgs.MetaKey</li>
+                        <li>Offset X: @doubleClickEventArgs.OffsetX</li>
+                        <li>Offset Y: @doubleClickEventArgs.OffsetY</li>
+                        <li>Screen X: @doubleClickEventArgs.ScreenX</li>
+                        <li>Screen Y: @doubleClickEventArgs.ScreenY</li>
+                        <li>Shift key: @doubleClickEventArgs.ShiftKey</li>
+                        <li>Type: @doubleClickEventArgs.Type</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+
 </div>
 
 @code {
@@ -220,6 +248,7 @@
     private MouseEventArgs? mouseUpEventArgs;
     private MouseEventArgs? mouseMoveEventArgs;
     private MouseEventArgs? contextMenuEventArgs;
+    private MouseEventArgs? doubleClickEventArgs;
 
     public async Task OnWindowKeyDown(KeyboardEventArgs args) {
         keyDownEventArgs = args;
@@ -255,5 +284,9 @@
 
     public void OnWindowContextMenu(MouseEventArgs args) {
         contextMenuEventArgs = args;
+    }
+
+    public void OnWindowDoubleClick(MouseEventArgs args) {
+        doubleClickEventArgs = args;
     }
 }

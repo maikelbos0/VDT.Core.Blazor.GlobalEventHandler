@@ -19,6 +19,7 @@ that you want to handle. The available events are:
 - `OnMouseUp` which provides an optional `MouseEventArgs` parameter
 - `OnMouseMove` which provides an optional `MouseEventArgs` parameter
 - `OnContextMenu` which provides an optional `MouseEventArgs` parameter
+- `OnDoubleClick` which provides an optional `MouseEventArgs` parameter
 
 ### Example
 

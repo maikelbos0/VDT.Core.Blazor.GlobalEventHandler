@@ -6,7 +6,8 @@
                     OnClick="@OnWindowClick"
                     OnMouseDown="@OnWindowMouseDown"
                     OnMouseUp="@OnWindowMouseUp"
-                    OnMouseMove="@OnWindowMouseMove" />
+                    OnMouseMove="@OnWindowMouseMove"
+                    OnContextMenu="@OnWindowContextMenu" />
 
 <h1>VDT.Core.Demo.Client - GlobalEventHandler</h1>
 
@@ -181,6 +182,33 @@
         </div>
     }
 
+    @if (contextMenuEventArgs != null) {
+        <div class="col-12 col-lg-6 col-xl-4 mb-4">
+            <div class="card text-dark bg-light">
+                <div class="card-body">
+                    <h2 class="card-title">Last contextMenu</h2>
+
+                    <ul class="card-text">
+                        <li>Alt key: @contextMenuEventArgs.AltKey</li>
+                        <li>Button: @contextMenuEventArgs.Button</li>
+                        <li>Buttons: @contextMenuEventArgs.Buttons</li>
+                        <li>Client X: @contextMenuEventArgs.ClientX</li>
+                        <li>Client Y: @contextMenuEventArgs.ClientY</li>
+                        <li>Ctrl key: @contextMenuEventArgs.CtrlKey</li>
+                        <li>Detail: @contextMenuEventArgs.Detail</li>
+                        <li>Meta key: @contextMenuEventArgs.MetaKey</li>
+                        <li>Offset X: @contextMenuEventArgs.OffsetX</li>
+                        <li>Offset Y: @contextMenuEventArgs.OffsetY</li>
+                        <li>Screen X: @contextMenuEventArgs.ScreenX</li>
+                        <li>Screen Y: @contextMenuEventArgs.ScreenY</li>
+                        <li>Shift key: @contextMenuEventArgs.ShiftKey</li>
+                        <li>Type: @contextMenuEventArgs.Type</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+
 </div>
 
 @code {
@@ -191,6 +219,7 @@
     private MouseEventArgs? mouseDownEventArgs;
     private MouseEventArgs? mouseUpEventArgs;
     private MouseEventArgs? mouseMoveEventArgs;
+    private MouseEventArgs? contextMenuEventArgs;
 
     public async Task OnWindowKeyDown(KeyboardEventArgs args) {
         keyDownEventArgs = args;
@@ -222,5 +251,9 @@
 
     public void OnWindowMouseMove(MouseEventArgs args) {
         mouseMoveEventArgs = args;
+    }
+
+    public void OnWindowContextMenu(MouseEventArgs args) {
+        contextMenuEventArgs = args;
     }
 }

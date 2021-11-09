@@ -96,6 +96,19 @@ namespace VDT.Core.GlobalEventHandler.Tests {
             Assert.Equal(expected, actual);
         }
 
+        [Fact]
+        public async Task GlobalEventHandler_InvokeContextMenu_Invokes_OnContextMenu_Handler() {
+            MouseEventArgs expected = new MouseEventArgs();
+            MouseEventArgs actual = null!;
+
+            using var context = GetTestContext();
+            var handler = context.RenderComponent<GlobalEventHandler>(parameters => parameters.Add(p => p.OnContextMenu, (args) => actual = args));
+
+            await handler.Instance.InvokeContextMenu(expected);
+
+            Assert.Equal(expected, actual);
+        }
+
         private TestContext GetTestContext() {
             const string moduleLocation = "./_content/VDT.Core.GlobalEventHandler/globaleventhandler.js";
             var context = new TestContext();

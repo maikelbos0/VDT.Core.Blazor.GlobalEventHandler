@@ -18,7 +18,8 @@ function GetEventHandlers(dotNetObjectReference) {
         'click': getMouseEventHandler(dotNetObjectReference, 'click', 'InvokeClick'),
         'mousedown': getMouseEventHandler(dotNetObjectReference, 'mousedown', 'InvokeMouseDown'),
         'mouseup': getMouseEventHandler(dotNetObjectReference, 'mouseup', 'InvokeMouseUp'),
-        'mousemove': getMouseEventHandler(dotNetObjectReference, 'mousemove', 'InvokeMouseMove')
+        'mousemove': getMouseEventHandler(dotNetObjectReference, 'mousemove', 'InvokeMouseMove'),
+        'contextmenu': getMouseEventHandler(dotNetObjectReference, 'contextmenu', 'InvokeContextMenu')
     };
 }
 

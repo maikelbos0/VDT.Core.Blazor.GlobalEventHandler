@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace VDT.Core.GlobalEventHandler {
+namespace VDT.Core.Blazor.GlobalEventHandler {
     public class ResizeEventArgs : EventArgs {
         public int Width { get; protected set; }
         public int Height { get; protected set; }

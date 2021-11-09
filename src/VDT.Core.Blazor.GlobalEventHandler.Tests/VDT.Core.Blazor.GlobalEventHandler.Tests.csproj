@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VDT.Core.GlobalEventHandler\VDT.Core.GlobalEventHandler.csproj" />
+    <ProjectReference Include="..\VDT.Core.Blazor.GlobalEventHandler\VDT.Core.Blazor.GlobalEventHandler.csproj" />
   </ItemGroup>
   
 </Project>

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace VDT.Core.GlobalEventHandler.Tests {
+namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
     public class GlobalEventHandlerTests {
         [Fact]
         public async Task GlobalEventHandler_InvokeKeyDown_Invokes_OnKeyDown_Handler() {

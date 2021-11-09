@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.DependencyInjectio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.Demo.Client", "VDT.Core.Demo.Client\VDT.Core.Demo.Client.csproj", "{C976E9CF-D11A-438D-945F-6CDFC45A6A22}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.GlobalEventHandler", "VDT.Core.GlobalEventHandler\VDT.Core.GlobalEventHandler.csproj", "{7516D99F-F731-4190-8BD5-EA7B26493D53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.Blazor.GlobalEventHandler", "VDT.Core.Blazor.GlobalEventHandler\VDT.Core.Blazor.GlobalEventHandler.csproj", "{7516D99F-F731-4190-8BD5-EA7B26493D53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDT.Core.GlobalEventHandler.Tests", "VDT.Core.GlobalEventHandler.Tests\VDT.Core.GlobalEventHandler.Tests.csproj", "{2D2BEAB1-7469-4877-B8C2-50415F507674}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.Blazor.GlobalEventHandler.Tests", "VDT.Core.Blazor.GlobalEventHandler.Tests\VDT.Core.Blazor.GlobalEventHandler.Tests.csproj", "{2D2BEAB1-7469-4877-B8C2-50415F507674}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

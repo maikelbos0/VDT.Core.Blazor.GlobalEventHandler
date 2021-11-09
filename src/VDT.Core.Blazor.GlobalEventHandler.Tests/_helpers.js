@@ -1,6 +1,6 @@
 ﻿var _helpers = {
     getGlobaleventhandler: async function () {
-        return await import('../VDT.Core.GlobalEventHandler/wwwroot/globaleventhandler.js');
+        return await import('../VDT.Core.Blazor.GlobalEventHandler/wwwroot/globaleventhandler.js');
     },
 
     window: {

@@ -30,6 +30,8 @@ namespace VDT.Core.Blazor.GlobalEventHandler {
         [JSInvokable] public async Task InvokeContextMenu(MouseEventArgs args) => await OnContextMenu.InvokeAsync(args);
         [JSInvokable] public async Task InvokeDoubleClick(MouseEventArgs args) => await OnDoubleClick.InvokeAsync(args);
 
+        protected override bool ShouldRender() => false;
+
         protected override async Task OnAfterRenderAsync(bool firstRender) {
             if (firstRender) {
                 moduleReference = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/VDT.Core.Blazor.GlobalEventHandler/globaleventhandler.js");

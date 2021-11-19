@@ -123,7 +123,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
         }
 
         private TestContext GetTestContext() {
-            const string moduleLocation = "./_content/VDT.Core.GlobalEventHandler/globaleventhandler.js";
+            const string moduleLocation = "./_content/VDT.Core.Blazor.GlobalEventHandler/globaleventhandler.js";
             var context = new TestContext();
 
             context.JSInterop.SetupModule(moduleLocation).SetupVoid("register", _ => true);

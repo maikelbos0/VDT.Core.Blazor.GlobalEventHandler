@@ -1,4 +1,4 @@
-﻿using Bunit;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using NSubstitute;
@@ -63,11 +63,13 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
         public async Task GlobalEventHandler_InvokeKeyDown_Invokes_OnKeyDown_Handler() {
             KeyboardEventArgs expected = new KeyboardEventArgs();
             KeyboardEventArgs actual = null!;
+            var subject = new GlobalEventHandler() {
+#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
+                OnKeyDown = EventCallback.Factory.Create<KeyboardEventArgs>(this, (args) => actual = args)
+#pragma warning restore BL0005 // Component parameter should not be set outside of its component.
+            };
 
-            using var context = GetTestContext();
-            var handler = context.RenderComponent<GlobalEventHandler>(parameters => parameters.Add(p => p.OnKeyDown, (args) => actual = args));
-
-            await handler.Instance.InvokeKeyDown(expected);
+            await subject.InvokeKeyDown(expected);
 
             Assert.Equal(expected, actual);
         }
@@ -76,11 +78,13 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
         public async Task GlobalEventHandler_InvokeKeyUp_Invokes_OnKeyUp_Handler() {
             KeyboardEventArgs expected = new KeyboardEventArgs();
             KeyboardEventArgs actual = null!;
+            var subject = new GlobalEventHandler() {
+#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
+                OnKeyUp = EventCallback.Factory.Create<KeyboardEventArgs>(this, (args) => actual = args)
+#pragma warning restore BL0005 // Component parameter should not be set outside of its component.
+            };
 
-            using var context = GetTestContext();
-            var handler = context.RenderComponent<GlobalEventHandler>(parameters => parameters.Add(p => p.OnKeyUp, (args) => actual = args));
-
-            await handler.Instance.InvokeKeyUp(expected);
+            await subject.InvokeKeyUp(expected);
 
             Assert.Equal(expected, actual);
         }
@@ -89,11 +93,13 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
         public async Task GlobalEventHandler_InvokeResize_Invokes_OnResize_Handler() {
             ResizeEventArgs expected = new ResizeEventArgs(0, 0);
             ResizeEventArgs actual = null!;
+            var subject = new GlobalEventHandler() {
+#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
+                OnResize = EventCallback.Factory.Create<ResizeEventArgs>(this, (args) => actual = args)
+#pragma warning restore BL0005 // Component parameter should not be set outside of its component.
+            };
 
-            using var context = GetTestContext();
-            var handler = context.RenderComponent<GlobalEventHandler>(parameters => parameters.Add(p => p.OnResize, (args) => actual = args));
-
-            await handler.Instance.InvokeResize(expected);
+            await subject.InvokeResize(expected);
 
             Assert.Equal(expected, actual);
         }
@@ -102,11 +108,13 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
         public async Task GlobalEventHandler_InvokeClick_Invokes_OnClick_Handler() {
             MouseEventArgs expected = new MouseEventArgs();
             MouseEventArgs actual = null!;
+            var subject = new GlobalEventHandler() {
+#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
+                OnClick = EventCallback.Factory.Create<MouseEventArgs>(this, (args) => actual = args)
+#pragma warning restore BL0005 // Component parameter should not be set outside of its component.
+            };
 
-            using var context = GetTestContext();
-            var handler = context.RenderComponent<GlobalEventHandler>(parameters => parameters.Add(p => p.OnClick, (args) => actual = args));
-
-            await handler.Instance.InvokeClick(expected);
+            await subject.InvokeClick(expected);
 
             Assert.Equal(expected, actual);
         }
@@ -115,11 +123,13 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
         public async Task GlobalEventHandler_InvokeMouseDown_Invokes_OnMouseDown_Handler() {
             MouseEventArgs expected = new MouseEventArgs();
             MouseEventArgs actual = null!;
+            var subject = new GlobalEventHandler() {
+#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
+                OnMouseDown = EventCallback.Factory.Create<MouseEventArgs>(this, (args) => actual = args)
+#pragma warning restore BL0005 // Component parameter should not be set outside of its component.
+            };
 
-            using var context = GetTestContext();
-            var handler = context.RenderComponent<GlobalEventHandler>(parameters => parameters.Add(p => p.OnMouseDown, (args) => actual = args));
-
-            await handler.Instance.InvokeMouseDown(expected);
+            await subject.InvokeMouseDown(expected);
 
             Assert.Equal(expected, actual);
         }
@@ -128,11 +138,13 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
         public async Task GlobalEventHandler_InvokeMouseUp_Invokes_OnMouseUp_Handler() {
             MouseEventArgs expected = new MouseEventArgs();
             MouseEventArgs actual = null!;
+            var subject = new GlobalEventHandler() {
+#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
+                OnMouseUp = EventCallback.Factory.Create<MouseEventArgs>(this, (args) => actual = args)
+#pragma warning restore BL0005 // Component parameter should not be set outside of its component.
+            };
 
-            using var context = GetTestContext();
-            var handler = context.RenderComponent<GlobalEventHandler>(parameters => parameters.Add(p => p.OnMouseUp, (args) => actual = args));
-
-            await handler.Instance.InvokeMouseUp(expected);
+            await subject.InvokeMouseUp(expected);
 
             Assert.Equal(expected, actual);
         }
@@ -141,11 +153,13 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
         public async Task GlobalEventHandler_InvokeMouseMove_Invokes_OnMouseMove_Handler() {
             MouseEventArgs expected = new MouseEventArgs();
             MouseEventArgs actual = null!;
+            var subject = new GlobalEventHandler() {
+#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
+                OnMouseMove = EventCallback.Factory.Create<MouseEventArgs>(this, (args) => actual = args)
+#pragma warning restore BL0005 // Component parameter should not be set outside of its component.
+            };
 
-            using var context = GetTestContext();
-            var handler = context.RenderComponent<GlobalEventHandler>(parameters => parameters.Add(p => p.OnMouseMove, (args) => actual = args));
-
-            await handler.Instance.InvokeMouseMove(expected);
+            await subject.InvokeMouseMove(expected);
 
             Assert.Equal(expected, actual);
         }
@@ -154,11 +168,13 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
         public async Task GlobalEventHandler_InvokeContextMenu_Invokes_OnContextMenu_Handler() {
             MouseEventArgs expected = new MouseEventArgs();
             MouseEventArgs actual = null!;
+            var subject = new GlobalEventHandler() {
+#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
+                OnContextMenu = EventCallback.Factory.Create<MouseEventArgs>(this, (args) => actual = args)
+#pragma warning restore BL0005 // Component parameter should not be set outside of its component.
+            };
 
-            using var context = GetTestContext();
-            var handler = context.RenderComponent<GlobalEventHandler>(parameters => parameters.Add(p => p.OnContextMenu, (args) => actual = args));
-
-            await handler.Instance.InvokeContextMenu(expected);
+            await subject.InvokeContextMenu(expected);
 
             Assert.Equal(expected, actual);
         }
@@ -167,21 +183,15 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
         public async Task GlobalEventHandler_InvokeDoubleClick_Invokes_OnDoubleClick_Handler() {
             MouseEventArgs expected = new MouseEventArgs();
             MouseEventArgs actual = null!;
+            var subject = new GlobalEventHandler() {
+#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
+                OnDoubleClick = EventCallback.Factory.Create<MouseEventArgs>(this, (args) => actual = args)
+#pragma warning restore BL0005 // Component parameter should not be set outside of its component.
+            };
 
-            using var context = GetTestContext();
-            var handler = context.RenderComponent<GlobalEventHandler>(parameters => parameters.Add(p => p.OnContextMenu, (args) => actual = args));
-
-            await handler.Instance.InvokeContextMenu(expected);
+            await subject.InvokeDoubleClick(expected);
 
             Assert.Equal(expected, actual);
-        }
-
-        private TestContext GetTestContext() {
-            var context = new TestContext();
-
-            context.JSInterop.SetupModule(GlobalEventHandler.ModuleLocation).SetupVoid("register", _ => true);
-
-            return context;
         }
     }
 }

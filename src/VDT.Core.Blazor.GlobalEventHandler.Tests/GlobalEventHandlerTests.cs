@@ -1,10 +1,64 @@
 ﻿using Bunit;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
+using NSubstitute;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
     public class GlobalEventHandlerTests {
+        private class TestGlobalEventHandler : GlobalEventHandler {
+            public new bool ShouldRender() => base.ShouldRender();
+            public new async Task OnAfterRenderAsync(bool firstRender) => await base.OnAfterRenderAsync(firstRender);
+        }
+
+        [Fact]
+        public void GlobalEventHandler_ShouldRender_Returns_False() {
+            var subject = new TestGlobalEventHandler();
+
+            Assert.False(subject.ShouldRender());
+        }
+
+        [Fact]
+        public async Task GlobalEventHandler_OnAfterRenderAsync_Calls_JS_Module_Register_On_First_Render() {
+            var runtime = Substitute.For<IJSRuntime>();
+            var module = Substitute.For<IJSObjectReference>();
+            runtime.InvokeAsync<IJSObjectReference>("import", new object[] { GlobalEventHandler.ModuleLocation }).ReturnsForAnyArgs(module);
+
+            var subject = new TestGlobalEventHandler();
+            subject.JSRuntime = runtime;
+            await subject.OnAfterRenderAsync(true);
+
+            await module.Received().InvokeVoidAsync("register", Arg.Is<object[]>(args => Assert.Single(args) is DotNetObjectReference<GlobalEventHandler>));
+        }
+
+        [Fact]
+        public async Task GlobalEventHandler_OnAfterRenderAsync_Does_Not_Call_JS_Module_Register_After_First_Render() {
+            var runtime = Substitute.For<IJSRuntime>();
+            var module = Substitute.For<IJSObjectReference>();
+            runtime.InvokeAsync<IJSObjectReference>("import", new object[] { GlobalEventHandler.ModuleLocation }).ReturnsForAnyArgs(module);
+
+            var subject = new TestGlobalEventHandler();
+            subject.JSRuntime = runtime;
+            await subject.OnAfterRenderAsync(false);
+
+            await module.DidNotReceiveWithAnyArgs().InvokeVoidAsync(Arg.Any<string>(), Arg.Any<object[]>());
+        }
+
+        [Fact]
+        public async Task GlobalEventHandler_DisposeAsync_Calls_JS_Module_Unregister() {
+            var runtime = Substitute.For<IJSRuntime>();
+            var module = Substitute.For<IJSObjectReference>();
+            runtime.InvokeAsync<IJSObjectReference>("import", new object[] { GlobalEventHandler.ModuleLocation }).ReturnsForAnyArgs(module);
+
+            await using (var subject = new TestGlobalEventHandler()) {
+                subject.JSRuntime = runtime;
+                await subject.OnAfterRenderAsync(true);
+            }
+
+            await module.Received().InvokeVoidAsync("unregister", Arg.Is<object[]>(args => Assert.Single(args) is DotNetObjectReference<GlobalEventHandler>));
+        }
+
         [Fact]
         public async Task GlobalEventHandler_InvokeKeyDown_Invokes_OnKeyDown_Handler() {
             KeyboardEventArgs expected = new KeyboardEventArgs();
@@ -123,10 +177,9 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
         }
 
         private TestContext GetTestContext() {
-            const string moduleLocation = "./_content/VDT.Core.Blazor.GlobalEventHandler/globaleventhandler.js";
             var context = new TestContext();
 
-            context.JSInterop.SetupModule(moduleLocation).SetupVoid("register", _ => true);
+            context.JSInterop.SetupModule(GlobalEventHandler.ModuleLocation).SetupVoid("register", _ => true);
 
             return context;
         }

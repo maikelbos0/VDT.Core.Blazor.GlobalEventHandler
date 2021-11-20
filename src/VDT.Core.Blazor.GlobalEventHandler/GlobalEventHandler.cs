@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 
 namespace VDT.Core.Blazor.GlobalEventHandler {
     public class GlobalEventHandler : ComponentBase {
+        internal const string ModuleLocation = "./_content/VDT.Core.Blazor.GlobalEventHandler/globaleventhandler.js";
+
         private IJSObjectReference? moduleReference;
         private DotNetObjectReference<GlobalEventHandler>? dotNetObjectReference;
 
@@ -34,7 +36,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler {
 
         protected override async Task OnAfterRenderAsync(bool firstRender) {
             if (firstRender) {
-                moduleReference = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/VDT.Core.Blazor.GlobalEventHandler/globaleventhandler.js");
+                moduleReference = await JSRuntime.InvokeAsync<IJSObjectReference>("import", ModuleLocation);
                 dotNetObjectReference = DotNetObjectReference.Create(this);
 
                 await moduleReference.InvokeVoidAsync("register", dotNetObjectReference);

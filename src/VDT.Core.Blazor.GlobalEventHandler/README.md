@@ -20,6 +20,7 @@ that you want to handle. The available events are:
 - `OnMouseMove` which provides an optional `MouseEventArgs` parameter
 - `OnContextMenu` which provides an optional `MouseEventArgs` parameter
 - `OnDoubleClick` which provides an optional `MouseEventArgs` parameter
+- `OnScroll` which provides an optional `ScrollEventArgs` parameter
 
 ### Example
 

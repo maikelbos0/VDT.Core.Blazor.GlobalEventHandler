@@ -21,6 +21,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler {
         [Parameter] public EventCallback<MouseEventArgs> OnMouseMove { get; set; }
         [Parameter] public EventCallback<MouseEventArgs> OnContextMenu { get; set; }        
         [Parameter] public EventCallback<MouseEventArgs> OnDoubleClick { get; set; }
+        [Parameter] public EventCallback<ScrollEventArgs> OnScroll { get; set; }
 
         [JSInvokable] public async Task InvokeKeyDown(KeyboardEventArgs args) => await OnKeyDown.InvokeAsync(args);
         [JSInvokable] public async Task InvokeKeyUp(KeyboardEventArgs args) => await OnKeyUp.InvokeAsync(args);
@@ -31,6 +32,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler {
         [JSInvokable] public async Task InvokeMouseMove(MouseEventArgs args) => await OnMouseMove.InvokeAsync(args);
         [JSInvokable] public async Task InvokeContextMenu(MouseEventArgs args) => await OnContextMenu.InvokeAsync(args);
         [JSInvokable] public async Task InvokeDoubleClick(MouseEventArgs args) => await OnDoubleClick.InvokeAsync(args);
+        [JSInvokable] public async Task InvokeScroll(ScrollEventArgs args) => await OnScroll.InvokeAsync(args);
 
         protected override bool ShouldRender() => false;
 

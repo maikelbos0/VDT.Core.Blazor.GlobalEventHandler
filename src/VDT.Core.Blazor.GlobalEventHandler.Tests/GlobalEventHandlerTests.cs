@@ -193,5 +193,20 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
 
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public async Task GlobalEventHandler_InvokeScroll_Invokes_OnScroll_Handler() {
+            ScrollEventArgs expected = new ScrollEventArgs(0, 0);
+            ScrollEventArgs actual = null!;
+            var subject = new GlobalEventHandler() {
+#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
+                OnScroll = EventCallback.Factory.Create<ScrollEventArgs>(this, (args) => actual = args)
+#pragma warning restore BL0005 // Component parameter should not be set outside of its component.
+            };
+
+            await subject.InvokeScroll(expected);
+
+            Assert.Equal(expected, actual);
+        }
     }
 }

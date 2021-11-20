@@ -20,7 +20,8 @@ function GetEventHandlers(dotNetObjectReference) {
         'mouseup': getMouseEventHandler(dotNetObjectReference, 'mouseup', 'InvokeMouseUp'),
         'mousemove': getMouseEventHandler(dotNetObjectReference, 'mousemove', 'InvokeMouseMove'),
         'contextmenu': getMouseEventHandler(dotNetObjectReference, 'contextmenu', 'InvokeContextMenu'),
-        'dblclick': getMouseEventHandler(dotNetObjectReference, 'dblclick', 'InvokeDoubleClick')
+        'dblclick': getMouseEventHandler(dotNetObjectReference, 'dblclick', 'InvokeDoubleClick'),
+        'scroll': getScrollEventHandler(dotNetObjectReference)
     };
 }
 
@@ -66,6 +67,15 @@ function getResizeEventHandler(dotNetObjectReference) {
         dotNetObjectReference.invokeMethodAsync('InvokeResize', {
             width: window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
             height: window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        });
+    }
+}
+
+function getScrollEventHandler(dotNetObjectReference) {
+    return function () {
+        dotNetObjectReference.invokeMethodAsync('InvokeScroll', {
+            scrollX: window.scrollX,
+            scrollY: window.scrollY
         });
     }
 }

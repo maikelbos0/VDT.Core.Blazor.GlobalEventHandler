@@ -1,14 +1,15 @@
 ﻿@page "/eventhandler"
 
-<GlobalEventHandler OnKeyDown="@OnWindowKeyDown"
-                    OnKeyUp="@OnWindowKeyUp"
-                    OnResize="@OnWindowResize"
-                    OnClick="@OnWindowClick"
-                    OnMouseDown="@OnWindowMouseDown"
-                    OnMouseUp="@OnWindowMouseUp"
-                    OnMouseMove="@OnWindowMouseMove"
-                    OnContextMenu="@OnWindowContextMenu"
-                    OnDoubleClick="@OnWindowDoubleClick" />
+<GlobalEventHandler OnKeyDown="OnWindowKeyDown"
+                    OnKeyUp="OnWindowKeyUp"
+                    OnResize="OnWindowResize"
+                    OnClick="OnWindowClick"
+                    OnMouseDown="OnWindowMouseDown"
+                    OnMouseUp="OnWindowMouseUp"
+                    OnMouseMove="OnWindowMouseMove"
+                    OnContextMenu="OnWindowContextMenu"
+                    OnDoubleClick="OnWindowDoubleClick"
+                    OnScroll="OnWindowScroll" />
 
 <h1>VDT.Core.Demo.Client - GlobalEventHandler</h1>
 
@@ -237,6 +238,21 @@
         </div>
     }
 
+    @if (scrollEventArgs != null) {
+        <div class="col-12 col-lg-6 col-xl-4 mb-4">
+            <div class="card text-dark bg-light">
+                <div class="card-body">
+                    <h2 class="card-title">Last scroll event</h2>
+
+                    <ul class="card-text">
+                        <li>Scroll X: @scrollEventArgs.ScrollX</li>
+                        <li>Scroll Y: @scrollEventArgs.ScrollY</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+
 </div>
 
 @code {
@@ -249,6 +265,7 @@
     private MouseEventArgs? mouseMoveEventArgs;
     private MouseEventArgs? contextMenuEventArgs;
     private MouseEventArgs? doubleClickEventArgs;
+    private ScrollEventArgs? scrollEventArgs;
 
     public async Task OnWindowKeyDown(KeyboardEventArgs args) {
         keyDownEventArgs = args;
@@ -288,5 +305,9 @@
 
     public void OnWindowDoubleClick(MouseEventArgs args) {
         doubleClickEventArgs = args;
+    }
+
+    public void OnWindowScroll(ScrollEventArgs args) {
+        scrollEventArgs = args;
     }
 }

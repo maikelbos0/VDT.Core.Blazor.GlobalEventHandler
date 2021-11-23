@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.Blazor.GlobalEvent
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.Blazor.GlobalEventHandler.Tests", "VDT.Core.Blazor.GlobalEventHandler.Tests\VDT.Core.Blazor.GlobalEventHandler.Tests.csproj", "{2D2BEAB1-7469-4877-B8C2-50415F507674}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDT.Core.Blazor.Wizard", "VDT.Core.Blazor.Wizard\VDT.Core.Blazor.Wizard.csproj", "{6EEF865C-06A4-4FF9-B607-A2EA1BE9F04E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.Blazor.Wizard", "VDT.Core.Blazor.Wizard\VDT.Core.Blazor.Wizard.csproj", "{6EEF865C-06A4-4FF9-B607-A2EA1BE9F04E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

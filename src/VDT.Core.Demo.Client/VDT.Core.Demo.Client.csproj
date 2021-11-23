@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\VDT.Core.Blazor.GlobalEventHandler\VDT.Core.Blazor.GlobalEventHandler.csproj" />
+    <ProjectReference Include="..\VDT.Core.Blazor.Wizard\VDT.Core.Blazor.Wizard.csproj" />
   </ItemGroup>
 
 </Project>

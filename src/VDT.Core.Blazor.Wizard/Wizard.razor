@@ -1,0 +1,11 @@
+﻿<CascadingValue Value="this">
+    <div>
+        <div>
+            <button @onclick="TryCompleteStep">@(ActiveStepIndex < StepsInternal.Count - 1 ? ButtonNextText : ButtonFinishText)</button>
+        </div>
+
+        <div>
+            @Steps
+        </div>
+    </div>
+</CascadingValue>

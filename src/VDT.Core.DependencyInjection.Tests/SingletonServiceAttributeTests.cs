@@ -4,12 +4,23 @@ using Xunit;
 namespace VDT.Core.DependencyInjection.Tests {
     public class SingleTonServiceAttributeTests : ServiceAttributeTests {
         [Fact]
-        public void AddAttributeServices_Adds_Services() {
+        public void AddAttributeServices_Adds_Interface_Services() {
             services.AddAttributeServices(typeof(ServiceAttributeTests).Assembly);
 
             var serviceProvider = services.BuildServiceProvider();
 
             var service = serviceProvider.GetRequiredService<ISingletonServiceTarget>();
+
+            Assert.IsType<SingletonServiceTarget>(service);
+        }
+        
+        [Fact]
+        public void AddAttributeServices_Adds_Class_Services() {
+            services.AddAttributeServices(typeof(ServiceAttributeTests).Assembly);
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            var service = serviceProvider.GetRequiredService<SingletonServiceTargetBase>();
 
             Assert.IsType<SingletonServiceTarget>(service);
         }
@@ -31,12 +42,25 @@ namespace VDT.Core.DependencyInjection.Tests {
         }
 
         [Fact]
-        public void AddAttributeServices_Adds_Services_With_Decorators() {
+        public void AddAttributeServices_Adds_Interface_Services_With_Decorators() {
             services.AddAttributeServices(typeof(ServiceAttributeTests).Assembly, options => options.AddAttributeDecorators());
 
             var serviceProvider = services.BuildServiceProvider();
 
             var proxy = serviceProvider.GetRequiredService<ISingletonServiceTarget>();
+
+            Assert.Equal("Bar", proxy.GetValue());
+
+            Assert.Equal(1, decorator.Calls);
+        }
+
+        [Fact]
+        public void AddAttributeServices_Adds_Class_Services_With_Decorators() {
+            services.AddAttributeServices(typeof(ServiceAttributeTests).Assembly, options => options.AddAttributeDecorators());
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            var proxy = serviceProvider.GetRequiredService<SingletonServiceTargetBase>();
 
             Assert.Equal("Bar", proxy.GetValue());
 

@@ -4,12 +4,23 @@ using Xunit;
 namespace VDT.Core.DependencyInjection.Tests {
     public class ScopedServiceAttributeTests : ServiceAttributeTests {
         [Fact]
-        public void AddAttributeServices_Adds_Services() {
+        public void AddAttributeServices_Adds_Interface_Services() {
             services.AddAttributeServices(typeof(ServiceAttributeTests).Assembly);
 
             var serviceProvider = services.BuildServiceProvider();
 
             var service = serviceProvider.GetRequiredService<IScopedServiceTarget>();
+
+            Assert.IsType<ScopedServiceTarget>(service);
+        }
+
+        [Fact]
+        public void AddAttributeServices_Adds_Class_Services() {
+            services.AddAttributeServices(typeof(ServiceAttributeTests).Assembly);
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            var service = serviceProvider.GetRequiredService<ScopedServiceTargetBase>();
 
             Assert.IsType<ScopedServiceTarget>(service);
         }
@@ -42,12 +53,25 @@ namespace VDT.Core.DependencyInjection.Tests {
         }
 
         [Fact]
-        public void AddAttributeServices_Adds_Services_With_Decorators() {
+        public void AddAttributeServices_Adds_Interface_Services_With_Decorators() {
             services.AddAttributeServices(typeof(ServiceAttributeTests).Assembly, options => options.AddAttributeDecorators());
 
             var serviceProvider = services.BuildServiceProvider();
 
             var proxy = serviceProvider.GetRequiredService<IScopedServiceTarget>();
+
+            Assert.Equal("Bar", proxy.GetValue());
+
+            Assert.Equal(1, decorator.Calls);
+        }
+        
+        [Fact]
+        public void AddAttributeServices_Adds_Class_Services_With_Decorators() {
+            services.AddAttributeServices(typeof(ServiceAttributeTests).Assembly, options => options.AddAttributeDecorators());
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            var proxy = serviceProvider.GetRequiredService<ScopedServiceTargetBase>();
 
             Assert.Equal("Bar", proxy.GetValue());
 

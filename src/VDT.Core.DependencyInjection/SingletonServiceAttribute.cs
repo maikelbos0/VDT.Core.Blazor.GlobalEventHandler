@@ -7,6 +7,7 @@ namespace VDT.Core.DependencyInjection {
     /// Marks a service to be registered as a singleton service when calling <see cref="ServiceCollectionExtensions.AddAttributeServices(IServiceCollection, Assembly)"/>
     /// or <see cref="ServiceCollectionExtensions.AddAttributeServices(IServiceCollection, Assembly, Action{Decorators.DecoratorOptions})"/>
     /// </summary>
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public sealed class SingletonServiceAttribute : ServiceAttribute {
         private static readonly MethodInfo addServiceMethod = typeof(ServiceCollectionServiceExtensions)
             .GetMethod(nameof(ServiceCollectionServiceExtensions.AddSingleton), 2, BindingFlags.Public | BindingFlags.Static, typeof(IServiceCollection));

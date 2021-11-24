@@ -8,7 +8,6 @@ namespace VDT.Core.DependencyInjection {
     /// Marks a service to be registered when calling <see cref="ServiceCollectionExtensions.AddAttributeServices(IServiceCollection, Assembly)"/>
     /// or <see cref="ServiceCollectionExtensions.AddAttributeServices(IServiceCollection, Assembly, Action{DecoratorOptions})"/>
     /// </summary>
-    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public abstract class ServiceAttribute : Attribute {
         internal abstract void Register(IServiceCollection services, Type type);
 

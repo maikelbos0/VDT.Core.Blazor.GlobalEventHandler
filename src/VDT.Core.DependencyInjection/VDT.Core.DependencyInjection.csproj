@@ -1,42 +1,46 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;netcoreapp3.1;net5.0</TargetFrameworks>
-    <Nullable>enable</Nullable>
-    <WarningsAsErrors>nullable</WarningsAsErrors>
-  </PropertyGroup>
-  
-  <PropertyGroup>
-    <PackageId>VDT.Core.DependencyInjection</PackageId>
-    <Version>1.2.0</Version>
-    <Title>VDT.Core.DependencyInjection</Title>
-    <Description>Dependency injection extensions for attribute based service registration and decorator pattern</Description>
-    <PackageReleaseNotes>Added support for placing service attributes on implementations and decorator attributes on implementation methods</PackageReleaseNotes>
-    <Authors>Maikel Bos</Authors>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Copyright>Copyright © 2021 Maikel Bos</Copyright>
-    <PackageTags>Dependency injection, DI, attributes, decorators, decorator pattern</PackageTags>
-    <PackageProjectUrl>https://github.com/maikelbos0/VDT.Core</PackageProjectUrl>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
-  
-  <PropertyGroup>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-  </PropertyGroup>
 
-  <ItemGroup>
-    <None Include="README.md" pack="true" PackagePath="." />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.1;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+		<Nullable>enable</Nullable>
+		<WarningsAsErrors>nullable</WarningsAsErrors>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Castle.Core" Version="4.4.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-  </ItemGroup>
+	<PropertyGroup>
+		<PackageId>VDT.Core.DependencyInjection</PackageId>
+		<Version>1.2.0</Version>
+		<Title>VDT.Core.DependencyInjection</Title>
+		<Description>Dependency injection extensions for attribute based service registration and decorator pattern</Description>
+		<PackageReleaseNotes>Added support for placing service attributes on implementations and decorator attributes on implementation methods</PackageReleaseNotes>
+		<Authors>Maikel Bos</Authors>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Copyright>Copyright © 2021 Maikel Bos</Copyright>
+		<PackageTags>Dependency injection, DI, attributes, decorators, decorator pattern</PackageTags>
+		<PackageProjectUrl>https://github.com/maikelbos0/VDT.Core</PackageProjectUrl>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-      <_Parameter1>$(AssemblyName).Tests</_Parameter1>
-    </AssemblyAttribute>
-  </ItemGroup>
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="README.md" pack="true" PackagePath="." />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Castle.Core" Version="4.4.1" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+			<_Parameter1>$(AssemblyName).Tests</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="NewFolder\" />
+	</ItemGroup>
 
 </Project>

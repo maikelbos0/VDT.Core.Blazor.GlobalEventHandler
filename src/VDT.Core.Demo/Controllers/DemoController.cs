@@ -3,7 +3,7 @@
 namespace VDT.Core.Demo.Controllers {
     [Route("api/[controller]")]
     [ApiController]
-    public class DemoController : ControllerBase {
+    public class DemoController : ControllerBase, IDemoController {
         private readonly IDemo demo;
 
         public DemoController(IDemo demo) {

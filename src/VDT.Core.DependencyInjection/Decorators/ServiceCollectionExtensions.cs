@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
+using System.Reflection;
 
 namespace VDT.Core.DependencyInjection.Decorators {
     /// <summary>
@@ -273,6 +274,21 @@ namespace VDT.Core.DependencyInjection.Decorators {
 
             var generator = new Castle.DynamicProxy.ProxyGenerator();
             var isInterface = typeof(TService).IsInterface;
+            object?[]? constructorArguments = null;
+
+            if (!isInterface) {
+                // We need to supply constructor arguments; the actual content does not matter since only overridable methods will be called
+                var constructor = typeof(TService).GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                    .FirstOrDefault(c => !c.IsPrivate);
+
+                if (constructor == null) {
+                    throw new ServiceRegistrationException($"Service type '{typeof(TService).FullName}' has no accessible constructor; class service types require at least one public or protected constructor.");
+                }
+
+                constructorArguments = Enumerable.Range(0, constructor.GetParameters().Length)
+                    .Select(i => (object?)null)
+                    .ToArray();
+            }
 
             return serviceProvider => {
                 var target = serviceProvider.GetRequiredService<TImplementationService>();
@@ -282,7 +298,7 @@ namespace VDT.Core.DependencyInjection.Decorators {
                     return generator.CreateInterfaceProxyWithTarget<TService>(target, decorators);
                 }
                 else {
-                    return generator.CreateClassProxyWithTarget<TService>(target, decorators);
+                    return (TService)generator.CreateClassProxyWithTarget(typeof(TService), target, constructorArguments, decorators);
                 }
             };
         }

@@ -8,10 +8,10 @@
 
 	<PropertyGroup>
 		<PackageId>VDT.Core.DependencyInjection</PackageId>
-		<Version>1.2.0</Version>
+		<Version>1.3.0</Version>
 		<Title>VDT.Core.DependencyInjection</Title>
 		<Description>Dependency injection extensions for attribute based service registration and decorator pattern</Description>
-		<PackageReleaseNotes>Added support for placing service attributes on implementations and decorator attributes on implementation methods</PackageReleaseNotes>
+		<PackageReleaseNotes>Fixed various issues with decorated base class resolved injection</PackageReleaseNotes>
 		<Authors>Maikel Bos</Authors>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Copyright>Copyright © 2021 Maikel Bos</Copyright>

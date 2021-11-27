@@ -118,7 +118,7 @@ public interface IExample {
     void Bar();
 }
 
-public class Example {
+public class Example : IExample {
     public void Foo() {
         // ...
     }

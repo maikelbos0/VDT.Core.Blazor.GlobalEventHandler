@@ -1,7 +1,9 @@
 ﻿namespace VDT.Core.DependencyInjection.Tests {
-    public class SingletonServiceTarget : ISingletonServiceTarget {
-        public string GetValue() {
-            return "Bar";
+    public class SingletonServiceTarget : SingletonServiceTargetBase, ISingletonServiceTarget {
+        public SingletonServiceTarget() : base("Bar") { }
+
+        public override string GetValue() {
+            return value;
         }
     }
 }

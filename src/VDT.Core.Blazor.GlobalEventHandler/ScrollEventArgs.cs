@@ -1,13 +1,18 @@
 ﻿using System;
 
 namespace VDT.Core.Blazor.GlobalEventHandler {
+    /// <summary>
+    /// Supplies information about a document scroll event that is being raised
+    /// </summary>
     public class ScrollEventArgs : EventArgs {
-        public double ScrollX { get; protected set; }
-        public double ScrollY { get; protected set; }
+        /// <summary>
+        /// Number of pixels that the document is currently scrolled horizontally
+        /// </summary>
+        public double ScrollX { get; set; }
 
-        public ScrollEventArgs(double scrollX, double scrollY) {
-            ScrollX = scrollX;
-            ScrollY = scrollY;
-        }
+        /// <summary>
+        /// Number of pixels that the document is currently scrolled vertically
+        /// </summary>
+        public double ScrollY { get; set; }
     }
 }

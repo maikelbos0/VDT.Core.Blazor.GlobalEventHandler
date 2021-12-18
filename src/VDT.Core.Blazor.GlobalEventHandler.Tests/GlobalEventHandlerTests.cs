@@ -91,7 +91,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
 
         [Fact]
         public async Task GlobalEventHandler_InvokeResize_Invokes_OnResize_Handler() {
-            ResizeEventArgs expected = new ResizeEventArgs(0, 0);
+            ResizeEventArgs expected = new ResizeEventArgs();
             ResizeEventArgs actual = null!;
             var subject = new GlobalEventHandler() {
 #pragma warning disable BL0005 // Component parameter should not be set outside of its component.
@@ -196,7 +196,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
 
         [Fact]
         public async Task GlobalEventHandler_InvokeScroll_Invokes_OnScroll_Handler() {
-            ScrollEventArgs expected = new ScrollEventArgs(0, 0);
+            ScrollEventArgs expected = new ScrollEventArgs();
             ScrollEventArgs actual = null!;
             var subject = new GlobalEventHandler() {
 #pragma warning disable BL0005 // Component parameter should not be set outside of its component.

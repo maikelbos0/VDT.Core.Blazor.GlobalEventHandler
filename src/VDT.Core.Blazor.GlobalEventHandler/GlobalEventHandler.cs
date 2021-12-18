@@ -12,15 +12,54 @@ namespace VDT.Core.Blazor.GlobalEventHandler {
 
         [Inject] public IJSRuntime JSRuntime { get; set; } = null!;
 
+        /// <summary>
+        /// A callback that will be invoked when a key is pressed anywhere in the window
+        /// </summary>
         [Parameter] public EventCallback<KeyboardEventArgs> OnKeyDown { get; set; }
+
+        /// <summary>
+        /// A callback that will be invoked when a pressed key is released anywhere in the window
+        /// </summary>
         [Parameter] public EventCallback<KeyboardEventArgs> OnKeyUp { get; set; }
+
+        /// <summary>
+        /// A callback that will be invoked when the window is resized
+        /// </summary>
         [Parameter] public EventCallback<ResizeEventArgs> OnResize { get; set; }
+
+        /// <summary>
+        /// A callback that will be invoked when a mouse button is clicked anywhere in the window
+        /// </summary>
         [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+        /// <summary>
+        /// A callback that will be invoked when a mouse button is pressed anywhere in the window
+        /// </summary>
         [Parameter] public EventCallback<MouseEventArgs> OnMouseDown { get; set; }
+
+        /// <summary>
+        /// A callback that will be invoked when a pressed mouse button is released anywhere in the window
+        /// </summary>
         [Parameter] public EventCallback<MouseEventArgs> OnMouseUp { get; set; }
+
+        /// <summary>
+        /// A callback that will be invoked when the mouse is moved anywhere in the window
+        /// </summary>
         [Parameter] public EventCallback<MouseEventArgs> OnMouseMove { get; set; }
-        [Parameter] public EventCallback<MouseEventArgs> OnContextMenu { get; set; }        
+
+        /// <summary>
+        /// A callback that will be invoked when a context menu is requested anywhere in the window; normally by using the right mouse button
+        /// </summary>
+        [Parameter] public EventCallback<MouseEventArgs> OnContextMenu { get; set; }
+
+        /// <summary>
+        /// A callback that will be invoked when a mouse button is double clicked anywhere in the window
+        /// </summary>
         [Parameter] public EventCallback<MouseEventArgs> OnDoubleClick { get; set; }
+
+        /// <summary>
+        /// A callback that will be invoked when the document is scrolled
+        /// </summary>
         [Parameter] public EventCallback<ScrollEventArgs> OnScroll { get; set; }
 
         [JSInvokable] public async Task InvokeKeyDown(KeyboardEventArgs args) => await OnKeyDown.InvokeAsync(args);

@@ -1,37 +1,41 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <WarningsAsErrors>nullable</WarningsAsErrors>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<WarningsAsErrors>nullable</WarningsAsErrors>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <PackageId>VDT.Core.Blazor.GlobalEventHandler</PackageId>
-    <Version>1.1.0</Version>
-    <Title>VDT.Core.Blazor.GlobalEventHandler</Title>
-    <Description>Blazor component that allows you to handle global window level events in your application</Description>
-    <PackageReleaseNotes>Added scroll event handler and stopped the component from rendering unnecessarily</PackageReleaseNotes>
-    <Authors>Maikel Bos</Authors>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Copyright>Copyright © 2021 Maikel Bos</Copyright>
-    <PackageTags>Blazor component, blazor, events, event handling, event handler, keydown, keyup, window events, global events, window event handlers, global event handlers</PackageTags>
-    <PackageProjectUrl>https://github.com/maikelbos0/VDT.Core</PackageProjectUrl>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <SupportedPlatform Include="browser" />
-  </ItemGroup>
+	<PropertyGroup>
+		<PackageId>VDT.Core.Blazor.GlobalEventHandler</PackageId>
+		<Version>1.1.0</Version>
+		<Title>VDT.Core.Blazor.GlobalEventHandler</Title>
+		<Description>Blazor component that allows you to handle global window level events in your application</Description>
+		<PackageReleaseNotes>Added scroll event handler and stopped the component from rendering unnecessarily</PackageReleaseNotes>
+		<Authors>Maikel Bos</Authors>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Copyright>Copyright © 2021 Maikel Bos</Copyright>
+		<PackageTags>Blazor component, blazor, events, event handling, event handler, keydown, keyup, window events, global events, window event handlers, global event handlers</PackageTags>
+		<PackageProjectUrl>https://github.com/maikelbos0/VDT.Core</PackageProjectUrl>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.12" />
-  </ItemGroup>
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-      <_Parameter1>$(AssemblyName).Tests</_Parameter1>
-    </AssemblyAttribute>
-  </ItemGroup>
+	<ItemGroup>
+		<SupportedPlatform Include="browser" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.12" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+			<_Parameter1>$(AssemblyName).Tests</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
 
 </Project>

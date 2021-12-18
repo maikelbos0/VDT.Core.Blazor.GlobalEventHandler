@@ -10,7 +10,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler {
         private IJSObjectReference? moduleReference;
         private DotNetObjectReference<GlobalEventHandler>? dotNetObjectReference;
 
-        [Inject] public IJSRuntime JSRuntime { get; set; } = null!;
+        [Inject] internal IJSRuntime JSRuntime { get; set; } = null!;
 
         /// <summary>
         /// A callback that will be invoked when a key is pressed anywhere in the window
@@ -73,8 +73,10 @@ namespace VDT.Core.Blazor.GlobalEventHandler {
         [JSInvokable] public async Task InvokeDoubleClick(MouseEventArgs args) => await OnDoubleClick.InvokeAsync(args);
         [JSInvokable] public async Task InvokeScroll(ScrollEventArgs args) => await OnScroll.InvokeAsync(args);
 
+        /// <inheritdoc/>
         protected override bool ShouldRender() => false;
 
+        /// <inheritdoc/>
         protected override async Task OnAfterRenderAsync(bool firstRender) {
             if (firstRender) {
                 moduleReference = await JSRuntime.InvokeAsync<IJSObjectReference>("import", ModuleLocation);
@@ -84,6 +86,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler {
             }
         }
 
+        /// <inheritdoc/>
         public async ValueTask DisposeAsync() {
             if (moduleReference != null) {
                 await moduleReference.InvokeVoidAsync("unregister", dotNetObjectReference);

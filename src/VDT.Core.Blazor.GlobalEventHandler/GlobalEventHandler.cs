@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
+using System;
 using System.Threading.Tasks;
 
 namespace VDT.Core.Blazor.GlobalEventHandler {
-    public class GlobalEventHandler : ComponentBase {
+    public class GlobalEventHandler : ComponentBase, IAsyncDisposable {
         internal const string ModuleLocation = "./_content/VDT.Core.Blazor.GlobalEventHandler/globaleventhandler.js";
 
         private IJSObjectReference? moduleReference;

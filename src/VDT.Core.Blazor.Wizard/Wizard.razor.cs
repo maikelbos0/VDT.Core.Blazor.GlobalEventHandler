@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace VDT.Core.Blazor.Wizard {
     public partial class Wizard : ComponentBase {
+        [Parameter] public RenderFragment? TitleContent { get; set; }
         [Parameter] public string ButtonNextText { get; set; } = "Next";
         [Parameter] public string ButtonFinishText { get; set; } = "Finish";
         [Parameter] public RenderFragment? Steps { get; set; }

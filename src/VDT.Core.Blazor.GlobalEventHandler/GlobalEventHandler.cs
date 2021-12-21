@@ -157,6 +157,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler {
             }
 
             dotNetObjectReference?.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

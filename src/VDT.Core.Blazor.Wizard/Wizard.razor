@@ -5,7 +5,7 @@
         </div>
 
         <div>
-            <button @onclick="TryCompleteStep">@(ActiveStepIndex < StepsInternal.Count - 1 ? ButtonNextText : ButtonFinishText)</button>
+            <button @onclick="TryCompleteStep">@(IsLastStep ? ButtonFinishText : ButtonNextText)</button>
         </div>
 
         <div>

@@ -6,6 +6,9 @@ namespace VDT.Core.Blazor.Wizard {
     /// Component that renders a series of steps to be completed by the user
     /// </summary>
     public partial class Wizard : ComponentBase {
+        private List<WizardStep> stepsInternal = new List<WizardStep>();
+        private int? activeStepIndex = 0;
+
         /// <summary>
         /// Wizard title content
         /// </summary>
@@ -26,28 +29,27 @@ namespace VDT.Core.Blazor.Wizard {
         /// </summary>
         [Parameter] public RenderFragment? Steps { get; set; }
 
-        // TODO maybe refactor these into fields/methods
-        private List<WizardStep> StepsInternal { get; set; } = new List<WizardStep>();
-        private int? ActiveStepIndex { get; set; } = 0;
-        internal WizardStep? ActiveStep => ActiveStepIndex.HasValue && StepsInternal.Count > ActiveStepIndex.Value ? StepsInternal[ActiveStepIndex.Value] : null;
-
         /// <summary>
         /// Indicates whether or not the wizard is currently active
         /// </summary>
-        public bool IsActive => ActiveStepIndex.HasValue;
+        public bool IsActive => activeStepIndex.HasValue;
+
+        internal WizardStep? ActiveStep => activeStepIndex.HasValue && stepsInternal.Count > activeStepIndex.Value ? stepsInternal[activeStepIndex.Value] : null;
+
+        internal bool IsLastStep => activeStepIndex.HasValue && activeStepIndex.Value == stepsInternal.Count - 1;
 
         internal void AddStep(WizardStep step) {
-            if (!StepsInternal.Contains(step)) {
-                StepsInternal.Add(step);
+            if (!stepsInternal.Contains(step)) {
+                stepsInternal.Add(step);
             }
         }
 
         private void TryCompleteStep() {
-            ActiveStepIndex++;
+            activeStepIndex++;
 
             if (ActiveStep == null) {
-                ActiveStepIndex = null;
-                StepsInternal.Clear();
+                activeStepIndex = null;
+                stepsInternal.Clear();
             }
         }
     }

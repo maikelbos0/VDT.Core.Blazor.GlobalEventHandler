@@ -2,7 +2,12 @@
 
 <h1>VDT.Core.Demo.Client - Wizard</h1>
 
-<Wizard>
+<div>
+    <button @onclick="() => Wizard?.Start()" class="btn btn-primary">Show wizard</button>
+    <button class="btn btn-primary">Hide wizard</button>
+</div>
+
+<Wizard @ref="Wizard">
     <TitleContent>
         <h3>Wizard title</h3>
     </TitleContent>
@@ -13,5 +18,12 @@
         <WizardStep>
             Test step 2
         </WizardStep>
+        <WizardStep>
+            Test step 3
+        </WizardStep>
     </Steps>
 </Wizard>
+
+@code {
+    public Wizard? Wizard { get; set; }
+}

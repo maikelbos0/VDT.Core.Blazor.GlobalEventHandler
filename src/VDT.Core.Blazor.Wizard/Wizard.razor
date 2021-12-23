@@ -1,15 +1,17 @@
 ﻿<CascadingValue Value="this">
-    <div>
+    @if (IsActive) {
         <div>
-            @TitleContent
-        </div>
+            <div>
+                @TitleContent
+            </div>
 
-        <div>
-            <button @onclick="TryCompleteStep">@(IsLastStep ? ButtonFinishText : ButtonNextText)</button>
-        </div>
+            <div>
+                <button @onclick="TryCompleteStep">@(IsLastStep ? ButtonFinishText : ButtonNextText)</button>
+            </div>
 
-        <div>
-            @Steps
+            <div>
+                @Steps
+            </div>
         </div>
-    </div>
+    }
 </CascadingValue>

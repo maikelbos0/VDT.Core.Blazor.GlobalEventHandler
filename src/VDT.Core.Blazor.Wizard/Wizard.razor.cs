@@ -39,7 +39,7 @@ namespace VDT.Core.Blazor.Wizard {
         internal bool IsLastStep => activeStepIndex.HasValue && activeStepIndex.Value == stepsInternal.Count - 1;
 
         /// <summary>
-        /// Start the wizard if it's not already active
+        /// Open the wizard at the first step if it's not currently active
         /// </summary>
         public void Start() {
             if (IsActive) {
@@ -48,6 +48,17 @@ namespace VDT.Core.Blazor.Wizard {
 
             activeStepIndex = 0;
             StateHasChanged();
+        }
+
+        /// <summary>
+        /// Close and reset the wizard if it's currently active
+        /// </summary>
+        public void Stop() {
+            if (!IsActive) {
+                return;
+            }
+
+            Reset();
         }
 
         internal void AddStep(WizardStep step) {
@@ -60,10 +71,13 @@ namespace VDT.Core.Blazor.Wizard {
             activeStepIndex++;
 
             if (ActiveStep == null) {
-                activeStepIndex = null;
-                stepsInternal.Clear();
+                Reset();
             }
+        }
 
+        private void Reset() {
+            activeStepIndex = null;
+            stepsInternal.Clear();
             StateHasChanged();
         }
     }

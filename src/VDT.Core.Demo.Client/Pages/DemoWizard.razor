@@ -3,8 +3,8 @@
 <h1>VDT.Core.Demo.Client - Wizard</h1>
 
 <div>
-    <button @onclick="() => Wizard?.Start()" class="btn btn-primary">Show wizard</button>
-    <button class="btn btn-primary">Hide wizard</button>
+    <button @onclick="() => Wizard?.Start()" class="btn btn-primary">Start wizard</button>
+    <button @onclick="() => Wizard?.Stop()" class="btn btn-primary">Stop wizard</button>
 </div>
 
 <Wizard @ref="Wizard">

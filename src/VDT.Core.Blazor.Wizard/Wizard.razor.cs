@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace VDT.Core.Blazor.Wizard {
     /// <summary>
@@ -67,11 +68,15 @@ namespace VDT.Core.Blazor.Wizard {
             }
         }
 
-        private void TryCompleteStep() {
-            activeStepIndex++;
+        private async Task TryCompleteStep() {
+            var args = new TryCompleteStepEventArgs();
 
-            if (ActiveStep == null) {
-                Reset();
+            if (await ActiveStep!.TryCompleteStep(args)) {
+                activeStepIndex++;
+
+                if (ActiveStep == null) {
+                    Reset();
+                }
             }
         }
 

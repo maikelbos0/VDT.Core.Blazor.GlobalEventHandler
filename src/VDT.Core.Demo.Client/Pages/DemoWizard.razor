@@ -15,8 +15,14 @@
         <WizardStep>
             Test step 1
         </WizardStep>
-        <WizardStep>
-            Test step 2
+        <WizardStep OnTryCompleteStep="TryCompleteStep">
+            <div class="form-check">
+                <input id="goNext" type="checkbox" @bind="GoNext" class="form-check-input" />
+                <label for="goNext" class="form-check-label">Go next?</label>
+            </div>
+            <div>
+                Test step 2
+            </div>
         </WizardStep>
         <WizardStep>
             Test step 3
@@ -26,4 +32,11 @@
 
 @code {
     public Wizard? Wizard { get; set; }
+
+    public bool GoNext { get; set; } = true;
+
+    public void TryCompleteStep(TryCompleteStepEventArgs args) {
+        args.IsCancelled = !GoNext;
+    }
+
 }

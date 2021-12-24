@@ -15,7 +15,7 @@ namespace VDT.Core.Blazor.Wizard {
         [Parameter] public RenderFragment? ChildContent { get; set; }
 
         /// <summary>
-        /// 
+        /// A callback that will be invoked when the user tries to go to the next step
         /// </summary>
         [Parameter] public EventCallback<TryCompleteStepEventArgs> OnTryCompleteStep { get; set; }
 
@@ -29,7 +29,9 @@ namespace VDT.Core.Blazor.Wizard {
             Parent?.AddStep(this);
         }
 
-        internal virtual async Task<bool> TryCompleteStep(TryCompleteStepEventArgs args) {
+        internal virtual async Task<bool> TryCompleteStep() {
+            var args = new TryCompleteStepEventArgs();
+
             await OnTryCompleteStep.InvokeAsync(args);
 
             return !args.IsCancelled;

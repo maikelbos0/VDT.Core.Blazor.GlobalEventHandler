@@ -15,6 +15,12 @@ namespace VDT.Core.Blazor.Wizard {
         [Parameter] public RenderFragment? ChildContent { get; set; }
 
         /// <summary>
+        /// A callback that will be invoked when this step is first rendered
+        /// </summary>
+        [Parameter]
+        public EventCallback<InitializeStepEventArgs> OnInitializeStep { get; set; }
+
+        /// <summary>
         /// A callback that will be invoked when the user tries to go to the next step
         /// </summary>
         [Parameter] public EventCallback<TryCompleteStepEventArgs> OnTryCompleteStep { get; set; }
@@ -27,6 +33,12 @@ namespace VDT.Core.Blazor.Wizard {
         /// <inheritdoc/>
         protected override void OnInitialized() {
             Parent?.AddStep(this);
+        }
+        
+        internal async Task Initialize() {
+            var args = new InitializeStepEventArgs();
+
+            await OnInitializeStep.InvokeAsync(args);
         }
 
         internal virtual async Task<bool> TryCompleteStep() {

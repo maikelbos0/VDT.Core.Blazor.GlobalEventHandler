@@ -62,9 +62,13 @@ namespace VDT.Core.Blazor.Wizard {
             Reset();
         }
 
-        internal void AddStep(WizardStep step) {
+        internal async Task AddStep(WizardStep step) {
             if (!stepsInternal.Contains(step)) {
                 stepsInternal.Add(step);
+
+                if (stepsInternal.Count == 1) {
+                    await ActiveStep!.Initialize();
+                }
             }
         }
 
@@ -74,6 +78,9 @@ namespace VDT.Core.Blazor.Wizard {
 
                 if (ActiveStep == null) {
                     Reset();
+                }
+                else {
+                    await ActiveStep!.Initialize();
                 }
             }
         }

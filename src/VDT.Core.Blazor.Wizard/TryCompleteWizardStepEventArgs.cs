@@ -2,9 +2,9 @@
 
 namespace VDT.Core.Blazor.Wizard {
     /// <summary>
-    /// Supplies information about a wizard step attempting to complete event that is being raised
+    /// Supplies information about a wizard attempting to complete a step event that is being raised
     /// </summary>
-    public class TryCompleteStepEventArgs : EventArgs {
+    public class TryCompleteWizardStepEventArgs : EventArgs {
         /// <summary>
         /// Indicates if completion of the step should be cancelled
         /// </summary>

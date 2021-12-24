@@ -18,12 +18,12 @@ namespace VDT.Core.Blazor.Wizard {
         /// A callback that will be invoked when this step is first rendered
         /// </summary>
         [Parameter]
-        public EventCallback<InitializeStepEventArgs> OnInitializeStep { get; set; }
+        public EventCallback<InitializeWizardStepEventArgs> OnInitialize { get; set; }
 
         /// <summary>
         /// A callback that will be invoked when the user tries to go to the next step
         /// </summary>
-        [Parameter] public EventCallback<TryCompleteStepEventArgs> OnTryCompleteStep { get; set; }
+        [Parameter] public EventCallback<TryCompleteWizardStepEventArgs> OnTryComplete { get; set; }
 
         /// <summary>
         /// Indicates whether or not the wizard step is currently active
@@ -36,15 +36,15 @@ namespace VDT.Core.Blazor.Wizard {
         }
         
         internal async Task Initialize() {
-            var args = new InitializeStepEventArgs();
+            var args = new InitializeWizardStepEventArgs();
 
-            await OnInitializeStep.InvokeAsync(args);
+            await OnInitialize.InvokeAsync(args);
         }
 
-        internal virtual async Task<bool> TryCompleteStep() {
-            var args = new TryCompleteStepEventArgs();
+        internal async Task<bool> TryComplete() {
+            var args = new TryCompleteWizardStepEventArgs();
 
-            await OnTryCompleteStep.InvokeAsync(args);
+            await OnTryComplete.InvokeAsync(args);
 
             return !args.IsCancelled;
         }

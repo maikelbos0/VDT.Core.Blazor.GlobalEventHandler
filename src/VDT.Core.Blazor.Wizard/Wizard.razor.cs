@@ -73,7 +73,7 @@ namespace VDT.Core.Blazor.Wizard {
         }
 
         private async Task TryCompleteStep() {
-            if (await ActiveStep!.TryCompleteStep()) {
+            if (await ActiveStep!.TryComplete()) {
                 activeStepIndex++;
 
                 if (ActiveStep == null) {

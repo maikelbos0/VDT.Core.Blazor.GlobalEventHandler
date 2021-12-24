@@ -4,7 +4,7 @@ namespace VDT.Core.Blazor.Wizard {
     /// <summary>
     /// Supplies information about a wizard step initializing event that is being raised
     /// </summary>
-    public class InitializeStepEventArgs : EventArgs {
+    public class InitializeWizardStepEventArgs : EventArgs {
         // TODO pass marker to step somehow?
     }
 }

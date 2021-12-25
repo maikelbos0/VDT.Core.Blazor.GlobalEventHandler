@@ -7,7 +7,7 @@ namespace VDT.Core.Blazor.Wizard {
     /// Component that renders a series of steps to be completed by the user
     /// </summary>
     public partial class Wizard : ComponentBase {
-        private List<WizardStep> stepsInternal = new List<WizardStep>();
+        private readonly List<WizardStep> stepsInternal = new();
         private int? activeStepIndex;
 
         /// <summary>

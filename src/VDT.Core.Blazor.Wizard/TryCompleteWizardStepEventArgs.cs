@@ -9,7 +9,5 @@ namespace VDT.Core.Blazor.Wizard {
         /// Indicates if completion of the step should be cancelled
         /// </summary>
         public bool IsCancelled { get; set; }
-
-        // TODO pass marker to step somehow?
     }
 }

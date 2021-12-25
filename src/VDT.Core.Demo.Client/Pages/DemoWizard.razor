@@ -12,10 +12,10 @@
         <h3>Wizard title</h3>
     </TitleContent>
     <Steps>
-        <WizardStep>
+        <WizardStep OnInitialize="args => InitializeStep(args, 1)" OnTryComplete="args => TryCompleteStep(args, 1)">
             Test step 1
         </WizardStep>
-        <WizardStep OnInitialize="InitializeStep" OnTryComplete="TryCompleteStep">
+        <WizardStep OnInitialize="args => InitializeStep(args, 2)" OnTryComplete="args => TryCompleteStep(args, 2)">
             <div class="form-check">
                 <input id="goNext" type="checkbox" @bind="GoNext" class="form-check-input" />
                 <label for="goNext" class="form-check-label">Go next?</label>
@@ -24,7 +24,7 @@
                 Test step 2
             </div>
         </WizardStep>
-        <WizardStep>
+        <WizardStep OnInitialize="args => InitializeStep(args, 3)" OnTryComplete="args => TryCompleteStep(args, 3)">
             Test step 3
         </WizardStep>
     </Steps>
@@ -40,12 +40,14 @@
     public bool GoNext { get; set; } = true;
     public string StepData = string.Empty;
 
-    public void InitializeStep(InitializeWizardStepEventArgs args) {
-        StepData += nameof(InitializeStep) + Environment.NewLine;
+    public void InitializeStep(InitializeWizardStepEventArgs args, int step) {
+        StepData += $"{nameof(InitializeStep)} step {step}{Environment.NewLine}";
+
+        GoNext = true;
     }
 
-    public void TryCompleteStep(TryCompleteWizardStepEventArgs args) {
-        StepData += nameof(TryCompleteStep) + Environment.NewLine;
+    public void TryCompleteStep(TryCompleteWizardStepEventArgs args, int step) {
+        StepData += $"{nameof(TryCompleteStep)} step {step}{Environment.NewLine}";
 
         args.IsCancelled = !GoNext;
     }

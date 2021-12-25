@@ -40,13 +40,13 @@
     public bool GoNext { get; set; } = true;
     public string StepData = string.Empty;
 
-    public void InitializeStep(InitializeWizardStepEventArgs args, int step) {
+    public void InitializeStep(WizardStepInitializedEventArgs args, int step) {
         StepData += $"{nameof(InitializeStep)} step {step}{Environment.NewLine}";
 
         GoNext = true;
     }
 
-    public void TryCompleteStep(TryCompleteWizardStepEventArgs args, int step) {
+    public void TryCompleteStep(WizardStepAttemptedCompleteEventArgs args, int step) {
         StepData += $"{nameof(TryCompleteStep)} step {step}{Environment.NewLine}";
 
         args.IsCancelled = !GoNext;

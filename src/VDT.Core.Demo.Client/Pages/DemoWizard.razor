@@ -3,11 +3,11 @@
 <h1>VDT.Core.Demo.Client - Wizard</h1>
 
 <div>
-    <button @onclick="() => Wizard?.Start()" class="btn btn-primary">Start wizard</button>
-    <button @onclick="() => Wizard?.Stop()" class="btn btn-primary">Stop wizard</button>
+    <button @onclick="async () => await Wizard!.Start()" class="btn btn-primary">Start wizard</button>
+    <button @onclick="() => Wizard!.Stop()" class="btn btn-primary">Stop wizard</button>
 </div>
 
-<Wizard @ref="Wizard">
+<Wizard @ref="Wizard" OnStart="Start">
     <TitleContent>
         <h3>Wizard title</h3>
     </TitleContent>
@@ -39,6 +39,10 @@
 
     public bool GoNext { get; set; } = true;
     public string StepData = string.Empty;
+
+    public void Start(WizardStartedEventArgs args) {
+        StepData += $"{nameof(Start)} wizard{Environment.NewLine}";
+    }
 
     public void InitializeStep(WizardStepInitializedEventArgs args, int step) {
         StepData += $"{nameof(InitializeStep)} step {step}{Environment.NewLine}";

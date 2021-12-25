@@ -35,6 +35,12 @@ namespace VDT.Core.Blazor.Wizard {
         /// </summary>
         public bool IsActive => activeStepIndex.HasValue;
 
+        /// <summary>
+        /// A callback that will be invoked when this wizard is started
+        /// </summary>
+        [Parameter]
+        public EventCallback<WizardStartedEventArgs> OnStart { get; set; }
+
         internal WizardStep? ActiveStep => activeStepIndex.HasValue && stepsInternal.Count > activeStepIndex.Value ? stepsInternal[activeStepIndex.Value] : null;
 
         internal bool IsLastStep => activeStepIndex.HasValue && activeStepIndex.Value == stepsInternal.Count - 1;
@@ -42,12 +48,13 @@ namespace VDT.Core.Blazor.Wizard {
         /// <summary>
         /// Open the wizard at the first step if it's not currently active
         /// </summary>
-        public void Start() {
+        public async Task Start() {
             if (IsActive) {
                 return;
             }
 
             activeStepIndex = 0;
+            await OnStart.InvokeAsync(new WizardStartedEventArgs());
             StateHasChanged();
         }
 

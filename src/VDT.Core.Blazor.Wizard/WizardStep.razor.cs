@@ -15,7 +15,7 @@ namespace VDT.Core.Blazor.Wizard {
         [Parameter] public RenderFragment? ChildContent { get; set; }
 
         /// <summary>
-        /// A callback that will be invoked when this step is first rendered
+        /// A callback that will be invoked when this step is rendered
         /// </summary>
         [Parameter]
         public EventCallback<WizardStepInitializedEventArgs> OnInitialize { get; set; }

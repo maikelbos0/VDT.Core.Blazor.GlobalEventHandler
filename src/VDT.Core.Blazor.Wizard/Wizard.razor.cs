@@ -41,6 +41,12 @@ namespace VDT.Core.Blazor.Wizard {
         [Parameter]
         public EventCallback<WizardStartedEventArgs> OnStart { get; set; }
 
+        /// <summary>
+        /// A callback that will be invoked when this wizard is stopped
+        /// </summary>
+        [Parameter]
+        public EventCallback<WizardStoppedEventArgs> OnStop { get; set; }
+
         internal WizardStep? ActiveStep => activeStepIndex.HasValue && stepsInternal.Count > activeStepIndex.Value ? stepsInternal[activeStepIndex.Value] : null;
 
         internal bool IsLastStep => activeStepIndex.HasValue && activeStepIndex.Value == stepsInternal.Count - 1;
@@ -61,11 +67,12 @@ namespace VDT.Core.Blazor.Wizard {
         /// <summary>
         /// Close and reset the wizard if it's currently active
         /// </summary>
-        public void Stop() {
+        public async Task Stop() {
             if (!IsActive) {
                 return;
             }
 
+            await OnStop.InvokeAsync(new WizardStoppedEventArgs());
             Reset();
         }
 

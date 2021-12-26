@@ -6,6 +6,10 @@
             </div>
 
             <div>
+                @if (ShowCancelButton) {
+                    <button @onclick="Stop">@ButtonCancelText</button>
+                }
+
                 <button @onclick="TryCompleteStep">@(IsLastStep ? ButtonFinishText : ButtonNextText)</button>
             </div>
 

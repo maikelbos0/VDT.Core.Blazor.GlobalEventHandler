@@ -7,7 +7,7 @@
     <button @onclick="() => Wizard!.Stop()" class="btn btn-primary">Stop wizard</button>
 </div>
 
-<Wizard @ref="Wizard" OnStart="Start" OnStop="Stop" OnFinish="Finish">
+<Wizard @ref="Wizard" OnStart="Start" OnStop="Stop" OnFinish="Finish" ShowCancelButton="true">
     <TitleContent>
         <h3>Wizard title</h3>
     </TitleContent>

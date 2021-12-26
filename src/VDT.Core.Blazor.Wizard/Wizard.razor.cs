@@ -16,6 +16,16 @@ namespace VDT.Core.Blazor.Wizard {
         [Parameter] public RenderFragment? TitleContent { get; set; }
 
         /// <summary>
+        /// Show a button for stopping the wizard when unfinished
+        /// </summary>
+        [Parameter] public bool ShowCancelButton { get; set; }
+
+        /// <summary>
+        /// Text that is displayed on the button for stopping the wizard
+        /// </summary>
+        [Parameter] public string ButtonCancelText { get; set; } = "Cancel";
+
+        /// <summary>
         /// Text that is displayed on the button for the next step
         /// </summary>
         [Parameter] public string ButtonNextText { get; set; } = "Next";

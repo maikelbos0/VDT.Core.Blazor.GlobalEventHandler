@@ -7,7 +7,7 @@
     <button @onclick="() => Wizard!.Stop()" class="btn btn-primary">Stop wizard</button>
 </div>
 
-<Wizard @ref="Wizard" OnStart="Start" OnStop="Stop">
+<Wizard @ref="Wizard" OnStart="Start" OnStop="Stop" OnFinish="Finish">
     <TitleContent>
         <h3>Wizard title</h3>
     </TitleContent>
@@ -47,6 +47,10 @@
     public void Stop(WizardStoppedEventArgs args) {
         StepData += $"{nameof(Stop)} wizard{Environment.NewLine}";
     }
+    
+    public void Finish(WizardFinishedEventArgs args) {
+        StepData += $"{nameof(Finish)} wizard{Environment.NewLine}";
+    }    
 
     public void InitializeStep(WizardStepInitializedEventArgs args, int step) {
         StepData += $"{nameof(InitializeStep)} step {step}{Environment.NewLine}";

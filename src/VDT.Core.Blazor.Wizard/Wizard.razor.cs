@@ -47,6 +47,12 @@ namespace VDT.Core.Blazor.Wizard {
         [Parameter]
         public EventCallback<WizardStoppedEventArgs> OnStop { get; set; }
 
+        /// <summary>
+        /// A callback that will be invoked when this wizard is finished; all steps of the wizard have been completed
+        /// </summary>
+        [Parameter]
+        public EventCallback<WizardFinishedEventArgs> OnFinish { get; set; }
+
         internal WizardStep? ActiveStep => activeStepIndex.HasValue && stepsInternal.Count > activeStepIndex.Value ? stepsInternal[activeStepIndex.Value] : null;
 
         internal bool IsLastStep => activeStepIndex.HasValue && activeStepIndex.Value == stepsInternal.Count - 1;
@@ -72,8 +78,8 @@ namespace VDT.Core.Blazor.Wizard {
                 return;
             }
 
-            await OnStop.InvokeAsync(new WizardStoppedEventArgs());
             Reset();
+            await OnStop.InvokeAsync(new WizardStoppedEventArgs());
         }
 
         internal async Task AddStep(WizardStep step) {
@@ -92,6 +98,7 @@ namespace VDT.Core.Blazor.Wizard {
 
                 if (ActiveStep == null) {
                     Reset();
+                    await OnFinish.InvokeAsync(new WizardFinishedEventArgs());
                 }
                 else {
                     await ActiveStep!.Initialize();

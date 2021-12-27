@@ -6,6 +6,12 @@
             </div>
 
             <div>
+                @foreach (var step in stepsInternal) {
+                    <div>@step.Title</div>
+                }
+            </div>
+
+            <div>
                 @if (ShowCancelButton) {
                     <button @onclick="Stop">@ButtonCancelText</button>
                 }

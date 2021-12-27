@@ -10,6 +10,11 @@ namespace VDT.Core.Blazor.Wizard {
         [CascadingParameter] private Wizard? Parent { get; set; }
 
         /// <summary>
+        /// Title of the wizard step to display in the wizard menu
+        /// </summary>
+        [Parameter] public string? Title { get; set; }
+
+        /// <summary>
         /// Content of a wizard step such as an explanation or an <see cref="EditForm"/>
         /// </summary>
         [Parameter] public RenderFragment? ChildContent { get; set; }

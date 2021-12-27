@@ -7,7 +7,12 @@
 
             <div class="@StepTitleContainerClass">
                 @foreach (var step in stepsInternal) {
-                    <div class="@StepTitleClass @(step == ActiveStep ? ActiveStepTitleClass : null)">@step.Title</div>
+                    @if (step == ActiveStep) {
+                        <div class="@StepTitleClass @ActiveStepTitleClass">@step.Title</div>
+                    }
+                    else {
+                        <div class="@StepTitleClass">@step.Title</div>
+                    }
                 }
             </div>
 
@@ -16,7 +21,12 @@
                     <button @onclick="Stop" class="@ButtonClass @ButtonCancelClass">@ButtonCancelText</button>
                 }
 
-                <button @onclick="TryCompleteStep" class="@ButtonClass @(IsLastStep ? ButtonFinishClass : ButtonNextClass)">@(IsLastStep ? ButtonFinishText : ButtonNextText)</button>
+                @if (IsLastStep) {
+                    <button @onclick="TryCompleteStep" class="@ButtonClass @ButtonFinishClass">@ButtonFinishText</button>
+                }
+                else {
+                    <button @onclick="TryCompleteStep" class="@ButtonClass @ButtonNextClass">@ButtonNextText</button>
+                }
             </div>
 
             <div class="@ContentContainerClass">

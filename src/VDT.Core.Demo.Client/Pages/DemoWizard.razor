@@ -4,10 +4,28 @@
 
 <div>
     <button @onclick="async () => await Wizard!.Start()" class="btn btn-primary">Start wizard</button>
-    <button @onclick="() => Wizard!.Stop()" class="btn btn-primary">Stop wizard</button>
+    <button @onclick="() => Wizard!.Stop()" class="btn btn-secondary">Stop wizard</button>
 </div>
 
-<Wizard @ref="Wizard" OnStart="Start" OnStop="Stop" OnFinish="Finish" ShowCancelButton="true">
+<Wizard @ref="Wizard"
+        OnStart="Start"
+        OnStop="Stop"
+        OnFinish="Finish"
+        ContainerClass="wizard"
+        TitleContainerClass="wizard-title"
+        StepTitleContainerClass="wizard-steps"
+        StepTitleClass="wizard-step"
+        ActiveStepTitleClass="active"
+        ShowCancelButton="true"
+        ButtonContainerClass="wizard-buttons"
+        ButtonClass="wizard-button"
+        ButtonCancelClass="wizard-button-secondary"
+        ButtonCancelText="Stop"
+        ButtonFinishClass="wizard-button-primary"
+        ButtonFinishText="Complete"
+        ButtonNextClass="wizard-button-primary"
+        ButtonNextText="Next >>"
+        ContentContainerClass="wizard-body">
     <TitleContent>
         <h3>Wizard title</h3>
     </TitleContent>
@@ -43,14 +61,14 @@
     public void Start(WizardStartedEventArgs args) {
         StepData += $"{nameof(Start)} wizard{Environment.NewLine}";
     }
-    
+
     public void Stop(WizardStoppedEventArgs args) {
         StepData += $"{nameof(Stop)} wizard{Environment.NewLine}";
     }
-    
+
     public void Finish(WizardFinishedEventArgs args) {
         StepData += $"{nameof(Finish)} wizard{Environment.NewLine}";
-    }    
+    }
 
     public void InitializeStep(WizardStepInitializedEventArgs args, int step) {
         StepData += $"{nameof(InitializeStep)} step {step}{Environment.NewLine}";

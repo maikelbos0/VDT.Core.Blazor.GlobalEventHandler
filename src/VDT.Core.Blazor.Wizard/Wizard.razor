@@ -1,25 +1,25 @@
 ﻿<CascadingValue Value="this">
     @if (IsActive) {
-        <div>
-            <div>
+        <div class="@ContainerClass">
+            <div class="@TitleContainerClass">
                 @TitleContent
             </div>
 
-            <div>
+            <div class="@StepTitleContainerClass">
                 @foreach (var step in stepsInternal) {
-                    <div>@step.Title</div>
+                    <div class="@StepTitleClass @(step == ActiveStep ? ActiveStepTitleClass : null)">@step.Title</div>
                 }
             </div>
 
-            <div>
+            <div class="@ButtonContainerClass">
                 @if (ShowCancelButton) {
-                    <button @onclick="Stop">@ButtonCancelText</button>
+                    <button @onclick="Stop" class="@ButtonClass @ButtonCancelClass">@ButtonCancelText</button>
                 }
 
-                <button @onclick="TryCompleteStep">@(IsLastStep ? ButtonFinishText : ButtonNextText)</button>
+                <button @onclick="TryCompleteStep" class="@ButtonClass @(IsLastStep ? ButtonFinishClass : ButtonNextClass)">@(IsLastStep ? ButtonFinishText : ButtonNextText)</button>
             </div>
 
-            <div>
+            <div class="@ContentContainerClass">
                 @Steps
             </div>
         </div>

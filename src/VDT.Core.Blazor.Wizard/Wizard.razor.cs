@@ -11,9 +11,44 @@ namespace VDT.Core.Blazor.Wizard {
         private int? activeStepIndex;
 
         /// <summary>
+        /// CSS class to apply to the wizard container
+        /// </summary>
+        [Parameter] public string? ContainerClass { get; set; }
+
+        /// <summary>
+        /// CSS class to apply to the wizard title section
+        /// </summary>
+        [Parameter] public string? TitleContainerClass { get; set; }
+
+        /// <summary>
         /// Wizard title content
         /// </summary>
         [Parameter] public RenderFragment? TitleContent { get; set; }
+
+        /// <summary>
+        /// CSS class to apply to the wizard step title section
+        /// </summary>
+        [Parameter] public string? StepTitleContainerClass { get; set; }
+
+        /// <summary>
+        /// CSS class to apply to the wizard step titles
+        /// </summary>
+        [Parameter] public string? StepTitleClass { get; set; }
+
+        /// <summary>
+        /// CSS class to apply to the title of the active wizard step
+        /// </summary>
+        [Parameter] public string? ActiveStepTitleClass { get; set; }
+
+        /// <summary>
+        /// CSS class to apply to the button section
+        /// </summary>
+        [Parameter] public string? ButtonContainerClass { get; set; }
+
+        /// <summary>
+        /// CSS class to apply to the buttons
+        /// </summary>
+        [Parameter] public string? ButtonClass { get; set; }
 
         /// <summary>
         /// Show a button for stopping the wizard when unfinished
@@ -21,9 +56,19 @@ namespace VDT.Core.Blazor.Wizard {
         [Parameter] public bool ShowCancelButton { get; set; }
 
         /// <summary>
+        /// CSS class to apply to the button for stopping the wizad
+        /// </summary>
+        [Parameter] public string? ButtonCancelClass { get; set; }
+
+        /// <summary>
         /// Text that is displayed on the button for stopping the wizard
         /// </summary>
         [Parameter] public string ButtonCancelText { get; set; } = "Cancel";
+
+        /// <summary>
+        /// CSS class to apply to the button for the next step
+        /// </summary>
+        [Parameter] public string? ButtonNextClass { get; set; }
 
         /// <summary>
         /// Text that is displayed on the button for the next step
@@ -31,9 +76,19 @@ namespace VDT.Core.Blazor.Wizard {
         [Parameter] public string ButtonNextText { get; set; } = "Next";
 
         /// <summary>
+        /// CSS class to apply to the button for completing the wizard
+        /// </summary>
+        [Parameter] public string? ButtonFinishClass { get; set; }
+
+        /// <summary>
         /// Text that is displayed on the button for completing the wizard
         /// </summary>
         [Parameter] public string ButtonFinishText { get; set; } = "Finish";
+
+        /// <summary>
+        /// CSS class to apply to the active step content section
+        /// </summary>
+        [Parameter] public string? ContentContainerClass { get; set; }
 
         /// <summary>
         /// Content containing the wizard steps in order; any additional content will also be displayed

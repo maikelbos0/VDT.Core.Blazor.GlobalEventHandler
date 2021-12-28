@@ -8,7 +8,15 @@ namespace VDT.Core.Blazor.Wizard {
     /// </summary>
     public partial class Wizard : ComponentBase {
         private readonly List<WizardStep> stepsInternal = new();
+        private readonly WizardLayout layout;
         private int? activeStepIndex;
+
+        /// <summary>
+        /// Constructs an instance of a wizard
+        /// </summary>
+        public Wizard() {
+            layout = new WizardLayout(this);
+        }
 
         /// <summary>
         /// CSS class to apply to the wizard container
@@ -91,9 +99,14 @@ namespace VDT.Core.Blazor.Wizard {
         [Parameter] public string? ContentContainerClass { get; set; }
 
         /// <summary>
-        /// Content containing the wizard steps in order; any additional content will also be displayed
+        /// Content containing the wizard steps in order
         /// </summary>
         [Parameter] public RenderFragment? Steps { get; set; }
+
+        /// <summary>
+        /// Layout for the wizard; if left empty a default layout will be used
+        /// </summary>
+        [Parameter] public RenderFragment<WizardLayout>? Layout { get; set; }
 
         /// <summary>
         /// Indicates whether or not the wizard is currently active
@@ -157,7 +170,9 @@ namespace VDT.Core.Blazor.Wizard {
             }
         }
 
-        private async Task TryCompleteStep() {
+        internal IEnumerable<WizardStep> GetSteps() => stepsInternal.AsReadOnly();
+
+        internal async Task TryCompleteStep() {
             if (await ActiveStep!.TryComplete()) {
                 activeStepIndex++;
 

@@ -29,6 +29,25 @@
     <TitleContent>
         <h3>Wizard title</h3>
     </TitleContent>
+    <Layout Context="l">
+        <div class="wizard">
+            <div class="wizard-title">
+                @l.Title()
+            </div>
+
+            <div class="wizard-steps">
+                @l.StepTitles()
+            </div>
+
+            <div class="wizard-buttons">
+                @l.Buttons()
+            </div>
+
+            <div class="wizard-body">
+                @l.Content()
+            </div>
+        </div>
+    </Layout>
     <Steps>
         <WizardStep OnInitialize="args => InitializeStep(args, 1)" OnTryComplete="args => TryCompleteStep(args, 1)" Title="The first step">
             Test step 1

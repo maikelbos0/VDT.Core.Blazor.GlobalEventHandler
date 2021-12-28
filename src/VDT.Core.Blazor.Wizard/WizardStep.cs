@@ -6,7 +6,7 @@ namespace VDT.Core.Blazor.Wizard {
     /// <summary>
     /// Step as part of a wizard
     /// </summary>
-    public partial class WizardStep : ComponentBase {
+    public class WizardStep : ComponentBase {
         [CascadingParameter] private Wizard? Parent { get; set; }
 
         /// <summary>

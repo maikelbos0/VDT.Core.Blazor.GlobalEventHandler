@@ -1,37 +1,28 @@
 ﻿<CascadingValue Value="this">
     @if (IsActive) {
-        <div class="@ContainerClass">
-            <div class="@TitleContainerClass">
-                @TitleContent
-            </div>
+        @Steps
 
-            <div class="@StepTitleContainerClass">
-                @foreach (var step in stepsInternal) {
-                    @if (step == ActiveStep) {
-                        <div class="@StepTitleClass @ActiveStepTitleClass">@step.Title</div>
-                    }
-                    else {
-                        <div class="@StepTitleClass">@step.Title</div>
-                    }
-                }
-            </div>
+        @if (Layout == null) {
+            <div class="@ContainerClass">
+                <div class="@TitleContainerClass">
+                    @this.layout.Title()
+                </div>
 
-            <div class="@ButtonContainerClass">
-                @if (ShowCancelButton) {
-                    <button @onclick="Stop" class="@ButtonClass @ButtonCancelClass">@ButtonCancelText</button>
-                }
+                <div class="@StepTitleContainerClass">
+                    @this.layout.StepTitles()
+                </div>
 
-                @if (IsLastStep) {
-                    <button @onclick="TryCompleteStep" class="@ButtonClass @ButtonFinishClass">@ButtonFinishText</button>
-                }
-                else {
-                    <button @onclick="TryCompleteStep" class="@ButtonClass @ButtonNextClass">@ButtonNextText</button>
-                }
-            </div>
+                <div class="@ButtonContainerClass">
+                    @this.layout.Buttons()
+                </div>
 
-            <div class="@ContentContainerClass">
-                @Steps
+                <div class="@ContentContainerClass">
+                    @this.layout.Content()
+                </div>
             </div>
-        </div>
+        }
+        else {
+            @Layout(this.layout)
+        }
     }
 </CascadingValue>

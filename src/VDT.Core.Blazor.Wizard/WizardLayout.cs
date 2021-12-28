@@ -14,14 +14,14 @@ namespace VDT.Core.Blazor.Wizard {
         /// <summary>
         /// Renders the wizard title content
         /// </summary>
-        public RenderFragment Title() => builder => {
+        public RenderFragment Title => builder => {
             builder.AddContent(1, wizard.TitleContent);
         };
 
         /// <summary>
         /// Renders the wizard step titles
         /// </summary>
-        public RenderFragment StepTitles() => builder => {
+        public RenderFragment StepTitles => builder => {
             var sequence = 0;
 
             foreach (var step in wizard.GetSteps()) {
@@ -42,18 +42,18 @@ namespace VDT.Core.Blazor.Wizard {
         /// <summary>
         /// Renders the wizard cancel, next and finish buttons
         /// </summary>
-        public RenderFragment Buttons() => builder => {
+        public RenderFragment Buttons => builder => {
             var sequence = 0;
 
-            builder.AddContent(++sequence, ButtonCancel());
-            builder.AddContent(++sequence, ButtonFinish());
-            builder.AddContent(++sequence, ButtonNext());
+            builder.AddContent(++sequence, ButtonCancel);
+            builder.AddContent(++sequence, ButtonFinish);
+            builder.AddContent(++sequence, ButtonNext);
         };
 
         /// <summary>
         /// Renders the wizard cancel button
         /// </summary>
-        public RenderFragment ButtonCancel() => builder => {
+        public RenderFragment ButtonCancel => builder => {
             if (!wizard.ShowCancelButton) return;
 
             var sequence = 0;
@@ -68,7 +68,7 @@ namespace VDT.Core.Blazor.Wizard {
         /// <summary>
         /// Renders the wizard next button
         /// </summary>
-        public RenderFragment ButtonNext() => builder => {
+        public RenderFragment ButtonNext => builder => {
             if (wizard.IsLastStep) return;
 
             var sequence = 0;
@@ -83,7 +83,7 @@ namespace VDT.Core.Blazor.Wizard {
         /// <summary>
         /// Renders the wizard finish button
         /// </summary>
-        public RenderFragment ButtonFinish() => builder => {
+        public RenderFragment ButtonFinish => builder => {
             if (!wizard.IsLastStep) return;
 
             var sequence = 0;
@@ -98,7 +98,7 @@ namespace VDT.Core.Blazor.Wizard {
         /// <summary>
         /// Renders the wizard active step content
         /// </summary>
-        public RenderFragment Content() => builder => {
+        public RenderFragment Content => builder => {
             if (wizard.ActiveStep != null) {
                 builder.AddContent(1, wizard.ActiveStep.ChildContent);
             }

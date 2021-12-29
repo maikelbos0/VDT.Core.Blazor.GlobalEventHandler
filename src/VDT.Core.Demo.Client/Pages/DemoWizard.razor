@@ -29,22 +29,22 @@
     <TitleContent>
         <h3>Wizard title</h3>
     </TitleContent>
-    <Layout Context="l">
+    <Layout Context="context">
         <div class="wizard">
             <div class="wizard-title">
-                @l.Title
+                @context.Title
             </div>
 
             <div class="wizard-steps">
-                @l.StepTitles
+                @context.StepTitles
             </div>
 
             <div class="wizard-buttons">
-                @l.Buttons
+                @context.Buttons
             </div>
 
             <div class="wizard-body">
-                @l.Content
+                @context.Content
             </div>
         </div>
     </Layout>

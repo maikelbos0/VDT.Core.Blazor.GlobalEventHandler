@@ -5,24 +5,24 @@
         @if (Layout == null) {
             <div class="@ContainerClass">
                 <div class="@TitleContainerClass">
-                    @this.layout.Title
+                    @layoutContext.Title
                 </div>
 
                 <div class="@StepTitleContainerClass">
-                    @this.layout.StepTitles
+                    @layoutContext.StepTitles
                 </div>
 
                 <div class="@ButtonContainerClass">
-                    @this.layout.Buttons
+                    @layoutContext.Buttons
                 </div>
 
                 <div class="@ContentContainerClass">
-                    @this.layout.Content
+                    @layoutContext.Content
                 </div>
             </div>
         }
         else {
-            @Layout(this.layout)
+            @Layout(layoutContext)
         }
     }
 </CascadingValue>

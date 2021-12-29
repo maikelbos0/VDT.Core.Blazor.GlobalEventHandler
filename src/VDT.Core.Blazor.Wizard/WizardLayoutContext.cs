@@ -2,12 +2,12 @@
 
 namespace VDT.Core.Blazor.Wizard {
     /// <summary>
-    /// Layout for a wizard
+    /// Context for render fragments for a wizard layout template
     /// </summary>
-    public class WizardLayout {
+    public class WizardLayoutContext {
         private readonly Wizard wizard;
 
-        internal WizardLayout(Wizard wizard) {
+        internal WizardLayoutContext(Wizard wizard) {
             this.wizard = wizard;
         }
 

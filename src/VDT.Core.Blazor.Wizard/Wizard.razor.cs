@@ -8,14 +8,14 @@ namespace VDT.Core.Blazor.Wizard {
     /// </summary>
     public partial class Wizard : ComponentBase {
         private readonly List<WizardStep> stepsInternal = new();
-        private readonly WizardLayout layout;
+        private readonly WizardLayoutContext layoutContext;
         private int? activeStepIndex;
 
         /// <summary>
         /// Constructs an instance of a wizard
         /// </summary>
         public Wizard() {
-            layout = new WizardLayout(this);
+            layoutContext = new WizardLayoutContext(this);
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace VDT.Core.Blazor.Wizard {
         /// <summary>
         /// Layout for the wizard; if left empty a default layout will be used
         /// </summary>
-        [Parameter] public RenderFragment<WizardLayout>? Layout { get; set; }
+        [Parameter] public RenderFragment<WizardLayoutContext>? Layout { get; set; }
 
         /// <summary>
         /// Indicates whether or not the wizard is currently active

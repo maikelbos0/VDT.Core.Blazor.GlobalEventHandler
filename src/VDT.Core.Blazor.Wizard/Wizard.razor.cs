@@ -19,12 +19,12 @@ namespace VDT.Core.Blazor.Wizard {
         }
 
         /// <summary>
-        /// CSS class to apply to the wizard container
+        /// CSS class to apply to the wizard container; this value will not be used if a layout is specified
         /// </summary>
         [Parameter] public string? ContainerClass { get; set; }
 
         /// <summary>
-        /// CSS class to apply to the wizard title section
+        /// CSS class to apply to the wizard title section; this value will not be used if a layout is specified
         /// </summary>
         [Parameter] public string? TitleContainerClass { get; set; }
 
@@ -34,7 +34,7 @@ namespace VDT.Core.Blazor.Wizard {
         [Parameter] public RenderFragment? TitleContent { get; set; }
 
         /// <summary>
-        /// CSS class to apply to the wizard step title section
+        /// CSS class to apply to the wizard step title section; this value will not be used if a layout is specified
         /// </summary>
         [Parameter] public string? StepTitleContainerClass { get; set; }
 
@@ -49,7 +49,7 @@ namespace VDT.Core.Blazor.Wizard {
         [Parameter] public string? ActiveStepTitleClass { get; set; }
 
         /// <summary>
-        /// CSS class to apply to the button section
+        /// CSS class to apply to the button section; this value will not be used if a layout is specified
         /// </summary>
         [Parameter] public string? ButtonContainerClass { get; set; }
 
@@ -94,7 +94,7 @@ namespace VDT.Core.Blazor.Wizard {
         [Parameter] public string ButtonFinishText { get; set; } = "Finish";
 
         /// <summary>
-        /// CSS class to apply to the active step content section
+        /// CSS class to apply to the active step content section; this value will not be used if a layout is specified
         /// </summary>
         [Parameter] public string? ContentContainerClass { get; set; }
 

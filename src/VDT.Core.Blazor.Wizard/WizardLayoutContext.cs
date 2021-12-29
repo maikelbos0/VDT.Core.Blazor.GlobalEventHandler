@@ -22,19 +22,17 @@ namespace VDT.Core.Blazor.Wizard {
         /// Renders the wizard step titles
         /// </summary>
         public RenderFragment StepTitles => builder => {
-            var sequence = 0;
-
             foreach (var step in wizard.GetSteps()) {
-                builder.OpenElement(++sequence, "div");
+                builder.OpenElement(1, "div");
 
                 if (step == wizard.ActiveStep) {
-                    builder.AddAttribute(++sequence, "class", $"{wizard.StepTitleClass} {wizard.ActiveStepTitleClass}");
+                    builder.AddAttribute(2, "class", $"{wizard.StepTitleClass} {wizard.ActiveStepTitleClass}");
                 }
                 else {
-                    builder.AddAttribute(++sequence, "class", $"{wizard.StepTitleClass}");
+                    builder.AddAttribute(2, "class", $"{wizard.StepTitleClass}");
                 }
 
-                builder.AddContent(++sequence, step.Title);
+                builder.AddContent(3, step.Title);
                 builder.CloseElement();
             }
         };
@@ -43,11 +41,9 @@ namespace VDT.Core.Blazor.Wizard {
         /// Renders the wizard cancel, next and finish buttons
         /// </summary>
         public RenderFragment Buttons => builder => {
-            var sequence = 0;
-
-            builder.AddContent(++sequence, ButtonCancel);
-            builder.AddContent(++sequence, ButtonFinish);
-            builder.AddContent(++sequence, ButtonNext);
+            builder.AddContent(1, ButtonCancel);
+            builder.AddContent(2, ButtonFinish);
+            builder.AddContent(3, ButtonNext);
         };
 
         /// <summary>
@@ -56,12 +52,10 @@ namespace VDT.Core.Blazor.Wizard {
         public RenderFragment ButtonCancel => builder => {
             if (!wizard.ShowCancelButton) return;
 
-            var sequence = 0;
-
-            builder.OpenElement(++sequence, "button");
-            builder.AddAttribute(++sequence, "onclick", EventCallback.Factory.Create(wizard, wizard.Stop));
-            builder.AddAttribute(++sequence, "class", $"{wizard.ButtonClass} {wizard.ButtonCancelClass}");
-            builder.AddContent(++sequence, wizard.ButtonCancelText);
+            builder.OpenElement(1, "button");
+            builder.AddAttribute(2, "onclick", EventCallback.Factory.Create(wizard, wizard.Stop));
+            builder.AddAttribute(3, "class", $"{wizard.ButtonClass} {wizard.ButtonCancelClass}");
+            builder.AddContent(4, wizard.ButtonCancelText);
             builder.CloseElement();
         };
 
@@ -71,12 +65,10 @@ namespace VDT.Core.Blazor.Wizard {
         public RenderFragment ButtonNext => builder => {
             if (wizard.IsLastStep) return;
 
-            var sequence = 0;
-
-            builder.OpenElement(++sequence, "button");
-            builder.AddAttribute(++sequence, "onclick", EventCallback.Factory.Create(wizard, wizard.TryCompleteStep));
-            builder.AddAttribute(++sequence, "class", $"{wizard.ButtonClass} {wizard.ButtonNextClass}");
-            builder.AddContent(++sequence, wizard.ButtonNextText);
+            builder.OpenElement(1, "button");
+            builder.AddAttribute(2, "onclick", EventCallback.Factory.Create(wizard, wizard.TryCompleteStep));
+            builder.AddAttribute(3, "class", $"{wizard.ButtonClass} {wizard.ButtonNextClass}");
+            builder.AddContent(4, wizard.ButtonNextText);
             builder.CloseElement();
         };
 
@@ -86,12 +78,10 @@ namespace VDT.Core.Blazor.Wizard {
         public RenderFragment ButtonFinish => builder => {
             if (!wizard.IsLastStep) return;
 
-            var sequence = 0;
-
-            builder.OpenElement(++sequence, "button");
-            builder.AddAttribute(++sequence, "onclick", EventCallback.Factory.Create(wizard, wizard.TryCompleteStep));
-            builder.AddAttribute(++sequence, "class", $"{wizard.ButtonClass} {wizard.ButtonFinishClass}");
-            builder.AddContent(++sequence, wizard.ButtonFinishText);
+            builder.OpenElement(1, "button");
+            builder.AddAttribute(2, "onclick", EventCallback.Factory.Create(wizard, wizard.TryCompleteStep));
+            builder.AddAttribute(3, "class", $"{wizard.ButtonClass} {wizard.ButtonFinishClass}");
+            builder.AddContent(4, wizard.ButtonFinishText);
             builder.CloseElement();
         };
 

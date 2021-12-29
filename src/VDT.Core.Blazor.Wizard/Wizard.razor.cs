@@ -170,7 +170,7 @@ namespace VDT.Core.Blazor.Wizard {
             }
         }
 
-        internal IEnumerable<WizardStep> GetSteps() => stepsInternal.AsReadOnly();
+        internal IReadOnlyList<WizardStep> GetSteps() => stepsInternal.AsReadOnly();
 
         internal async Task TryCompleteStep() {
             if (await ActiveStep!.TryComplete()) {

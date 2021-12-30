@@ -61,7 +61,7 @@ namespace VDT.Core.Blazor.Wizard {
         /// <summary>
         /// Show a button for stopping the wizard when unfinished
         /// </summary>
-        [Parameter] public bool ShowCancelButton { get; set; }
+        [Parameter] public bool AllowCancel { get; set; }
 
         /// <summary>
         /// CSS class to apply to the button for stopping the wizad

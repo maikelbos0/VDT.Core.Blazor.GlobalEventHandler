@@ -50,7 +50,7 @@ namespace VDT.Core.Blazor.Wizard {
         /// Renders the wizard cancel button
         /// </summary>
         public RenderFragment ButtonCancel => builder => {
-            if (!wizard.ShowCancelButton) return;
+            if (!wizard.AllowCancel) return;
 
             builder.OpenElement(1, "button");
             builder.AddAttribute(2, "onclick", EventCallback.Factory.Create(wizard, wizard.Stop));

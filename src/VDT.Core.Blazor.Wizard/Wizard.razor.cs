@@ -74,6 +74,21 @@ namespace VDT.Core.Blazor.Wizard {
         [Parameter] public string ButtonCancelText { get; set; } = "Cancel";
 
         /// <summary>
+        /// Show a button for navigating to the previous step
+        /// </summary>
+        [Parameter] public bool AllowPrevious { get; set; }
+
+        /// <summary>
+        /// CSS class to apply to the button for the previous step
+        /// </summary>
+        [Parameter] public string? ButtonPreviousClass { get; set; }
+
+        /// <summary>
+        /// Text that is displayed on the button for the previous step
+        /// </summary>
+        [Parameter] public string ButtonPreviousText { get; set; } = "Previous";
+
+        /// <summary>
         /// CSS class to apply to the button for the next step
         /// </summary>
         [Parameter] public string? ButtonNextClass { get; set; }
@@ -133,6 +148,8 @@ namespace VDT.Core.Blazor.Wizard {
 
         internal WizardStep? ActiveStep => activeStepIndex.HasValue && stepsInternal.Count > activeStepIndex.Value ? stepsInternal[activeStepIndex.Value] : null;
 
+        internal bool IsFirstStepActive => activeStepIndex.HasValue && activeStepIndex.Value == 0;
+
         internal bool IsLastStep => activeStepIndex.HasValue && activeStepIndex.Value == stepsInternal.Count - 1;
 
         /// <summary>
@@ -171,6 +188,11 @@ namespace VDT.Core.Blazor.Wizard {
         }
 
         internal IReadOnlyList<WizardStep> GetSteps() => stepsInternal.AsReadOnly();
+
+        internal async Task GoToPreviousStep() {
+            activeStepIndex--;
+            await ActiveStep!.Initialize();
+        }
 
         internal async Task TryCompleteStep() {
             if (await ActiveStep!.TryComplete()) {

@@ -42,8 +42,9 @@ namespace VDT.Core.Blazor.Wizard {
         /// </summary>
         public RenderFragment Buttons => builder => {
             builder.AddContent(1, ButtonCancel);
-            builder.AddContent(2, ButtonFinish);
-            builder.AddContent(3, ButtonNext);
+            builder.AddContent(2, ButtonPrevious);
+            builder.AddContent(3, ButtonFinish);
+            builder.AddContent(4, ButtonNext);
         };
 
         /// <summary>
@@ -56,6 +57,19 @@ namespace VDT.Core.Blazor.Wizard {
             builder.AddAttribute(2, "onclick", EventCallback.Factory.Create(wizard, wizard.Stop));
             builder.AddAttribute(3, "class", $"{wizard.ButtonClass} {wizard.ButtonCancelClass}");
             builder.AddContent(4, wizard.ButtonCancelText);
+            builder.CloseElement();
+        };
+
+        /// <summary>
+        /// Renders the wizard previous button
+        /// </summary>
+        public RenderFragment ButtonPrevious => builder => {
+            if (!wizard.AllowPrevious || wizard.IsFirstStepActive) return;
+
+            builder.OpenElement(1, "button");
+            builder.AddAttribute(2, "onclick", EventCallback.Factory.Create(wizard, wizard.GoToPreviousStep));
+            builder.AddAttribute(3, "class", $"{wizard.ButtonClass} {wizard.ButtonPreviousClass}");
+            builder.AddContent(4, wizard.ButtonPreviousText);
             builder.CloseElement();
         };
 

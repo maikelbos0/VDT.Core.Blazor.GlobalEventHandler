@@ -77,7 +77,7 @@ namespace VDT.Core.Blazor.Wizard {
         /// Renders the wizard next button
         /// </summary>
         public RenderFragment ButtonNext => builder => {
-            if (wizard.IsLastStep) return;
+            if (wizard.IsLastStepActive) return;
 
             builder.OpenElement(1, "button");
             builder.AddAttribute(2, "onclick", EventCallback.Factory.Create(wizard, wizard.TryCompleteStep));
@@ -90,7 +90,7 @@ namespace VDT.Core.Blazor.Wizard {
         /// Renders the wizard finish button
         /// </summary>
         public RenderFragment ButtonFinish => builder => {
-            if (!wizard.IsLastStep) return;
+            if (!wizard.IsLastStepActive) return;
 
             builder.OpenElement(1, "button");
             builder.AddAttribute(2, "onclick", EventCallback.Factory.Create(wizard, wizard.TryCompleteStep));

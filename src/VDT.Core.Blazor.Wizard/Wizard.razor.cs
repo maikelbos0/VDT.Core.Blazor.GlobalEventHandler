@@ -150,7 +150,7 @@ namespace VDT.Core.Blazor.Wizard {
 
         internal bool IsFirstStepActive => activeStepIndex.HasValue && activeStepIndex.Value == 0;
 
-        internal bool IsLastStep => activeStepIndex.HasValue && activeStepIndex.Value == stepsInternal.Count - 1;
+        internal bool IsLastStepActive => activeStepIndex.HasValue && activeStepIndex.Value == stepsInternal.Count - 1;
 
         /// <summary>
         /// Open the wizard at the first step if it's not currently active

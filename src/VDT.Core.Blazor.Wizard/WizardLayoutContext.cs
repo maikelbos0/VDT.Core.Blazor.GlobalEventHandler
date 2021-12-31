@@ -24,6 +24,7 @@ namespace VDT.Core.Blazor.Wizard {
         public RenderFragment StepTitles => builder => {
             foreach (var step in wizard.GetSteps()) {
                 builder.OpenElement(1, "div");
+                builder.SetKey(step);
 
                 if (step == wizard.ActiveStep) {
                     builder.AddAttribute(2, "class", $"{wizard.StepTitleClass} {wizard.ActiveStepTitleClass}");

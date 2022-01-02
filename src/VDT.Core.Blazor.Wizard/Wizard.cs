@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Rendering;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,7 +7,7 @@ namespace VDT.Core.Blazor.Wizard {
     /// <summary>
     /// Component that renders a series of steps to be completed by the user
     /// </summary>
-    public partial class Wizard : ComponentBase {
+    public class Wizard : ComponentBase {
         private readonly List<WizardStep> stepsInternal = new();
         private readonly WizardLayoutContext layoutContext;
         private int? activeStepIndex;
@@ -212,6 +213,16 @@ namespace VDT.Core.Blazor.Wizard {
             activeStepIndex = null;
             stepsInternal.Clear();
             StateHasChanged();
+        }
+
+        /// <inheritdoc/>
+        protected override void BuildRenderTree(RenderTreeBuilder builder) {
+            if (IsActive) {
+                builder.OpenComponent<CascadingValue<Wizard>>(1);
+                builder.AddAttribute(2, "Value", this);
+                builder.AddAttribute(3, "ChildContent", layoutContext.Wizard);
+                builder.CloseComponent();
+            }
         }
     }
 }

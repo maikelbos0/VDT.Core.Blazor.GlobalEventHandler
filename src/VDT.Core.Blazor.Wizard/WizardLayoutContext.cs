@@ -11,6 +11,49 @@ namespace VDT.Core.Blazor.Wizard {
             this.wizard = wizard;
         }
 
+        internal RenderFragment Wizard => builder => {
+            builder.AddContent(1, wizard.Steps);
+
+            if (wizard.Layout == null) {
+                builder.AddContent(2, DefaultLayout);
+            }
+            else {
+                builder.AddContent(3, wizard.Layout(this));
+            }
+        };
+
+        /// <summary>
+        /// Renders the wizard using the default layout
+        /// </summary>
+        public RenderFragment DefaultLayout => builder => {
+            builder.OpenElement(1, "div");
+            builder.AddAttribute(2, "class", wizard.ContainerClass);
+
+            {
+                builder.OpenElement(3, "div");
+                builder.AddAttribute(4, "class", wizard.TitleContainerClass);
+                builder.AddContent(5, Title);
+                builder.CloseElement();
+
+                builder.OpenElement(7, "div");
+                builder.AddAttribute(8, "class", wizard.StepTitleContainerClass);
+                builder.AddContent(9, StepTitles);
+                builder.CloseElement();
+
+                builder.OpenElement(11, "div");
+                builder.AddAttribute(12, "class", wizard.ButtonContainerClass);
+                builder.AddContent(13, Buttons);
+                builder.CloseElement();
+
+                builder.OpenElement(15, "div");
+                builder.AddAttribute(16, "class", wizard.ContentContainerClass);
+                builder.AddContent(17, Content);
+                builder.CloseElement();
+            }
+
+            builder.CloseElement();
+        };
+
         /// <summary>
         /// Renders the wizard title content
         /// </summary>

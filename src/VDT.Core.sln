@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30907.101
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.Demo", "VDT.Core.Demo\VDT.Core.Demo.csproj", "{0A1C23B6-31E0-4CD3-8883-217F9675F246}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.Blazor.GlobalEventHandler.Tests", "VDT.Core.Blazor.GlobalEventHandler.Tests\VDT.Core.Blazor.GlobalEventHandler.Tests.csproj", "{2D2BEAB1-7469-4877-B8C2-50415F507674}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.Blazor.Wizard", "VDT.Core.Blazor.Wizard\VDT.Core.Blazor.Wizard.csproj", "{6EEF865C-06A4-4FF9-B607-A2EA1BE9F04E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDT.Core.Blazor.Wizard.Tests", "VDT.Core.Blazor.Wizard.Tests\VDT.Core.Blazor.Wizard.Tests.csproj", "{394B2145-FBCE-4DB8-AF57-30876F7CCB22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{6EEF865C-06A4-4FF9-B607-A2EA1BE9F04E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EEF865C-06A4-4FF9-B607-A2EA1BE9F04E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EEF865C-06A4-4FF9-B607-A2EA1BE9F04E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{394B2145-FBCE-4DB8-AF57-30876F7CCB22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{394B2145-FBCE-4DB8-AF57-30876F7CCB22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{394B2145-FBCE-4DB8-AF57-30876F7CCB22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{394B2145-FBCE-4DB8-AF57-30876F7CCB22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -51,7 +51,7 @@ namespace VDT.Core.Blazor.Wizard.Tests {
         [Fact]
         public void WizardStep_IsActive_Is_False_For_No_Parent() {
             var step = new WizardStep() {
-                Parent = null
+                Wizard = null
             };
 
             Assert.False(step.IsActive);
@@ -63,7 +63,7 @@ namespace VDT.Core.Blazor.Wizard.Tests {
         public void WizardStep_IsActive_Is_Correct(int activeStepIndex, bool expectedIsActive) {
             var wizard = new Wizard();
             var step = new WizardStep() {
-                Parent = wizard
+                Wizard = wizard
             };
 
             var stepsInternal = (List<WizardStep>)typeof(Wizard).GetField("stepsInternal", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(wizard)!;

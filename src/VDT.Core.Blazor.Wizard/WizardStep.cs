@@ -7,7 +7,7 @@ namespace VDT.Core.Blazor.Wizard {
     /// Step as part of a wizard
     /// </summary>
     public class WizardStep : ComponentBase {
-        [CascadingParameter] internal Wizard? Parent { get; set; }
+        [CascadingParameter] internal Wizard? Wizard { get; set; }
 
         /// <summary>
         /// Title of the wizard step to display in the wizard menu
@@ -33,11 +33,11 @@ namespace VDT.Core.Blazor.Wizard {
         /// <summary>
         /// Indicates whether or not the wizard step is currently active
         /// </summary>
-        public bool IsActive => Parent?.ActiveStep == this;
+        public bool IsActive => Wizard?.ActiveStep == this;
 
         /// <inheritdoc/>
         protected override void OnInitialized() {
-            Parent?.AddStep(this);
+            Wizard?.AddStep(this);
         }
         
         internal async Task Initialize() {

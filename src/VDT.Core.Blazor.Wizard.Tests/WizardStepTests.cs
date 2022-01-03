@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -44,6 +46,32 @@ namespace VDT.Core.Blazor.Wizard.Tests {
             };
 
             Assert.Equal(expectedResult, await step.TryComplete());
+        }
+
+        [Fact]
+        public void WizardStep_IsActive_Is_False_For_No_Parent() {
+            var step = new WizardStep() {
+                Parent = null
+            };
+
+            Assert.False(step.IsActive);
+        }
+
+        [Theory]
+        [InlineData(0, false)]
+        [InlineData(1, true)]
+        public void WizardStep_IsActive_Is_Correct(int activeStepIndex, bool expectedIsActive) {
+            var wizard = new Wizard();
+            var step = new WizardStep() {
+                Parent = wizard
+            };
+
+            var stepsInternal = (List<WizardStep>)typeof(Wizard).GetField("stepsInternal", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(wizard)!;
+            stepsInternal.Add(new WizardStep());
+            stepsInternal.Add(step);
+            typeof(Wizard).GetField("activeStepIndex", BindingFlags.NonPublic | BindingFlags.Instance)!.SetValue(wizard, activeStepIndex);
+
+            Assert.Equal(expectedIsActive, step.IsActive);
         }
     }
 }

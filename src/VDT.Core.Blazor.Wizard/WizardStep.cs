@@ -7,7 +7,7 @@ namespace VDT.Core.Blazor.Wizard {
     /// Step as part of a wizard
     /// </summary>
     public class WizardStep : ComponentBase {
-        [CascadingParameter] private Wizard? Parent { get; set; }
+        [CascadingParameter] internal Wizard? Parent { get; set; }
 
         /// <summary>
         /// Title of the wizard step to display in the wizard menu

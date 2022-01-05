@@ -163,7 +163,6 @@ namespace VDT.Core.Blazor.Wizard {
 
             activeStepIndex = 0;
             await OnStart.InvokeAsync(new WizardStartedEventArgs());
-            StateHasChanged();
         }
 
         /// <summary>
@@ -212,7 +211,6 @@ namespace VDT.Core.Blazor.Wizard {
         private void Reset() {
             activeStepIndex = null;
             stepsInternal.Clear();
-            StateHasChanged();
         }
 
         /// <inheritdoc/>

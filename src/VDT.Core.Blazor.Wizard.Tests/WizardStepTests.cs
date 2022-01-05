@@ -11,7 +11,7 @@ namespace VDT.Core.Blazor.Wizard.Tests {
             WizardStepInitializedEventArgs? arguments = null;
             var step = new WizardStep() {
 #pragma warning disable BL0005 // Component parameter should not be set outside of its component.
-                OnInitialize = EventCallback.Factory.Create<WizardStepInitializedEventArgs>(this, (args) => arguments = args)
+                OnInitialize = EventCallback.Factory.Create<WizardStepInitializedEventArgs>(this, args => arguments = args)
 #pragma warning restore BL0005 // Component parameter should not be set outside of its component.
             };
 
@@ -26,7 +26,7 @@ namespace VDT.Core.Blazor.Wizard.Tests {
 
             var step = new WizardStep() {
 #pragma warning disable BL0005 // Component parameter should not be set outside of its component.
-                OnTryComplete = EventCallback.Factory.Create<WizardStepAttemptedCompleteEventArgs>(this, (args) => arguments = args)
+                OnTryComplete = EventCallback.Factory.Create<WizardStepAttemptedCompleteEventArgs>(this, args => arguments = args)
 #pragma warning restore BL0005 // Component parameter should not be set outside of its component.
             };
 
@@ -41,7 +41,7 @@ namespace VDT.Core.Blazor.Wizard.Tests {
         public async Task WizardStep_TryComplete_Returns_Correct_ShouldComplete(bool isCancelled, bool expectedResult) {
             var step = new WizardStep() {
 #pragma warning disable BL0005 // Component parameter should not be set outside of its component.
-                OnTryComplete = EventCallback.Factory.Create<WizardStepAttemptedCompleteEventArgs>(this, (args) => args.IsCancelled = isCancelled)
+                OnTryComplete = EventCallback.Factory.Create<WizardStepAttemptedCompleteEventArgs>(this, args => args.IsCancelled = isCancelled)
 #pragma warning restore BL0005 // Component parameter should not be set outside of its component.
             };
 

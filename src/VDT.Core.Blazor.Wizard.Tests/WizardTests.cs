@@ -19,9 +19,7 @@ namespace VDT.Core.Blazor.Wizard.Tests {
         public async Task Wizard_Start_Works() {
             WizardStartedEventArgs? arguments = null;
             var wizard = new Wizard() {
-#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
                 OnStart = EventCallback.Factory.Create<WizardStartedEventArgs>(this, args => arguments = args)
-#pragma warning restore BL0005 // Component parameter should not be set outside of its component.
             };
             
             await wizard.Start();
@@ -34,9 +32,7 @@ namespace VDT.Core.Blazor.Wizard.Tests {
         public async Task Wizard_Start_Does_Nothing_When_Active() {
             WizardStartedEventArgs? arguments = null;
             var wizard = new Wizard() {
-#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
                 OnStart = EventCallback.Factory.Create<WizardStartedEventArgs>(this, args => arguments = args)
-#pragma warning restore BL0005 // Component parameter should not be set outside of its component.
             };
 
             typeof(Wizard).GetField("activeStepIndex", BindingFlags.NonPublic | BindingFlags.Instance)!.SetValue(wizard, 2);
@@ -51,9 +47,7 @@ namespace VDT.Core.Blazor.Wizard.Tests {
         public async Task Wizard_Stop_Works() {
             WizardStoppedEventArgs? arguments = null;
             var wizard = new Wizard() {
-#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
                 OnStop = EventCallback.Factory.Create<WizardStoppedEventArgs>(this, args => arguments = args)
-#pragma warning restore BL0005 // Component parameter should not be set outside of its component.
             };
 
             typeof(Wizard).GetField("activeStepIndex", BindingFlags.NonPublic | BindingFlags.Instance)!.SetValue(wizard, 2);
@@ -68,9 +62,7 @@ namespace VDT.Core.Blazor.Wizard.Tests {
         public async Task Wizard_Stop_Does_Nothing_When_Inactive() {
             WizardStoppedEventArgs? arguments = null;
             var wizard = new Wizard() {
-#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
                 OnStop = EventCallback.Factory.Create<WizardStoppedEventArgs>(this, args => arguments = args)
-#pragma warning restore BL0005 // Component parameter should not be set outside of its component.
             };
 
             await wizard.Stop();
@@ -95,9 +87,7 @@ namespace VDT.Core.Blazor.Wizard.Tests {
             WizardStepInitializedEventArgs? arguments = null;
             var wizard = new Wizard();
             var step = new WizardStep() {
-#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
                 OnInitialize = EventCallback.Factory.Create<WizardStepInitializedEventArgs>(this, args => arguments = args)
-#pragma warning restore BL0005 // Component parameter should not be set outside of its component.                
             };
 
             typeof(Wizard).GetField("activeStepIndex", BindingFlags.NonPublic | BindingFlags.Instance)!.SetValue(wizard, 0);
@@ -112,9 +102,7 @@ namespace VDT.Core.Blazor.Wizard.Tests {
             WizardStepInitializedEventArgs? arguments = null;
             var wizard = new Wizard();
             var step = new WizardStep() {
-#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
                 OnInitialize = EventCallback.Factory.Create<WizardStepInitializedEventArgs>(this, args => arguments = args)
-#pragma warning restore BL0005 // Component parameter should not be set outside of its component.                
             };
 
             typeof(Wizard).GetField("activeStepIndex", BindingFlags.NonPublic | BindingFlags.Instance)!.SetValue(wizard, 0);

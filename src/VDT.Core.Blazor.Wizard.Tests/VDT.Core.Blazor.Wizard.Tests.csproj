@@ -1,10 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
 		<IsPackable>false</IsPackable>
 		<Nullable>enable</Nullable>
 		<WarningsAsErrors>nullable</WarningsAsErrors>
+	</PropertyGroup>
+
+	<PropertyGroup>
+	  <NoWarn>1701;1702;BL0005</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>

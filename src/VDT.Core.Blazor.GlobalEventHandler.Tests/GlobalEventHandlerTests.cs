@@ -64,9 +64,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
             KeyboardEventArgs expected = new KeyboardEventArgs();
             KeyboardEventArgs actual = null!;
             var subject = new GlobalEventHandler() {
-#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
                 OnKeyDown = EventCallback.Factory.Create<KeyboardEventArgs>(this, (args) => actual = args)
-#pragma warning restore BL0005 // Component parameter should not be set outside of its component.
             };
 
             await subject.InvokeKeyDown(expected);
@@ -79,9 +77,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
             KeyboardEventArgs expected = new KeyboardEventArgs();
             KeyboardEventArgs actual = null!;
             var subject = new GlobalEventHandler() {
-#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
                 OnKeyUp = EventCallback.Factory.Create<KeyboardEventArgs>(this, (args) => actual = args)
-#pragma warning restore BL0005 // Component parameter should not be set outside of its component.
             };
 
             await subject.InvokeKeyUp(expected);
@@ -94,9 +90,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
             ResizeEventArgs expected = new ResizeEventArgs();
             ResizeEventArgs actual = null!;
             var subject = new GlobalEventHandler() {
-#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
                 OnResize = EventCallback.Factory.Create<ResizeEventArgs>(this, (args) => actual = args)
-#pragma warning restore BL0005 // Component parameter should not be set outside of its component.
             };
 
             await subject.InvokeResize(expected);
@@ -109,9 +103,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
             MouseEventArgs expected = new MouseEventArgs();
             MouseEventArgs actual = null!;
             var subject = new GlobalEventHandler() {
-#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
                 OnClick = EventCallback.Factory.Create<MouseEventArgs>(this, (args) => actual = args)
-#pragma warning restore BL0005 // Component parameter should not be set outside of its component.
             };
 
             await subject.InvokeClick(expected);
@@ -124,9 +116,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
             MouseEventArgs expected = new MouseEventArgs();
             MouseEventArgs actual = null!;
             var subject = new GlobalEventHandler() {
-#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
                 OnMouseDown = EventCallback.Factory.Create<MouseEventArgs>(this, (args) => actual = args)
-#pragma warning restore BL0005 // Component parameter should not be set outside of its component.
             };
 
             await subject.InvokeMouseDown(expected);
@@ -139,9 +129,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
             MouseEventArgs expected = new MouseEventArgs();
             MouseEventArgs actual = null!;
             var subject = new GlobalEventHandler() {
-#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
                 OnMouseUp = EventCallback.Factory.Create<MouseEventArgs>(this, (args) => actual = args)
-#pragma warning restore BL0005 // Component parameter should not be set outside of its component.
             };
 
             await subject.InvokeMouseUp(expected);
@@ -154,9 +142,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
             MouseEventArgs expected = new MouseEventArgs();
             MouseEventArgs actual = null!;
             var subject = new GlobalEventHandler() {
-#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
                 OnMouseMove = EventCallback.Factory.Create<MouseEventArgs>(this, (args) => actual = args)
-#pragma warning restore BL0005 // Component parameter should not be set outside of its component.
             };
 
             await subject.InvokeMouseMove(expected);
@@ -169,9 +155,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
             MouseEventArgs expected = new MouseEventArgs();
             MouseEventArgs actual = null!;
             var subject = new GlobalEventHandler() {
-#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
                 OnContextMenu = EventCallback.Factory.Create<MouseEventArgs>(this, (args) => actual = args)
-#pragma warning restore BL0005 // Component parameter should not be set outside of its component.
             };
 
             await subject.InvokeContextMenu(expected);
@@ -184,9 +168,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
             MouseEventArgs expected = new MouseEventArgs();
             MouseEventArgs actual = null!;
             var subject = new GlobalEventHandler() {
-#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
                 OnDoubleClick = EventCallback.Factory.Create<MouseEventArgs>(this, (args) => actual = args)
-#pragma warning restore BL0005 // Component parameter should not be set outside of its component.
             };
 
             await subject.InvokeDoubleClick(expected);
@@ -199,9 +181,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
             ScrollEventArgs expected = new ScrollEventArgs();
             ScrollEventArgs actual = null!;
             var subject = new GlobalEventHandler() {
-#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
                 OnScroll = EventCallback.Factory.Create<ScrollEventArgs>(this, (args) => actual = args)
-#pragma warning restore BL0005 // Component parameter should not be set outside of its component.
             };
 
             await subject.InvokeScroll(expected);

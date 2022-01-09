@@ -8,15 +8,11 @@ namespace VDT.Core.Blazor.Wizard {
     /// Component that renders a series of steps to be completed by the user
     /// </summary>
     public class Wizard : ComponentBase {
-        private readonly List<WizardStep> stepsInternal = new();
-        private readonly WizardLayoutContext layoutContext;
-        private int? activeStepIndex;
-
         /// <summary>
         /// Constructs an instance of a wizard
         /// </summary>
         public Wizard() {
-            layoutContext = new WizardLayoutContext(this);
+            LayoutContext = new WizardLayoutContext(this);
         }
 
         /// <summary>
@@ -127,7 +123,7 @@ namespace VDT.Core.Blazor.Wizard {
         /// <summary>
         /// Indicates whether or not the wizard is currently active
         /// </summary>
-        public bool IsActive => activeStepIndex.HasValue;
+        public bool IsActive => ActiveStepIndex.HasValue;
 
         /// <summary>
         /// A callback that will be invoked when this wizard is started
@@ -147,11 +143,17 @@ namespace VDT.Core.Blazor.Wizard {
         [Parameter]
         public EventCallback<WizardFinishedEventArgs> OnFinish { get; set; }
 
-        internal WizardStep? ActiveStep => activeStepIndex.HasValue && stepsInternal.Count > activeStepIndex.Value ? stepsInternal[activeStepIndex.Value] : null;
+        internal List<WizardStep> StepsInternal { get; private init; } = new();
 
-        internal bool IsFirstStepActive => activeStepIndex.HasValue && activeStepIndex.Value == 0;
+        internal WizardLayoutContext LayoutContext { get; private init; }
 
-        internal bool IsLastStepActive => activeStepIndex.HasValue && activeStepIndex.Value == stepsInternal.Count - 1;
+        internal int? ActiveStepIndex { get; set; }
+
+        internal WizardStep? ActiveStep => ActiveStepIndex.HasValue && StepsInternal.Count > ActiveStepIndex.Value ? StepsInternal[ActiveStepIndex.Value] : null;
+
+        internal bool IsFirstStepActive => ActiveStepIndex.HasValue && ActiveStepIndex.Value == 0;
+
+        internal bool IsLastStepActive => ActiveStepIndex.HasValue && ActiveStepIndex.Value == StepsInternal.Count - 1;
 
         /// <summary>
         /// Open the wizard at the first step if it's not currently active
@@ -161,7 +163,7 @@ namespace VDT.Core.Blazor.Wizard {
                 return;
             }
 
-            activeStepIndex = 0;
+            ActiveStepIndex = 0;
             await OnStart.InvokeAsync(new WizardStartedEventArgs());
         }
 
@@ -178,25 +180,23 @@ namespace VDT.Core.Blazor.Wizard {
         }
 
         internal async Task AddStep(WizardStep step) {
-            if (!stepsInternal.Contains(step)) {
-                stepsInternal.Add(step);
+            if (!StepsInternal.Contains(step)) {
+                StepsInternal.Add(step);
 
-                if (stepsInternal.Count == 1) {
+                if (StepsInternal.Count == 1) {
                     await ActiveStep!.Initialize();
                 }
             }
         }
 
-        internal IReadOnlyList<WizardStep> GetSteps() => stepsInternal.AsReadOnly();
-
         internal async Task GoToPreviousStep() {
-            activeStepIndex--;
+            ActiveStepIndex--;
             await ActiveStep!.Initialize();
         }
 
         internal async Task TryCompleteStep() {
             if (await ActiveStep!.TryComplete()) {
-                activeStepIndex++;
+                ActiveStepIndex++;
 
                 if (ActiveStep == null) {
                     Reset();
@@ -209,8 +209,8 @@ namespace VDT.Core.Blazor.Wizard {
         }
 
         private void Reset() {
-            activeStepIndex = null;
-            stepsInternal.Clear();
+            ActiveStepIndex = null;
+            StepsInternal.Clear();
         }
 
         /// <inheritdoc/>
@@ -218,7 +218,7 @@ namespace VDT.Core.Blazor.Wizard {
             if (IsActive) {
                 builder.OpenComponent<CascadingValue<Wizard>>(1);
                 builder.AddAttribute(2, "Value", this);
-                builder.AddAttribute(3, "ChildContent", layoutContext.Wizard);
+                builder.AddAttribute(3, "ChildContent", LayoutContext.Wizard);
                 builder.CloseComponent();
             }
         }

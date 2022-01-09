@@ -65,7 +65,7 @@ namespace VDT.Core.Blazor.Wizard {
         /// Renders the wizard step titles
         /// </summary>
         public RenderFragment StepTitles => builder => {
-            foreach (var step in wizard.GetSteps()) {
+            foreach (var step in wizard.StepsInternal) {
                 builder.OpenElement(1, "div");
                 builder.SetKey(step);
 

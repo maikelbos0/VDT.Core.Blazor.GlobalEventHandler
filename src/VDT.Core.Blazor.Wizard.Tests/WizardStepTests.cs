@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using System.Collections.Generic;
-using System.Reflection;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -21,7 +19,6 @@ namespace VDT.Core.Blazor.Wizard.Tests {
         [Fact]
         public async Task WizardStep_TryComplete_Invokes_OnTryComplete() {
             WizardStepAttemptedCompleteEventArgs? arguments = null;
-
             var step = new WizardStep() {
                 OnTryComplete = EventCallback.Factory.Create<WizardStepAttemptedCompleteEventArgs>(this, args => arguments = args)
             };
@@ -55,15 +52,15 @@ namespace VDT.Core.Blazor.Wizard.Tests {
         [InlineData(0, false)]
         [InlineData(1, true)]
         public void WizardStep_IsActive_Is_Correct(int activeStepIndex, bool expectedIsActive) {
-            var wizard = new Wizard();
+            var wizard = new Wizard() {
+                ActiveStepIndex = activeStepIndex
+            };
             var step = new WizardStep() {
                 Wizard = wizard
             };
-            var stepsInternal = (List<WizardStep>)typeof(Wizard).GetField("stepsInternal", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(wizard)!;
-
-            stepsInternal.Add(new WizardStep());
-            stepsInternal.Add(step);
-            typeof(Wizard).GetField("activeStepIndex", BindingFlags.NonPublic | BindingFlags.Instance)!.SetValue(wizard, activeStepIndex);
+            
+            wizard.StepsInternal.Add(new WizardStep());
+            wizard.StepsInternal.Add(step);
 
             Assert.Equal(expectedIsActive, step.IsActive);
         }

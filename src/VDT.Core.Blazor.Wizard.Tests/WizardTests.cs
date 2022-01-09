@@ -8,7 +8,6 @@ namespace VDT.Core.Blazor.Wizard.Tests {
     public class WizardTests {
         /*
          * TODO
-         * TryCompleteStep
          * BuildRenderTree?
          * ActiveStep: index check, bounds check
          * IsFirstStepActive
@@ -142,6 +141,55 @@ namespace VDT.Core.Blazor.Wizard.Tests {
 
             Assert.Equal(0, typeof(Wizard).GetField("activeStepIndex", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(wizard));
             Assert.NotNull(arguments);
+        }
+
+        [Fact]
+        public async Task Wizard_TryCompleteStep_Can_Be_Cancelled() {
+            var wizard = new Wizard();
+            var step = new WizardStep() {
+                OnTryComplete = EventCallback.Factory.Create<WizardStepAttemptedCompleteEventArgs>(this, args => args.IsCancelled = true)
+            };
+            var stepsInternal = (List<WizardStep>)typeof(Wizard).GetField("stepsInternal", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(wizard)!;
+
+            stepsInternal.Add(step);
+            typeof(Wizard).GetField("activeStepIndex", BindingFlags.NonPublic | BindingFlags.Instance)!.SetValue(wizard, 0);
+
+            await wizard.TryCompleteStep();
+
+            Assert.Equal(0, typeof(Wizard).GetField("activeStepIndex", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(wizard));
+        }
+
+        [Fact]
+        public async Task Wizard_TryCompleteStep_Initializes_Next_Step() {
+            WizardStepInitializedEventArgs? arguments = null; 
+            var wizard = new Wizard();
+            var step = new WizardStep() {
+                OnInitialize = EventCallback.Factory.Create<WizardStepInitializedEventArgs>(this, args => arguments = args)
+            };
+            var stepsInternal = (List<WizardStep>)typeof(Wizard).GetField("stepsInternal", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(wizard)!;
+
+            stepsInternal.Add(new WizardStep());
+            stepsInternal.Add(step);
+            typeof(Wizard).GetField("activeStepIndex", BindingFlags.NonPublic | BindingFlags.Instance)!.SetValue(wizard, 0);
+
+            await wizard.TryCompleteStep();
+
+            Assert.Equal(1, typeof(Wizard).GetField("activeStepIndex", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(wizard));
+            Assert.NotNull(arguments);
+        }
+
+        [Fact]
+        public async Task Wizard_TryCompleteStep_Resets_When_Finished() {
+            var wizard = new Wizard();
+            var stepsInternal = (List<WizardStep>)typeof(Wizard).GetField("stepsInternal", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(wizard)!;
+
+            stepsInternal.Add(new WizardStep());
+            typeof(Wizard).GetField("activeStepIndex", BindingFlags.NonPublic | BindingFlags.Instance)!.SetValue(wizard, 0);
+
+            await wizard.TryCompleteStep();
+
+            Assert.Null(typeof(Wizard).GetField("activeStepIndex", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(wizard));
+            Assert.Empty(stepsInternal);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using Xunit;
@@ -7,7 +8,6 @@ namespace VDT.Core.Blazor.Wizard.Tests {
     public class WizardTests {
         /*
          * TODO
-         * GoToPreviousStep
          * TryCompleteStep
          * BuildRenderTree?
          * ActiveStep: index check, bounds check
@@ -124,6 +124,24 @@ namespace VDT.Core.Blazor.Wizard.Tests {
             await wizard.AddStep(step);
 
             Assert.Equal(step, Assert.Single(wizard.GetSteps()));
+        }
+
+        [Fact]
+        public async Task Wizard_GoToPreviousStep_Works() {
+            WizardStepInitializedEventArgs? arguments = null; 
+            var wizard = new Wizard();
+            var step = new WizardStep() {
+                OnInitialize = EventCallback.Factory.Create<WizardStepInitializedEventArgs>(this, args => arguments = args)
+            };
+            var stepsInternal = (List<WizardStep>)typeof(Wizard).GetField("stepsInternal", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(wizard)!;
+
+            stepsInternal.Add(step);
+            typeof(Wizard).GetField("activeStepIndex", BindingFlags.NonPublic | BindingFlags.Instance)!.SetValue(wizard, 1);
+
+            await wizard.GoToPreviousStep();
+
+            Assert.Equal(0, typeof(Wizard).GetField("activeStepIndex", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(wizard));
+            Assert.NotNull(arguments);
         }
     }
 }

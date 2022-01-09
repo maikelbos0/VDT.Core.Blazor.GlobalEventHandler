@@ -59,8 +59,8 @@ namespace VDT.Core.Blazor.Wizard.Tests {
             var step = new WizardStep() {
                 Wizard = wizard
             };
-
             var stepsInternal = (List<WizardStep>)typeof(Wizard).GetField("stepsInternal", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(wizard)!;
+
             stepsInternal.Add(new WizardStep());
             stepsInternal.Add(step);
             typeof(Wizard).GetField("activeStepIndex", BindingFlags.NonPublic | BindingFlags.Instance)!.SetValue(wizard, activeStepIndex);

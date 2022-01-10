@@ -6,7 +6,6 @@ namespace VDT.Core.Blazor.Wizard.Tests {
     public class WizardTests {
         /*
          * TODO
-         * BuildRenderTree?
          * ActiveStep: index check, bounds check
          * IsFirstStepActive
          * IsLastStepActive
@@ -95,7 +94,7 @@ namespace VDT.Core.Blazor.Wizard.Tests {
         [Fact]
         public async Task Wizard_AddStep_Does_Not_Initialize_Subsequent_Steps() {
             WizardStepInitializedEventArgs? arguments = null;
-            var wizard = new Wizard() { 
+            var wizard = new Wizard() {
                 ActiveStepIndex = 0
             };
             var step = new WizardStep() {

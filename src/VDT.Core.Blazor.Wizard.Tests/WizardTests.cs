@@ -4,12 +4,63 @@ using Xunit;
 
 namespace VDT.Core.Blazor.Wizard.Tests {
     public class WizardTests {
-        /*
-         * TODO
-         * ActiveStep: index check, bounds check
-         * IsFirstStepActive
-         * IsLastStepActive
-         */
+        [Theory]
+        [InlineData(null)]
+        [InlineData(2)]
+        public void Wizard_ActiveStep_Returns_Null_Correctly(int? activeStepIndex) {
+            var wizard = new Wizard() {
+                ActiveStepIndex = activeStepIndex
+            };
+
+            wizard.StepsInternal.Add(new WizardStep());
+            wizard.StepsInternal.Add(new WizardStep());
+
+            Assert.Null(wizard.ActiveStep);
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        public void Wizard_ActiveStep_Returns_Step_Correctly(int activeStepIndex) {
+            var wizard = new Wizard() {
+                ActiveStepIndex = activeStepIndex
+            };
+
+            wizard.StepsInternal.Add(new WizardStep());
+            wizard.StepsInternal.Add(new WizardStep());
+
+            Assert.Equal(wizard.StepsInternal[activeStepIndex], wizard.ActiveStep);
+        }
+
+        [Theory]
+        [InlineData(0, true)]
+        [InlineData(1, false)]
+        [InlineData(2, false)]
+        public void Wizard_IsFirstStepActive_Works(int activeStepIndex, bool expectedActive) {
+            var wizard = new Wizard() {
+                ActiveStepIndex = activeStepIndex
+            };
+
+            wizard.StepsInternal.Add(new WizardStep());
+            wizard.StepsInternal.Add(new WizardStep());
+
+            Assert.Equal(expectedActive, wizard.IsFirstStepActive);
+        }
+
+        [Theory]
+        [InlineData(0, false)]
+        [InlineData(1, true)]
+        [InlineData(2, false)]
+        public void Wizard_IsLastStepActive_Works(int activeStepIndex, bool expectedActive) {
+            var wizard = new Wizard() {
+                ActiveStepIndex = activeStepIndex
+            };
+
+            wizard.StepsInternal.Add(new WizardStep());
+            wizard.StepsInternal.Add(new WizardStep());
+
+            Assert.Equal(expectedActive, wizard.IsLastStepActive);
+        }
 
         [Fact]
         public async Task Wizard_Start_Works() {

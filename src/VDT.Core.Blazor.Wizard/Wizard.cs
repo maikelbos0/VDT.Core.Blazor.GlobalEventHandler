@@ -214,13 +214,6 @@ namespace VDT.Core.Blazor.Wizard {
         }
 
         /// <inheritdoc/>
-        protected override void BuildRenderTree(RenderTreeBuilder builder) {
-            if (IsActive) {
-                builder.OpenComponent<CascadingValue<Wizard>>(1);
-                builder.AddAttribute(2, "Value", this);
-                builder.AddAttribute(3, "ChildContent", LayoutContext.Wizard);
-                builder.CloseComponent();
-            }
-        }
+        protected override void BuildRenderTree(RenderTreeBuilder builder) => LayoutContext.Wizard(builder);
     }
 }

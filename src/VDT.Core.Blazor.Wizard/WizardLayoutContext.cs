@@ -12,6 +12,15 @@ namespace VDT.Core.Blazor.Wizard {
         }
 
         internal RenderFragment Wizard => builder => {
+            if (wizard.IsActive) {
+                builder.OpenComponent<CascadingValue<Wizard>>(1);
+                builder.AddAttribute(2, "Value", wizard);
+                builder.AddAttribute(3, "ChildContent", WizardContent);
+                builder.CloseComponent();
+            }
+        };
+
+        internal RenderFragment WizardContent => builder => {
             builder.AddContent(1, wizard.Steps);
 
             if (wizard.Layout == null) {

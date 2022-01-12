@@ -27,7 +27,7 @@ namespace VDT.Core.Blazor.Wizard {
                 builder.AddContent(2, DefaultLayout);
             }
             else {
-                builder.AddContent(3, wizard.Layout(this));
+                builder.AddContent(2, wizard.Layout(this));
             }
         };
 
@@ -96,8 +96,8 @@ namespace VDT.Core.Blazor.Wizard {
         public RenderFragment Buttons => builder => {
             builder.AddContent(1, ButtonCancel);
             builder.AddContent(2, ButtonPrevious);
-            builder.AddContent(3, ButtonFinish);
-            builder.AddContent(4, ButtonNext);
+            builder.AddContent(3, ButtonNext);
+            builder.AddContent(4, ButtonFinish);
         };
 
         /// <summary>

@@ -32,9 +32,10 @@ namespace VDT.Core.Blazor.Wizard.Tests {
                 Assert.Equal(expectedFrameCount, frames.Count);
             }
 
-            public void AssertComponent<TComponent>(int index) {
+            public void AssertComponent<TComponent>(int index, int innerFrameCount) {
                 Assert.Equal(RenderTreeFrameType.Component, frames.Array[index].FrameType);
                 Assert.Equal(typeof(TComponent), frames.Array[index].ComponentType);
+                Assert.Equal(innerFrameCount, frames.Array[index].ComponentSubtreeLength);
             }
 
             public void AssertAttribute(int index, string attributeName, Func<WizardLayoutContext, object> getAttributeValue) {
@@ -45,6 +46,11 @@ namespace VDT.Core.Blazor.Wizard.Tests {
                 Assert.Equal(RenderTreeFrameType.Attribute, frames.Array[index].FrameType);
                 Assert.Equal(attributeName, frames.Array[index].AttributeName);
                 Assert.Equal(attributeValue, frames.Array[index].AttributeValue);
+            }
+
+            public void AssertContent(int index, string content) {
+                Assert.Equal(RenderTreeFrameType.Text, frames.Array[index].FrameType);
+                Assert.Equal(content, frames.Array[index].TextContent);
             }
         }
 #pragma warning restore BL0006 // Do not use RenderTree types
@@ -57,7 +63,7 @@ namespace VDT.Core.Blazor.Wizard.Tests {
             var context = TestContext.CreateTestContext(wizard, c => c.Wizard);
 
             context.AssertFrameCount(3);
-            context.AssertComponent<CascadingValue<Wizard>>(0);
+            context.AssertComponent<CascadingValue<Wizard>>(0, 3);
             context.AssertAttribute(1, "Value", wizard);
             context.AssertAttribute(2, "ChildContent", c => c.WizardContent);
         }
@@ -68,6 +74,30 @@ namespace VDT.Core.Blazor.Wizard.Tests {
             var context = TestContext.CreateTestContext(wizard, c => c.Wizard);
 
             context.AssertFrameCount(0);
+        }
+
+        [Fact]
+        public void WizardLayoutContext_WizardContent_Renders_DefaultLayout_Correctly() {
+            var wizard = new Wizard() {
+                Steps = builder => builder.AddContent(1, "Step")
+            };
+            var context = TestContext.CreateTestContext(wizard, c => c.WizardContent);
+
+            context.AssertFrameCount(20);
+            context.AssertContent(1, "Step");
+        }
+
+        [Fact]
+        public void WizardLayoutContext_WizardContent_Renders_Layout_Correctly() {
+            var wizard = new Wizard() {
+                Steps = builder => builder.AddContent(1, "Step"),
+                Layout = context => builder => builder.AddContent(1, "Test")
+            };
+            var context = TestContext.CreateTestContext(wizard, c => c.WizardContent);
+
+            context.AssertFrameCount(4);
+            context.AssertContent(1, "Step");
+            context.AssertContent(3, "Test");
         }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.RenderTree;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace VDT.Core.Blazor.Wizard.Tests {
@@ -40,6 +41,10 @@ namespace VDT.Core.Blazor.Wizard.Tests {
 
             public void AssertAttribute(int index, string attributeName, Func<WizardLayoutContext, object> getAttributeValue) {
                 AssertAttribute(index, attributeName, getAttributeValue(context));
+            }
+
+            public void AssertAttribute(int index, string attributeName, Func<Task> attributeValue) {
+                AssertAttribute(index, attributeName, (object)attributeValue);
             }
 
             public void AssertAttribute(int index, string attributeName, object attributeValue) {
@@ -117,7 +122,7 @@ namespace VDT.Core.Blazor.Wizard.Tests {
                 ButtonContainerClass = "button-container",
                 ContentContainerClass = "content-container"
             };
-            wizard.StepsInternal.Add(new WizardStep() { 
+            wizard.StepsInternal.Add(new WizardStep() {
                 Title = "Step",
                 ChildContent = builder => builder.AddContent(1, "Step content")
             });
@@ -209,6 +214,32 @@ namespace VDT.Core.Blazor.Wizard.Tests {
 
             context.AssertElement(11, "button", 4);
             context.AssertContent(14, "Next");
+        }
+
+        [Fact]
+        public void WizardLayoutContext_ButtonCancel_Renders_When_Allowed() {
+            var wizard = new Wizard() {
+                AllowCancel = true,
+                ButtonCancelText = "Abort",
+                ButtonClass = "btn",
+                ButtonCancelClass = "btn-secondary"
+            };
+            var context = TestContext.CreateTestContext(wizard, c => c.ButtonCancel);
+
+            context.AssertFrameCount(4);
+                        
+            context.AssertElement(0, "button", 4);
+            context.AssertAttribute(1, "onclick", wizard.Stop);
+            context.AssertAttribute(2, "class", "btn btn-secondary");
+            context.AssertContent(3, "Abort");
+        }
+
+        [Fact]
+        public void WizardLayoutContext_ButtonCancel_Does_Not_Render_When_Not_Allowed() {
+            var wizard = new Wizard();
+            var context = TestContext.CreateTestContext(wizard, c => c.ButtonCancel);
+
+            context.AssertFrameCount(0);
         }
     }
 }

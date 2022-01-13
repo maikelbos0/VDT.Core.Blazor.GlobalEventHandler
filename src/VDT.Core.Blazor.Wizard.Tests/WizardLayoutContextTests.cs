@@ -180,5 +180,35 @@ namespace VDT.Core.Blazor.Wizard.Tests {
             context.AssertAttribute(4, "class", "step-title active");
             context.AssertContent(5, "Step 2");
         }
+
+        [Fact]
+        public void WizardLayoutContext_Buttons_Renders_Correctly() {
+            var wizard = new Wizard() {
+                ActiveStepIndex = 1,
+                AllowCancel = true,
+                AllowPrevious = true,
+            };
+            wizard.StepsInternal.Add(new WizardStep() {
+                Title = "Step 1"
+            });
+            wizard.StepsInternal.Add(new WizardStep() {
+                Title = "Step 2"
+            });
+            wizard.StepsInternal.Add(new WizardStep() {
+                Title = "Step 3"
+            });
+            var context = TestContext.CreateTestContext(wizard, c => c.Buttons);
+
+            context.AssertFrameCount(16);
+
+            context.AssertElement(1, "button", 4);
+            context.AssertContent(4, "Cancel");
+
+            context.AssertElement(6, "button", 4);
+            context.AssertContent(9, "Previous");
+
+            context.AssertElement(11, "button", 4);
+            context.AssertContent(14, "Next");
+        }
     }
 }

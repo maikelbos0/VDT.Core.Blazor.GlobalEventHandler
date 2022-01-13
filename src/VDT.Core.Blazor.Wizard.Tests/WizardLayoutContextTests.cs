@@ -143,5 +143,16 @@ namespace VDT.Core.Blazor.Wizard.Tests {
             context.AssertAttribute(25, "class", "content-container");
             context.AssertContent(28, "Step content");
         }
+
+        [Fact]
+        public void WizardLayoutContext_Title_Renders_Correctly() {
+            var wizard = new Wizard() {
+                TitleContent = builder => builder.AddContent(1, "<h1>Title</h1>")
+            };
+            var context = TestContext.CreateTestContext(wizard, c => c.Title);
+
+            context.AssertFrameCount(2);
+            context.AssertContent(1, "<h1>Title</h1>");
+        }
     }
 }

@@ -227,7 +227,7 @@ namespace VDT.Core.Blazor.Wizard.Tests {
             var context = TestContext.CreateTestContext(wizard, c => c.ButtonCancel);
 
             context.AssertFrameCount(4);
-                        
+
             context.AssertElement(0, "button", 4);
             context.AssertAttribute(1, "onclick", wizard.Stop);
             context.AssertAttribute(2, "class", "btn btn-secondary");
@@ -238,6 +238,46 @@ namespace VDT.Core.Blazor.Wizard.Tests {
         public void WizardLayoutContext_ButtonCancel_Does_Not_Render_When_Not_Allowed() {
             var wizard = new Wizard();
             var context = TestContext.CreateTestContext(wizard, c => c.ButtonCancel);
+
+            context.AssertFrameCount(0);
+        }
+
+        [Fact]
+        public void WizardLayoutContext_ButtonPrevious_Renders_When_Allowed() {
+            var wizard = new Wizard() {
+                AllowPrevious = true,
+                ButtonPreviousText = "Prev",
+                ButtonClass = "btn",
+                ButtonPreviousClass = "btn-secondary"
+            };
+            var context = TestContext.CreateTestContext(wizard, c => c.ButtonPrevious);
+
+            context.AssertFrameCount(4);
+
+            context.AssertElement(0, "button", 4);
+            context.AssertAttribute(1, "onclick", wizard.GoToPreviousStep);
+            context.AssertAttribute(2, "class", "btn btn-secondary");
+            context.AssertContent(3, "Prev");
+        }
+
+        [Fact]
+        public void WizardLayoutContext_ButtonPrevious_Does_Not_Render_When_Not_Allowed() {
+            var wizard = new Wizard();
+            var context = TestContext.CreateTestContext(wizard, c => c.ButtonPrevious);
+
+            context.AssertFrameCount(0);
+        }
+
+        [Fact]
+        public void WizardLayoutContext_ButtonPrevious_Does_Not_Render_When_On_First_Step() {
+            var wizard = new Wizard() {
+                ActiveStepIndex = 0,
+                AllowPrevious = true
+            };
+            wizard.StepsInternal.Add(new WizardStep() {
+                Title = "Step 1"
+            });
+            var context = TestContext.CreateTestContext(wizard, c => c.ButtonPrevious);
 
             context.AssertFrameCount(0);
         }

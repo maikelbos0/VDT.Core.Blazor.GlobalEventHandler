@@ -281,5 +281,42 @@ namespace VDT.Core.Blazor.Wizard.Tests {
 
             context.AssertFrameCount(0);
         }
+
+        [Fact]
+        public void WizardLayoutContext_ButtonNext_Renders_When_Not_On_Last_Step() {
+            var wizard = new Wizard() {
+                ActiveStepIndex = 0,
+                ButtonNextText = "Continue",
+                ButtonClass = "btn",
+                ButtonNextClass = "btn-primary"
+            };
+            wizard.StepsInternal.Add(new WizardStep() {
+                Title = "Step 1"
+            });
+            wizard.StepsInternal.Add(new WizardStep() {
+                Title = "Step 2"
+            });
+            var context = TestContext.CreateTestContext(wizard, c => c.ButtonNext);
+
+            context.AssertFrameCount(4);
+
+            context.AssertElement(0, "button", 4);
+            context.AssertAttribute(1, "onclick", wizard.TryCompleteStep);
+            context.AssertAttribute(2, "class", "btn btn-primary");
+            context.AssertContent(3, "Continue");
+        }
+
+        [Fact]
+        public void WizardLayoutContext_ButtonNext_Does_Not_Render_When_On_Last_Step() {
+            var wizard = new Wizard() {
+                ActiveStepIndex = 0
+            };
+            wizard.StepsInternal.Add(new WizardStep() {
+                Title = "Step 1"
+            });
+            var context = TestContext.CreateTestContext(wizard, c => c.ButtonNext);
+
+            context.AssertFrameCount(0);
+        }
     }
 }

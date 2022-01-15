@@ -5,7 +5,6 @@ events, and more
 
 ## Features
 
-- Wizard with sequential steps
 - Fully customizable layout
 - Events for starting, stopping and completing the wizard
 - Steps completed only on your own conditions
@@ -33,8 +32,8 @@ The wizard can be provided with the following CSS classes:
 
 ```
 <div>
-    <button @onclick="async () => await Wizard!.Start()" class="btn btn-primary">Start wizard</button>
-    <button @onclick="() => Wizard!.Stop()" class="btn btn-secondary">Stop wizard</button>
+    <button @onclick="async () => await Wizard.Start()" class="btn btn-primary">Start wizard</button>
+    <button @onclick="() => Wizard.Stop()" class="btn btn-secondary">Stop wizard</button>
 </div>
 
 <Wizard @ref="Wizard"
@@ -86,7 +85,7 @@ The wizard can be provided with the following CSS classes:
 </pre>
 
 @code {
-    public Wizard? Wizard { get; set; }
+    public Wizard Wizard { get; set; }
 
     public bool GoNext { get; set; } = true;
     public string StepData = string.Empty;
@@ -140,9 +139,7 @@ control over which elements you want to render and which markup to use around th
 
 ### Example
 
-<Wizard AllowCancel="true"
-        AllowPrevious="true"
-        ButtonClass="wizard-button"
+<Wizard ButtonClass="wizard-button"
         ButtonPreviousClass="wizard-button-secondary"
         ButtonPreviousText="<< Prev"
         ButtonFinishClass="wizard-button-primary"
@@ -160,8 +157,8 @@ control over which elements you want to render and which markup to use around th
             </div>
 
             <div class="wizard-buttons">
-                
                 @context.ButtonNext
+                @context.ButtonFinish
             </div>
         </div>
     </Layout>

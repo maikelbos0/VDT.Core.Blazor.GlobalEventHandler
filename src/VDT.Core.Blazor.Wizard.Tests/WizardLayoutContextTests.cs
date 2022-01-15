@@ -8,15 +8,15 @@ using Xunit;
 namespace VDT.Core.Blazor.Wizard.Tests {
     public class WizardLayoutContextTests {
         // These tests are likely fragile; if they break when updating Microsoft.AspNetCore.Components it may be a a good idea to wrap the RenderTreeBuilder.
-        // This would allow mocking as well, which could lead to clearer tests.
 
 #pragma warning disable BL0006 // Do not use RenderTree types
         public class TestContext {
             public static TestContext CreateTestContext(Wizard wizard, Func<WizardLayoutContext, RenderFragment> getRenderMethod) {
                 var context = new WizardLayoutContext(wizard);
                 var builder = new RenderTreeBuilder();
-
-                getRenderMethod(context)(builder);
+                var renderFragment = getRenderMethod(context);
+                
+                renderFragment(builder);
 
                 return new TestContext(context, builder.GetFrames());
             }
@@ -320,7 +320,7 @@ namespace VDT.Core.Blazor.Wizard.Tests {
         }
 
         [Fact]
-        public void WizardLayoutContext_ButtonFinish_Renders_When_Not_On_Last_Step() {
+        public void WizardLayoutContext_ButtonFinish_Renders_When_On_Last_Step() {
             var wizard = new Wizard() {
                 ActiveStepIndex = 1,
                 ButtonFinishText = "Complete",

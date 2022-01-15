@@ -22,8 +22,7 @@ namespace VDT.Core.Blazor.Wizard {
         /// <summary>
         /// A callback that will be invoked when this step is rendered
         /// </summary>
-        [Parameter]
-        public EventCallback<WizardStepInitializedEventArgs> OnInitialize { get; set; }
+        [Parameter] public EventCallback<WizardStepInitializedEventArgs> OnInitialize { get; set; }
 
         /// <summary>
         /// A callback that will be invoked when the user tries to go to the next step

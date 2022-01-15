@@ -33,10 +33,11 @@ namespace VDT.Core.Blazor.Wizard.Tests {
         }
 
         [Theory]
+        [InlineData(null, false)]
         [InlineData(0, true)]
         [InlineData(1, false)]
         [InlineData(2, false)]
-        public void Wizard_IsFirstStepActive_Works(int activeStepIndex, bool expectedActive) {
+        public void Wizard_IsFirstStepActive_Works(int? activeStepIndex, bool expectedActive) {
             var wizard = new Wizard() {
                 ActiveStepIndex = activeStepIndex
             };
@@ -48,10 +49,11 @@ namespace VDT.Core.Blazor.Wizard.Tests {
         }
 
         [Theory]
+        [InlineData(null, false)]
         [InlineData(0, false)]
         [InlineData(1, true)]
         [InlineData(2, false)]
-        public void Wizard_IsLastStepActive_Works(int activeStepIndex, bool expectedActive) {
+        public void Wizard_IsLastStepActive_Works(int? activeStepIndex, bool expectedActive) {
             var wizard = new Wizard() {
                 ActiveStepIndex = activeStepIndex
             };

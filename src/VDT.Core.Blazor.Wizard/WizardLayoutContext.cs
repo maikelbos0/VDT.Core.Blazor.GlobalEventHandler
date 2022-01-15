@@ -91,7 +91,7 @@ namespace VDT.Core.Blazor.Wizard {
         };
 
         /// <summary>
-        /// Renders the wizard cancel, next and finish buttons
+        /// Renders the wizard cancel, previous, next and finish buttons
         /// </summary>
         public RenderFragment Buttons => builder => {
             builder.AddContent(1, ButtonCancel);

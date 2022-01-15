@@ -51,7 +51,7 @@ namespace VDT.Core.Blazor.Wizard {
         [Parameter] public string? ButtonContainerClass { get; set; }
 
         /// <summary>
-        /// CSS class to apply to the buttons
+        /// CSS class to apply to all buttons
         /// </summary>
         [Parameter] public string? ButtonClass { get; set; }
 
@@ -116,7 +116,7 @@ namespace VDT.Core.Blazor.Wizard {
         [Parameter] public RenderFragment? Steps { get; set; }
 
         /// <summary>
-        /// Layout for the wizard; if left empty a default layout will be used
+        /// Layout for the wizard; a default layout will be used if this is not provided
         /// </summary>
         [Parameter] public RenderFragment<WizardLayoutContext>? Layout { get; set; }
 
@@ -138,7 +138,7 @@ namespace VDT.Core.Blazor.Wizard {
         public EventCallback<WizardStoppedEventArgs> OnStop { get; set; }
 
         /// <summary>
-        /// A callback that will be invoked when this wizard is finished; all steps of the wizard have been completed
+        /// A callback that will be invoked when this wizard is finished because all steps of the wizard have been completed
         /// </summary>
         [Parameter]
         public EventCallback<WizardFinishedEventArgs> OnFinish { get; set; }

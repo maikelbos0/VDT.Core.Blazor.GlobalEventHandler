@@ -8,10 +8,10 @@
 
 	<PropertyGroup>
 		<PackageId>VDT.Core.Blazor.GlobalEventHandler</PackageId>
-		<Version>1.1.1</Version>
+		<Version>1.1.2</Version>
 		<Title>VDT.Core.Blazor.GlobalEventHandler</Title>
 		<Description>Blazor component that allows you to handle global window level events in your application</Description>
-		<PackageReleaseNotes>Added documentation file</PackageReleaseNotes>
+		<PackageReleaseNotes>Added README</PackageReleaseNotes>
 		<Authors>Maikel Bos</Authors>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Copyright>Copyright © 2021 Maikel Bos</Copyright>
@@ -26,6 +26,10 @@
 
 	<ItemGroup>
 		<SupportedPlatform Include="browser" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="README.md" pack="true" PackagePath="." />
 	</ItemGroup>
 
 	<ItemGroup>

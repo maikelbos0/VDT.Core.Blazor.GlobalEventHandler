@@ -8,11 +8,10 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<NoWarn>1701;1702;BL0005</NoWarn>
+	  <NoWarn>1701;1702;BL0005</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Chutzpah" Version="4.4.12" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
 		<PackageReference Include="coverlet.collector" Version="3.1.0">
 			<PrivateAssets>all</PrivateAssets>
@@ -27,7 +26,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\VDT.Core.Blazor.GlobalEventHandler\VDT.Core.Blazor.GlobalEventHandler.csproj" />
+		<ProjectReference Include="..\VDT.Core.Blazor.Wizard\VDT.Core.Blazor.Wizard.csproj" />
 	</ItemGroup>
-
+	
 </Project>

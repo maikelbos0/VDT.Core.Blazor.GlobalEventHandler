@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
@@ -7,15 +7,14 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<PackageId>VDT.Core.Blazor.GlobalEventHandler</PackageId>
-		<Version>1.1.1</Version>
-		<Title>VDT.Core.Blazor.GlobalEventHandler</Title>
-		<Description>Blazor component that allows you to handle global window level events in your application</Description>
-		<PackageReleaseNotes>Added documentation file</PackageReleaseNotes>
+		<PackageId>VDT.Core.Blazor.Wizard</PackageId>
+		<Version>1.0</Version>
+		<Title>VDT.Core.Blazor.Wizard</Title>
+		<Description>Blazor component that helps you create wizard components with sequential steps, forward/back navigation, conditional completion of steps, step- and wizard-level events, and more</Description>
 		<Authors>Maikel Bos</Authors>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<Copyright>Copyright © 2021 Maikel Bos</Copyright>
-		<PackageTags>Blazor component, blazor, events, event handling, event handler, keydown, keyup, window events, global events, window event handlers, global event handlers</PackageTags>
+		<Copyright>Copyright © 2022 Maikel Bos</Copyright>
+		<PackageTags>Blazor component, blazor, wizard, setup assistant, assistant, sequence, steps</PackageTags>
 		<PackageProjectUrl>https://github.com/maikelbos0/VDT.Core</PackageProjectUrl>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	</PropertyGroup>

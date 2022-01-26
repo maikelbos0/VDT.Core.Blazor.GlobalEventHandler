@@ -54,9 +54,18 @@ namespace VDT.Core.DependencyInjection {
         /// <param name="serviceFinder">The method that will return service types for any given implementation type</param>
         /// <returns>A reference to this instance after the operation has completed</returns>
         public static IServiceCollection AddTransientServices(this IServiceCollection services, Assembly assembly, Func<Type, IEnumerable<Type>> serviceFinder) {
-
+            foreach (var context in GetServices(assembly, serviceFinder)) {
+                services.AddTransient(context.ServiceType, context.ImplementationType);
+            }
 
             return services;
+        }
+
+        private static IEnumerable<ServiceContext> GetServices(Assembly assembly, Func<Type, IEnumerable<Type>> serviceFinder) {
+            return assembly
+                .GetTypes()
+                .Where(t => !t.IsInterface && !t.IsAbstract)
+                .SelectMany(implementationType => serviceFinder(implementationType).Select(serviceType => new ServiceContext(serviceType, implementationType)));
         }
     }
  }

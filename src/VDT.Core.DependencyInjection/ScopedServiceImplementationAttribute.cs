@@ -8,9 +8,6 @@ namespace VDT.Core.DependencyInjection {
     /// or <see cref="ServiceCollectionExtensions.AddAttributeServices(IServiceCollection, Assembly, Action{Decorators.DecoratorOptions})"/>
     /// </summary>
     public sealed class ScopedServiceImplementationAttribute : ServiceAttribute {
-        private static readonly MethodInfo addServiceMethod = typeof(ServiceCollectionServiceExtensions)
-            .GetMethod(nameof(ServiceCollectionServiceExtensions.AddScoped), 2, BindingFlags.Public | BindingFlags.Static, typeof(IServiceCollection));
-        
         private static readonly MethodInfo addDecoratedServiceMethod = typeof(Decorators.ServiceCollectionExtensions)
             .GetMethod(nameof(Decorators.ServiceCollectionExtensions.AddScoped), 2, BindingFlags.Public | BindingFlags.Static, typeof(IServiceCollection), typeof(Action<Decorators.DecoratorOptions>));
 
@@ -30,7 +27,7 @@ namespace VDT.Core.DependencyInjection {
         }
 
         internal override void Register(IServiceCollection services, Type type) {
-            addServiceMethod.MakeGenericMethod(ServiceType, type).Invoke(null, new object[] { services });
+            services.AddScoped(ServiceType, type);
         }
 
         internal override void Register(IServiceCollection services, Type type, Action<Decorators.DecoratorOptions> decoratorSetupAction) {

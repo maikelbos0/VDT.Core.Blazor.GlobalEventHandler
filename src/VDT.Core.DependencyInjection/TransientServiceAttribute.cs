@@ -9,9 +9,6 @@ namespace VDT.Core.DependencyInjection {
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public sealed class TransientServiceAttribute : ServiceAttribute {
-        private static readonly MethodInfo addServiceMethod = typeof(ServiceCollectionServiceExtensions)
-            .GetMethod(nameof(ServiceCollectionServiceExtensions.AddTransient), 2, BindingFlags.Public | BindingFlags.Static, typeof(IServiceCollection));
-        
         private static readonly MethodInfo addDecoratedServiceMethod = typeof(Decorators.ServiceCollectionExtensions)
             .GetMethod(nameof(Decorators.ServiceCollectionExtensions.AddTransient), 2, BindingFlags.Public | BindingFlags.Static, typeof(IServiceCollection), typeof(Action<Decorators.DecoratorOptions>));
 
@@ -31,7 +28,7 @@ namespace VDT.Core.DependencyInjection {
         }
 
         internal override void Register(IServiceCollection services, Type type) {
-            addServiceMethod.MakeGenericMethod(type, ImplementationType).Invoke(null, new object[] { services });
+            services.AddTransient(type, ImplementationType);
         }
 
         internal override void Register(IServiceCollection services, Type type, Action<Decorators.DecoratorOptions> decoratorSetupAction) {

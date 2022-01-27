@@ -1,4 +1,4 @@
-﻿namespace VDT.Core.DependencyInjection.Tests {
+﻿namespace VDT.Core.DependencyInjection.Tests.AttributeServiceTargets {
     public class SingletonServiceTarget : SingletonServiceTargetBase, ISingletonServiceTarget {
         public SingletonServiceTarget() : base("Bar") { }
 

@@ -1,11 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using VDT.Core.DependencyInjection.Tests.AttributeServiceTargets;
 using Xunit;
 
 namespace VDT.Core.DependencyInjection.Tests {
     public class TransientServiceImplementationAttributeTests : ServiceAttributeTests {
         [Fact]
         public void AddAttributeServices_Adds_Services() {
-            services.AddAttributeServices(typeof(ServiceAttributeTests).Assembly);
+            services.AddAttributeServices(typeof(TransientServiceImplementationTarget).Assembly);
 
             var serviceProvider = services.BuildServiceProvider();
 
@@ -16,7 +17,7 @@ namespace VDT.Core.DependencyInjection.Tests {
 
         [Fact]
         public void AddAttributeServices_Always_Returns_New_Object() {
-            services.AddAttributeServices(typeof(ServiceAttributeTests).Assembly);
+            services.AddAttributeServices(typeof(TransientServiceImplementationTarget).Assembly);
 
             var serviceProvider = services.BuildServiceProvider();
 
@@ -27,7 +28,7 @@ namespace VDT.Core.DependencyInjection.Tests {
 
         [Fact]
         public void AddAttributeServices_Adds_Services_With_Decorators() {
-            services.AddAttributeServices(typeof(ServiceAttributeTests).Assembly, options => options.AddAttributeDecorators());
+            services.AddAttributeServices(typeof(TransientServiceImplementationTarget).Assembly, options => options.AddAttributeDecorators());
 
             var serviceProvider = services.BuildServiceProvider();
 
@@ -40,7 +41,7 @@ namespace VDT.Core.DependencyInjection.Tests {
 
         [Fact]
         public void AddAttributeServices_With_Decorators_Always_Returns_New_Object() {
-            services.AddAttributeServices(typeof(ServiceAttributeTests).Assembly, options => options.AddAttributeDecorators());
+            services.AddAttributeServices(typeof(TransientServiceImplementationTarget).Assembly, options => options.AddAttributeDecorators());
 
             var serviceProvider = services.BuildServiceProvider();
 

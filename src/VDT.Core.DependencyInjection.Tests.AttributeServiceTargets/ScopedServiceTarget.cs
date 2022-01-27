@@ -1,4 +1,4 @@
-﻿namespace VDT.Core.DependencyInjection.Tests {
+﻿namespace VDT.Core.DependencyInjection.Tests.AttributeServiceTargets {
     public class ScopedServiceTarget : ScopedServiceTargetBase, IScopedServiceTarget {
         public ScopedServiceTarget() : base("Bar") { }
 

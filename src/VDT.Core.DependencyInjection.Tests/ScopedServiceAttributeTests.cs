@@ -1,11 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using VDT.Core.DependencyInjection.Tests.AttributeServiceTargets;
 using Xunit;
 
 namespace VDT.Core.DependencyInjection.Tests {
     public class ScopedServiceAttributeTests : ServiceAttributeTests {
         [Fact]
         public void AddAttributeServices_Adds_Interface_Services() {
-            services.AddAttributeServices(typeof(ServiceAttributeTests).Assembly);
+            services.AddAttributeServices(typeof(ScopedServiceTarget).Assembly);
 
             var serviceProvider = services.BuildServiceProvider();
 
@@ -16,7 +17,7 @@ namespace VDT.Core.DependencyInjection.Tests {
 
         [Fact]
         public void AddAttributeServices_Adds_Class_Services() {
-            services.AddAttributeServices(typeof(ServiceAttributeTests).Assembly);
+            services.AddAttributeServices(typeof(ScopedServiceTarget).Assembly);
 
             var serviceProvider = services.BuildServiceProvider();
 
@@ -27,7 +28,7 @@ namespace VDT.Core.DependencyInjection.Tests {
 
         [Fact]
         public void AddAttributeServices_Returns_Same_Object_Within_Same_Scope() {
-            services.AddAttributeServices(typeof(ServiceAttributeTests).Assembly);
+            services.AddAttributeServices(typeof(ScopedServiceTarget).Assembly);
 
             var serviceProvider = services.BuildServiceProvider();
 
@@ -38,7 +39,7 @@ namespace VDT.Core.DependencyInjection.Tests {
 
         [Fact]
         public void AddAttributeServices_Returns_New_Object_Within_Different_Scopes() {
-            services.AddAttributeServices(typeof(ServiceAttributeTests).Assembly);
+            services.AddAttributeServices(typeof(ScopedServiceTarget).Assembly);
 
             var serviceProvider = services.BuildServiceProvider();
             IScopedServiceTarget scopedTarget;
@@ -54,7 +55,7 @@ namespace VDT.Core.DependencyInjection.Tests {
 
         [Fact]
         public void AddAttributeServices_Adds_Interface_Services_With_Decorators() {
-            services.AddAttributeServices(typeof(ServiceAttributeTests).Assembly, options => options.AddAttributeDecorators());
+            services.AddAttributeServices(typeof(ScopedServiceTarget).Assembly, options => options.AddAttributeDecorators());
 
             var serviceProvider = services.BuildServiceProvider();
 
@@ -67,7 +68,7 @@ namespace VDT.Core.DependencyInjection.Tests {
         
         [Fact]
         public void AddAttributeServices_Adds_Class_Services_With_Decorators() {
-            services.AddAttributeServices(typeof(ServiceAttributeTests).Assembly, options => options.AddAttributeDecorators());
+            services.AddAttributeServices(typeof(ScopedServiceTarget).Assembly, options => options.AddAttributeDecorators());
 
             var serviceProvider = services.BuildServiceProvider();
 
@@ -80,7 +81,7 @@ namespace VDT.Core.DependencyInjection.Tests {
 
         [Fact]
         public void AddAttributeServices_With_Decorators_Returns_Same_Object_Within_Same_Scope() {
-            services.AddAttributeServices(typeof(ServiceAttributeTests).Assembly, options => options.AddAttributeDecorators());
+            services.AddAttributeServices(typeof(ScopedServiceTarget).Assembly, options => options.AddAttributeDecorators());
 
             var serviceProvider = services.BuildServiceProvider();
 
@@ -91,7 +92,7 @@ namespace VDT.Core.DependencyInjection.Tests {
 
         [Fact]
         public void AddAttributeServices_With_Decorators_Returns_New_Object_Within_Different_Scopes() {
-            services.AddAttributeServices(typeof(ServiceAttributeTests).Assembly, options => options.AddAttributeDecorators());
+            services.AddAttributeServices(typeof(ScopedServiceTarget).Assembly, options => options.AddAttributeDecorators());
 
             var serviceProvider = services.BuildServiceProvider();
             IScopedServiceTarget scopedTarget;

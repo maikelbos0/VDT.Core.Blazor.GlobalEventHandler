@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.Blazor.Wizard", "V
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.Blazor.Wizard.Tests", "VDT.Core.Blazor.Wizard.Tests\VDT.Core.Blazor.Wizard.Tests.csproj", "{394B2145-FBCE-4DB8-AF57-30876F7CCB22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDT.Core.DependencyInjection.Tests.Decorators.Targets", "VDT.Core.DependencyInjection.Tests.Decorators.Targets\VDT.Core.DependencyInjection.Tests.Decorators.Targets.csproj", "{B48200AB-7FE8-431E-A273-81770089AC25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.DependencyInjection.Tests.Decorators.Targets", "VDT.Core.DependencyInjection.Tests.Decorators.Targets\VDT.Core.DependencyInjection.Tests.Decorators.Targets.csproj", "{B48200AB-7FE8-431E-A273-81770089AC25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDT.Core.DependencyInjection.Tests.AttributeServiceTargets", "VDT.Core.DependencyInjection.Tests.AttributeServiceTargets\VDT.Core.DependencyInjection.Tests.AttributeServiceTargets.csproj", "{27CABA05-1DBB-4616-8223-C7C1976A4AFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{B48200AB-7FE8-431E-A273-81770089AC25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B48200AB-7FE8-431E-A273-81770089AC25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B48200AB-7FE8-431E-A273-81770089AC25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27CABA05-1DBB-4616-8223-C7C1976A4AFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27CABA05-1DBB-4616-8223-C7C1976A4AFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27CABA05-1DBB-4616-8223-C7C1976A4AFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27CABA05-1DBB-4616-8223-C7C1976A4AFB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,12 +5,8 @@ using VDT.Core.DependencyInjection.Tests.ConventionServiceTargets;
 using Xunit;
 
 namespace VDT.Core.DependencyInjection.Tests {
-    public class ServiceCollectionExtensionsTests {
-        protected readonly ServiceCollection services;
-
-        public ServiceCollectionExtensionsTests() {
-            services = new ServiceCollection();
-        }
+    public class ServiceCollectionConventionExtensionsTests {
+        protected readonly ServiceCollection services = new ServiceCollection();
 
         [Fact]
         public void AddServices_Adds_Registrations_For_Found_Services_Of_A_Type() {

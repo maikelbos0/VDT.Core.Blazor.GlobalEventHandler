@@ -1,6 +1,7 @@
 ﻿using NSubstitute;
 using System;
 using VDT.Core.DependencyInjection.Decorators;
+using VDT.Core.DependencyInjection.Tests.Decorators.Targets;
 using Xunit;
 
 namespace VDT.Core.DependencyInjection.Tests.Decorators {

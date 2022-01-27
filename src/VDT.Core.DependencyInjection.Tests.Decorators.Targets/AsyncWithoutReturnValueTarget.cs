@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace VDT.Core.DependencyInjection.Tests.Decorators {
+namespace VDT.Core.DependencyInjection.Tests.Decorators.Targets {
     public class AsyncWithoutReturnValueTarget {
         public virtual async Task Success() {
             await Task.Delay(1);

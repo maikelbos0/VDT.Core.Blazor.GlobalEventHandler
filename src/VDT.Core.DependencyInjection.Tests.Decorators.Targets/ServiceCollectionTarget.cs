@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace VDT.Core.DependencyInjection.Tests.Decorators {
+namespace VDT.Core.DependencyInjection.Tests.Decorators.Targets {
     public class ServiceCollectionTarget : ServiceCollectionTargetBase {
         public override string Value { get; set; } = "Bar";
 

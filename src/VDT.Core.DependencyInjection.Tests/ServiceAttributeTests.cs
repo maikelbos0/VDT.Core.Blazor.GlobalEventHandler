@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using VDT.Core.DependencyInjection.Tests.Decorators;
+using VDT.Core.DependencyInjection.Tests.Decorators.Targets;
 
 namespace VDT.Core.DependencyInjection.Tests {
     public abstract class ServiceAttributeTests {

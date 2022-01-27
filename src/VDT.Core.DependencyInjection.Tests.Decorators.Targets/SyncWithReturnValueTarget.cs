@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace VDT.Core.DependencyInjection.Tests.Decorators {
+namespace VDT.Core.DependencyInjection.Tests.Decorators.Targets {
     public class SyncWithReturnValueTarget {
         public virtual bool Success() {
             return true;

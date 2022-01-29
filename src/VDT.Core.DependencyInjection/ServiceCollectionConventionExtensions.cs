@@ -34,6 +34,26 @@ namespace VDT.Core.DependencyInjection {
         public static IServiceCollection AddTransientServices(this IServiceCollection services, Assembly assembly, ServiceTypeFinder serviceTypeFinder) {
             return services.AddServices(assembly, serviceTypeFinder, (serviceType, implementationType) => ServiceLifetime.Transient);
         }
+        /// <summary>
+        /// Provides a mechanism to register all services found in <paramref name="assembly"/> where the <paramref name="serviceTypeFinder"/> finds service types for an implementation type as transient services
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> to add the services to</param>
+        /// <param name="assembly">The <see cref="Assembly"/> in which to look for services</param>
+        /// <param name="serviceTypeFinder">The method that will return service types for any given implementation type</param>
+        /// <returns>A reference to this instance after the operation has completed</returns>
+        public static IServiceCollection AddScopedServices(this IServiceCollection services, Assembly assembly, ServiceTypeFinder serviceTypeFinder) {
+            return services.AddServices(assembly, serviceTypeFinder, (serviceType, implementationType) => ServiceLifetime.Scoped);
+        }
+        /// <summary>
+        /// Provides a mechanism to register all services found in <paramref name="assembly"/> where the <paramref name="serviceTypeFinder"/> finds service types for an implementation type as transient services
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> to add the services to</param>
+        /// <param name="assembly">The <see cref="Assembly"/> in which to look for services</param>
+        /// <param name="serviceTypeFinder">The method that will return service types for any given implementation type</param>
+        /// <returns>A reference to this instance after the operation has completed</returns>
+        public static IServiceCollection AddSingletonServices(this IServiceCollection services, Assembly assembly, ServiceTypeFinder serviceTypeFinder) {
+            return services.AddServices(assembly, serviceTypeFinder, (serviceType, implementationType) => ServiceLifetime.Singleton);
+        }
 
         /// <summary>
         /// Provides a mechanism to register all services found in <paramref name="assembly"/> where the <paramref name="serviceTypeFinder"/> finds service types for an implementation type

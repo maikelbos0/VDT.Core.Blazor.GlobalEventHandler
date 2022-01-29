@@ -5,8 +5,8 @@ using VDT.Core.DependencyInjection.Decorators;
 
 namespace VDT.Core.DependencyInjection {
     /// <summary>
-    /// Marks a service to be registered when calling <see cref="ServiceCollectionExtensions.AddAttributeServices(IServiceCollection, Assembly)"/>
-    /// or <see cref="ServiceCollectionExtensions.AddAttributeServices(IServiceCollection, Assembly, Action{DecoratorOptions})"/>
+    /// Marks a service to be registered when calling <see cref="ServiceCollectionAttributeExtensions.AddAttributeServices(IServiceCollection, Assembly)"/>
+    /// or <see cref="ServiceCollectionAttributeExtensions.AddAttributeServices(IServiceCollection, Assembly, Action{DecoratorOptions})"/>
     /// </summary>
     public abstract class ServiceAttribute : Attribute {
         internal abstract void Register(IServiceCollection services, Type type);

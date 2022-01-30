@@ -37,5 +37,22 @@ namespace VDT.Core.DependencyInjection.Tests {
 
             Assert.Empty(serviceTypes);
         }
+
+        [Fact]
+        public void CreateGenericInterfaceTypeFinder_Returns_ServiceTypeFinder_That_Returns_Correct_Constructed_Generic_Service_Types() {
+            var finder = DefaultServiceTypeFinders.CreateGenericInterfaceTypeFinder(typeof(ICommandHandler<>));
+
+            Assert.Equal(typeof(ICommandHandler<string>), Assert.Single(finder(typeof(StringCommandHandler))));
+        }
+
+        [Fact]
+        public void CreateGenericInterfaceTypeFinder_Throws_Exception_When_Not_Passing_Unbound_Generic_Type() {
+            Assert.Throws<ServiceRegistrationException>(() => DefaultServiceTypeFinders.CreateGenericInterfaceTypeFinder(typeof(IGenericInterface)));
+        }
+
+        [Fact]
+        public void CreateGenericInterfaceTypeFinder_Throws_Exception_When_Not_Passing_Interface_Types() {
+            Assert.Throws<ServiceRegistrationException>(() => DefaultServiceTypeFinders.CreateGenericInterfaceTypeFinder(typeof(CommandHandler<>)));
+        }
     }
 }

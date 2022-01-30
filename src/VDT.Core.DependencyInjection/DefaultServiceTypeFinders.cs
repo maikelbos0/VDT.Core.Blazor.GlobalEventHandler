@@ -21,5 +21,12 @@ namespace VDT.Core.DependencyInjection {
 
             return Enumerable.Empty<Type>();
         }
+
+        /// <summary>
+        /// Returns all interfaces that match the implementation type name with an "I" prefix; e.g. MyService and IMyService
+        /// </summary>
+        /// <param name="implementationType">The implementation type to find service types for</param>
+        /// <returns>All matching interface types</returns>
+        public static IEnumerable<Type> InterfaceByName(Type implementationType) => implementationType.GetInterfaces().Where(serviceType => serviceType.Name == $"I{implementationType.Name}");
     }
 }

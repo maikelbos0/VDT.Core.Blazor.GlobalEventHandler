@@ -1,3 +1,3 @@
 ﻿namespace VDT.Core.DependencyInjection.Tests.ConventionServiceTargets {
-    public interface ISomeService { }
+    public class SingleInterfaceService : ISingleInterfaceService { }
 }

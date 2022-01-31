@@ -16,26 +16,35 @@ namespace VDT.Core.DependencyInjection {
         /// <param name="setupAction">The action that sets up the options for finding and registering services to this collection</param>
         /// <returns>A reference to this instance after the operation has completed</returns>
         public static IServiceCollection AddServices(this IServiceCollection services, Action<ServiceRegistrationOptions> setupAction) {
-            var options = new ServiceRegistrationOptions();
+            var options = GetOptions(setupAction);
 
-            setupAction(options);
+            foreach (var context in GetServices(options)) {
+                var serviceLifetime = options.ServiceLifetimeProvider?.Invoke(context.ServiceType, context.ImplementationType) ?? options.DefaultServiceLifetime;
 
-            foreach (var assembly in options.Assemblies) {
-                foreach (var serviceTypeFinder in options.ServiceTypeFinders) {
-                    foreach (var context in GetServices(assembly, serviceTypeFinder)) {
-                        var serviceLifetime = options.ServiceLifetimeProvider?.Invoke(context.ServiceType, context.ImplementationType) ?? options.DefaultServiceLifetime;
-
-                        if (options.ServiceRegistrar != null) {
-                            options.ServiceRegistrar(services, context.ServiceType, context.ImplementationType, serviceLifetime);
-                        }
-                        else {
-                            services.Add(new ServiceDescriptor(context.ServiceType, context.ImplementationType, serviceLifetime));
-                        }
-                    }
+                if (options.ServiceRegistrar != null) {
+                    options.ServiceRegistrar(services, context.ServiceType, context.ImplementationType, serviceLifetime);
+                }
+                else {
+                    services.Add(new ServiceDescriptor(context.ServiceType, context.ImplementationType, serviceLifetime));
                 }
             }
 
             return services;
+        }
+
+        private static ServiceRegistrationOptions GetOptions(Action<ServiceRegistrationOptions> setupAction) {
+            var options = new ServiceRegistrationOptions();
+
+            setupAction(options);
+
+            return options;
+        }
+
+        private static IEnumerable<ServiceContext> GetServices(ServiceRegistrationOptions options) {
+            return options
+                .Assemblies
+                .SelectMany(a => options.ServiceTypeFinders.Select(f => new { Assembly = a, ServiceTypeFinder = f }))
+                .SelectMany(x => GetServices(x.Assembly, x.ServiceTypeFinder));
         }
 
         private static IEnumerable<ServiceContext> GetServices(Assembly assembly, ServiceTypeFinder serviceTypeFinder) {

@@ -60,7 +60,7 @@ namespace VDT.Core.DependencyInjection {
         private static IEnumerable<ServiceContext> GetServices(Assembly assembly, ServiceTypeFinder serviceTypeFinder) {
             return assembly
                 .GetTypes()
-                .Where(t => !t.IsInterface && !t.IsAbstract)
+                .Where(t => !t.IsInterface && !t.IsAbstract && !t.IsGenericTypeDefinition)
                 .SelectMany(implementationType => serviceTypeFinder(implementationType).Select(serviceType => new ServiceContext(serviceType, implementationType)));
         }
     }

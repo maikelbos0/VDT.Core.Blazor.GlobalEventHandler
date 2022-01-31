@@ -9,77 +9,96 @@ namespace VDT.Core.DependencyInjection.Tests {
         protected readonly ServiceCollection services = new ServiceCollection();
 
         [Fact]
-        public void AddTransientServices_Always_Returns_New_Object() {
-            services.AddTransientServices(typeof(NamedService).Assembly, t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface)));
+        public void AddServices_Uses_ServiceLifetimeProvider() {
+            services.AddServices(options => {
+                options.Assemblies.Add(typeof(NamedService).Assembly);
+                options.ServiceTypeFinders.Add(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface)));
+                options.ServiceLifetimeProvider = (serviceType, implementationType) => ServiceLifetime.Singleton;
+            });
 
-            var serviceProvider = services.BuildServiceProvider();
-
-            using (var scope = serviceProvider.CreateScope()) {
-                Assert.NotSame(scope.ServiceProvider.GetRequiredService<INamedService>(), scope.ServiceProvider.GetRequiredService<INamedService>());
-            }
+            Assert.Equal(ServiceLifetime.Singleton, services.Single(s => s.ServiceType == typeof(INamedService)).Lifetime);
         }
 
         [Fact]
-        public void AddScopedServices_Returns_Same_Object_Within_Same_Scope() {
-            services.AddScopedServices(typeof(NamedService).Assembly, t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface)));
+        public void AddServices_Uses_DefaultServiceLifetime_If_No_ServiceLifetime_Found() {
+            services.AddServices(options => {
+                options.Assemblies.Add(typeof(NamedService).Assembly);
+                options.ServiceTypeFinders.Add(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface)));
+                options.DefaultServiceLifetime = ServiceLifetime.Singleton;
+                options.ServiceLifetimeProvider = (serviceType, implementationType) => null;
+            });
 
-            var serviceProvider = services.BuildServiceProvider();
-
-            using (var scope = serviceProvider.CreateScope()) {
-                Assert.Same(scope.ServiceProvider.GetRequiredService<INamedService>(), scope.ServiceProvider.GetRequiredService<INamedService>());
-            }
+            Assert.Equal(ServiceLifetime.Singleton, services.Single(s => s.ServiceType == typeof(INamedService)).Lifetime);
         }
 
         [Fact]
-        public void AddScopedServices_Returns_New_Object_Within_Different_Scopes() {
-            services.AddScopedServices(typeof(NamedService).Assembly, t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface)));
+        public void AddServices_Uses_DefaultServiceLifetime_If_No_ServiceLifetimeProvider_Supplied() {
+            services.AddServices(options => {
+                options.Assemblies.Add(typeof(NamedService).Assembly);
+                options.ServiceTypeFinders.Add(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface)));
+                options.DefaultServiceLifetime = ServiceLifetime.Singleton;
+            });
 
-            var serviceProvider = services.BuildServiceProvider();
-            INamedService scopedTarget;
-
-            using (var scope = serviceProvider.CreateScope()) {
-                scopedTarget = scope.ServiceProvider.GetRequiredService<INamedService>();
-            }
-
-            using (var scope = serviceProvider.CreateScope()) {
-                Assert.NotSame(scopedTarget, scope.ServiceProvider.GetRequiredService<INamedService>());
-            }
+            Assert.Equal(ServiceLifetime.Singleton, services.Single(s => s.ServiceType == typeof(INamedService)).Lifetime);
         }
 
         [Fact]
-        public void AddSingletonServices_Always_Returns_Same_Object() {
-            services.AddSingletonServices(typeof(NamedService).Assembly, t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface)));
+        public void AddServices_Uses_ServiceRegistrar_If_Provided() {
+            services.AddServices(options => {
+                options.Assemblies.Add(typeof(NamedService).Assembly);
+                options.ServiceTypeFinders.Add(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface)));
+                options.DefaultServiceLifetime = ServiceLifetime.Singleton;
+                options.ServiceRegistrar = (services, serviceType, implementationType, serviceLifetime) => {
+                    services.Add(new ServiceDescriptor(serviceType, implementationType, ServiceLifetime.Scoped));
+                    return services;
+                };
+            });
 
-            var serviceProvider = services.BuildServiceProvider();
-            INamedService singletonTarget;
-
-            using (var scope = serviceProvider.CreateScope()) {
-                singletonTarget = scope.ServiceProvider.GetRequiredService<INamedService>();
-            }
-
-            using (var scope = serviceProvider.CreateScope()) {
-                Assert.Same(singletonTarget, scope.ServiceProvider.GetRequiredService<INamedService>());
-            }
+            Assert.Equal(ServiceLifetime.Scoped, Assert.Single(services, s => s.ServiceType == typeof(INamedService)).Lifetime);
         }
 
         [Fact]
-        public void AddServices_Adds_Registrations_For_Found_Services_Of_A_Type() {
-            services.AddServices(typeof(NamedService).Assembly, t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface)), (serviceType, implementationType) => ServiceLifetime.Scoped);
+        public void AddServices_Creates_ServiceRegistrations_If_No_ServiceRegistrar_Supplied() {
+            services.AddServices(options => {
+                options.Assemblies.Add(typeof(NamedService).Assembly);
+                options.ServiceTypeFinders.Add(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface)));
+                options.DefaultServiceLifetime = ServiceLifetime.Scoped;
+            });
 
-            var serviceProvider = services.BuildServiceProvider();
+            var service = Assert.Single(services, s => s.ServiceType == typeof(INamedService));
 
-            var service = serviceProvider.GetRequiredService<INamedService>();
-
-            Assert.IsType<NamedService>(service);
+            Assert.Equal(typeof(NamedService), service.ImplementationType);
+            Assert.Equal(ServiceLifetime.Scoped, service.Lifetime);
         }
 
         [Fact]
-        public void AddServices_Does_Not_Add_Registrations_For_Other_Service_Types_Of_A_Type() {
-            services.AddServices(typeof(NamedService).Assembly, t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface)), (serviceType, implementationType) => ServiceLifetime.Scoped);
+        public void AddServices_Adds_Services_From_All_ServiceTypeFinders() {
+            services.AddServices(options => {
+                options.Assemblies.Add(typeof(NamedService).Assembly);
+                options.ServiceTypeFinders.Add(t => t.GetInterfaces().Where(i => i == typeof(IGenericInterface)));
+                options.ServiceTypeFinders.Add(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface)));
+            });
 
-            var serviceProvider = services.BuildServiceProvider();
+            Assert.Single(services, s => s.ServiceType == typeof(INamedService));
+            Assert.Single(services, s => s.ServiceType == typeof(IGenericInterface));
+        }
 
-            Assert.Throws<InvalidOperationException>(() => serviceProvider.GetRequiredService<IGenericInterface>());
+        [Fact]
+        public void AddServices_Adds_No_Services_When_No_Assemblies_Supplied() {
+            services.AddServices(options => {
+                options.ServiceTypeFinders.Add(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface)));
+            });
+
+            Assert.Empty(services);
+        }
+
+        [Fact]
+        public void AddServices_Adds_No_Services_When_No_ServiceTypeFinders_Supplied() {
+            services.AddServices(options => {
+                options.Assemblies.Add(typeof(NamedService).Assembly);
+            });
+
+            Assert.Empty(services);
         }
     }
 }

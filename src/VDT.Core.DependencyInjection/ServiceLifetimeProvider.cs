@@ -7,6 +7,6 @@ namespace VDT.Core.DependencyInjection {
     /// </summary>
     /// <param name="serviceType">The service type</param>
     /// <param name="implementationType">The implementation type</param>
-    /// <returns>A service lifetime to apply to this service registration</returns>
-    public delegate ServiceLifetime ServiceLifetimeProvider(Type serviceType, Type implementationType);
+    /// <returns>A service lifetime to apply to this service registration or null if the lifetime could not be provided</returns>
+    public delegate ServiceLifetime? ServiceLifetimeProvider(Type serviceType, Type implementationType);
 }

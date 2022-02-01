@@ -13,14 +13,9 @@ namespace VDT.Core.DependencyInjection {
         public List<Assembly> Assemblies { get; set; } = new List<Assembly>();
 
         /// <summary>
-        /// Methods that return service types for a given implementation type; service types that appear in any method will be registered
+        /// Options for methods that return service types for a given implementation type; service types that appear in any method will be registered
         /// </summary>
-        public List<ServiceTypeFinder> ServiceTypeFinders { get; set; } = new List<ServiceTypeFinder>();
-
-        /// <summary>
-        /// Methods that returns a service lifetime for a given service and implementation type to be registered
-        /// </summary>
-        public ServiceLifetimeProvider? ServiceLifetimeProvider { get; set; }
+        public List<ServiceTypeFinderOptions> ServiceTypeFinders { get; set; } = new List<ServiceTypeFinderOptions>();
 
         /// <summary>
         /// Service lifetime to use if no <see cref="ServiceLifetimeProvider"/> is provided or the <see cref="ServiceLifetimeProvider"/> did not find a suitable lifetime

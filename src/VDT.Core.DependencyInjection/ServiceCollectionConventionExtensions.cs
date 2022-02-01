@@ -19,13 +19,11 @@ namespace VDT.Core.DependencyInjection {
             var options = GetOptions(setupAction);
 
             foreach (var context in GetServices(options)) {
-                var serviceLifetime = options.ServiceLifetimeProvider?.Invoke(context.ServiceType, context.ImplementationType) ?? options.DefaultServiceLifetime;
-
                 if (options.ServiceRegistrar != null) {
-                    options.ServiceRegistrar(services, context.ServiceType, context.ImplementationType, serviceLifetime);
+                    options.ServiceRegistrar(services, context.ServiceType, context.ImplementationType, context.ServiceLifetime);
                 }
                 else {
-                    services.Add(new ServiceDescriptor(context.ServiceType, context.ImplementationType, serviceLifetime));
+                    services.Add(new ServiceDescriptor(context.ServiceType, context.ImplementationType, context.ServiceLifetime));
                 }
             }
 
@@ -44,14 +42,21 @@ namespace VDT.Core.DependencyInjection {
             return options
                 .Assemblies
                 .SelectMany(a => options.ServiceTypeFinders.Select(f => new { Assembly = a, ServiceTypeFinder = f }))
-                .SelectMany(x => GetServices(x.Assembly, x.ServiceTypeFinder));
+                .SelectMany(x => GetServices(x.Assembly, x.ServiceTypeFinder, options.DefaultServiceLifetime));
         }
 
-        private static IEnumerable<ServiceContext> GetServices(Assembly assembly, ServiceTypeFinder serviceTypeFinder) {
+        private static IEnumerable<ServiceContext> GetServices(Assembly assembly, ServiceTypeFinderOptions options, ServiceLifetime defaultServiceLifetime) {
             return assembly
                 .GetTypes()
                 .Where(t => !t.IsInterface && !t.IsAbstract && !t.IsGenericTypeDefinition)
-                .SelectMany(implementationType => serviceTypeFinder(implementationType).Select(serviceType => new ServiceContext(serviceType, implementationType)));
+                .SelectMany(implementationType => options
+                    .ServiceTypeFinder(implementationType)
+                    .Select(serviceType => new ServiceContext(
+                        serviceType, 
+                        implementationType, 
+                        serviceLifetime: options.ServiceLifetimeProvider?.Invoke(serviceType, implementationType) ?? defaultServiceLifetime
+                    ))
+                );
         }
     }
 }

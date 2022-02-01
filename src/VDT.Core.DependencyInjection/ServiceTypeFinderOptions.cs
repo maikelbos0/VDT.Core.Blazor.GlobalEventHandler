@@ -17,7 +17,7 @@
         public ServiceTypeFinder ServiceTypeFinder { get; set; }
 
         /// <summary>
-        /// Methods that returns a service lifetime for a given service and implementation type to be registered
+        /// Method that returns a service lifetime for a given service and implementation type to be registered
         /// </summary>
         public ServiceLifetimeProvider? ServiceLifetimeProvider { get; set; }
     }

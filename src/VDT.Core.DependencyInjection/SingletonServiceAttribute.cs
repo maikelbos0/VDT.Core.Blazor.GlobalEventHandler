@@ -8,7 +8,7 @@ namespace VDT.Core.DependencyInjection {
     /// or <see cref="ServiceCollectionAttributeExtensions.AddAttributeServices(IServiceCollection, Assembly, Action{Decorators.DecoratorOptions})"/>
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public sealed class SingletonServiceAttribute : ServiceAttribute {
+    public sealed class SingletonServiceAttribute : ServiceAttribute, IServiceAttribute {
         private static readonly MethodInfo addDecoratedServiceMethod = typeof(Decorators.ServiceCollectionDecoratorExtensions)
             .GetMethod(nameof(Decorators.ServiceCollectionDecoratorExtensions.AddSingleton), 2, BindingFlags.Public | BindingFlags.Static, typeof(IServiceCollection), typeof(Action<Decorators.DecoratorOptions>));
 
@@ -16,6 +16,11 @@ namespace VDT.Core.DependencyInjection {
         /// The type to use as implementation for this service
         /// </summary>
         public Type ImplementationType { get; }
+
+        /// <summary>
+        /// The lifetime of services marked with this attribute is <see cref="ServiceLifetime.Singleton"/>
+        /// </summary>
+        public ServiceLifetime ServiceLifetime => ServiceLifetime.Singleton;
 
         /// <summary>
         /// Marks a service to be registered as a singleton service when calling <see cref="ServiceCollectionAttributeExtensions.AddAttributeServices(IServiceCollection, Assembly)"/>

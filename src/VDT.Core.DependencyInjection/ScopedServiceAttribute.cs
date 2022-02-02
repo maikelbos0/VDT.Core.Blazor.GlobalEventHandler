@@ -8,7 +8,7 @@ namespace VDT.Core.DependencyInjection {
     /// or <see cref="ServiceCollectionAttributeExtensions.AddAttributeServices(IServiceCollection, Assembly, Action{Decorators.DecoratorOptions})"/>
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public sealed class ScopedServiceAttribute : ServiceAttribute {
+    public sealed class ScopedServiceAttribute : ServiceAttribute, IServiceAttribute {
         private static readonly MethodInfo addDecoratedServiceMethod = typeof(Decorators.ServiceCollectionDecoratorExtensions)
             .GetMethod(nameof(Decorators.ServiceCollectionDecoratorExtensions.AddScoped), 2, BindingFlags.Public | BindingFlags.Static, typeof(IServiceCollection), typeof(Action<Decorators.DecoratorOptions>));
 
@@ -16,6 +16,11 @@ namespace VDT.Core.DependencyInjection {
         /// The type to use as implementation for this service
         /// </summary>
         public Type ImplementationType { get; }
+
+        /// <summary>
+        /// The lifetime of services marked with this attribute is <see cref="ServiceLifetime.Scoped"/>
+        /// </summary>
+        public ServiceLifetime ServiceLifetime => ServiceLifetime.Scoped;
 
         /// <summary>
         /// Marks a service to be registered as a scoped service when calling <see cref="ServiceCollectionAttributeExtensions.AddAttributeServices(IServiceCollection, Assembly)"/>

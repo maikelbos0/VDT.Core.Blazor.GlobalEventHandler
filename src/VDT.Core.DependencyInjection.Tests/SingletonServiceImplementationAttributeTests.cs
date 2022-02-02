@@ -5,6 +5,11 @@ using Xunit;
 namespace VDT.Core.DependencyInjection.Tests {
     public class SingleTonServiceImplementationAttributeTests : ServiceAttributeTests {
         [Fact]
+        public void SingletonServiceImplementationAttribute_ServiceLifetime_Is_Singleton() {
+            Assert.Equal(ServiceLifetime.Singleton, new SingletonServiceImplementationAttribute(typeof(SingletonServiceImplementationTarget)).ServiceLifetime);
+        }
+
+        [Fact]
         public void AddAttributeServices_Adds_Services() {
             services.AddAttributeServices(typeof(SingletonServiceImplementationTarget).Assembly);
 

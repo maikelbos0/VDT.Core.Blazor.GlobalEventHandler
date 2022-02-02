@@ -5,6 +5,11 @@ using Xunit;
 namespace VDT.Core.DependencyInjection.Tests {
     public class ScopedServiceImplementationAttributeTests : ServiceAttributeTests {
         [Fact]
+        public void ScopedServiceImplementationAttribute_ServiceLifetime_Is_Scoped() {
+            Assert.Equal(ServiceLifetime.Scoped, new ScopedServiceImplementationAttribute(typeof(ScopedServiceImplementationTarget)).ServiceLifetime);
+        }
+
+        [Fact]
         public void AddAttributeServices_Adds_Services() {
             services.AddAttributeServices(typeof(ScopedServiceImplementationTarget).Assembly);
 

@@ -5,6 +5,11 @@ using Xunit;
 namespace VDT.Core.DependencyInjection.Tests {
     public class TransientServiceAttributeTests : ServiceAttributeTests {
         [Fact]
+        public void TransientServiceAttribute_ServiceLifetime_Is_Transient() {
+            Assert.Equal(ServiceLifetime.Transient, new TransientServiceAttribute(typeof(TransientServiceTarget)).ServiceLifetime);
+        }
+
+        [Fact]
         public void AddAttributeServices_Adds_Interface_Services() {
             services.AddAttributeServices(typeof(TransientServiceTarget).Assembly);
 

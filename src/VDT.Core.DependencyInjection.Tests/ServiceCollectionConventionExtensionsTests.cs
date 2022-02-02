@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Linq;
 using VDT.Core.DependencyInjection.Tests.ConventionServiceTargets;
 using Xunit;

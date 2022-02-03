@@ -13,7 +13,7 @@ namespace VDT.Core.DependencyInjection.Decorators {
         /// </summary>
         /// <param name="options">The options for registering services</param>
         /// <returns>A reference to this instance after the operation has completed</returns>
-        public static ServiceRegistrationOptions AddAttributeServiceTypeFinder(this ServiceRegistrationOptions options) {
+        public static ServiceRegistrationOptions AddAttributeServiceTypeFinders(this ServiceRegistrationOptions options) {
             // Attributes on implementation types
             options.AddServiceTypeFinder(
                 implementationType => implementationType.GetCustomAttributes(typeof(IServiceImplementationAttribute), false).Cast<IServiceImplementationAttribute>().Select(a => a.ServiceType),

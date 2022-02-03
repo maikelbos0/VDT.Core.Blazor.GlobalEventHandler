@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace VDT.Core.DependencyInjection.Decorators {
+namespace VDT.Core.DependencyInjection {
     /// <summary>
     /// Extension methods for adding service type finders for services marked with attributes to services to be registered using <see cref="ServiceRegistrationOptions"/>
     /// </summary>

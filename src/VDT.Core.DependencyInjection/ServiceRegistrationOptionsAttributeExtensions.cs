@@ -34,7 +34,7 @@ namespace VDT.Core.DependencyInjection {
 
                     while (currentServiceType != null) {
                         serviceTypes.Add(currentServiceType);
-                        currentServiceType = implementationType.BaseType;
+                        currentServiceType = currentServiceType.BaseType;
                     }
 
                     return serviceTypes.Where(serviceType => serviceType.GetCustomAttributes(typeof(IServiceAttribute), false).Any());

@@ -10,12 +10,12 @@ namespace VDT.Core.DependencyInjection.Tests {
 
             services.AddServices(options => {
                 options.AddAttributeServiceTypeFinders();
-                options.Assemblies.Add(typeof(SingletonServiceImplementationTarget).Assembly);
+                options.Assemblies.Add(typeof(AttributeServiceImplementationTarget).Assembly);
             });
 
-            var service = Assert.Single(services, s => s.ImplementationType == typeof(SingletonServiceImplementationTarget));
+            var service = Assert.Single(services, s => s.ImplementationType == typeof(AttributeServiceImplementationTarget));
             
-            Assert.Equal(typeof(ISingletonServiceImplementationTarget), service.ServiceType);
+            Assert.Equal(typeof(IAttributeServiceImplementationTarget), service.ServiceType);
             Assert.Equal(ServiceLifetime.Singleton, service.Lifetime);
         }
 
@@ -25,12 +25,12 @@ namespace VDT.Core.DependencyInjection.Tests {
 
             services.AddServices(options => {
                 options.AddAttributeServiceTypeFinders();
-                options.Assemblies.Add(typeof(ISingletonServiceTarget).Assembly);
+                options.Assemblies.Add(typeof(IAttributeServiceTarget).Assembly);
             });
 
-            var service = Assert.Single(services, s => s.ServiceType == typeof(ISingletonServiceTarget));
+            var service = Assert.Single(services, s => s.ServiceType == typeof(IAttributeServiceTarget));
 
-            Assert.Equal(typeof(SingletonServiceTarget), service.ImplementationType);
+            Assert.Equal(typeof(AttributeServiceTarget), service.ImplementationType);
             Assert.Equal(ServiceLifetime.Singleton, service.Lifetime);
         }
 
@@ -40,12 +40,12 @@ namespace VDT.Core.DependencyInjection.Tests {
 
             services.AddServices(options => {
                 options.AddAttributeServiceTypeFinders();
-                options.Assemblies.Add(typeof(SingletonServiceTargetBase).Assembly);
+                options.Assemblies.Add(typeof(AttributeServiceTargetBase).Assembly);
             });
 
-            var service = Assert.Single(services, s => s.ServiceType == typeof(SingletonServiceTargetBase));
+            var service = Assert.Single(services, s => s.ServiceType == typeof(AttributeServiceTargetBase));
 
-            Assert.Equal(typeof(SingletonServiceTarget), service.ImplementationType);
+            Assert.Equal(typeof(AttributeServiceTarget), service.ImplementationType);
             Assert.Equal(ServiceLifetime.Singleton, service.Lifetime);
         }
     }

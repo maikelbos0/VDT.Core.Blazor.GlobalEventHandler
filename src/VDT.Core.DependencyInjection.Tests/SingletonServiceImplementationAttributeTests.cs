@@ -3,66 +3,10 @@ using VDT.Core.DependencyInjection.Tests.AttributeServiceTargets;
 using Xunit;
 
 namespace VDT.Core.DependencyInjection.Tests {
-    public class SingleTonServiceImplementationAttributeTests : ServiceAttributeTests {
+    public class SingleTonServiceImplementationAttributeTests {
         [Fact]
         public void SingletonServiceImplementationAttribute_ServiceLifetime_Is_Singleton() {
-            Assert.Equal(ServiceLifetime.Singleton, new SingletonServiceImplementationAttribute(typeof(SingletonServiceImplementationTarget)).ServiceLifetime);
-        }
-
-        [Fact]
-        public void AddAttributeServices_Adds_Services() {
-            services.AddAttributeServices(typeof(SingletonServiceImplementationTarget).Assembly);
-
-            var serviceProvider = services.BuildServiceProvider();
-
-            var service = serviceProvider.GetRequiredService<ISingletonServiceImplementationTarget>();
-
-            Assert.IsType<SingletonServiceImplementationTarget>(service);
-        }
-
-        [Fact]
-        public void AddAttributeServices_Always_Returns_Same_Object() {
-            services.AddAttributeServices(typeof(SingletonServiceImplementationTarget).Assembly);
-
-            var serviceProvider = services.BuildServiceProvider();
-            ISingletonServiceImplementationTarget singletonTarget;
-
-            using (var scope = serviceProvider.CreateScope()) {
-                singletonTarget = scope.ServiceProvider.GetRequiredService<ISingletonServiceImplementationTarget>();
-            }
-
-            using (var scope = serviceProvider.CreateScope()) {
-                Assert.Same(singletonTarget, scope.ServiceProvider.GetRequiredService<ISingletonServiceImplementationTarget>());
-            }
-        }
-
-        [Fact]
-        public void AddAttributeServices_Adds_Services_With_Decorators() {
-            services.AddAttributeServices(typeof(SingletonServiceImplementationTarget).Assembly, options => options.AddAttributeDecorators());
-
-            var serviceProvider = services.BuildServiceProvider();
-
-            var proxy = serviceProvider.GetRequiredService<ISingletonServiceImplementationTarget>();
-
-            Assert.Equal("Bar", proxy.GetValue());
-
-            Assert.Equal(1, decorator.Calls);
-        }
-
-        [Fact]
-        public void AddAttributeServices_With_Decorators_Always_Returns_Same_Object() {
-            services.AddAttributeServices(typeof(SingletonServiceImplementationTarget).Assembly, options => options.AddAttributeDecorators());
-
-            var serviceProvider = services.BuildServiceProvider();
-            ISingletonServiceImplementationTarget singletonTarget;
-
-            using (var scope = serviceProvider.CreateScope()) {
-                singletonTarget = scope.ServiceProvider.GetRequiredService<ISingletonServiceImplementationTarget>();
-            }
-
-            using (var scope = serviceProvider.CreateScope()) {
-                Assert.Same(singletonTarget, scope.ServiceProvider.GetRequiredService<ISingletonServiceImplementationTarget>());
-            }
+            Assert.Equal(ServiceLifetime.Singleton, new SingletonServiceImplementationAttribute(typeof(AttributeServiceImplementationTarget)).ServiceLifetime);
         }
     }
 }

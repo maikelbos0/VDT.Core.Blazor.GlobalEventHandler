@@ -8,7 +8,7 @@ namespace VDT.Core.DependencyInjection {
     /// </summary>
     public static class ServiceRegistrationOptionsAttributeExtensions {
         /// <summary>
-        /// Add service type finders and service lifetime providers that find and use <see cref="TransientServiceAttribute"/>, <see cref="ScopedServiceAttribute"/>, <see cref="SingletonServiceAttribute"/>
+        /// Add service type finders and service lifetime providers that find and use <see cref="TransientServiceAttribute"/>, <see cref="ScopedServiceAttribute"/>, <see cref="SingletonServiceAttribute"/>,
         /// <see cref="TransientServiceImplementationAttribute"/>, <see cref="ScopedServiceImplementationAttribute"/> or <see cref="SingletonServiceImplementationAttribute"/> to register services
         /// </summary>
         /// <param name="options">The options for registering services</param>

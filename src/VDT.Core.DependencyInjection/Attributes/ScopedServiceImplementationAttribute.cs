@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace VDT.Core.DependencyInjection.Attributes {
     /// <summary>
-    /// Marks a service implementation to be registered as a scoped service when calling <see cref="ServiceCollectionConventionExtensions.AddServices(IServiceCollection, Action{ServiceRegistrationOptions})"/>
+    /// Marks a service implementation to be registered as a scoped service when calling <see cref="DependencyInjection.ServiceCollectionExtensions.AddServices(IServiceCollection, Action{ServiceRegistrationOptions})"/>
     /// with <see cref="ServiceRegistrationOptionsExtensions.AddAttributeServiceTypeFinders(ServiceRegistrationOptions)"/> called on the <see cref="ServiceRegistrationOptions"/> builder action
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
@@ -20,7 +20,7 @@ namespace VDT.Core.DependencyInjection.Attributes {
         public ServiceLifetime ServiceLifetime => ServiceLifetime.Scoped;
 
         /// <summary>
-        /// Marks a service implementation to be registered as a scoped service when calling <see cref="ServiceCollectionConventionExtensions.AddServices(IServiceCollection, Action{ServiceRegistrationOptions})"/>
+        /// Marks a service implementation to be registered as a scoped service when calling <see cref="DependencyInjection.ServiceCollectionExtensions.AddServices(IServiceCollection, Action{ServiceRegistrationOptions})"/>
         /// with <see cref="ServiceRegistrationOptionsExtensions.AddAttributeServiceTypeFinders(ServiceRegistrationOptions)"/> called on the <see cref="ServiceRegistrationOptions"/> builder action
         /// </summary>
         /// <param name="serviceType">The type to use as service for this implementation</param>

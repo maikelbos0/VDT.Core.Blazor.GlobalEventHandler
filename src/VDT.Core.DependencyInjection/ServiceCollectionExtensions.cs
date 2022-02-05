@@ -8,7 +8,7 @@ namespace VDT.Core.DependencyInjection {
     /// <summary>
     /// Extension methods for adding services to an <see cref="IServiceCollection"/> based on type and interface conventions
     /// </summary>
-    public static class ServiceCollectionConventionExtensions {
+    public static class ServiceCollectionExtensions {
         /// <summary>
         /// Provides a mechanism to register all services found by the provided service type finders in the assemblies provided in the options
         /// </summary>

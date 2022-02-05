@@ -4,7 +4,7 @@ using VDT.Core.DependencyInjection.Tests.ConventionServiceTargets;
 using Xunit;
 
 namespace VDT.Core.DependencyInjection.Tests {
-    public class ServiceCollectionConventionExtensionsTests {
+    public class ServiceCollectionExtensionsTests {
         protected readonly ServiceCollection services = new ServiceCollection();
 
         [Fact]

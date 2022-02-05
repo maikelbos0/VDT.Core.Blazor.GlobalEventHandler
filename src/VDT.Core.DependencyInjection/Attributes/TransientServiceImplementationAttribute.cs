@@ -23,8 +23,8 @@ namespace VDT.Core.DependencyInjection.Attributes {
         public ServiceLifetime ServiceLifetime => ServiceLifetime.Transient;
 
         /// <summary>
-        /// Marks a service to be registered as a transient service when calling <see cref="ServiceCollectionExtensions.AddAttributeServices(IServiceCollection, Assembly)"/>
-        /// or <see cref="ServiceCollectionExtensions.AddAttributeServices(IServiceCollection, Assembly, Action{Decorators.DecoratorOptions})"/>
+        /// Marks a service implementation to be registered as a transient service when calling <see cref="ServiceCollectionConventionExtensions.AddServices(IServiceCollection, Action{ServiceRegistrationOptions})"/>
+        /// with <see cref="ServiceRegistrationOptionsAttributeExtensions.AddAttributeServiceTypeFinders(ServiceRegistrationOptions)"/> called on the <see cref="ServiceRegistrationOptions"/> builder action
         /// </summary>
         /// <param name="serviceType">The type to use as service for this implementation</param>
         /// <remarks>When using decorators, the type specified in <paramref name="serviceType"/> must differ from the implementation type</remarks>

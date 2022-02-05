@@ -5,7 +5,7 @@ using System.Reflection;
 namespace VDT.Core.DependencyInjection.Attributes {
     /// <summary>
     /// Marks a service to be registered as a singleton service when calling <see cref="ServiceCollectionConventionExtensions.AddServices(IServiceCollection, Action{ServiceRegistrationOptions})"/>
-    /// with <see cref="ServiceRegistrationOptionsAttributeExtensions.AddAttributeServiceTypeFinders(ServiceRegistrationOptions)"/> called on the <see cref="ServiceRegistrationOptions"/> builder action
+    /// with <see cref="ServiceRegistrationOptionsExtensions.AddAttributeServiceTypeFinders(ServiceRegistrationOptions)"/> called on the <see cref="ServiceRegistrationOptions"/> builder action
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
     public sealed class SingletonServiceAttribute : Attribute, IServiceAttribute {
@@ -24,7 +24,7 @@ namespace VDT.Core.DependencyInjection.Attributes {
 
         /// <summary>
         /// Marks a service to be registered as a singleton service when calling <see cref="ServiceCollectionConventionExtensions.AddServices(IServiceCollection, Action{ServiceRegistrationOptions})"/>
-        /// with <see cref="ServiceRegistrationOptionsAttributeExtensions.AddAttributeServiceTypeFinders(ServiceRegistrationOptions)"/> called on the <see cref="ServiceRegistrationOptions"/> builder action
+        /// with <see cref="ServiceRegistrationOptionsExtensions.AddAttributeServiceTypeFinders(ServiceRegistrationOptions)"/> called on the <see cref="ServiceRegistrationOptions"/> builder action
         /// </summary>
         /// <param name="implementationType">The type to use as implementation for this service</param>
         /// <remarks>When using decorators, the type specified in <paramref name="implementationType"/> must differ from the service type</remarks>

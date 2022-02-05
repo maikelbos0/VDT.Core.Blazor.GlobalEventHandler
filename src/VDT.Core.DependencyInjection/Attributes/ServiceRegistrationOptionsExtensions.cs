@@ -6,7 +6,7 @@ namespace VDT.Core.DependencyInjection.Attributes {
     /// <summary>
     /// Extension methods for adding service type finders for services marked with attributes to services to be registered using <see cref="ServiceRegistrationOptions"/>
     /// </summary>
-    public static class ServiceRegistrationOptionsAttributeExtensions {
+    public static class ServiceRegistrationOptionsExtensions {
         /// <summary>
         /// Add service type finders and service lifetime providers that find and use <see cref="TransientServiceAttribute"/>, <see cref="ScopedServiceAttribute"/>, <see cref="SingletonServiceAttribute"/>,
         /// <see cref="TransientServiceImplementationAttribute"/>, <see cref="ScopedServiceImplementationAttribute"/> or <see cref="SingletonServiceImplementationAttribute"/> to register services

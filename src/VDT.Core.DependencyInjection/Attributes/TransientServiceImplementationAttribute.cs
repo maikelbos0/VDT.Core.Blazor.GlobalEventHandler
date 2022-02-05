@@ -9,9 +9,6 @@ namespace VDT.Core.DependencyInjection.Attributes {
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
     public sealed class TransientServiceImplementationAttribute : Attribute, IServiceImplementationAttribute {
-        private static readonly MethodInfo addDecoratedServiceMethod = typeof(Decorators.ServiceCollectionDecoratorExtensions)
-            .GetMethod(nameof(Decorators.ServiceCollectionDecoratorExtensions.AddTransient), 2, BindingFlags.Public | BindingFlags.Static, typeof(IServiceCollection), typeof(Action<Decorators.DecoratorOptions>));
-
         /// <summary>
         /// The type to use as service for this implementation
         /// </summary>

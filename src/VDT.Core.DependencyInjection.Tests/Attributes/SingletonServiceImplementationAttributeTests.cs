@@ -7,7 +7,7 @@ namespace VDT.Core.DependencyInjection.Tests.Attributes {
     public class SingleTonServiceImplementationAttributeTests {
         [Fact]
         public void SingletonServiceImplementationAttribute_ServiceLifetime_Is_Singleton() {
-            Assert.Equal(ServiceLifetime.Singleton, new SingletonServiceImplementationAttribute(typeof(AttributeServiceImplementationTarget)).ServiceLifetime);
+            Assert.Equal(ServiceLifetime.Singleton, new SingletonServiceImplementationAttribute(typeof(IAttributeServiceImplementationTarget)).ServiceLifetime);
         }
     }
 }

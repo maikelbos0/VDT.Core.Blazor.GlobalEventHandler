@@ -26,12 +26,12 @@ namespace VDT.Core.DependencyInjection.Tests.Attributes {
 
             services.AddServices(options => {
                 options.AddAttributeServiceTypeFinders();
-                options.Assemblies.Add(typeof(IAttributeServiceTarget).Assembly);
+                options.Assemblies.Add(typeof(IAttributeServiceInterfaceTarget).Assembly);
             });
 
-            var service = Assert.Single(services, s => s.ServiceType == typeof(IAttributeServiceTarget));
+            var service = Assert.Single(services, s => s.ServiceType == typeof(IAttributeServiceInterfaceTarget));
 
-            Assert.Equal(typeof(AttributeServiceTarget), service.ImplementationType);
+            Assert.Equal(typeof(AttributeServiceInterfaceTarget), service.ImplementationType);
             Assert.Equal(ServiceLifetime.Singleton, service.Lifetime);
         }
 
@@ -41,12 +41,12 @@ namespace VDT.Core.DependencyInjection.Tests.Attributes {
 
             services.AddServices(options => {
                 options.AddAttributeServiceTypeFinders();
-                options.Assemblies.Add(typeof(AttributeServiceTargetBase).Assembly);
+                options.Assemblies.Add(typeof(AttributeServiceBaseClassTargetBase).Assembly);
             });
 
-            var service = Assert.Single(services, s => s.ServiceType == typeof(AttributeServiceTargetBase));
+            var service = Assert.Single(services, s => s.ServiceType == typeof(AttributeServiceBaseClassTargetBase));
 
-            Assert.Equal(typeof(AttributeServiceTarget), service.ImplementationType);
+            Assert.Equal(typeof(AttributeServiceBaseClassTarget), service.ImplementationType);
             Assert.Equal(ServiceLifetime.Singleton, service.Lifetime);
         }
     }

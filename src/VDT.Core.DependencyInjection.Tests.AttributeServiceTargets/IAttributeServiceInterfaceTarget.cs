@@ -2,8 +2,8 @@
 using VDT.Core.DependencyInjection.Tests.Decorators.Targets;
 
 namespace VDT.Core.DependencyInjection.Tests.AttributeServiceTargets {
-    [SingletonService(typeof(AttributeServiceTarget))]
-    public interface IAttributeServiceTarget {
+    [SingletonService(typeof(AttributeServiceInterfaceTarget))]
+    public interface IAttributeServiceInterfaceTarget {
         [TestDecorator]
         public string GetValue();
     }

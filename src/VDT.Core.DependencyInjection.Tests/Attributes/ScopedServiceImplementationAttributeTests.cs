@@ -7,7 +7,7 @@ namespace VDT.Core.DependencyInjection.Tests.Attributes {
     public class ScopedServiceImplementationAttributeTests {
         [Fact]
         public void ScopedServiceImplementationAttribute_ServiceLifetime_Is_Scoped() {
-            Assert.Equal(ServiceLifetime.Scoped, new ScopedServiceImplementationAttribute(typeof(AttributeServiceImplementationTarget)).ServiceLifetime);
+            Assert.Equal(ServiceLifetime.Scoped, new ScopedServiceImplementationAttribute(typeof(IAttributeServiceImplementationTarget)).ServiceLifetime);
         }
     }
 }

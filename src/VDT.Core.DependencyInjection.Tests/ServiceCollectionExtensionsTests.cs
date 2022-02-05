@@ -5,10 +5,10 @@ using Xunit;
 
 namespace VDT.Core.DependencyInjection.Tests {
     public class ServiceCollectionExtensionsTests {
-        protected readonly ServiceCollection services = new ServiceCollection();
-
         [Fact]
         public void AddServices_Uses_ServiceLifetimeProvider() {
+            var services = new ServiceCollection();
+
             services.AddServices(options => {
                 options.Assemblies.Add(typeof(NamedService).Assembly);
                 options.ServiceTypeFinders.Add(new ServiceTypeFinderOptions(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface))) {
@@ -21,6 +21,8 @@ namespace VDT.Core.DependencyInjection.Tests {
 
         [Fact]
         public void AddServices_Uses_DefaultServiceLifetime_If_No_ServiceLifetime_Found() {
+            var services = new ServiceCollection();
+
             services.AddServices(options => {
                 options.Assemblies.Add(typeof(NamedService).Assembly);
                 options.ServiceTypeFinders.Add(new ServiceTypeFinderOptions(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface))) {
@@ -34,6 +36,8 @@ namespace VDT.Core.DependencyInjection.Tests {
 
         [Fact]
         public void AddServices_Uses_DefaultServiceLifetime_If_No_ServiceLifetimeProvider_Supplied() {
+            var services = new ServiceCollection();
+
             services.AddServices(options => {
                 options.Assemblies.Add(typeof(NamedService).Assembly);
                 options.ServiceTypeFinders.Add(new ServiceTypeFinderOptions(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface))));
@@ -45,6 +49,8 @@ namespace VDT.Core.DependencyInjection.Tests {
 
         [Fact]
         public void AddServices_Uses_ServiceRegistrar_If_Provided() {
+            var services = new ServiceCollection();
+
             services.AddServices(options => {
                 options.Assemblies.Add(typeof(NamedService).Assembly);
                 options.ServiceTypeFinders.Add(new ServiceTypeFinderOptions(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface))));
@@ -60,6 +66,8 @@ namespace VDT.Core.DependencyInjection.Tests {
 
         [Fact]
         public void AddServices_Creates_ServiceRegistrations_If_No_ServiceRegistrar_Supplied() {
+            var services = new ServiceCollection();
+
             services.AddServices(options => {
                 options.Assemblies.Add(typeof(NamedService).Assembly);
                 options.ServiceTypeFinders.Add(new ServiceTypeFinderOptions(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface))));
@@ -74,6 +82,8 @@ namespace VDT.Core.DependencyInjection.Tests {
 
         [Fact]
         public void AddServices_Adds_Services_From_All_ServiceTypeFinders() {
+            var services = new ServiceCollection();
+
             services.AddServices(options => {
                 options.Assemblies.Add(typeof(NamedService).Assembly);
                 options.ServiceTypeFinders.Add(new ServiceTypeFinderOptions(t => t.GetInterfaces().Where(i => i == typeof(IGenericInterface))));
@@ -86,6 +96,8 @@ namespace VDT.Core.DependencyInjection.Tests {
 
         [Fact]
         public void AddServices_Adds_No_Services_When_No_Assemblies_Supplied() {
+            var services = new ServiceCollection();
+
             services.AddServices(options => {
                 options.ServiceTypeFinders.Add(new ServiceTypeFinderOptions(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface))));
             });
@@ -95,6 +107,8 @@ namespace VDT.Core.DependencyInjection.Tests {
 
         [Fact]
         public void AddServices_Adds_No_Services_When_No_ServiceTypeFinders_Supplied() {
+            var services = new ServiceCollection();
+
             services.AddServices(options => {
                 options.Assemblies.Add(typeof(NamedService).Assembly);
             });

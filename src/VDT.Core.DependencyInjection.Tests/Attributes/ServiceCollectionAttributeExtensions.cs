@@ -21,7 +21,7 @@ namespace VDT.Core.DependencyInjection.Tests.Attributes {
 
             services.AddAttributeServices(typeof(IAttributeServiceInterfaceTarget).Assembly, options => options.AddAttributeDecorators());
 
-            Assert.Single(services, s => s.ServiceType == typeof(IAttributeServiceInterfaceTarget));
+            Assert.NotNull(Assert.Single(services, s => s.ServiceType == typeof(IAttributeServiceInterfaceTarget)).ImplementationFactory);
             Assert.Single(services, s => s.ServiceType == typeof(AttributeServiceInterfaceTarget));
         }
     }

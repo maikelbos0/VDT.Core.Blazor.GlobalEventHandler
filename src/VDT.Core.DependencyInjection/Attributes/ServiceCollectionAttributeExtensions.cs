@@ -3,7 +3,7 @@ using System;
 using System.Reflection;
 using VDT.Core.DependencyInjection.Decorators;
 
-namespace VDT.Core.DependencyInjection {
+namespace VDT.Core.DependencyInjection.Attributes {
     /// <summary>
     /// Extension methods for adding services to an <see cref="IServiceCollection"/> based on attributes
     /// </summary>

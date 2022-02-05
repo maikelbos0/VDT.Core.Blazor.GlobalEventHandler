@@ -2,7 +2,7 @@
 using System;
 using System.Reflection;
 
-namespace VDT.Core.DependencyInjection {
+namespace VDT.Core.DependencyInjection.Attributes {
     /// <summary>
     /// Marks a service to be registered as a scoped service when calling <see cref="ServiceCollectionConventionExtensions.AddServices(IServiceCollection, Action{ServiceRegistrationOptions})"/>
     /// with <see cref="ServiceRegistrationOptionsAttributeExtensions.AddAttributeServiceTypeFinders(ServiceRegistrationOptions)"/> called on the <see cref="ServiceRegistrationOptions"/> builder action

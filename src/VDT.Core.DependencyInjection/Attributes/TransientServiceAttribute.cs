@@ -2,20 +2,20 @@
 using System;
 using System.Reflection;
 
-namespace VDT.Core.DependencyInjection {
+namespace VDT.Core.DependencyInjection.Attributes {
     /// <summary>
-    /// Marks a service implementation to be registered as a transient service when calling <see cref="ServiceCollectionConventionExtensions.AddServices(IServiceCollection, Action{ServiceRegistrationOptions})"/>
+    /// Marks a service to be registered as a transient service when calling calling <see cref="ServiceCollectionConventionExtensions.AddServices(IServiceCollection, Action{ServiceRegistrationOptions})"/>
     /// with <see cref="ServiceRegistrationOptionsAttributeExtensions.AddAttributeServiceTypeFinders(ServiceRegistrationOptions)"/> called on the <see cref="ServiceRegistrationOptions"/> builder action
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
-    public sealed class TransientServiceImplementationAttribute : Attribute, IServiceImplementationAttribute {
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
+    public sealed class TransientServiceAttribute : Attribute, IServiceAttribute {
         private static readonly MethodInfo addDecoratedServiceMethod = typeof(Decorators.ServiceCollectionDecoratorExtensions)
             .GetMethod(nameof(Decorators.ServiceCollectionDecoratorExtensions.AddTransient), 2, BindingFlags.Public | BindingFlags.Static, typeof(IServiceCollection), typeof(Action<Decorators.DecoratorOptions>));
 
         /// <summary>
-        /// The type to use as service for this implementation
+        /// The type to use as implementation for this service
         /// </summary>
-        public Type ServiceType { get; }
+        public Type ImplementationType { get; }
 
         /// <summary>
         /// The lifetime of services marked with this attribute is <see cref="ServiceLifetime.Transient"/>
@@ -26,10 +26,10 @@ namespace VDT.Core.DependencyInjection {
         /// Marks a service to be registered as a transient service when calling <see cref="ServiceCollectionAttributeExtensions.AddAttributeServices(IServiceCollection, Assembly)"/>
         /// or <see cref="ServiceCollectionAttributeExtensions.AddAttributeServices(IServiceCollection, Assembly, Action{Decorators.DecoratorOptions})"/>
         /// </summary>
-        /// <param name="serviceType">The type to use as service for this implementation</param>
-        /// <remarks>When using decorators, the type specified in <paramref name="serviceType"/> must differ from the implementation type</remarks>
-        public TransientServiceImplementationAttribute(Type serviceType) {
-            ServiceType = serviceType;
+        /// <param name="implementationType">The type to use as implementation for this service</param>
+        /// <remarks>When using decorators, the type specified in <paramref name="implementationType"/> must differ from the service type</remarks>
+        public TransientServiceAttribute(Type implementationType) {
+            ImplementationType = implementationType;
         }
     }
 }

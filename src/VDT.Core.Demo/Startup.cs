@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using VDT.Core.DependencyInjection;
 using VDT.Core.Demo.Decorators;
+using VDT.Core.DependencyInjection.Attributes;
 
 namespace VDT.Core.Demo {
     public class Startup {

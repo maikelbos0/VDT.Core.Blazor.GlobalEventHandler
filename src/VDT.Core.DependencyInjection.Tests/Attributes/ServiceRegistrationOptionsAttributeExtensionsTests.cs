@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using VDT.Core.DependencyInjection.Attributes;
 using VDT.Core.DependencyInjection.Tests.AttributeServiceTargets;
 using Xunit;
 
-namespace VDT.Core.DependencyInjection.Tests {
+namespace VDT.Core.DependencyInjection.Tests.Attributes {
     public class ServiceRegistrationOptionsAttributeExtensionsTests {
         [Fact]
         public void AddAttributeServiceTypeFinders_Adds_ServiceTypeFinder_For_ImplementationServiceAttributes() {

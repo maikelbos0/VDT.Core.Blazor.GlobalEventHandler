@@ -7,7 +7,7 @@ namespace VDT.Core.DependencyInjection.Attributes {
     /// <summary>
     /// Extension methods for adding services to an <see cref="IServiceCollection"/> based on attributes
     /// </summary>
-    public static class ServiceCollectionAttributeExtensions {
+    public static class ServiceCollectionExtensions {
         /// <summary>
         /// Provides a mechanism to register all services found in <paramref name="assembly"/> marked with <see cref="TransientServiceAttribute"/>, <see cref="ScopedServiceAttribute"/> or <see cref="SingletonServiceAttribute"/>,
         /// <see cref="TransientServiceImplementationAttribute"/>, <see cref="ScopedServiceImplementationAttribute"/> or <see cref="SingletonServiceImplementationAttribute"/> to register services

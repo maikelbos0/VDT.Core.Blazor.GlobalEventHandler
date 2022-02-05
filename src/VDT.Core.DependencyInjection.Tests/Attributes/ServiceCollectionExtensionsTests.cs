@@ -4,7 +4,7 @@ using VDT.Core.DependencyInjection.Tests.AttributeServiceTargets;
 using Xunit;
 
 namespace VDT.Core.DependencyInjection.Tests.Attributes {
-    public class ServiceCollectionAttributeExtensions {
+    public class ServiceCollectionExtensionsTests {
         [Fact]
         public void AddAttributeServices_Adds_Services() {
             var services = new ServiceCollection();

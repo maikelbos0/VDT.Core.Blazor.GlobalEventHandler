@@ -23,8 +23,8 @@ namespace VDT.Core.DependencyInjection.Attributes {
         public ServiceLifetime ServiceLifetime => ServiceLifetime.Scoped;
 
         /// <summary>
-        /// Marks a service to be registered as a scoped service when calling <see cref="ServiceCollectionAttributeExtensions.AddAttributeServices(IServiceCollection, Assembly)"/>
-        /// or <see cref="ServiceCollectionAttributeExtensions.AddAttributeServices(IServiceCollection, Assembly, Action{Decorators.DecoratorOptions})"/>
+        /// Marks a service to be registered as a scoped service when calling <see cref="ServiceCollectionExtensions.AddAttributeServices(IServiceCollection, Assembly)"/>
+        /// or <see cref="ServiceCollectionExtensions.AddAttributeServices(IServiceCollection, Assembly, Action{Decorators.DecoratorOptions})"/>
         /// </summary>
         /// <param name="implementationType">The type to use as implementation for this service</param>
         /// <remarks>When using decorators, the type specified in <paramref name="implementationType"/> must differ from the service type</remarks>

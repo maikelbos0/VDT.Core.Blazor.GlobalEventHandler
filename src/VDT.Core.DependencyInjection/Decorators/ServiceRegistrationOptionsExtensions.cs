@@ -9,12 +9,12 @@ namespace VDT.Core.DependencyInjection.Decorators {
     /// </summary>
     public static class ServiceRegistrationOptionsExtensions {
         private static readonly Dictionary<ServiceLifetime, MethodInfo> decoratedMethods = new Dictionary<ServiceLifetime, MethodInfo>() {
-            { ServiceLifetime.Transient, typeof(ServiceCollectionDecoratorExtensions)
-                .GetMethod(nameof(ServiceCollectionDecoratorExtensions.AddTransient), 2, BindingFlags.Public | BindingFlags.Static, typeof(IServiceCollection), typeof(Action<DecoratorOptions>)) },
-            { ServiceLifetime.Scoped, typeof(ServiceCollectionDecoratorExtensions)
-                .GetMethod(nameof(ServiceCollectionDecoratorExtensions.AddScoped), 2, BindingFlags.Public | BindingFlags.Static, typeof(IServiceCollection), typeof(Action<DecoratorOptions>)) },
-            { ServiceLifetime.Singleton, typeof(ServiceCollectionDecoratorExtensions)
-                .GetMethod(nameof(ServiceCollectionDecoratorExtensions.AddSingleton), 2, BindingFlags.Public | BindingFlags.Static, typeof(IServiceCollection), typeof(Action<DecoratorOptions>)) },
+            { ServiceLifetime.Transient, typeof(ServiceCollectionExtensions)
+                .GetMethod(nameof(ServiceCollectionExtensions.AddTransient), 2, BindingFlags.Public | BindingFlags.Static, typeof(IServiceCollection), typeof(Action<DecoratorOptions>)) },
+            { ServiceLifetime.Scoped, typeof(ServiceCollectionExtensions)
+                .GetMethod(nameof(ServiceCollectionExtensions.AddScoped), 2, BindingFlags.Public | BindingFlags.Static, typeof(IServiceCollection), typeof(Action<DecoratorOptions>)) },
+            { ServiceLifetime.Singleton, typeof(ServiceCollectionExtensions)
+                .GetMethod(nameof(ServiceCollectionExtensions.AddSingleton), 2, BindingFlags.Public | BindingFlags.Static, typeof(IServiceCollection), typeof(Action<DecoratorOptions>)) },
         };
 
         /// <summary>

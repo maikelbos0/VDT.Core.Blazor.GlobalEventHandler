@@ -7,7 +7,7 @@ namespace VDT.Core.DependencyInjection.Decorators {
     /// <summary>
     /// Extension methods for adding decorated services to an <see cref="IServiceCollection"/>
     /// </summary>
-    public static class ServiceCollectionDecoratorExtensions {
+    public static class ServiceCollectionExtensions {
         /// <summary>
         /// Adds a transient service of the type specified in <typeparamref name="TService"/> with an implementation type specified in <typeparamref name="TImplementation"/> to the specified <see cref="IServiceCollection"/>
         /// </summary>

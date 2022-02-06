@@ -3,13 +3,19 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using VDT.Core.Demo.Decorators;
+using VDT.Core.DependencyInjection;
 using VDT.Core.DependencyInjection.Attributes;
+using VDT.Core.DependencyInjection.Decorators;
 
 namespace VDT.Core.Demo {
     public class Startup {
         public void ConfigureServices(IServiceCollection services) {
             services.AddSingleton<LogDecorator>();
-            services.AddAttributeServices(typeof(Startup).Assembly, options => options.AddAttributeDecorators());
+            services.AddServices(options => options
+                .AddAssembly(typeof(Startup).Assembly)
+                .AddAttributeServiceTypeProviders()
+                .UseDecoratorServiceRegistrar(options => options.AddAttributeDecorators())
+            );
             services.AddCors();
             services.AddControllers();
         }

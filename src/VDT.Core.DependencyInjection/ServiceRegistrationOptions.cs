@@ -66,7 +66,7 @@ namespace VDT.Core.DependencyInjection {
         }
 
         /// <summary>
-        /// Set the service lifetime that will be used if no service lifetime provider is supplied or the supplied service lifetime provider could not determine the appropriate lifetime
+        /// Set the service lifetime that will be used if no service lifetime provider is supplied or the supplied service lifetime provider could not determine the service lifetime
         /// </summary>
         /// <param name="serviceLifetime">Specifies the default lifetime of services that will be registered</param>
         /// <returns>A reference to this instance after the operation has completed</returns>

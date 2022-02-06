@@ -14,6 +14,7 @@ namespace VDT.Core.DependencyInjection.Tests {
                 options.ServiceTypeProviders.Add(new ServiceTypeProviderOptions(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface))) {
                     ServiceLifetimeProvider = (serviceType, implementationType) => ServiceLifetime.Singleton
                 });
+                options.DefaultServiceLifetime = ServiceLifetime.Scoped;
             });
 
             Assert.Equal(ServiceLifetime.Singleton, services.Single(s => s.ServiceType == typeof(INamedService)).Lifetime);

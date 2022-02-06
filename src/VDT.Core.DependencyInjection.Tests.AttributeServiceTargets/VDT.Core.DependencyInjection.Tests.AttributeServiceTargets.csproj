@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VDT.Core.DependencyInjection.Tests.Decorators.Targets\VDT.Core.DependencyInjection.Tests.Decorators.Targets.csproj" />
     <ProjectReference Include="..\VDT.Core.DependencyInjection\VDT.Core.DependencyInjection.csproj" />
   </ItemGroup>
 

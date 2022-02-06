@@ -22,7 +22,7 @@ namespace VDT.Core.DependencyInjection.Attributes {
 
             // Attributes on service interface types
             options.AddServiceTypeProvider(
-                implementationType => implementationType.GetInterfaces().Where(serviceType => serviceType.GetCustomAttributes(typeof(IServiceAttribute), false).Any()),
+                implementationType => implementationType.GetInterfaces().Where(serviceType => serviceType.GetCustomAttributes(typeof(IServiceAttribute), false).Cast<IServiceAttribute>().Any(a => a.ImplementationType == implementationType)),
                 (serviceType, implementationType) => serviceType.GetCustomAttributes(typeof(IServiceAttribute), false).Cast<IServiceAttribute>().FirstOrDefault(a => a.ImplementationType == implementationType)?.ServiceLifetime
             );
 

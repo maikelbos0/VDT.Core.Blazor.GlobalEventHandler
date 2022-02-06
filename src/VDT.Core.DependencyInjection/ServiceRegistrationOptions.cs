@@ -43,6 +43,7 @@ namespace VDT.Core.DependencyInjection {
         /// </summary>
         /// <param name="serviceTypeProvider">Method that returns service types for a given implementation type</param>
         /// <returns>A reference to this instance after the operation has completed</returns>
+        /// <remarks>When using decorators, the service types must differ from the implementation type</remarks>
         public ServiceRegistrationOptions AddServiceTypeProvider(ServiceTypeProvider serviceTypeProvider) {
             ServiceTypeProviders.Add(new ServiceTypeProviderOptions(serviceTypeProvider));
 
@@ -55,6 +56,7 @@ namespace VDT.Core.DependencyInjection {
         /// <param name="serviceTypeProvider">Method that returns service types for a given implementation type</param>
         /// <param name="serviceLifetimeProvider">Method that returns a service lifetime for a given service and implementation type to be registered</param>
         /// <returns>A reference to this instance after the operation has completed</returns>
+        /// <remarks>When using decorators, the service types must differ from the implementation type</remarks>
         public ServiceRegistrationOptions AddServiceTypeProvider(ServiceTypeProvider serviceTypeProvider, ServiceLifetimeProvider serviceLifetimeProvider) {
             ServiceTypeProviders.Add(new ServiceTypeProviderOptions(serviceTypeProvider) {
                 ServiceLifetimeProvider = serviceLifetimeProvider

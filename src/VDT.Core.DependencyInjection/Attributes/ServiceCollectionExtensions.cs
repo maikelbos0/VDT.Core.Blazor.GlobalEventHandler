@@ -9,8 +9,8 @@ namespace VDT.Core.DependencyInjection.Attributes {
     /// </summary>
     public static class ServiceCollectionExtensions {
         /// <summary>
-        /// Provides a mechanism to register all services found in <paramref name="assembly"/> marked with <see cref="TransientServiceAttribute"/>, <see cref="ScopedServiceAttribute"/> or <see cref="SingletonServiceAttribute"/>,
-        /// <see cref="TransientServiceImplementationAttribute"/>, <see cref="ScopedServiceImplementationAttribute"/> or <see cref="SingletonServiceImplementationAttribute"/> to register services
+        /// Provides a mechanism to register all services found in <paramref name="assembly"/> marked with <see cref="TransientServiceAttribute"/>, <see cref="ScopedServiceAttribute"/>, <see cref="SingletonServiceAttribute"/>,
+        /// <see cref="TransientServiceImplementationAttribute"/>, <see cref="ScopedServiceImplementationAttribute"/> or <see cref="SingletonServiceImplementationAttribute"/>
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> to add the services to</param>
         /// <param name="assembly">The <see cref="Assembly"/> in which to look for services</param>
@@ -22,8 +22,8 @@ namespace VDT.Core.DependencyInjection.Attributes {
             );
 
         /// <summary>
-        /// Provides a mechanism to register all services found in <paramref name="assembly"/> marked with <see cref="TransientServiceAttribute"/>, <see cref="ScopedServiceAttribute"/> or <see cref="SingletonServiceAttribute"/>,
-        /// <see cref="TransientServiceImplementationAttribute"/>, <see cref="ScopedServiceImplementationAttribute"/> or <see cref="SingletonServiceImplementationAttribute"/> to register services
+        /// Provides a mechanism to register all services found in <paramref name="assembly"/> marked with <see cref="TransientServiceAttribute"/>, <see cref="ScopedServiceAttribute"/>, <see cref="SingletonServiceAttribute"/>,
+        /// <see cref="TransientServiceImplementationAttribute"/>, <see cref="ScopedServiceImplementationAttribute"/> or <see cref="SingletonServiceImplementationAttribute"/>
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> to add the services to</param>
         /// <param name="assembly">The <see cref="Assembly"/> in which to look for services</param>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using VDT.Core.DependencyInjection.Tests.Decorators.Targets;
 using Xunit;
 
 namespace VDT.Core.DependencyInjection.Tests.Decorators {

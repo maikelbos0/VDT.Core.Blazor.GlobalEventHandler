@@ -3,47 +3,60 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using VDT.Core.DependencyInjection.Decorators;
 
 namespace VDT.Core.DependencyInjection {
     /// <summary>
-    /// Extension methods for adding services to an <see cref="IServiceCollection"/> based on attributes
+    /// Extension methods for adding services to an <see cref="IServiceCollection"/> based on type and interface conventions
     /// </summary>
     public static class ServiceCollectionExtensions {
         /// <summary>
-        /// Provides a mechanism to register all services found in <paramref name="assembly"/> marked with <see cref="TransientServiceAttribute"/>, <see cref="ScopedServiceAttribute"/> or <see cref="SingletonServiceAttribute"/>
+        /// Provides a mechanism to register all services found by the provided service type providers in the assemblies provided in the options
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> to add the services to</param>
-        /// <param name="assembly">The <see cref="Assembly"/> in which to look for services</param>
+        /// <param name="setupAction">The action that sets up the options for finding and registering services to this collection</param>
         /// <returns>A reference to this instance after the operation has completed</returns>
-        public static IServiceCollection AddAttributeServices(this IServiceCollection services, Assembly assembly) {
-            foreach (var context in GetServiceAttributes(assembly)) {
-                context.Attribute.Register(services, context.Type);
+        public static IServiceCollection AddServices(this IServiceCollection services, Action<ServiceRegistrationOptions> setupAction) {
+            var options = GetOptions(setupAction);
+
+            foreach (var context in GetServices(options)) {
+                if (options.ServiceRegistrar != null) {
+                    options.ServiceRegistrar(services, context.ServiceType, context.ImplementationType, context.ServiceLifetime);
+                }
+                else {
+                    services.Add(new ServiceDescriptor(context.ServiceType, context.ImplementationType, context.ServiceLifetime));
+                }
             }
 
             return services;
         }
 
-        /// <summary>
-        /// Provides a mechanism to register all services found in <paramref name="assembly"/> marked with <see cref="TransientServiceAttribute"/>, <see cref="ScopedServiceAttribute"/> or <see cref="SingletonServiceAttribute"/>
-        /// </summary>
-        /// <param name="services">The <see cref="IServiceCollection"/> to add the services to</param>
-        /// <param name="assembly">The <see cref="Assembly"/> in which to look for services</param>
-        /// <param name="decoratorSetupAction">The action that sets up the decorators for these services</param>
-        /// <returns>A reference to this instance after the operation has completed</returns>
-        public static IServiceCollection AddAttributeServices(this IServiceCollection services, Assembly assembly, Action<DecoratorOptions> decoratorSetupAction) {
-            foreach (var context in GetServiceAttributes(assembly)) {
-                context.Attribute.Register(services, context.Type, decoratorSetupAction);
-            }
+        private static ServiceRegistrationOptions GetOptions(Action<ServiceRegistrationOptions> setupAction) {
+            var options = new ServiceRegistrationOptions();
 
-            return services;
+            setupAction(options);
+
+            return options;
         }
 
-        private static IEnumerable<ServiceAttributeContext> GetServiceAttributes(Assembly assembly) {
+        private static IEnumerable<ServiceContext> GetServices(ServiceRegistrationOptions options) {
+            return options
+                .Assemblies
+                .SelectMany(a => options.ServiceTypeProviders.Select(p => new { Assembly = a, ServiceTypeProvider = p }))
+                .SelectMany(x => GetServices(x.Assembly, x.ServiceTypeProvider, options.DefaultServiceLifetime));
+        }
+
+        private static IEnumerable<ServiceContext> GetServices(Assembly assembly, ServiceTypeProviderOptions options, ServiceLifetime defaultServiceLifetime) {
             return assembly
                 .GetTypes()
-                .Select(t => new ServiceAttributeContext(t, t.GetCustomAttribute<ServiceAttribute>()!))
-                .Where(s => s.Attribute != null);
+                .Where(t => !t.IsInterface && !t.IsAbstract && !t.IsGenericTypeDefinition)
+                .SelectMany(implementationType => options
+                    .ServiceTypeProvider(implementationType)
+                    .Select(serviceType => new ServiceContext(
+                        serviceType, 
+                        implementationType, 
+                        serviceLifetime: options.ServiceLifetimeProvider?.Invoke(serviceType, implementationType) ?? defaultServiceLifetime
+                    ))
+                );
         }
     }
- }
+}

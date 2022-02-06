@@ -19,7 +19,10 @@ namespace VDT.Core.DependencyInjection.Tests.Decorators {
 
             options.ServiceRegistrar!(services, typeof(IServiceCollectionTarget), typeof(ServiceCollectionTarget), serviceLifetime);
 
-            Assert.Equal(serviceLifetime, Assert.Single(services, service => service.ServiceType == typeof(IServiceCollectionTarget)).Lifetime);
+            var service = Assert.Single(services, service => service.ServiceType == typeof(IServiceCollectionTarget));
+
+            Assert.Equal(serviceLifetime, service.Lifetime);
+            Assert.NotNull(service.ImplementationFactory);
             Assert.Equal(serviceLifetime, Assert.Single(services, service => service.ServiceType == typeof(ServiceCollectionTarget)).Lifetime);
         }
     }

@@ -24,10 +24,7 @@ namespace VDT.Core.DependencyInjection.Decorators {
         /// <param name="setupAction">The action that sets up the decorators for this service</param>
         /// <returns>A reference to this instance after the operation has completed</returns>
         public static ServiceRegistrationOptions UseDecoratorServiceRegistrar(this ServiceRegistrationOptions options, Action<DecoratorOptions> setupAction) 
-            => options.UseServiceRegistrar((services, serviceType, implementationType, serviceLifetime) => {
-                decoratedMethods[serviceLifetime].MakeGenericMethod(serviceType, implementationType).Invoke(null, new object[] { services, setupAction });
-
-                return services;
-            });
+            => options.UseServiceRegistrar((services, serviceType, implementationType, serviceLifetime) 
+                => decoratedMethods[serviceLifetime].MakeGenericMethod(serviceType, implementationType).Invoke(null, new object[] { services, setupAction }));
     }
 }

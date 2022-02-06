@@ -9,6 +9,5 @@ namespace VDT.Core.DependencyInjection {
     /// <param name="serviceType">The service type</param>
     /// <param name="implementationType">The implementation type</param>
     /// <param name="serviceLifetime">The lifetime of this service</param>
-    /// <returns>A reference to the instance after the operation has completed</returns>
-    public delegate IServiceCollection ServiceRegistrar(IServiceCollection services, Type serviceType, Type implementationType, ServiceLifetime serviceLifetime);
+    public delegate void ServiceRegistrar(IServiceCollection services, Type serviceType, Type implementationType, ServiceLifetime serviceLifetime);
 }

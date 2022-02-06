@@ -46,7 +46,7 @@ namespace VDT.Core.DependencyInjection.Tests {
 
         [Fact]
         public void UseServiceRegistrar_Sets_ServiceRegistrar() {
-            ServiceRegistrar serviceRegistrar = (services, serviceType, implementationType, serviceLifetime) => services;
+            ServiceRegistrar serviceRegistrar = (services, serviceType, implementationType, serviceLifetime) => { };
             var options = new ServiceRegistrationOptions();
 
             Assert.Equal(options, options.UseServiceRegistrar(serviceRegistrar));

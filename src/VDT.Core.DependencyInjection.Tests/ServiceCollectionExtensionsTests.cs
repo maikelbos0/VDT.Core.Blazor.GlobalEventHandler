@@ -56,10 +56,7 @@ namespace VDT.Core.DependencyInjection.Tests {
                 options.Assemblies.Add(typeof(NamedService).Assembly);
                 options.ServiceTypeProviders.Add(new ServiceTypeProviderOptions(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface))));
                 options.DefaultServiceLifetime = ServiceLifetime.Singleton;
-                options.ServiceRegistrar = (services, serviceType, implementationType, serviceLifetime) => {
-                    services.Add(new ServiceDescriptor(serviceType, implementationType, ServiceLifetime.Scoped));
-                    return services;
-                };
+                options.ServiceRegistrar = (services, serviceType, implementationType, serviceLifetime) => services.Add(new ServiceDescriptor(serviceType, implementationType, ServiceLifetime.Scoped));
             });
 
             Assert.Equal(ServiceLifetime.Scoped, Assert.Single(services, s => s.ServiceType == typeof(INamedService)).Lifetime);

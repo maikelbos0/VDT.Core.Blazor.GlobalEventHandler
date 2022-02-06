@@ -7,5 +7,5 @@ namespace VDT.Core.DependencyInjection {
     /// </summary>
     /// <param name="implementationType">The implementation type for which to return service types</param>
     /// <returns>An enumerable of service types to register this implementation type for</returns>
-    public delegate IEnumerable<Type> ServiceTypeFinder(Type implementationType);
+    public delegate IEnumerable<Type> ServiceTypeProvider(Type implementationType);
 }

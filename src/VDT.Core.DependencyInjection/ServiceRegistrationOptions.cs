@@ -15,7 +15,7 @@ namespace VDT.Core.DependencyInjection {
         /// <summary>
         /// Options for methods that return service types for a given implementation type; service types that appear in any method will be registered
         /// </summary>
-        public List<ServiceTypeFinderOptions> ServiceTypeFinders { get; set; } = new List<ServiceTypeFinderOptions>();
+        public List<ServiceTypeProviderOptions> ServiceTypeProviders { get; set; } = new List<ServiceTypeProviderOptions>();
 
         /// <summary>
         /// Service lifetime to use if no <see cref="ServiceLifetimeProvider"/> is provided or the <see cref="ServiceLifetimeProvider"/> did not find a suitable lifetime
@@ -41,10 +41,10 @@ namespace VDT.Core.DependencyInjection {
         /// <summary>
         /// Add a method that return service types to be registered for a given implementation type
         /// </summary>
-        /// <param name="serviceTypeFinder">Method that returns service types for a given implementation type</param>
+        /// <param name="serviceTypeProvider">Method that returns service types for a given implementation type</param>
         /// <returns>A reference to this instance after the operation has completed</returns>
-        public ServiceRegistrationOptions AddServiceTypeFinder(ServiceTypeFinder serviceTypeFinder) {
-            ServiceTypeFinders.Add(new ServiceTypeFinderOptions(serviceTypeFinder));
+        public ServiceRegistrationOptions AddServiceTypeProvider(ServiceTypeProvider serviceTypeProvider) {
+            ServiceTypeProviders.Add(new ServiceTypeProviderOptions(serviceTypeProvider));
 
             return this;
         }
@@ -52,11 +52,11 @@ namespace VDT.Core.DependencyInjection {
         /// <summary>
         /// Add a method that return service types to be registered for a given implementation type with a given lifetime provider
         /// </summary>
-        /// <param name="serviceTypeFinder">Method that returns service types for a given implementation type</param>
+        /// <param name="serviceTypeProvider">Method that returns service types for a given implementation type</param>
         /// <param name="serviceLifetimeProvider">Method that returns a service lifetime for a given service and implementation type to be registered</param>
         /// <returns>A reference to this instance after the operation has completed</returns>
-        public ServiceRegistrationOptions AddServiceTypeFinder(ServiceTypeFinder serviceTypeFinder, ServiceLifetimeProvider serviceLifetimeProvider) {
-            ServiceTypeFinders.Add(new ServiceTypeFinderOptions(serviceTypeFinder) {
+        public ServiceRegistrationOptions AddServiceTypeProvider(ServiceTypeProvider serviceTypeProvider, ServiceLifetimeProvider serviceLifetimeProvider) {
+            ServiceTypeProviders.Add(new ServiceTypeProviderOptions(serviceTypeProvider) {
                 ServiceLifetimeProvider = serviceLifetimeProvider
             });
 

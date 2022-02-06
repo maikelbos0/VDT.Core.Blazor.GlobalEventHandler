@@ -6,11 +6,11 @@ using Xunit;
 namespace VDT.Core.DependencyInjection.Tests.Attributes {
     public class ServiceRegistrationOptionsExtensionsTests {
         [Fact]
-        public void AddAttributeServiceTypeFinders_Adds_ServiceTypeFinder_For_ImplementationServiceAttributes() {
+        public void AddAttributeServiceTypeProviders_Adds_ServiceTypeProvider_For_ImplementationServiceAttributes() {
             var services = new ServiceCollection();
 
             services.AddServices(options => {
-                options.AddAttributeServiceTypeFinders();
+                options.AddAttributeServiceTypeProviders();
                 options.Assemblies.Add(typeof(AttributeServiceImplementationTarget).Assembly);
             });
 
@@ -21,11 +21,11 @@ namespace VDT.Core.DependencyInjection.Tests.Attributes {
         }
 
         [Fact]
-        public void AddAttributeServiceTypeFinders_Adds_ServiceTypeFinder_For_Interface_ServiceAttributes() {
+        public void AddAttributeServiceTypeProviders_Adds_ServiceTypeProvider_For_Interface_ServiceAttributes() {
             var services = new ServiceCollection();
 
             services.AddServices(options => {
-                options.AddAttributeServiceTypeFinders();
+                options.AddAttributeServiceTypeProviders();
                 options.Assemblies.Add(typeof(IAttributeServiceInterfaceTarget).Assembly);
             });
 
@@ -36,11 +36,11 @@ namespace VDT.Core.DependencyInjection.Tests.Attributes {
         }
 
         [Fact]
-        public void AddAttributeServiceTypeFinders_Adds_ServiceTypeFinder_For_Base_Class_ServiceAttributes() {
+        public void AddAttributeServiceTypeProviders_Adds_ServiceTypeProvider_For_Base_Class_ServiceAttributes() {
             var services = new ServiceCollection();
 
             services.AddServices(options => {
-                options.AddAttributeServiceTypeFinders();
+                options.AddAttributeServiceTypeProviders();
                 options.Assemblies.Add(typeof(AttributeServiceBaseClassTargetBase).Assembly);
             });
 

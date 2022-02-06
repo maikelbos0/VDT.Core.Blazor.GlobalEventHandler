@@ -11,7 +11,7 @@ namespace VDT.Core.DependencyInjection.Tests {
 
             services.AddServices(options => {
                 options.Assemblies.Add(typeof(NamedService).Assembly);
-                options.ServiceTypeFinders.Add(new ServiceTypeFinderOptions(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface))) {
+                options.ServiceTypeProviders.Add(new ServiceTypeProviderOptions(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface))) {
                     ServiceLifetimeProvider = (serviceType, implementationType) => ServiceLifetime.Singleton
                 });
             });
@@ -25,7 +25,7 @@ namespace VDT.Core.DependencyInjection.Tests {
 
             services.AddServices(options => {
                 options.Assemblies.Add(typeof(NamedService).Assembly);
-                options.ServiceTypeFinders.Add(new ServiceTypeFinderOptions(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface))) {
+                options.ServiceTypeProviders.Add(new ServiceTypeProviderOptions(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface))) {
                     ServiceLifetimeProvider = (serviceType, implementationType) => null
                 });
                 options.DefaultServiceLifetime = ServiceLifetime.Singleton;
@@ -40,7 +40,7 @@ namespace VDT.Core.DependencyInjection.Tests {
 
             services.AddServices(options => {
                 options.Assemblies.Add(typeof(NamedService).Assembly);
-                options.ServiceTypeFinders.Add(new ServiceTypeFinderOptions(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface))));
+                options.ServiceTypeProviders.Add(new ServiceTypeProviderOptions(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface))));
                 options.DefaultServiceLifetime = ServiceLifetime.Singleton;
             });
 
@@ -53,7 +53,7 @@ namespace VDT.Core.DependencyInjection.Tests {
 
             services.AddServices(options => {
                 options.Assemblies.Add(typeof(NamedService).Assembly);
-                options.ServiceTypeFinders.Add(new ServiceTypeFinderOptions(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface))));
+                options.ServiceTypeProviders.Add(new ServiceTypeProviderOptions(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface))));
                 options.DefaultServiceLifetime = ServiceLifetime.Singleton;
                 options.ServiceRegistrar = (services, serviceType, implementationType, serviceLifetime) => {
                     services.Add(new ServiceDescriptor(serviceType, implementationType, ServiceLifetime.Scoped));
@@ -70,7 +70,7 @@ namespace VDT.Core.DependencyInjection.Tests {
 
             services.AddServices(options => {
                 options.Assemblies.Add(typeof(NamedService).Assembly);
-                options.ServiceTypeFinders.Add(new ServiceTypeFinderOptions(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface))));
+                options.ServiceTypeProviders.Add(new ServiceTypeProviderOptions(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface))));
                 options.DefaultServiceLifetime = ServiceLifetime.Scoped;
             });
 
@@ -81,13 +81,13 @@ namespace VDT.Core.DependencyInjection.Tests {
         }
 
         [Fact]
-        public void AddServices_Adds_Services_From_All_ServiceTypeFinders() {
+        public void AddServices_Adds_Services_From_All_ServiceTypeProviders() {
             var services = new ServiceCollection();
 
             services.AddServices(options => {
                 options.Assemblies.Add(typeof(NamedService).Assembly);
-                options.ServiceTypeFinders.Add(new ServiceTypeFinderOptions(t => t.GetInterfaces().Where(i => i == typeof(IGenericInterface))));
-                options.ServiceTypeFinders.Add(new ServiceTypeFinderOptions(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface))));
+                options.ServiceTypeProviders.Add(new ServiceTypeProviderOptions(t => t.GetInterfaces().Where(i => i == typeof(IGenericInterface))));
+                options.ServiceTypeProviders.Add(new ServiceTypeProviderOptions(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface))));
             });
 
             Assert.Single(services, s => s.ServiceType == typeof(INamedService));
@@ -99,14 +99,14 @@ namespace VDT.Core.DependencyInjection.Tests {
             var services = new ServiceCollection();
 
             services.AddServices(options => {
-                options.ServiceTypeFinders.Add(new ServiceTypeFinderOptions(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface))));
+                options.ServiceTypeProviders.Add(new ServiceTypeProviderOptions(t => t.GetInterfaces().Where(i => i != typeof(IGenericInterface))));
             });
 
             Assert.Empty(services);
         }
 
         [Fact]
-        public void AddServices_Adds_No_Services_When_No_ServiceTypeFinders_Supplied() {
+        public void AddServices_Adds_No_Services_When_No_ServiceTypeProviders_Supplied() {
             var services = new ServiceCollection();
 
             services.AddServices(options => {

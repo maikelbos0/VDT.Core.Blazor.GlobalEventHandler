@@ -18,7 +18,7 @@ namespace VDT.Core.DependencyInjection.Attributes {
         public static IServiceCollection AddAttributeServices(this IServiceCollection services, Assembly assembly)
             => services.AddServices(options => options
                 .AddAssembly(assembly)
-                .AddAttributeServiceTypeFinders()
+                .AddAttributeServiceTypeProviders()
             );
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace VDT.Core.DependencyInjection.Attributes {
         public static IServiceCollection AddAttributeServices(this IServiceCollection services, Assembly assembly, Action<DecoratorOptions> decoratorSetupAction)
             => services.AddServices(options => options
                 .AddAssembly(assembly)
-                .AddAttributeServiceTypeFinders()
+                .AddAttributeServiceTypeProviders()
                 .UseDecoratorServiceRegistrar(decoratorSetupAction)
             );
     }

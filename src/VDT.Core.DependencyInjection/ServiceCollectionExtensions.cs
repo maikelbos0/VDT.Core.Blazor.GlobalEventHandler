@@ -10,7 +10,7 @@ namespace VDT.Core.DependencyInjection {
     /// </summary>
     public static class ServiceCollectionExtensions {
         /// <summary>
-        /// Provides a mechanism to register all services found by the provided service type finders in the assemblies provided in the options
+        /// Provides a mechanism to register all services found by the provided service type providers in the assemblies provided in the options
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> to add the services to</param>
         /// <param name="setupAction">The action that sets up the options for finding and registering services to this collection</param>
@@ -41,16 +41,16 @@ namespace VDT.Core.DependencyInjection {
         private static IEnumerable<ServiceContext> GetServices(ServiceRegistrationOptions options) {
             return options
                 .Assemblies
-                .SelectMany(a => options.ServiceTypeFinders.Select(f => new { Assembly = a, ServiceTypeFinder = f }))
-                .SelectMany(x => GetServices(x.Assembly, x.ServiceTypeFinder, options.DefaultServiceLifetime));
+                .SelectMany(a => options.ServiceTypeProviders.Select(p => new { Assembly = a, ServiceTypeProvider = p }))
+                .SelectMany(x => GetServices(x.Assembly, x.ServiceTypeProvider, options.DefaultServiceLifetime));
         }
 
-        private static IEnumerable<ServiceContext> GetServices(Assembly assembly, ServiceTypeFinderOptions options, ServiceLifetime defaultServiceLifetime) {
+        private static IEnumerable<ServiceContext> GetServices(Assembly assembly, ServiceTypeProviderOptions options, ServiceLifetime defaultServiceLifetime) {
             return assembly
                 .GetTypes()
                 .Where(t => !t.IsInterface && !t.IsAbstract && !t.IsGenericTypeDefinition)
                 .SelectMany(implementationType => options
-                    .ServiceTypeFinder(implementationType)
+                    .ServiceTypeProvider(implementationType)
                     .Select(serviceType => new ServiceContext(
                         serviceType, 
                         implementationType, 

@@ -2,19 +2,19 @@
     /// <summary>
     /// Options for a method that returns service types for a given implementation type
     /// </summary>
-    public class ServiceTypeFinderOptions {
+    public class ServiceTypeProviderOptions {
         /// <summary>
         /// Create options for a method that returns service types for a given implementation type
         /// </summary>
-        /// <param name="serviceTypeFinder">Method that returns service types for a given implementation type</param>
-        public ServiceTypeFinderOptions(ServiceTypeFinder serviceTypeFinder) {
-            ServiceTypeFinder = serviceTypeFinder;
+        /// <param name="serviceTypeProvider">Method that returns service types for a given implementation type</param>
+        public ServiceTypeProviderOptions(ServiceTypeProvider serviceTypeProvider) {
+            ServiceTypeProvider = serviceTypeProvider;
         }
 
         /// <summary>
         /// Method that returns service types for a given implementation type
         /// </summary>
-        public ServiceTypeFinder ServiceTypeFinder { get; set; }
+        public ServiceTypeProvider ServiceTypeProvider { get; set; }
 
         /// <summary>
         /// Method that returns a service lifetime for a given service and implementation type to be registered

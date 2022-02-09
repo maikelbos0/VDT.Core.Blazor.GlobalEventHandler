@@ -8,11 +8,10 @@ namespace VDT.Core.DependencyInjection.Tests {
 
             var foundAssemblies = assembly.GetAssemblies(a => true, a => false);
 
-            Assert.Contains(assembly, foundAssemblies);
-            Assert.Contains(typeof(ServiceRegistrationOptions).Assembly, foundAssemblies);
-            Assert.Contains(typeof(FactAttribute).Assembly, foundAssemblies);
-            Assert.Contains(typeof(string).Assembly, foundAssemblies);
-            Assert.Contains(typeof(System.IO.File).Assembly, foundAssemblies);
+            Assert.Contains(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection.Tests");
+            Assert.Contains(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection");
+            Assert.Contains(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection.Tests.ConventionServiceTargets");
+            Assert.Contains(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection.Tests.AssemblyTargets");
         }
 
         [Fact]
@@ -21,7 +20,31 @@ namespace VDT.Core.DependencyInjection.Tests {
 
             var foundAssemblies = assembly.GetAssemblies(a => true, a => false);
 
-            Assert.Single(foundAssemblies, a => a == typeof(Castle.Core.ProxyServices).Assembly);
+            Assert.Single(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection");
+        }
+
+        [Fact]
+        public void GetAssemblies_Uses_Predicate() {
+            var assembly = typeof(AssemblyExtensionsTests).Assembly;
+
+            var foundAssemblies = assembly.GetAssemblies(a => !(a.FullName?.StartsWith("VDT.Core.DependencyInjection.Tests.ConventionServiceTargets") ?? false), a => false);
+
+            Assert.Contains(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection.Tests");
+            Assert.Contains(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection");
+            Assert.DoesNotContain(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection.Tests.ConventionServiceTargets");
+            Assert.Contains(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection.Tests.AssemblyTargets");
+        }
+
+        [Fact]
+        public void GetAssemblies_Uses_EndpointPredicate() {
+            var assembly = typeof(AssemblyExtensionsTests).Assembly;
+
+            var foundAssemblies = assembly.GetAssemblies(a => true, a => a.FullName?.StartsWith("VDT.Core.DependencyInjection.Tests.ConventionServiceTargets") ?? false);
+
+            Assert.Contains(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection.Tests");
+            Assert.Contains(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection");
+            Assert.DoesNotContain(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection.Tests.ConventionServiceTargets");
+            Assert.DoesNotContain(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection.Tests.AssemblyTargets");
         }
     }
 }

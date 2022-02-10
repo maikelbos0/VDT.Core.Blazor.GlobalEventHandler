@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -34,6 +35,17 @@ namespace VDT.Core.DependencyInjection {
         /// <returns>A reference to this instance after the operation has completed</returns>
         public ServiceRegistrationOptions AddAssembly(Assembly assembly) {
             Assemblies.Add(assembly);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Add assemblies to scan for services
+        /// </summary>
+        /// <param name="assemblies">The assemblies to scan for services</param>
+        /// <returns>A reference to this instance after the operation has completed</returns>
+        public ServiceRegistrationOptions AddAssemblies(IEnumerable<Assembly> assemblies) {
+            Assemblies.AddRange(assemblies);
 
             return this;
         }

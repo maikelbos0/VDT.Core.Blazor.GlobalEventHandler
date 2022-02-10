@@ -15,6 +15,14 @@ namespace VDT.Core.DependencyInjection.Tests {
         }
 
         [Fact]
+        public void AddAssemblies_Adds_Assemblies() {
+            var options = new ServiceRegistrationOptions();
+
+            Assert.Equal(options, options.AddAssemblies(new[] { typeof(NamedService).Assembly, typeof(ServiceRegistrationOptionsTests).Assembly }));
+            Assert.Equal(new[] { typeof(NamedService).Assembly, typeof(ServiceRegistrationOptionsTests).Assembly }, options.Assemblies);
+        }
+
+        [Fact]
         public void AddServiceTypeProvider_Adds_ServiceTypeProvider() {
             ServiceTypeProvider serviceTypeProvider = implementationType => Enumerable.Empty<Type>();
             var options = new ServiceRegistrationOptions();

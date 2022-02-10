@@ -15,10 +15,18 @@ namespace VDT.Core.DependencyInjection.Tests {
         }
 
         [Fact]
-        public void AddAssemblies_Adds_Assemblies() {
+        public void AddAssemblies_Adds_Assemblies_Enumerable() {
             var options = new ServiceRegistrationOptions();
 
             Assert.Equal(options, options.AddAssemblies(new[] { typeof(NamedService).Assembly, typeof(ServiceRegistrationOptionsTests).Assembly }));
+            Assert.Equal(new[] { typeof(NamedService).Assembly, typeof(ServiceRegistrationOptionsTests).Assembly }, options.Assemblies);
+        }
+
+        [Fact]
+        public void AddAssemblies_Adds_Assemblies_Param_Array() {
+            var options = new ServiceRegistrationOptions();
+
+            Assert.Equal(options, options.AddAssemblies(typeof(NamedService).Assembly, typeof(ServiceRegistrationOptionsTests).Assembly));
             Assert.Equal(new[] { typeof(NamedService).Assembly, typeof(ServiceRegistrationOptionsTests).Assembly }, options.Assemblies);
         }
 

@@ -51,6 +51,17 @@ namespace VDT.Core.DependencyInjection {
         }
 
         /// <summary>
+        /// Add assemblies to scan for services
+        /// </summary>
+        /// <param name="assemblies">The assemblies to scan for services</param>
+        /// <returns>A reference to this instance after the operation has completed</returns>
+        public ServiceRegistrationOptions AddAssemblies(params Assembly[] assemblies) {
+            Assemblies.AddRange(assemblies);
+
+            return this;
+        }
+
+        /// <summary>
         /// Add a method that return service types to be registered for a given implementation type
         /// </summary>
         /// <param name="serviceTypeProvider">Method that returns service types for a given implementation type</param>

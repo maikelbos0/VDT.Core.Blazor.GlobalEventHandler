@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace VDT.Core.DependencyInjection {
     internal static class AssemblyExtensions {
-        public static IEnumerable<Assembly> GetAssemblies(this Assembly rootAssembly, Predicate<Assembly> predicate, Predicate<AssemblyName> endpointPredicate) {
+        public static IEnumerable<Assembly> GetAssemblies(this Assembly rootAssembly, Predicate<Assembly> filterPredicate, Predicate<AssemblyName> scanPredicate) {
             var referencedAssemblies = new HashSet<Assembly>() {
                 rootAssembly 
             };
@@ -16,7 +16,7 @@ namespace VDT.Core.DependencyInjection {
             for (var i = 0; i < assembliesToScan.Count; i++) {
                 var newAssemblies = assembliesToScan[i]
                     .GetReferencedAssemblies()
-                    .Where(a => !endpointPredicate(a))
+                    .Where(a => scanPredicate(a))
                     .Select(Assembly.Load)
                     .Where(a => !referencedAssemblies.Contains(a));
 
@@ -25,7 +25,7 @@ namespace VDT.Core.DependencyInjection {
             }
 
             return referencedAssemblies
-                .Where(a => predicate(a))
+                .Where(a => filterPredicate(a))
                 .ToList();
         }
     }

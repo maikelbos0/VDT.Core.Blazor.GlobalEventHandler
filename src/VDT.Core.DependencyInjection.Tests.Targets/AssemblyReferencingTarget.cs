@@ -1,7 +1,7 @@
-﻿using VDT.Core.DependencyInjection.Tests.AssemblyTargets;
+﻿using VDT.Core.DependencyInjection.Tests.Targets.References;
 
 namespace VDT.Core.DependencyInjection.Tests.Targets {
     public class AssemblyReferencingTarget {
-        public AssemblyTarget? Reference { get; set; }
+        public ReferenceTarget? Reference { get; set; }
     }
 }

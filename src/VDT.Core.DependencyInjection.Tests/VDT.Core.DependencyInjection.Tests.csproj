@@ -25,7 +25,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\VDT.Core.DependencyInjection.Tests.Attributes.Targets\VDT.Core.DependencyInjection.Tests.Attributes.Targets.csproj" />
-		<ProjectReference Include="..\VDT.Core.DependencyInjection.Tests.ConventionServiceTargets\VDT.Core.DependencyInjection.Tests.ConventionServiceTargets.csproj" />
+		<ProjectReference Include="..\VDT.Core.DependencyInjection.Tests.Targets\VDT.Core.DependencyInjection.Tests.Targets.csproj" />
 		<ProjectReference Include="..\VDT.Core.DependencyInjection.Tests.Decorators.Targets\VDT.Core.DependencyInjection.Tests.Decorators.Targets.csproj" />
 		<ProjectReference Include="..\VDT.Core.DependencyInjection\VDT.Core.DependencyInjection.csproj" />
 	</ItemGroup>

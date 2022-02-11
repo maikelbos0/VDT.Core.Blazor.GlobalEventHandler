@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.DependencyInjectio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.DependencyInjection.Tests.Attributes.Targets", "VDT.Core.DependencyInjection.Tests.Attributes.Targets\VDT.Core.DependencyInjection.Tests.Attributes.Targets.csproj", "{27CABA05-1DBB-4616-8223-C7C1976A4AFB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.DependencyInjection.Tests.ConventionServiceTargets", "VDT.Core.DependencyInjection.Tests.ConventionServiceTargets\VDT.Core.DependencyInjection.Tests.ConventionServiceTargets.csproj", "{91AF0EB4-7043-4239-82BA-12CC3604B417}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.DependencyInjection.Tests.Targets", "VDT.Core.DependencyInjection.Tests.Targets\VDT.Core.DependencyInjection.Tests.Targets.csproj", "{91AF0EB4-7043-4239-82BA-12CC3604B417}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.DependencyInjection.Tests.AssemblyTargets", "VDT.Core.DependencyInjection.Tests.AssemblyTargets\VDT.Core.DependencyInjection.Tests.AssemblyTargets.csproj", "{4D16A4B1-59F1-43F2-823C-4E4A05231D73}"
 EndProject

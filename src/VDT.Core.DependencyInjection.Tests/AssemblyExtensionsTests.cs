@@ -10,7 +10,7 @@ namespace VDT.Core.DependencyInjection.Tests {
 
             Assert.Contains(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection.Tests");
             Assert.Contains(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection");
-            Assert.Contains(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection.Tests.ConventionServiceTargets");
+            Assert.Contains(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection.Tests.Targets");
             Assert.Contains(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection.Tests.AssemblyTargets");
         }
 
@@ -27,11 +27,11 @@ namespace VDT.Core.DependencyInjection.Tests {
         public void GetAssemblies_Uses_FilterPredicate() {
             var assembly = typeof(AssemblyExtensionsTests).Assembly;
 
-            var foundAssemblies = assembly.GetAssemblies(a => !(a.FullName?.StartsWith("VDT.Core.DependencyInjection.Tests.ConventionServiceTargets") ?? false), a => true);
+            var foundAssemblies = assembly.GetAssemblies(a => !(a.FullName?.StartsWith("VDT.Core.DependencyInjection.Tests.Targets") ?? false), a => true);
 
             Assert.Contains(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection.Tests");
             Assert.Contains(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection");
-            Assert.DoesNotContain(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection.Tests.ConventionServiceTargets");
+            Assert.DoesNotContain(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection.Tests.Targets");
             Assert.Contains(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection.Tests.AssemblyTargets");
         }
 
@@ -39,11 +39,11 @@ namespace VDT.Core.DependencyInjection.Tests {
         public void GetAssemblies_Uses_ScanPredicate() {
             var assembly = typeof(AssemblyExtensionsTests).Assembly;
 
-            var foundAssemblies = assembly.GetAssemblies(a => true, a => !(a.FullName?.StartsWith("VDT.Core.DependencyInjection.Tests.ConventionServiceTargets") ?? false));
+            var foundAssemblies = assembly.GetAssemblies(a => true, a => !(a.FullName?.StartsWith("VDT.Core.DependencyInjection.Tests.Targets") ?? false));
 
             Assert.Contains(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection.Tests");
             Assert.Contains(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection");
-            Assert.DoesNotContain(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection.Tests.ConventionServiceTargets");
+            Assert.DoesNotContain(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection.Tests.Targets");
             Assert.DoesNotContain(foundAssemblies, a => a.GetName().Name == "VDT.Core.DependencyInjection.Tests.AssemblyTargets");
         }
     }

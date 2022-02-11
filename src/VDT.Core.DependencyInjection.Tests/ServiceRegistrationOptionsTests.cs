@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
-using VDT.Core.DependencyInjection.Tests.ConventionServiceTargets;
+using VDT.Core.DependencyInjection.Tests.Targets;
 using Xunit;
 
 namespace VDT.Core.DependencyInjection.Tests {
@@ -37,7 +37,7 @@ namespace VDT.Core.DependencyInjection.Tests {
             Assert.Equal(options, options.AddAssemblies(
                 typeof(ServiceRegistrationOptionsTests).Assembly,
                 a => a.FullName?.StartsWith("VDT.Core.DependencyInjection") ?? false,
-                a => !(a.FullName?.StartsWith("VDT.Core.DependencyInjection.Tests.ConventionServiceTargets") ?? false)
+                a => !(a.FullName?.StartsWith("VDT.Core.DependencyInjection.Tests.Targets") ?? false)
             ));
             Assert.Equal(new System.Reflection.Assembly[] {
                 typeof(ServiceRegistrationOptionsTests).Assembly,

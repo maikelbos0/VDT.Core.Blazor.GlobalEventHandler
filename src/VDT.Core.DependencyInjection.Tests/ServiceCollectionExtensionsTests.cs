@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
-using VDT.Core.DependencyInjection.Tests.ConventionServiceTargets;
+using VDT.Core.DependencyInjection.Tests.Targets;
 using Xunit;
 
 namespace VDT.Core.DependencyInjection.Tests {

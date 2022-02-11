@@ -62,6 +62,19 @@ namespace VDT.Core.DependencyInjection {
         }
 
         /// <summary>
+        /// Add an assembly and all recursively referenced assemblies as filtered by the supplied predicates
+        /// </summary>
+        /// <param name="entryAssembly">The starting point to search for referenced assemblies</param>
+        /// <param name="filterPredicate">Assemblies that match this predicate will be added</param>
+        /// <param name="scanPredicate">Only assemblies for which the name matches this predicate will be considered for adding or searched for referenced assemblies; this predicate can be used to improve startup times</param>
+        /// <returns>A reference to this instance after the operation has completed</returns>
+        public ServiceRegistrationOptions AddAssemblies(Assembly entryAssembly, Predicate<Assembly> filterPredicate, Predicate<AssemblyName> scanPredicate) {
+            Assemblies.AddRange(entryAssembly.GetAssemblies(filterPredicate, scanPredicate));
+
+            return this;
+        }
+
+        /// <summary>
         /// Add a method that return service types to be registered for a given implementation type
         /// </summary>
         /// <param name="serviceTypeProvider">Method that returns service types for a given implementation type</param>

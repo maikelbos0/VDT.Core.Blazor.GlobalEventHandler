@@ -31,6 +31,23 @@ namespace VDT.Core.DependencyInjection.Tests {
         }
 
         [Fact]
+        public void AddAssemblies_Adds_Assemblies_EntryAssembly_FilterPredicate_ScanPredicate() {
+            var options = new ServiceRegistrationOptions();
+
+            Assert.Equal(options, options.AddAssemblies(
+                typeof(ServiceRegistrationOptionsTests).Assembly,
+                a => a.FullName?.StartsWith("VDT.Core.DependencyInjection") ?? false,
+                a => !(a.FullName?.StartsWith("VDT.Core.DependencyInjection.Tests.ConventionServiceTargets") ?? false)
+            ));
+            Assert.Equal(new System.Reflection.Assembly[] {
+                typeof(ServiceRegistrationOptionsTests).Assembly,
+                typeof(ServiceRegistrationOptions).Assembly,
+                typeof(Decorators.Targets.DecoratorOptionsTarget).Assembly,
+                typeof(Attributes.Targets.AttributeServiceInterfaceTarget).Assembly
+            }, options.Assemblies);
+        }
+
+        [Fact]
         public void AddServiceTypeProvider_Adds_ServiceTypeProvider() {
             ServiceTypeProvider serviceTypeProvider = implementationType => Enumerable.Empty<Type>();
             var options = new ServiceRegistrationOptions();
@@ -39,7 +56,6 @@ namespace VDT.Core.DependencyInjection.Tests {
             Assert.Equal(serviceTypeProvider, Assert.Single(options.ServiceTypeProviders).ServiceTypeProvider);
             Assert.Null(Assert.Single(options.ServiceTypeProviders).ServiceLifetimeProvider);
         }
-
 
         [Fact]
         public void AddServiceTypeProvider_Adds_ServiceTypeProvider_With_ServiceLifetimeProvider() {

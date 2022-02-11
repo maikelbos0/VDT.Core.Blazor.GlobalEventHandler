@@ -1,4 +1,4 @@
-﻿namespace VDT.Core.DependencyInjection.Tests.AttributeServiceTargets {
+﻿namespace VDT.Core.DependencyInjection.Tests.Attributes.Targets {
     public class AttributeServiceInterfaceTarget : IAttributeServiceInterfaceTarget {
         public string GetValue() {
             return "Bar";

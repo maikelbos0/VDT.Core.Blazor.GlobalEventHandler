@@ -52,6 +52,7 @@ namespace VDT.Core.DependencyInjection.Tests {
             var options = new ServiceRegistrationOptions();
 
             Assert.Equal(options, options.AddAssemblies(typeof(ServiceRegistrationOptionsTests).Assembly, "VDT.Core.DependencyInjection"));
+            Assert.Contains(options.Assemblies, a => a.FullName?.StartsWith("VDT.Core.DependencyInjection") ?? false);
             Assert.DoesNotContain(options.Assemblies, a => !(a.FullName?.StartsWith("VDT.Core.DependencyInjection") ?? false));
         }
 

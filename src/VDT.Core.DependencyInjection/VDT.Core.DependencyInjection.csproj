@@ -8,16 +8,10 @@
 
 	<PropertyGroup>
 		<PackageId>VDT.Core.DependencyInjection</PackageId>
-		<Version>2.0.0</Version>
+		<Version>2.1.0</Version>
 		<Title>VDT.Core.DependencyInjection</Title>
 		<Description>Flexible dependency injection extensions for convention-based service registration, attribute-based service registration, custom automatic service registration and decorator pattern</Description>
-		<PackageReleaseNotes>- Added options-based service registration extension for flexible service registration options
-	- Added service type providers for registering service implementations with a single interface and service implementations by named interface
-	- Added a service type provider generator for automatically registering all implementations of a generic interface like a request handler, commmand, or query
-	- Greatly reduced complexity for attribute-based registration
-
-	Breaking changes:
-	- Moved all attribute-based registration functions to namespace VDT.Core.DependencyInjection.Attributes</PackageReleaseNotes>
+		<PackageReleaseNotes>Added methods for adding multiple assemblies as enumerable or by recursively searching from an entry assembly</PackageReleaseNotes>
 		<Authors>Maikel Bos</Authors>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Copyright>Copyright © 2021 Maikel Bos</Copyright>

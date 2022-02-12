@@ -54,11 +54,7 @@ public class Startup {
 
             // Optional: provide your own method for registering services
             .UseServiceRegistrar(
-                serviceRegistrar: (services, serviceType, implementationType, serviceLifetime) => {
-                    services.Add(new ServiceDescriptor(serviceType, implementationType, serviceLifetime);
-
-                    return services;
-                }
+                serviceRegistrar: (services, serviceType, implementationType, serviceLifetime) => services.Add(new ServiceDescriptor(serviceType, implementationType, serviceLifetime))
             )
         );
 

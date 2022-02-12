@@ -36,8 +36,8 @@ namespace VDT.Core.DependencyInjection.Tests {
 
             Assert.Equal(options, options.AddAssemblies(
                 typeof(ServiceRegistrationOptionsTests).Assembly,
-                a => a.FullName?.StartsWith("VDT.Core.DependencyInjection") ?? false,
-                a => !(a.FullName?.StartsWith("VDT.Core.DependencyInjection.Tests.Targets") ?? false)
+                a => !(a.FullName?.StartsWith("VDT.Core.DependencyInjection.Tests.Targets") ?? false),
+                a => a.FullName?.StartsWith("VDT.Core.DependencyInjection") ?? false
             ));
             Assert.Equal(new System.Reflection.Assembly[] {
                 typeof(ServiceRegistrationOptionsTests).Assembly,
@@ -45,6 +45,14 @@ namespace VDT.Core.DependencyInjection.Tests {
                 typeof(Decorators.Targets.DecoratorOptionsTarget).Assembly,
                 typeof(Attributes.Targets.AttributeServiceInterfaceTarget).Assembly
             }, options.Assemblies);
+        }
+
+        [Fact]
+        public void AddAssemblies_Adds_Assemblies_EntryAssembly_AssemblyPrefix() {
+            var options = new ServiceRegistrationOptions();
+
+            Assert.Equal(options, options.AddAssemblies(typeof(ServiceRegistrationOptionsTests).Assembly, "VDT.Core.DependencyInjection"));
+            Assert.DoesNotContain(options.Assemblies, a => !(a.FullName?.StartsWith("VDT.Core.DependencyInjection") ?? false));
         }
 
         [Fact]

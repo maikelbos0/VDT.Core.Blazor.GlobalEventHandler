@@ -66,10 +66,22 @@ namespace VDT.Core.DependencyInjection {
         /// </summary>
         /// <param name="entryAssembly">The starting point to search for referenced assemblies</param>
         /// <param name="filterPredicate">Assemblies that match this predicate will be added</param>
-        /// <param name="scanPredicate">Only assemblies for which the name matches this predicate will be considered for adding or searched for referenced assemblies; this predicate can be used to improve startup times</param>
+        /// <param name="scanPredicate">Only assemblies for which the name matches this predicate will be considered for adding and searched for referenced assemblies; this predicate can be used to improve startup times</param>
         /// <returns>A reference to this instance after the operation has completed</returns>
         public ServiceRegistrationOptions AddAssemblies(Assembly entryAssembly, Predicate<Assembly> filterPredicate, Predicate<AssemblyName> scanPredicate) {
             Assemblies.AddRange(entryAssembly.GetAssemblies(filterPredicate, scanPredicate));
+
+            return this;
+        }
+
+        /// <summary>
+        /// Add an assembly and all recursively referenced assemblies that start with the provided prefix
+        /// </summary>
+        /// <param name="entryAssembly">The starting point to search for referenced assemblies</param>
+        /// <param name="assemblyPrefix">Only assemblies for which the name starts with this prefix will be considered for adding and searched for referenced assemblies</param>
+        /// <returns>A reference to this instance after the operation has completed</returns>
+        public ServiceRegistrationOptions AddAssemblies(Assembly entryAssembly, string assemblyPrefix) {
+            Assemblies.AddRange(entryAssembly.GetAssemblies(a => a.FullName?.StartsWith(assemblyPrefix) ?? false, a => a.FullName.StartsWith(assemblyPrefix)));
 
             return this;
         }

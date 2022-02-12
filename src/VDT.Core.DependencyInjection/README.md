@@ -14,6 +14,9 @@ Provides extensions for `Microsoft.Extensions.DependencyInjection.IServiceCollec
 The extension method `ServiceCollectionExtensions.AddServices` is used to register all services provided by a `ServiceRegistrationOptions` object built with
 the provided setup action. The `ServiceRegistrationOptions` class provides methods to build it in a fluent way:
 - `AddAssembly` adds an assembly to scan for services
+- `AddAssemblies` adds multiple assemblies to scan for services
+  - Overloads are provided to add multiple assemblies as a parameter array or enumerable
+  - Overloads are provided to search for assemblies recursively by predicate or assembly name prefix
 - `AddServiceTypeProvider` adds a method that returns service types for a given implementation type found in the assemblies
   - These methods must match the delegate method `ServiceTypeProvider`
   - It is possible to supply a `ServiceLifetimeProvider` that returns the appropriate `ServiceLifetime` for a given service type and implementation type
@@ -30,7 +33,10 @@ public class Startup {
         services.AddServices(setupAction: options => options
             // Add assemblies to scan
             .AddAssembly(assembly: typeof(Startup).Assembly)
-            .AddAssembly(assembly: typeof(MyService).Assembly)
+            .AddAssemblies(typeof(MyService).Assembly, typeof(MyOtherService).Assembly)
+
+            // Add all project assemblies based on prefix
+            .AddAssemblies(entryAssembly: typeof(Startup).Assembly, assemblyPrefix: "MyCompany.MySolution")
             
             // Add a service type provider with a lifetime provider
             .AddServiceTypeProvider(
@@ -48,11 +54,7 @@ public class Startup {
 
             // Optional: provide your own method for registering services
             .UseServiceRegistrar(
-                serviceRegistrar: (services, serviceType, implementationType, serviceLifetime) => {
-                    services.Add(new ServiceDescriptor(serviceType, implementationType, serviceLifetime);
-
-                    return services;
-                }
+                serviceRegistrar: (services, serviceType, implementationType, serviceLifetime) => services.Add(new ServiceDescriptor(serviceType, implementationType, serviceLifetime))
             )
         );
 

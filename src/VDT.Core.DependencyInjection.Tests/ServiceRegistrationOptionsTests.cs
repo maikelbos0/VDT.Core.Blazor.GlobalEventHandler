@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
-using VDT.Core.DependencyInjection.Tests.ConventionServiceTargets;
+using VDT.Core.DependencyInjection.Tests.Targets;
 using Xunit;
 
 namespace VDT.Core.DependencyInjection.Tests {
@@ -15,6 +15,48 @@ namespace VDT.Core.DependencyInjection.Tests {
         }
 
         [Fact]
+        public void AddAssemblies_Adds_Assemblies_Enumerable() {
+            var options = new ServiceRegistrationOptions();
+
+            Assert.Equal(options, options.AddAssemblies(new[] { typeof(NamedService).Assembly, typeof(ServiceRegistrationOptionsTests).Assembly }));
+            Assert.Equal(new[] { typeof(NamedService).Assembly, typeof(ServiceRegistrationOptionsTests).Assembly }, options.Assemblies);
+        }
+
+        [Fact]
+        public void AddAssemblies_Adds_Assemblies_Param_Array() {
+            var options = new ServiceRegistrationOptions();
+
+            Assert.Equal(options, options.AddAssemblies(typeof(NamedService).Assembly, typeof(ServiceRegistrationOptionsTests).Assembly));
+            Assert.Equal(new[] { typeof(NamedService).Assembly, typeof(ServiceRegistrationOptionsTests).Assembly }, options.Assemblies);
+        }
+
+        [Fact]
+        public void AddAssemblies_Adds_Assemblies_EntryAssembly_FilterPredicate_ScanPredicate() {
+            var options = new ServiceRegistrationOptions();
+
+            Assert.Equal(options, options.AddAssemblies(
+                typeof(ServiceRegistrationOptionsTests).Assembly,
+                a => !(a.FullName?.StartsWith("VDT.Core.DependencyInjection.Tests.Targets") ?? false),
+                a => a.FullName?.StartsWith("VDT.Core.DependencyInjection") ?? false
+            ));
+            Assert.Equal(new System.Reflection.Assembly[] {
+                typeof(ServiceRegistrationOptionsTests).Assembly,
+                typeof(ServiceRegistrationOptions).Assembly,
+                typeof(Decorators.Targets.DecoratorOptionsTarget).Assembly,
+                typeof(Attributes.Targets.AttributeServiceInterfaceTarget).Assembly
+            }, options.Assemblies);
+        }
+
+        [Fact]
+        public void AddAssemblies_Adds_Assemblies_EntryAssembly_AssemblyPrefix() {
+            var options = new ServiceRegistrationOptions();
+
+            Assert.Equal(options, options.AddAssemblies(typeof(ServiceRegistrationOptionsTests).Assembly, "VDT.Core.DependencyInjection"));
+            Assert.Contains(options.Assemblies, a => a.FullName?.StartsWith("VDT.Core.DependencyInjection") ?? false);
+            Assert.DoesNotContain(options.Assemblies, a => !(a.FullName?.StartsWith("VDT.Core.DependencyInjection") ?? false));
+        }
+
+        [Fact]
         public void AddServiceTypeProvider_Adds_ServiceTypeProvider() {
             ServiceTypeProvider serviceTypeProvider = implementationType => Enumerable.Empty<Type>();
             var options = new ServiceRegistrationOptions();
@@ -23,7 +65,6 @@ namespace VDT.Core.DependencyInjection.Tests {
             Assert.Equal(serviceTypeProvider, Assert.Single(options.ServiceTypeProviders).ServiceTypeProvider);
             Assert.Null(Assert.Single(options.ServiceTypeProviders).ServiceLifetimeProvider);
         }
-
 
         [Fact]
         public void AddServiceTypeProvider_Adds_ServiceTypeProvider_With_ServiceLifetimeProvider() {

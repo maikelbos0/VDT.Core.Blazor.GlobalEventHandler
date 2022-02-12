@@ -7,7 +7,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\VDT.Core.DependencyInjection\VDT.Core.DependencyInjection.csproj" />
+		<ProjectReference Include="..\VDT.Core.DependencyInjection.Tests.Targets.References\VDT.Core.DependencyInjection.Tests.Targets.References.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -46,6 +46,13 @@ namespace VDT.Core.DependencyInjection.Tests {
         }
 
         [Fact]
+        public void CreateGenericInterfaceTypeProvider_Returns_ServiceTypeProvider_That_Returns_No_Services_For_Not_Generic_Interface() {
+            var provider = DefaultServiceTypeProviders.CreateGenericInterfaceTypeProvider(typeof(ICommandHandler<>));
+
+            Assert.Empty(provider(typeof(NamedService)));
+        }
+
+        [Fact]
         public void CreateGenericInterfaceTypeProvider_Throws_Exception_When_Not_Passing_Unbound_Generic_Type() {
             Assert.Throws<ServiceRegistrationException>(() => DefaultServiceTypeProviders.CreateGenericInterfaceTypeProvider(typeof(IGenericInterface)));
         }

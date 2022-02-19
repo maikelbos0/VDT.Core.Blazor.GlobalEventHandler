@@ -43,7 +43,7 @@ namespace VDT.Core.DependencyInjection {
                 throw new ServiceRegistrationException($"{nameof(CreateGenericInterfaceTypeProvider)} expects {nameof(genericServiceType)} to be a generic interface type definition; type '{genericServiceType.FullName}' is not an interface type");
             }
 
-            return implementationType => implementationType.GetInterfaces().Where(serviceType => serviceType.GetGenericTypeDefinition() == genericServiceType);
+            return implementationType => implementationType.GetInterfaces().Where(serviceType => serviceType.IsGenericType && serviceType.GetGenericTypeDefinition() == genericServiceType);
         }
     }
 }

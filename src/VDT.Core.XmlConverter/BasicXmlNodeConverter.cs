@@ -21,6 +21,8 @@ namespace VDT.Core.XmlConverter {
 
         public void RenderStart(XmlNodeData nodeData, TextWriter writer) => writer.Write(startOutput);
 
+        public bool ShouldRenderContent(XmlNodeData nodeData) => true;
+
         public void RenderEnd(XmlNodeData nodeData, TextWriter writer) => writer.Write(endOutput);
     }
 }

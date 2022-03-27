@@ -29,6 +29,13 @@ namespace VDT.Core.XmlConverter.Tests {
         }
 
         [Fact]
+        public void ShouldRenderContent_Returns_True() {
+            var converter = new BasicXmlNodeConverter("start", "end", "foo", "bar");
+
+            Assert.True(converter.ShouldRenderContent(new XmlNodeData("bar", new Dictionary<string, string>())));
+        }
+
+        [Fact]
         public void RenderEnd_Renders_EndOuput() {
             var converter = new BasicXmlNodeConverter("end", "end", "foo", "bar");
             var writer = new StringWriter();

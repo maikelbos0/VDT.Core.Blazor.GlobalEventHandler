@@ -6,6 +6,8 @@ namespace VDT.Core.XmlConverter {
 
         public void RenderStart(XmlNodeData nodeData, TextWriter writer);
 
+        public bool ShouldRenderContent(XmlNodeData nodeData);
+
         public void RenderEnd(XmlNodeData nodeData, TextWriter writer);
     }
 }

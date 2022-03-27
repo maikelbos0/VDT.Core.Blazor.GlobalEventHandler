@@ -27,9 +27,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.DependencyInjectio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.DependencyInjection.Tests.Targets.References", "VDT.Core.DependencyInjection.Tests.Targets.References\VDT.Core.DependencyInjection.Tests.Targets.References.csproj", "{4D16A4B1-59F1-43F2-823C-4E4A05231D73}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDT.Core.HtmlConverter", "VDT.Core.HtmlConverter\VDT.Core.HtmlConverter.csproj", "{EB8A8213-85FF-4411-9F09-59B5D959710A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDT.Core.XmlConverter", "VDT.Core.XmlConverter\VDT.Core.XmlConverter.csproj", "{EB8A8213-85FF-4411-9F09-59B5D959710A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDT.Core.HtmlConverter.Tests", "VDT.Core.HtmlConverter.Tests\VDT.Core.HtmlConverter.Tests.csproj", "{9C107B03-9EA4-4601-9A2D-6528F6946257}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDT.Core.XmlConverter.Tests", "VDT.Core.XmlConverter.Tests\VDT.Core.XmlConverter.Tests.csproj", "{9C107B03-9EA4-4601-9A2D-6528F6946257}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

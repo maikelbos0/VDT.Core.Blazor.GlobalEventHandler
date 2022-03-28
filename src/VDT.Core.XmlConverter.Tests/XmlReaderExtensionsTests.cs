@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Text;
+using System.Xml;
 using Xunit;
 
 namespace VDT.Core.XmlConverter.Tests {
@@ -9,7 +10,7 @@ namespace VDT.Core.XmlConverter.Tests {
             const string xml = "<foo bar=\"bar\" baz=\"quux quux\">Content</foo>";
 
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
-            using var reader = System.Xml.XmlReader.Create(stream);
+            using var reader = XmlReader.Create(stream);
 
             // Move to element
             reader.Read();
@@ -28,7 +29,7 @@ namespace VDT.Core.XmlConverter.Tests {
             const string xml = "<foo>Content</foo>";
 
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
-            using var reader = System.Xml.XmlReader.Create(stream);
+            using var reader = XmlReader.Create(stream);
 
             // Move to element
             reader.Read();
@@ -41,7 +42,7 @@ namespace VDT.Core.XmlConverter.Tests {
             const string xml = "<foo bar=\"bar\">Content</foo>";
 
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
-            using var reader = System.Xml.XmlReader.Create(stream);
+            using var reader = XmlReader.Create(stream);
 
             // Move to element
             reader.Read();

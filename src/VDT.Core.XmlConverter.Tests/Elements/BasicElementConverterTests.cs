@@ -9,14 +9,14 @@ namespace VDT.Core.XmlConverter.Tests.Elements {
         public void IsValidFor_Returns_True_When_ElementName_In_ValidForElementNames() {
             var converter = new BasicElementConverter("start", "end", "foo", "bar");
 
-            Assert.True(converter.IsValidFor(new ElementData("bar", new Dictionary<string, string>())));
+            Assert.True(converter.IsValidFor(new ElementData("bar", new Dictionary<string, string>(), false)));
         }
 
         [Fact]
         public void IsValidFor_Returns_False_When_ElementName_Not_In_ValidForElementNames() {
             var converter = new BasicElementConverter("start", "end", "foo", "bar");
 
-            Assert.False(converter.IsValidFor(new ElementData("baz", new Dictionary<string, string>())));
+            Assert.False(converter.IsValidFor(new ElementData("baz", new Dictionary<string, string>(), false)));
         }
 
         [Fact]
@@ -24,7 +24,7 @@ namespace VDT.Core.XmlConverter.Tests.Elements {
             var converter = new BasicElementConverter("start", "end", "foo", "bar");
             var writer = new StringWriter();
 
-            converter.RenderStart(new ElementData("bar", new Dictionary<string, string>()), writer);
+            converter.RenderStart(new ElementData("bar", new Dictionary<string, string>(), false), writer);
 
             Assert.Equal("start", writer.ToString());
         }
@@ -33,7 +33,7 @@ namespace VDT.Core.XmlConverter.Tests.Elements {
         public void ShouldRenderContent_Returns_True() {
             var converter = new BasicElementConverter("start", "end", "foo", "bar");
 
-            Assert.True(converter.ShouldRenderContent(new ElementData("bar", new Dictionary<string, string>())));
+            Assert.True(converter.ShouldRenderContent(new ElementData("bar", new Dictionary<string, string>(), false)));
         }
 
         [Fact]
@@ -41,7 +41,7 @@ namespace VDT.Core.XmlConverter.Tests.Elements {
             var converter = new BasicElementConverter("end", "end", "foo", "bar");
             var writer = new StringWriter();
 
-            converter.RenderEnd(new ElementData("bar", new Dictionary<string, string>()), writer);
+            converter.RenderEnd(new ElementData("bar", new Dictionary<string, string>(), false), writer);
 
             Assert.Equal("end", writer.ToString());
         }

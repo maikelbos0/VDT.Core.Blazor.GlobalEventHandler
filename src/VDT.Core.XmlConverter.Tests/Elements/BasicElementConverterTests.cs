@@ -21,8 +21,8 @@ namespace VDT.Core.XmlConverter.Tests.Elements {
 
         [Fact]
         public void RenderStart_Renders_StartOuput() {
+            using var writer = new StringWriter();
             var converter = new BasicElementConverter("start", "end", "foo", "bar");
-            var writer = new StringWriter();
 
             converter.RenderStart(new ElementData("bar", new Dictionary<string, string>(), false), writer);
 
@@ -38,8 +38,8 @@ namespace VDT.Core.XmlConverter.Tests.Elements {
 
         [Fact]
         public void RenderEnd_Renders_EndOuput() {
+            using var writer = new StringWriter();
             var converter = new BasicElementConverter("end", "end", "foo", "bar");
-            var writer = new StringWriter();
 
             converter.RenderEnd(new ElementData("bar", new Dictionary<string, string>(), false), writer);
 

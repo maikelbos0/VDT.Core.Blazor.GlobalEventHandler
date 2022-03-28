@@ -14,8 +14,8 @@ namespace VDT.Core.XmlConverter.Tests.Elements {
 
         [Fact]
         public void RenderStart_Renders_StartOuput() {
+            using var writer = new StringWriter();
             var converter = new NoOpElementConverter();
-            var writer = new StringWriter();
 
             converter.RenderStart(new ElementData("bar", new Dictionary<string, string>() {
                 { "baz", "baz" },
@@ -28,8 +28,8 @@ namespace VDT.Core.XmlConverter.Tests.Elements {
 
         [Fact]
         public void RenderStart_Renders_SelfClosing_StartOuput_IsSelfClosing_Is_True() {
+            using var writer = new StringWriter();
             var converter = new NoOpElementConverter();
-            var writer = new StringWriter();
 
             converter.RenderStart(new ElementData("bar", new Dictionary<string, string>(), true), writer);
 
@@ -52,8 +52,8 @@ namespace VDT.Core.XmlConverter.Tests.Elements {
 
         [Fact]
         public void RenderEnd_Renders_EndOuput_When_IsSelfClosing_Is_False() {
+            using var writer = new StringWriter();
             var converter = new NoOpElementConverter();
-            var writer = new StringWriter();
 
             converter.RenderEnd(new ElementData("bar", new Dictionary<string, string>(), false), writer);
 

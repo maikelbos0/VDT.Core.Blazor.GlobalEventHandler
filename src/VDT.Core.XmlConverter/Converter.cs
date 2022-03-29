@@ -62,7 +62,7 @@ namespace VDT.Core.XmlConverter {
 
             elementConverter.RenderStart(elementData, writer);
 
-            while (reader.Read() && reader.Depth > depth) {
+            while (!reader.IsEmptyElement && reader.Read() && reader.Depth > depth) {
                 if (shouldRenderContent) {
                     ConvertNode(reader, writer);
                 }

@@ -8,12 +8,13 @@ using Xunit;
 
 namespace VDT.Core.XmlConverter.Tests {
     public class ConverterTests {
-        private const string elementXml = "<foo bar=\"baz\">Content</foo>";
-
-        [Fact]
-        public void ConvertElement_Leaves_Reader_At_End_Of_Element() {
+        [Theory]
+        [InlineData("<foo bar=\"baz\">Content</foo>", XmlNodeType.EndElement, 0)]
+        [InlineData("<foo bar=\"baz\"></foo>", XmlNodeType.EndElement, 0)]
+        [InlineData("<foo bar=\"baz\"/>", XmlNodeType.Element, 0)]
+        public void ConvertElement_Leaves_Reader_At_End_Of_Element(string xml, XmlNodeType expectedNodeType, int expectedDepth) {
             using var writer = new StringWriter();
-            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(elementXml));
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
             using var reader = XmlReader.Create(stream);
 
             var defaultElementConverter = Substitute.For<IElementConverter>();
@@ -25,8 +26,8 @@ namespace VDT.Core.XmlConverter.Tests {
 
             converter.ConvertElement(reader, writer);
 
-            Assert.Equal(XmlNodeType.EndElement, reader.NodeType);
-            Assert.Equal(0, reader.Depth);
+            Assert.Equal(expectedNodeType, reader.NodeType);
+            Assert.Equal(expectedDepth, reader.Depth);
         }
 
         [Theory]
@@ -64,7 +65,7 @@ namespace VDT.Core.XmlConverter.Tests {
         [Fact]
         public void ConvertElement_Uses_First_Valid_ElementConverter() {
             using var writer = new StringWriter();
-            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(elementXml));
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\">Content</foo>"));
             using var reader = XmlReader.Create(stream);
 
             var defaultElementConverter = Substitute.For<IElementConverter>();
@@ -90,7 +91,7 @@ namespace VDT.Core.XmlConverter.Tests {
         [Fact]
         public void ConvertElement_Uses_DefaultElementConverter_When_No_Valid_ElementConverters_Are_Found() {
             using var writer = new StringWriter();
-            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(elementXml));
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\">Content</foo>"));
             using var reader = XmlReader.Create(stream);
 
             var invalidElementConverter = Substitute.For<IElementConverter>();
@@ -113,7 +114,7 @@ namespace VDT.Core.XmlConverter.Tests {
         [Fact]
         public void ConvertElement_Uses_DefaultElementConverter_When_No_ElementConverters_Are_Specified() {
             using var writer = new StringWriter();
-            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(elementXml));
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\">Content</foo>"));
             using var reader = XmlReader.Create(stream);
 
             var defaultElementConverter = Substitute.For<IElementConverter>();

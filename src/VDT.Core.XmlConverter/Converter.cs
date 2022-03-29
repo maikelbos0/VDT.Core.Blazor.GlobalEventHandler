@@ -50,7 +50,6 @@ namespace VDT.Core.XmlConverter {
             }
         }
 
-        // TODO further tests
         internal void ConvertElement(XmlReader reader, TextWriter writer) {
             var depth = reader.Depth;
             var elementData = new ElementData(

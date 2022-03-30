@@ -11,9 +11,8 @@ namespace VDT.Core.XmlConverter.Tests {
 
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
             using var reader = XmlReader.Create(stream);
-
-            // Move to element
-            reader.Read();
+                        
+            reader.Read(); // Move to element
 
             var attributes = reader.GetAttributes();
 
@@ -31,8 +30,7 @@ namespace VDT.Core.XmlConverter.Tests {
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
             using var reader = XmlReader.Create(stream);
 
-            // Move to element
-            reader.Read();
+            reader.Read(); // Move to element
 
             Assert.Empty(reader.GetAttributes());
         }
@@ -44,11 +42,8 @@ namespace VDT.Core.XmlConverter.Tests {
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
             using var reader = XmlReader.Create(stream);
 
-            // Move to element
-            reader.Read();
-
-            // Move to content
-            reader.Read();
+            reader.Read(); // Move to element            
+            reader.Read(); // Move to text
 
             Assert.Empty(reader.GetAttributes());
         }

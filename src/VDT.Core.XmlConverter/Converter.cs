@@ -8,6 +8,9 @@ namespace VDT.Core.XmlConverter {
     public class Converter {
         public ConverterOptions Options { get; }
 
+        public Converter() : this(new ConverterOptions()) {
+        }
+
         public Converter(ConverterOptions options) {
             Options = options;
         }
@@ -29,20 +32,23 @@ namespace VDT.Core.XmlConverter {
                 case XmlNodeType.Element:
                     ConvertElement(reader, writer);
                     break;
+                case XmlNodeType.Text:
+                    Options.TextConverter.Convert(reader, writer);
+                    break;
+                case XmlNodeType.EndElement:
                 case XmlNodeType.Attribute:
+                    throw new UnexpectedNodeTypeException($"Node type '{reader.NodeType}' was not handled by {nameof(ConvertElement)}; ensure {nameof(reader)} is in correct position before calling {nameof(Convert)}", reader.NodeType);
                 case XmlNodeType.CDATA:
                 case XmlNodeType.Comment:
                 case XmlNodeType.Document:
                 case XmlNodeType.DocumentFragment:
                 case XmlNodeType.DocumentType:
-                case XmlNodeType.EndElement:
                 case XmlNodeType.EndEntity:
                 case XmlNodeType.Entity:
                 case XmlNodeType.EntityReference:
                 case XmlNodeType.Notation:
                 case XmlNodeType.ProcessingInstruction:
                 case XmlNodeType.SignificantWhitespace:
-                case XmlNodeType.Text:
                 case XmlNodeType.Whitespace:
                 case XmlNodeType.XmlDeclaration:
                 default:
@@ -62,9 +68,11 @@ namespace VDT.Core.XmlConverter {
 
             elementConverter.RenderStart(elementData, writer);
 
-            while (!reader.IsEmptyElement && reader.Read() && reader.Depth > depth) {
-                if (shouldRenderContent) {
-                    ConvertNode(reader, writer);
+            if (!reader.IsEmptyElement) {
+                while (reader.Read() && reader.Depth > depth) {
+                    if (shouldRenderContent) {
+                        ConvertNode(reader, writer);
+                    }
                 }
             }
 

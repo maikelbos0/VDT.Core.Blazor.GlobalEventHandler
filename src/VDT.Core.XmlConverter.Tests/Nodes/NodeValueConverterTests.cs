@@ -18,8 +18,8 @@ namespace VDT.Core.XmlConverter.Tests.Nodes {
 
             var converter = new NodeValueConverter(xmlEncode);
 
-            reader.Read();
-            reader.Read();
+            reader.Read(); // Move to element
+            reader.Read(); // Move to text
 
             converter.Convert(reader, writer);
             Assert.Equal(expectedValue, writer.ToString());

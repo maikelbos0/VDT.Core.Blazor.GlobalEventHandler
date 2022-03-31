@@ -85,6 +85,24 @@ namespace VDT.Core.XmlConverter.Tests {
         }
 
         [Fact]
+        public void ConvertNode_Converts_XmlDeclaration() {
+            using var writer = new StringWriter();
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?><foo bar=\"baz\"><!-- Test --></foo>"));
+            using var reader = XmlReader.Create(stream);
+
+            var xmlDeclarationConverter = Substitute.For<INodeConverter>();
+            var converter = new Converter(new ConverterOptions() {
+                XmlDeclarationConverter = xmlDeclarationConverter
+            });
+
+            reader.Read(); // Move to xml declaration
+
+            converter.ConvertNode(reader, writer);
+
+            xmlDeclarationConverter.Received().Convert(reader, writer);
+        }
+
+        [Fact]
         public void ConvertNode_Throws_Exception_For_EndElement() {
             using var writer = new StringWriter();
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\"></foo>"));

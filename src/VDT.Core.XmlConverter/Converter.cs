@@ -40,6 +40,9 @@ namespace VDT.Core.XmlConverter {
                 case XmlNodeType.Comment:
                     Options.CommentConverter.Convert(reader, writer);
                     break;
+                case XmlNodeType.XmlDeclaration:
+                    Options.XmlDeclarationConverter.Convert(reader, writer);
+                    break;
                 case XmlNodeType.EndElement:
                 case XmlNodeType.Attribute:
                     throw new UnexpectedNodeTypeException($"Node type '{reader.NodeType}' was not handled by {nameof(ConvertElement)}; ensure {nameof(reader)} is in correct position before calling {nameof(Convert)}", reader.NodeType);                                
@@ -53,7 +56,6 @@ namespace VDT.Core.XmlConverter {
                 case XmlNodeType.ProcessingInstruction:
                 case XmlNodeType.SignificantWhitespace:
                 case XmlNodeType.Whitespace:
-                case XmlNodeType.XmlDeclaration:
                 default:
                     throw new UnexpectedNodeTypeException($"No node converter was specified for node type '{reader.NodeType}'", reader.NodeType);
             }

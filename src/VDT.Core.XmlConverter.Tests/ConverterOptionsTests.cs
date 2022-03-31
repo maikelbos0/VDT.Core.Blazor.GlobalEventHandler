@@ -47,5 +47,15 @@ namespace VDT.Core.XmlConverter.Tests {
             Assert.Equal("<!--", converter.StartOuput);
             Assert.Equal("-->", converter.EndOutput);
         }
+
+        [Fact]
+        public void XmlDeclarationConverter() { 
+            var options = new ConverterOptions();
+            var converter = Assert.IsType<NodeValueConverter>(options.XmlDeclarationConverter);
+
+            Assert.False(converter.XmlEncodeValue);
+            Assert.Equal("<?xml", converter.StartOuput);
+            Assert.Equal("?>", converter.EndOutput);
+        }
     }
 }

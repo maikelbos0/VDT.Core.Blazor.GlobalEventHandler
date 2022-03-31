@@ -15,5 +15,9 @@ namespace VDT.Core.XmlConverter {
         public INodeConverter CommentConverter { get; set; } = new NodeValueConverter(false, "<!--", "-->");
 
         public INodeConverter XmlDeclarationConverter { get; set; } = new NodeValueConverter(false, "<?xml", "?>");
+
+        public INodeConverter WhitespaceConverter { get; set; } = new NodeValueConverter(false);
+
+        public INodeConverter SignificantWhitespaceConverter { get; set; } = new NodeValueConverter(false);
     }
 }

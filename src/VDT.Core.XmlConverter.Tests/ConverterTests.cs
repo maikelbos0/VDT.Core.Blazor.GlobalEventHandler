@@ -87,7 +87,7 @@ namespace VDT.Core.XmlConverter.Tests {
         [Fact]
         public void ConvertNode_Converts_XmlDeclaration() {
             using var writer = new StringWriter();
-            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?><foo bar=\"baz\"><!-- Test --></foo>"));
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?><foo bar=\"baz\"/>"));
             using var reader = XmlReader.Create(stream);
 
             var xmlDeclarationConverter = Substitute.For<INodeConverter>();
@@ -100,6 +100,46 @@ namespace VDT.Core.XmlConverter.Tests {
             converter.ConvertNode(reader, writer);
 
             xmlDeclarationConverter.Received().Convert(reader, writer);
+        }
+
+        [Fact]
+        public void ConvertNode_Converts_Whitespace() {
+            using var writer = new StringWriter();
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\"><quux/>    <quux/></foo>"));
+            using var reader = XmlReader.Create(stream);
+
+            var WhitespaceConverter = Substitute.For<INodeConverter>();
+            var converter = new Converter(new ConverterOptions() {
+                WhitespaceConverter = WhitespaceConverter
+            });
+
+            reader.Read(); // Move to element
+            reader.Read(); // Move to child element
+            reader.Read(); // Move to whitespace
+
+            converter.ConvertNode(reader, writer);
+
+            WhitespaceConverter.Received().Convert(reader, writer);
+        }
+
+        [Fact]
+        public void ConvertNode_Converts_SignificantWhitespace() {
+            using var writer = new StringWriter();
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\" xml:space=\"preserve\"><quux/>    <quux/></foo>"));
+            using var reader = XmlReader.Create(stream);
+
+            var SignificantWhitespaceConverter = Substitute.For<INodeConverter>();
+            var converter = new Converter(new ConverterOptions() {
+                SignificantWhitespaceConverter = SignificantWhitespaceConverter
+            });
+
+            reader.Read(); // Move to element
+            reader.Read(); // Move to child element
+            reader.Read(); // Move to significant whitespace
+
+            converter.ConvertNode(reader, writer);
+
+            SignificantWhitespaceConverter.Received().Convert(reader, writer);
         }
 
         [Fact]

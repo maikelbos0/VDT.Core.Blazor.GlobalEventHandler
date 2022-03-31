@@ -57,5 +57,25 @@ namespace VDT.Core.XmlConverter.Tests {
             Assert.Equal("<?xml", converter.StartOuput);
             Assert.Equal("?>", converter.EndOutput);
         }
+
+        [Fact]
+        public void WhitespaceConverter() { 
+            var options = new ConverterOptions();
+            var converter = Assert.IsType<NodeValueConverter>(options.WhitespaceConverter);
+
+            Assert.False(converter.XmlEncodeValue);
+            Assert.Null(converter.StartOuput);
+            Assert.Null(converter.EndOutput);
+        }
+
+        [Fact]
+        public void SignificantWhitespaceConverter() { 
+            var options = new ConverterOptions();
+            var converter = Assert.IsType<NodeValueConverter>(options.SignificantWhitespaceConverter);
+
+            Assert.False(converter.XmlEncodeValue);
+            Assert.Null(converter.StartOuput);
+            Assert.Null(converter.EndOutput);
+        }
     }
 }

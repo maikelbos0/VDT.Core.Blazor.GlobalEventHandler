@@ -37,10 +37,12 @@ namespace VDT.Core.XmlConverter {
                 case XmlNodeType.CDATA:
                     Options.CDataConverter.Convert(reader, writer);
                     break;
+                case XmlNodeType.Comment:
+                    Options.CommentConverter.Convert(reader, writer);
+                    break;
                 case XmlNodeType.EndElement:
                 case XmlNodeType.Attribute:
-                    throw new UnexpectedNodeTypeException($"Node type '{reader.NodeType}' was not handled by {nameof(ConvertElement)}; ensure {nameof(reader)} is in correct position before calling {nameof(Convert)}", reader.NodeType);                
-                case XmlNodeType.Comment:
+                    throw new UnexpectedNodeTypeException($"Node type '{reader.NodeType}' was not handled by {nameof(ConvertElement)}; ensure {nameof(reader)} is in correct position before calling {nameof(Convert)}", reader.NodeType);                                
                 case XmlNodeType.Document:
                 case XmlNodeType.DocumentFragment:
                 case XmlNodeType.DocumentType:

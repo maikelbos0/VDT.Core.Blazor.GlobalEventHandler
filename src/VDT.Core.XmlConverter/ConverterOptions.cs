@@ -11,5 +11,7 @@ namespace VDT.Core.XmlConverter {
         public INodeConverter TextConverter { get; set; } = new NodeValueConverter(true);
 
         public INodeConverter CDataConverter { get; set; } = new NodeValueConverter(false, "<![CDATA[", "]]>");
+
+        public INodeConverter CommentConverter { get; set; } = new NodeValueConverter(false, "<!--", "-->");
     }
 }

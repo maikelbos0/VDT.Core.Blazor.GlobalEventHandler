@@ -47,6 +47,25 @@ namespace VDT.Core.XmlConverter.Tests {
         }
 
         [Fact]
+        public void ConvertNode_Converts_CData() {
+            using var writer = new StringWriter();
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\"><![CDATA[Content]]></foo>"));
+            using var reader = XmlReader.Create(stream);
+
+            var cDataConverter = Substitute.For<INodeConverter>();
+            var converter = new Converter(new ConverterOptions() {
+                CDataConverter = cDataConverter
+            });
+
+            reader.Read(); // Move to element
+            reader.Read(); // Move to CData
+
+            converter.ConvertNode(reader, writer);
+
+            cDataConverter.Received().Convert(reader, writer);
+        }
+
+        [Fact]
         public void ConvertNode_Throws_Exception_For_EndElement() {
             using var writer = new StringWriter();
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\"></foo>"));

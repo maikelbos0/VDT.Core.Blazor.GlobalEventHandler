@@ -9,5 +9,7 @@ namespace VDT.Core.XmlConverter {
         public IElementConverter DefaultElementConverter { get; set; } = new NoOpElementConverter();
 
         public INodeConverter TextConverter { get; set; } = new NodeValueConverter(true);
+
+        public INodeConverter CDataConverter { get; set; } = new NodeValueConverter(false, "<![CDATA[", "]]>");
     }
 }

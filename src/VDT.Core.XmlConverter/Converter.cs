@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Xml;
 using VDT.Core.XmlConverter.Elements;
@@ -35,10 +34,12 @@ namespace VDT.Core.XmlConverter {
                 case XmlNodeType.Text:
                     Options.TextConverter.Convert(reader, writer);
                     break;
+                case XmlNodeType.CDATA:
+                    Options.CDataConverter.Convert(reader, writer);
+                    break;
                 case XmlNodeType.EndElement:
                 case XmlNodeType.Attribute:
-                    throw new UnexpectedNodeTypeException($"Node type '{reader.NodeType}' was not handled by {nameof(ConvertElement)}; ensure {nameof(reader)} is in correct position before calling {nameof(Convert)}", reader.NodeType);
-                case XmlNodeType.CDATA:
+                    throw new UnexpectedNodeTypeException($"Node type '{reader.NodeType}' was not handled by {nameof(ConvertElement)}; ensure {nameof(reader)} is in correct position before calling {nameof(Convert)}", reader.NodeType);                
                 case XmlNodeType.Comment:
                 case XmlNodeType.Document:
                 case XmlNodeType.DocumentFragment:

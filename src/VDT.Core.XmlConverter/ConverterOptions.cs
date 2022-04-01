@@ -8,16 +8,16 @@ namespace VDT.Core.XmlConverter {
 
         public IElementConverter DefaultElementConverter { get; set; } = new NoOpElementConverter();
 
-        public INodeConverter TextConverter { get; set; } = new NodeValueConverter(true);
+        public INodeConverter TextConverter { get; set; } = new FormattingNodeConverter((name, value) => value, true);
 
-        public INodeConverter CDataConverter { get; set; } = new NodeValueConverter(false, "<![CDATA[", "]]>");
+        public INodeConverter CDataConverter { get; set; } = new FormattingNodeConverter((name, value) => $"<![CDATA[{value}]]>", false);
 
-        public INodeConverter CommentConverter { get; set; } = new NodeValueConverter(false, "<!--", "-->");
+        public INodeConverter CommentConverter { get; set; } = new FormattingNodeConverter((name, value) => $"<!--{value}-->", false);
 
-        public INodeConverter XmlDeclarationConverter { get; set; } = new NodeValueConverter(false, "<?xml", "?>");
+        public INodeConverter XmlDeclarationConverter { get; set; } = new FormattingNodeConverter((name, value) => $"<?xml {value}?>", false);
 
-        public INodeConverter WhitespaceConverter { get; set; } = new NodeValueConverter(false);
+        public INodeConverter WhitespaceConverter { get; set; } = new FormattingNodeConverter((name, value) => value, false);
 
-        public INodeConverter SignificantWhitespaceConverter { get; set; } = new NodeValueConverter(false);
+        public INodeConverter SignificantWhitespaceConverter { get; set; } = new FormattingNodeConverter((name, value) => value, false);
     }
 }

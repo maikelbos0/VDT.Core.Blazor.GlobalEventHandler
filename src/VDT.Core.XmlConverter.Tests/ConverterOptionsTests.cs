@@ -21,61 +21,55 @@ namespace VDT.Core.XmlConverter.Tests {
         [Fact]
         public void TextConverter() { 
             var options = new ConverterOptions();
-            var converter = Assert.IsType<NodeValueConverter>(options.TextConverter);
+            var converter = Assert.IsType<FormattingNodeConverter>(options.TextConverter);
             
             Assert.True(converter.XmlEncodeValue);
-            Assert.Null(converter.StartOuput);
-            Assert.Null(converter.EndOutput);
+            Assert.Equal("value", converter.Formatter("name", "value"));
         }
 
         [Fact]
         public void CDataConverter() { 
             var options = new ConverterOptions();
-            var converter = Assert.IsType<NodeValueConverter>(options.CDataConverter);
+            var converter = Assert.IsType<FormattingNodeConverter>(options.CDataConverter);
 
             Assert.False(converter.XmlEncodeValue);
-            Assert.Equal("<![CDATA[", converter.StartOuput);
-            Assert.Equal("]]>", converter.EndOutput);
+            Assert.Equal("<![CDATA[value]]>", converter.Formatter("name", "value"));
         }
 
         [Fact]
         public void CommentConverter() { 
             var options = new ConverterOptions();
-            var converter = Assert.IsType<NodeValueConverter>(options.CommentConverter);
+            var converter = Assert.IsType<FormattingNodeConverter>(options.CommentConverter);
 
             Assert.False(converter.XmlEncodeValue);
-            Assert.Equal("<!--", converter.StartOuput);
-            Assert.Equal("-->", converter.EndOutput);
+            Assert.Equal("<!--value-->", converter.Formatter("name", "value"));
         }
 
         [Fact]
         public void XmlDeclarationConverter() { 
             var options = new ConverterOptions();
-            var converter = Assert.IsType<NodeValueConverter>(options.XmlDeclarationConverter);
+            var converter = Assert.IsType<FormattingNodeConverter>(options.XmlDeclarationConverter);
 
             Assert.False(converter.XmlEncodeValue);
-            Assert.Equal("<?xml", converter.StartOuput);
-            Assert.Equal("?>", converter.EndOutput);
+            Assert.Equal("<?xml value?>", converter.Formatter("name", "value"));
         }
 
         [Fact]
         public void WhitespaceConverter() { 
             var options = new ConverterOptions();
-            var converter = Assert.IsType<NodeValueConverter>(options.WhitespaceConverter);
+            var converter = Assert.IsType<FormattingNodeConverter>(options.WhitespaceConverter);
 
             Assert.False(converter.XmlEncodeValue);
-            Assert.Null(converter.StartOuput);
-            Assert.Null(converter.EndOutput);
+            Assert.Equal("value", converter.Formatter("name", "value"));
         }
 
         [Fact]
         public void SignificantWhitespaceConverter() { 
             var options = new ConverterOptions();
-            var converter = Assert.IsType<NodeValueConverter>(options.SignificantWhitespaceConverter);
+            var converter = Assert.IsType<FormattingNodeConverter>(options.SignificantWhitespaceConverter);
 
             Assert.False(converter.XmlEncodeValue);
-            Assert.Null(converter.StartOuput);
-            Assert.Null(converter.EndOutput);
+            Assert.Equal("value", converter.Formatter("name", "value"));
         }
     }
 }

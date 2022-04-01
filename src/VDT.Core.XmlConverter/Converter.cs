@@ -25,7 +25,6 @@ namespace VDT.Core.XmlConverter {
             } while (reader.Read());
         }
 
-        // TODO finish and bring under test
         internal void ConvertNode(XmlReader reader, TextWriter writer) {
             switch (reader.NodeType) {
                 case XmlNodeType.Element:
@@ -52,6 +51,9 @@ namespace VDT.Core.XmlConverter {
                 case XmlNodeType.DocumentType:
                     Options.DocumentTypeConverter.Convert(reader, writer);
                     break;
+                case XmlNodeType.ProcessingInstruction:
+                    Options.ProcessingInstructionConverter.Convert(reader, writer);
+                    break;
                 case XmlNodeType.EndElement:
                 case XmlNodeType.Attribute:
                     throw new UnexpectedNodeTypeException($"Node type '{reader.NodeType}' was not handled by {nameof(ConvertElement)}; ensure {nameof(reader)} is in correct position before calling {nameof(Convert)}", reader.NodeType);                                
@@ -61,9 +63,8 @@ namespace VDT.Core.XmlConverter {
                 case XmlNodeType.Entity:
                 case XmlNodeType.EntityReference:
                 case XmlNodeType.Notation:
-                case XmlNodeType.ProcessingInstruction:
                 default:
-                    throw new UnexpectedNodeTypeException($"No node converter was specified for node type '{reader.NodeType}'", reader.NodeType);
+                    throw new UnexpectedNodeTypeException($"Node type '{reader.NodeType}' is currently not supported", reader.NodeType);
             }
         }
 

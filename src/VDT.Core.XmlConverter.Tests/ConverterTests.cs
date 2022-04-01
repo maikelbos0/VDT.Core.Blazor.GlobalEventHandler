@@ -161,6 +161,24 @@ namespace VDT.Core.XmlConverter.Tests {
         }
 
         [Fact]
+        public void ConvertNode_Converts_ProcessingInstruction() {
+            using var writer = new StringWriter();
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<?xml-stylesheet type=\"text/xsl\" href=\"style.xsl\"?><foo/>"));
+            using var reader = XmlReader.Create(stream);
+
+            var processingInstructionConverter = Substitute.For<INodeConverter>();
+            var converter = new Converter(new ConverterOptions() {
+                ProcessingInstructionConverter = processingInstructionConverter
+            });
+
+            reader.Read(); // Move to processing instruction
+
+            converter.ConvertNode(reader, writer);
+
+            processingInstructionConverter.Received().Convert(reader, writer);
+        }
+
+        [Fact]
         public void ConvertNode_Throws_Exception_For_EndElement() {
             using var writer = new StringWriter();
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\"></foo>"));

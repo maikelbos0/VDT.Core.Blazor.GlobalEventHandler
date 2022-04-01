@@ -19,5 +19,7 @@ namespace VDT.Core.XmlConverter {
         public INodeConverter WhitespaceConverter { get; set; } = new FormattingNodeConverter((name, value) => value, false);
 
         public INodeConverter SignificantWhitespaceConverter { get; set; } = new FormattingNodeConverter((name, value) => value, false);
+
+        public INodeConverter DocumentTypeConverter { get; set; } = new FormattingNodeConverter((name, value) => $"<!DOCTYPE {name} [{value}]>", false);
     }
 }

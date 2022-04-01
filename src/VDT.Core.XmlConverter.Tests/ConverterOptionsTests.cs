@@ -71,5 +71,14 @@ namespace VDT.Core.XmlConverter.Tests {
             Assert.False(converter.XmlEncodeValue);
             Assert.Equal("value", converter.Formatter("name", "value"));
         }
+
+        [Fact]
+        public void DocumentTypeConverter() { 
+            var options = new ConverterOptions();
+            var converter = Assert.IsType<FormattingNodeConverter>(options.DocumentTypeConverter);
+
+            Assert.False(converter.XmlEncodeValue);
+            Assert.Equal("<!DOCTYPE name [value]>", converter.Formatter("name", "value"));
+        }
     }
 }

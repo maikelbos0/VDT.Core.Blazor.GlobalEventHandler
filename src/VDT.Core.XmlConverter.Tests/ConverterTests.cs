@@ -108,9 +108,9 @@ namespace VDT.Core.XmlConverter.Tests {
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\"><quux/>    <quux/></foo>"));
             using var reader = XmlReader.Create(stream);
 
-            var WhitespaceConverter = Substitute.For<INodeConverter>();
+            var whitespaceConverter = Substitute.For<INodeConverter>();
             var converter = new Converter(new ConverterOptions() {
-                WhitespaceConverter = WhitespaceConverter
+                WhitespaceConverter = whitespaceConverter
             });
 
             reader.Read(); // Move to element
@@ -119,7 +119,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             converter.ConvertNode(reader, writer);
 
-            WhitespaceConverter.Received().Convert(reader, writer);
+            whitespaceConverter.Received().Convert(reader, writer);
         }
 
         [Fact]
@@ -128,9 +128,9 @@ namespace VDT.Core.XmlConverter.Tests {
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\" xml:space=\"preserve\"><quux/>    <quux/></foo>"));
             using var reader = XmlReader.Create(stream);
 
-            var SignificantWhitespaceConverter = Substitute.For<INodeConverter>();
+            var significantWhitespaceConverter = Substitute.For<INodeConverter>();
             var converter = new Converter(new ConverterOptions() {
-                SignificantWhitespaceConverter = SignificantWhitespaceConverter
+                SignificantWhitespaceConverter = significantWhitespaceConverter
             });
 
             reader.Read(); // Move to element
@@ -139,7 +139,25 @@ namespace VDT.Core.XmlConverter.Tests {
 
             converter.ConvertNode(reader, writer);
 
-            SignificantWhitespaceConverter.Received().Convert(reader, writer);
+            significantWhitespaceConverter.Received().Convert(reader, writer);
+        }
+
+        [Fact]
+        public void ConvertNode_Converts_DocumentType() {
+            using var writer = new StringWriter();
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<!DOCTYPE foo [ <!ENTITY val \"bar\"> ]><foo/>"));
+            using var reader = XmlReader.Create(stream, new XmlReaderSettings() { DtdProcessing = DtdProcessing.Parse });
+
+            var documentTypeConverter = Substitute.For<INodeConverter>();
+            var converter = new Converter(new ConverterOptions() {
+                DocumentTypeConverter = documentTypeConverter
+            });
+
+            reader.Read(); // Move to document type
+
+            converter.ConvertNode(reader, writer);
+
+            documentTypeConverter.Received().Convert(reader, writer);
         }
 
         [Fact]

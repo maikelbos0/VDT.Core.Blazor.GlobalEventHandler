@@ -10,6 +10,31 @@ using Xunit;
 namespace VDT.Core.XmlConverter.Tests {
     public class ConverterTests {
         [Fact]
+        public void Convert() {
+            const string xml = @"<?xml version=""1.0"" encoding=""UTF-8""?>
+<!DOCTYPE foo [ <!ENTITY val ""An value&amp;""> ]>
+<?processing instruction?>
+<foo bar=""bar &amp; baz"">
+    Some content &amp; some more
+    <node/>
+    <node xml:space=""preserve"">     </node>
+    <!-- comment -->
+    Content
+    <![CDATA[data]]>
+</foo>";
+
+            using var writer = new StringWriter();
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
+            using var reader = XmlReader.Create(stream, new XmlReaderSettings() { DtdProcessing = DtdProcessing.Parse });
+
+            var converter = new Converter();
+
+            converter.Convert(reader, writer);
+
+            Assert.Equal(xml, writer.ToString(), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
         public void ConvertNode_Converts_Element() {
             using var writer = new StringWriter();
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\"></foo>"));

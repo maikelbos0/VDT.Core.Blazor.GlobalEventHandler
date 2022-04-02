@@ -14,7 +14,6 @@ namespace VDT.Core.XmlConverter {
             Options = options;
         }
 
-        // TODO finish and bring under test
         public void Convert(XmlReader reader, TextWriter writer) {
             if (reader.NodeType == XmlNodeType.None) {
                 reader.Read();

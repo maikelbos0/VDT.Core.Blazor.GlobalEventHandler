@@ -5,16 +5,34 @@ using System.Xml;
 using VDT.Core.XmlConverter.Elements;
 
 namespace VDT.Core.XmlConverter {
+    /// <summary>
+    /// Allows converting xml documents into other text-based document formats
+    /// </summary>
     public class Converter {
-        public ConverterOptions Options { get; }
+        /// <summary>
+        /// Options to use when calling <see cref="Convert(XmlReader, TextWriter)"/> or any of its overloads
+        /// </summary>
+        public ConverterOptions Options { get; set; }
 
+        /// <summary>
+        /// Construct an instance of a converter
+        /// </summary>
         public Converter() : this(new ConverterOptions()) {
         }
 
+        /// <summary>
+        /// Construct an instance of a converter with the provided <see cref="ConverterOptions"/>
+        /// </summary>
+        /// <param name="options">Options to use when calling <see cref="Convert(XmlReader, TextWriter)"/> or any of its overloads</param>
         public Converter(ConverterOptions options) {
             Options = options;
         }
 
+        /// <summary>
+        /// Convert an xml document string using the provided <see cref="ConverterOptions"/>
+        /// </summary>
+        /// <param name="xml">Xml document to convert</param>
+        /// <returns>Converted document</returns>
         public string Convert(string xml) {
             using var writer = new StringWriter();
 
@@ -23,12 +41,22 @@ namespace VDT.Core.XmlConverter {
             return writer.ToString();
         }
 
+        /// <summary>
+        /// Convert an xml document string using the provided <see cref="ConverterOptions"/>
+        /// </summary>
+        /// <param name="xml">Xml document to convert</param>
+        /// <param name="writer">Converted document is written to this <see cref="TextWriter"/></param>
         public void Convert(string xml, TextWriter writer) {
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
 
             Convert(stream, writer);
         }
 
+        /// <summary>
+        /// Convert a stream containing an xml document using the provided <see cref="ConverterOptions"/>
+        /// </summary>
+        /// <param name="stream">Stream containing the xml document to convert</param>
+        /// <returns>Converted document</returns>
         public string Convert(Stream stream) {
             using var writer = new StringWriter();
 
@@ -37,12 +65,22 @@ namespace VDT.Core.XmlConverter {
             return writer.ToString();
         }
 
+        /// <summary>
+        /// Convert a stream containing an xml document using the provided <see cref="ConverterOptions"/>
+        /// </summary>
+        /// <param name="stream">Stream containing the xml document to convert</param>
+        /// <param name="writer">Converted document is written to this <see cref="TextWriter"/></param>
         public void Convert(Stream stream, TextWriter writer) {
             using var reader = XmlReader.Create(stream);
 
             Convert(reader, writer);
         }
 
+        /// <summary>
+        /// Convert an xml document using the provided <see cref="ConverterOptions"/>
+        /// </summary>
+        /// <param name="reader">Xml document to convert</param>
+        /// <returns>Converted document</returns>
         public string Convert(XmlReader reader) {
             using var writer = new StringWriter();
 
@@ -51,6 +89,11 @@ namespace VDT.Core.XmlConverter {
             return writer.ToString();
         }
 
+        /// <summary>
+        /// Convert an xml document using the provided <see cref="ConverterOptions"/>
+        /// </summary>
+        /// <param name="reader">Xml document to convert</param>
+        /// <param name="writer">Converted document is written to this <see cref="TextWriter"/></param>
         public void Convert(XmlReader reader, TextWriter writer) {
             if (reader.NodeType == XmlNodeType.None) {
                 reader.Read();

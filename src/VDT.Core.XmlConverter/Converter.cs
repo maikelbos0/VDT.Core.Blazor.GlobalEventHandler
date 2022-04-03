@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml;
 using VDT.Core.XmlConverter.Elements;
 
@@ -12,6 +13,42 @@ namespace VDT.Core.XmlConverter {
 
         public Converter(ConverterOptions options) {
             Options = options;
+        }
+
+        public string Convert(string xml) {
+            using var writer = new StringWriter();
+
+            Convert(xml, writer);
+
+            return writer.ToString();
+        }
+
+        public void Convert(string xml, TextWriter writer) {
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
+
+            Convert(stream, writer);
+        }
+
+        public string Convert(Stream stream) {
+            using var writer = new StringWriter();
+
+            Convert(stream, writer);
+
+            return writer.ToString();
+        }
+
+        public void Convert(Stream stream, TextWriter writer) {
+            using var reader = XmlReader.Create(stream);
+
+            Convert(reader, writer);
+        }
+
+        public string Convert(XmlReader reader) {
+            using var writer = new StringWriter();
+
+            Convert(reader, writer);
+
+            return writer.ToString();
         }
 
         public void Convert(XmlReader reader, TextWriter writer) {
@@ -55,7 +92,7 @@ namespace VDT.Core.XmlConverter {
                     break;
                 case XmlNodeType.EndElement:
                 case XmlNodeType.Attribute:
-                    throw new UnexpectedNodeTypeException($"Node type '{reader.NodeType}' was not handled by {nameof(ConvertElement)}; ensure {nameof(reader)} is in correct position before calling {nameof(Convert)}", reader.NodeType);                                
+                    throw new UnexpectedNodeTypeException($"Node type '{reader.NodeType}' was not handled by {nameof(ConvertElement)}; ensure {nameof(reader)} is in correct position before calling {nameof(Convert)}", reader.NodeType);
                 case XmlNodeType.Document:
                 case XmlNodeType.DocumentFragment:
                 case XmlNodeType.EndEntity:

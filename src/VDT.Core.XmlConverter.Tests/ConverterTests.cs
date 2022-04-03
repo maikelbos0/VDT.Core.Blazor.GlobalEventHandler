@@ -10,9 +10,28 @@ using Xunit;
 namespace VDT.Core.XmlConverter.Tests {
     public class ConverterTests {
         [Fact]
-        public void Convert() {
+        public void Convert_String() {
             const string xml = @"<?xml version=""1.0"" encoding=""UTF-8""?>
-<!DOCTYPE foo [ <!ENTITY val ""An value&amp;""> ]>
+<?processing instruction?>
+<foo bar=""bar &amp; baz"">
+    Some content &amp; some more
+    <node/>
+    <node xml:space=""preserve"">     </node>
+    <!-- comment -->
+    Content
+    <![CDATA[data]]>
+</foo>";
+
+            using var writer = new StringWriter();
+
+            var converter = new Converter();
+
+            Assert.Equal(xml, converter.Convert(xml), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Convert_Stream() {
+            const string xml = @"<?xml version=""1.0"" encoding=""UTF-8""?>
 <?processing instruction?>
 <foo bar=""bar &amp; baz"">
     Some content &amp; some more
@@ -25,13 +44,32 @@ namespace VDT.Core.XmlConverter.Tests {
 
             using var writer = new StringWriter();
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
+
+            var converter = new Converter();
+
+            Assert.Equal(xml, converter.Convert(stream), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Convert_XmlReader() {
+            const string xml = @"<?xml version=""1.0"" encoding=""UTF-8""?>
+<!DOCTYPE foo [ <!ENTITY val ""An value&amp;""> ]>
+<?processing instruction?>
+<foo bar=""bar &amp; baz"">
+    Some content &amp; some more
+    <node/>
+    <node xml:space=""preserve"">     </node>
+    <!-- comment -->
+    Content
+    <![CDATA[data]]>
+</foo>";
+
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
             using var reader = XmlReader.Create(stream, new XmlReaderSettings() { DtdProcessing = DtdProcessing.Parse });
 
             var converter = new Converter();
 
-            converter.Convert(reader, writer);
-
-            Assert.Equal(xml, writer.ToString(), ignoreLineEndingDifferences: true);
+            Assert.Equal(xml, converter.Convert(reader), ignoreLineEndingDifferences: true);
         }
 
         [Fact]

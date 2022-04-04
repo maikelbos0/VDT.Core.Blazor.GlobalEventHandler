@@ -4,7 +4,7 @@ using VDT.Core.XmlConverter.Elements;
 namespace VDT.Core.XmlConverter.Markdown {
     public static class MarkdownConverterOptionsExtensions {
         public static ConverterOptions UseMarkdown(this ConverterOptions options) {
-            // TODO linebreak, paragraph, blockquote, figure out escaping, whitespace, lists, etc
+            // TODO blockquote, figure out escaping, whitespace, lists, etc
 
             options.ElementConverters.Add(new BasicElementConverter("# ", $"{Environment.NewLine}{Environment.NewLine}", "h1"));
             options.ElementConverters.Add(new BasicElementConverter("## ", $"{Environment.NewLine}{Environment.NewLine}", "h2"));
@@ -15,6 +15,9 @@ namespace VDT.Core.XmlConverter.Markdown {
 
             options.ElementConverters.Add(new BasicElementConverter("**", "**", "strong", "b"));
             options.ElementConverters.Add(new BasicElementConverter("*", "*", "em", "i"));
+
+            options.ElementConverters.Add(new BasicElementConverter($"  {Environment.NewLine}", "", "br"));
+            options.ElementConverters.Add(new BasicElementConverter("", $"{Environment.NewLine}{Environment.NewLine}", "p"));
 
             // TODO handle other node types
 

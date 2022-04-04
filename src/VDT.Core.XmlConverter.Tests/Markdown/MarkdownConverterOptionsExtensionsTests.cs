@@ -22,7 +22,17 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [InlineData("<b>Bold</b>", "**Bold**")]
         [InlineData("<em>Italic</em>", "*Italic*")]
         [InlineData("<i>Italic</i>", "*Italic*")]
-        public void UseMarkdown_Converts_Emphasis(string xml, string expectedMarkdown) {
+        public void UseMarkdown_Converts_Inline_Markup(string xml, string expectedMarkdown) {
+            var options = new ConverterOptions().UseMarkdown();
+            var converter = new Converter(options);
+
+            Assert.Equal(expectedMarkdown, converter.Convert(xml));
+        }
+
+        [Theory]
+        [InlineData("Linebreak<br/>", "Linebreak  \r\n")]
+        [InlineData("<p>Paragraph</p>", "Paragraph\r\n\r\n")]
+        public void UseMarkdown_Converts_Newlines(string xml, string expectedMarkdown) {
             var options = new ConverterOptions().UseMarkdown();
             var converter = new Converter(options);
 

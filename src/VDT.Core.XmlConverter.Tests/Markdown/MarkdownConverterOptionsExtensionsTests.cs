@@ -38,5 +38,14 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             Assert.Equal(expectedMarkdown, converter.Convert(xml));
         }
+
+        [Fact]
+        public void UseMarkdown_Removes_All_Unneeded_Whitespace() {
+            const string xml = "<p xml:space=\"preserve\">\t Test \t</p>\r\n\t <p> Test \t </p>";
+            var options = new ConverterOptions().UseMarkdown();
+            var converter = new Converter(options);
+
+            Assert.Equal("Test\r\n\r\nTest\r\n\r\n", converter.Convert(xml));
+        }
     }
 }

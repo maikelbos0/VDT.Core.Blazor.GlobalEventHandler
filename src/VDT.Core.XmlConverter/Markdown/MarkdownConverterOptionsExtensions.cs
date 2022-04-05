@@ -1,9 +1,18 @@
 ﻿using System;
 using VDT.Core.XmlConverter.Elements;
+using VDT.Core.XmlConverter.Nodes;
 
 namespace VDT.Core.XmlConverter.Markdown {
     public static class MarkdownConverterOptionsExtensions {
         public static ConverterOptions UseMarkdown(this ConverterOptions options) {
+
+            var removingNodeConverter = new FormattingNodeConverter((name, value) => "", false);
+
+            options.WhitespaceConverter = removingNodeConverter;
+            options.SignificantWhitespaceConverter = removingNodeConverter;
+            
+            options.TextConverter = new FormattingNodeConverter((name, value) => value.Trim(), false);
+
             // TODO blockquote, figure out escaping, whitespace, lists, etc
 
             options.ElementConverters.Add(new BasicElementConverter("# ", $"{Environment.NewLine}{Environment.NewLine}", "h1"));

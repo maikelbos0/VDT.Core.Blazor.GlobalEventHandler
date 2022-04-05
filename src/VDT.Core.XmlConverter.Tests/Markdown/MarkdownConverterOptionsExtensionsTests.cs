@@ -1,4 +1,7 @@
-﻿using VDT.Core.XmlConverter.Markdown;
+﻿using System.IO;
+using System.Text;
+using System.Xml;
+using VDT.Core.XmlConverter.Markdown;
 using Xunit;
 
 namespace VDT.Core.XmlConverter.Tests.Markdown {
@@ -42,10 +45,35 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [Fact]
         public void UseMarkdown_Removes_All_Unneeded_Whitespace() {
             const string xml = "<p xml:space=\"preserve\">\t Test \t</p>\r\n\t <p> Test \t </p>";
+
             var options = new ConverterOptions().UseMarkdown();
             var converter = new Converter(options);
 
             Assert.Equal("Test\r\n\r\nTest\r\n\r\n", converter.Convert(xml));
+        }
+
+        [Theory]
+        [InlineData("<?xml-stylesheet type=\"text/xsl\" href=\"style.xsl\"?>Test", "Test")]
+        [InlineData("<?xml version=\"1.0\" encoding=\"UTF-8\"?>Test", "Test")]
+        [InlineData("<![CDATA[Content]]>Test", "Test")]
+        public void UseMarkdown_Removes_All_Unconvertible_Node_Types(string xml, string expectedMarkdown) {
+            var options = new ConverterOptions().UseMarkdown();
+            var converter = new Converter(options);
+
+            Assert.Equal(expectedMarkdown, converter.Convert(xml));
+        }
+
+        [Fact]
+        public void UseMarkdown_Removes_Document_Type_Declarations() {
+            const string xml = "<!DOCTYPE foo [ <!ENTITY val \"bar\"> ]><p>Test</p>";
+
+            var options = new ConverterOptions().UseMarkdown();
+            var converter = new Converter(options);
+
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
+            using var reader = XmlReader.Create(stream, new XmlReaderSettings() { DtdProcessing = DtdProcessing.Parse });
+
+            Assert.Equal("Test\r\n\r\n", converter.Convert(reader));
         }
     }
 }

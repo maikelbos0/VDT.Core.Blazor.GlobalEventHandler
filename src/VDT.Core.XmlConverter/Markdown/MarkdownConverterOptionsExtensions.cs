@@ -7,9 +7,15 @@ namespace VDT.Core.XmlConverter.Markdown {
         public static ConverterOptions UseMarkdown(this ConverterOptions options) {
 
             var removingNodeConverter = new FormattingNodeConverter((name, value) => "", false);
+            
+            options.CDataConverter = removingNodeConverter;
+            options.CommentConverter = removingNodeConverter;
+            options.DocumentTypeConverter = removingNodeConverter;
+            options.ProcessingInstructionConverter = removingNodeConverter;
+            options.XmlDeclarationConverter = removingNodeConverter;
 
-            options.WhitespaceConverter = removingNodeConverter;
             options.SignificantWhitespaceConverter = removingNodeConverter;
+            options.WhitespaceConverter = removingNodeConverter;
             
             options.TextConverter = new FormattingNodeConverter((name, value) => value.Trim(), false);
 

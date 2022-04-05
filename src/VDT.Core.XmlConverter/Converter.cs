@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -9,6 +10,9 @@ namespace VDT.Core.XmlConverter {
     /// Allows converting xml documents into other text-based document formats
     /// </summary>
     public class Converter {
+        // TODO make thread safe
+        private Stack<ElementData> elementAncestors = new Stack<ElementData>();
+
         /// <summary>
         /// Options to use when calling <see cref="Convert(XmlReader, TextWriter)"/> or any of its overloads
         /// </summary>
@@ -154,12 +158,14 @@ namespace VDT.Core.XmlConverter {
             var elementData = new ElementData(
                 reader.Name,
                 reader.GetAttributes(),
-                reader.IsEmptyElement
+                reader.IsEmptyElement,
+                elementAncestors.Reverse().ToArray()
             );
             var elementConverter = Options.ElementConverters.FirstOrDefault(c => c.IsValidFor(elementData)) ?? Options.DefaultElementConverter;
             var shouldRenderContent = elementConverter.ShouldRenderContent(elementData);
 
             elementConverter.RenderStart(elementData, writer);
+            elementAncestors.Push(elementData);
 
             if (!reader.IsEmptyElement) {
                 while (reader.Read() && reader.Depth > depth) {
@@ -169,6 +175,7 @@ namespace VDT.Core.XmlConverter {
                 }
             }
 
+            elementAncestors.Pop();
             elementConverter.RenderEnd(elementData, writer);
         }
     }

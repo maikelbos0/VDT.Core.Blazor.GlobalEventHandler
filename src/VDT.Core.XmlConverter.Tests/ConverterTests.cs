@@ -1,6 +1,7 @@
 ﻿using NSubstitute;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml;
 using VDT.Core.XmlConverter.Elements;
@@ -337,6 +338,41 @@ namespace VDT.Core.XmlConverter.Tests {
             Assert.Equal(expectedAttributeCount, elementData.Attributes.Count);
             Assert.Equal(expectedIsSelfClosing, elementData.IsSelfClosing);
 
+            return true;
+        }
+
+        [Fact]
+        public void ConvertElement_Tracks_Ancestors_Correctly() {
+            const string xml = "<foo><bar><baz/></bar></foo>";
+
+            using var writer = new StringWriter();
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
+            using var reader = XmlReader.Create(stream);
+
+            var defaultElementConverter = Substitute.For<IElementConverter>();
+            var converter = new Converter(new ConverterOptions() {
+                DefaultElementConverter = defaultElementConverter
+            });
+
+            defaultElementConverter.ShouldRenderContent(Arg.Any<ElementData>()).Returns(true);
+            reader.Read(); // Move to element
+
+            converter.ConvertElement(reader, writer);
+
+            Received.InOrder(() => {
+                defaultElementConverter.Received().RenderStart(Arg.Is<ElementData>(d => VerifyElementAncestors(d, "foo")), writer);
+                defaultElementConverter.Received().RenderStart(Arg.Is<ElementData>(d => VerifyElementAncestors(d, "bar", "foo")), writer);
+                defaultElementConverter.Received().RenderStart(Arg.Is<ElementData>(d => VerifyElementAncestors(d, "baz", "foo", "bar")), writer);
+                defaultElementConverter.Received().RenderEnd(Arg.Is<ElementData>(d => VerifyElementAncestors(d, "baz", "foo", "bar")), writer);
+                defaultElementConverter.Received().RenderEnd(Arg.Is<ElementData>(d => VerifyElementAncestors(d, "bar", "foo")), writer);
+                defaultElementConverter.Received().RenderEnd(Arg.Is<ElementData>(d => VerifyElementAncestors(d, "foo")), writer);
+            });
+        }
+
+        private bool VerifyElementAncestors(ElementData elementData, string expectedName, params string[] expectedAncestorNames) {
+            Assert.Equal(expectedName, elementData.Name);
+            Assert.Equal(expectedAncestorNames, elementData.Ancestors.Select(d => d.Name));
+            
             return true;
         }
 

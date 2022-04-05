@@ -71,7 +71,9 @@ namespace VDT.Core.XmlConverter {
         /// <param name="stream">Stream containing the xml document to convert</param>
         /// <param name="writer">Converted document is written to this <see cref="TextWriter"/></param>
         public void Convert(Stream stream, TextWriter writer) {
-            using var reader = XmlReader.Create(stream);
+            using var reader = XmlReader.Create(stream, new XmlReaderSettings() {
+                ConformanceLevel = ConformanceLevel.Fragment
+            });
 
             Convert(reader, writer);
         }

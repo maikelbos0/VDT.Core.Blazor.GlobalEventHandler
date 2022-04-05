@@ -30,6 +30,17 @@ namespace VDT.Core.XmlConverter.Tests {
         }
 
         [Fact]
+        public void Convert_Converts_Fragment() {
+            const string xml = @"Some content<node/>Content";
+
+            using var writer = new StringWriter();
+
+            var converter = new Converter();
+
+            Assert.Equal(xml, converter.Convert(xml), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
         public void Convert_Stream() {
             const string xml = @"<?xml version=""1.0"" encoding=""UTF-8""?>
 <?processing instruction?>

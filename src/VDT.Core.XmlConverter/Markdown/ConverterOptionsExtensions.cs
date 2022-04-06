@@ -3,7 +3,7 @@ using VDT.Core.XmlConverter.Elements;
 using VDT.Core.XmlConverter.Nodes;
 
 namespace VDT.Core.XmlConverter.Markdown {
-    public static class MarkdownConverterOptionsExtensions {
+    public static class ConverterOptionsExtensions {
         public static ConverterOptions UseMarkdown(this ConverterOptions options) {
 
             var removingNodeConverter = new FormattingNodeConverter((name, value) => "", false);
@@ -19,7 +19,7 @@ namespace VDT.Core.XmlConverter.Markdown {
             
             options.TextConverter = new FormattingNodeConverter((name, value) => value.Trim(), false);
 
-            // TODO blockquote, figure out escaping, whitespace, lists, etc
+            // TODO blockquote, figure out escaping, lists, etc
 
             options.ElementConverters.Add(new BasicElementConverter("# ", $"{Environment.NewLine}{Environment.NewLine}", "h1"));
             options.ElementConverters.Add(new BasicElementConverter("## ", $"{Environment.NewLine}{Environment.NewLine}", "h2"));

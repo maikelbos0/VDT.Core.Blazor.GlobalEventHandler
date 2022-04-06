@@ -5,7 +5,7 @@ using VDT.Core.XmlConverter.Markdown;
 using Xunit;
 
 namespace VDT.Core.XmlConverter.Tests.Markdown {
-    public class MarkdownConverterOptionsExtensionsTests {
+    public class ConverterOptionsExtensionsTests {
         [Theory]
         [InlineData("<h1>Heading 1</h1>", "# Heading 1\r\n\r\n")]
         [InlineData("<h2>Heading 2</h2>", "## Heading 2\r\n\r\n")]

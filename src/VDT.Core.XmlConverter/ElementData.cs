@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 
-namespace VDT.Core.XmlConverter.Elements {
+namespace VDT.Core.XmlConverter {
     /// <summary>
     /// Information about the element currently being converted
     /// </summary>

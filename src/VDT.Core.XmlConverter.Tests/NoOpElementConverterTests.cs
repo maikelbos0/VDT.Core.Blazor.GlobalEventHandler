@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using VDT.Core.XmlConverter.Elements;
 using Xunit;
 
-namespace VDT.Core.XmlConverter.Tests.Elements {
+namespace VDT.Core.XmlConverter.Tests {
     public class NoOpElementConverterTests {
         [Fact]
         public void IsValidFor_Returns_True() {

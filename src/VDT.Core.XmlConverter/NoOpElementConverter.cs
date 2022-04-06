@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Security;
 
-namespace VDT.Core.XmlConverter.Elements {
+namespace VDT.Core.XmlConverter {
     public class NoOpElementConverter : IElementConverter {
         public bool IsValidFor(ElementData elementData) => true;
 

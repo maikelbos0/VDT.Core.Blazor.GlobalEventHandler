@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using VDT.Core.XmlConverter.Elements;
 
 namespace VDT.Core.XmlConverter {
     internal class ConversionData {

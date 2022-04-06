@@ -4,8 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using VDT.Core.XmlConverter.Elements;
-using VDT.Core.XmlConverter.Nodes;
 using Xunit;
 
 namespace VDT.Core.XmlConverter.Tests {

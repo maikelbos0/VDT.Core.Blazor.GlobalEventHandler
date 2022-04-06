@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Text;
 using System.Xml;
-using VDT.Core.XmlConverter.Elements;
 
 namespace VDT.Core.XmlConverter {
     /// <summary>

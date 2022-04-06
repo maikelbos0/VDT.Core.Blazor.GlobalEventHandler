@@ -2,7 +2,7 @@
 using System.Security;
 using System.Xml;
 
-namespace VDT.Core.XmlConverter.Nodes {
+namespace VDT.Core.XmlConverter {
     public class FormattingNodeConverter : INodeConverter {
         public delegate string NameValueFormatter(string name, string value);
 

@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Xml;
-using VDT.Core.XmlConverter.Elements;
-using VDT.Core.XmlConverter.Nodes;
 
 namespace VDT.Core.XmlConverter {
     /// <summary>

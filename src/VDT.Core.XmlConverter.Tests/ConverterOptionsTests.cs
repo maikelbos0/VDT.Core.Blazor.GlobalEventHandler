@@ -1,6 +1,4 @@
-﻿using VDT.Core.XmlConverter.Elements;
-using VDT.Core.XmlConverter.Nodes;
-using Xunit;
+﻿using Xunit;
 
 namespace VDT.Core.XmlConverter.Tests {
     public class ConverterOptionsTests {

@@ -1,10 +1,9 @@
 ﻿using System.IO;
 using System.Text;
 using System.Xml;
-using VDT.Core.XmlConverter.Nodes;
 using Xunit;
 
-namespace VDT.Core.XmlConverter.Tests.Nodes {
+namespace VDT.Core.XmlConverter.Tests {
     public class FormattingNodeConverterTests {
         [Fact]
         public void Convert_Uses_Formatter() {

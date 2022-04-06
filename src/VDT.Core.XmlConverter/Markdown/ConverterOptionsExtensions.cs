@@ -1,6 +1,5 @@
 ﻿using System;
 using VDT.Core.XmlConverter.Elements;
-using VDT.Core.XmlConverter.Nodes;
 
 namespace VDT.Core.XmlConverter.Markdown {
     public static class ConverterOptionsExtensions {

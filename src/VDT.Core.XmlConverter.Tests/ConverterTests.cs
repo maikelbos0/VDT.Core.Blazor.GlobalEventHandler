@@ -97,7 +97,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             reader.Read(); // Move to element
 
-            converter.ConvertNode(reader, writer);
+            converter.ConvertNode(reader, writer, new ConversionData());
 
             VerifyConverterIsUsed(elementConverter, writer);
         }
@@ -116,7 +116,7 @@ namespace VDT.Core.XmlConverter.Tests {
             reader.Read(); // Move to element
             reader.Read(); // Move to text
 
-            converter.ConvertNode(reader, writer);
+            converter.ConvertNode(reader, writer, new ConversionData());
 
             textConverter.Received().Convert(reader, writer);
         }
@@ -135,7 +135,7 @@ namespace VDT.Core.XmlConverter.Tests {
             reader.Read(); // Move to element
             reader.Read(); // Move to CData
 
-            converter.ConvertNode(reader, writer);
+            converter.ConvertNode(reader, writer, new ConversionData());
 
             cDataConverter.Received().Convert(reader, writer);
         }
@@ -154,7 +154,7 @@ namespace VDT.Core.XmlConverter.Tests {
             reader.Read(); // Move to element
             reader.Read(); // Move to comment
 
-            converter.ConvertNode(reader, writer);
+            converter.ConvertNode(reader, writer, new ConversionData());
 
             commentConverter.Received().Convert(reader, writer);
         }
@@ -172,7 +172,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             reader.Read(); // Move to xml declaration
 
-            converter.ConvertNode(reader, writer);
+            converter.ConvertNode(reader, writer, new ConversionData());
 
             xmlDeclarationConverter.Received().Convert(reader, writer);
         }
@@ -192,7 +192,7 @@ namespace VDT.Core.XmlConverter.Tests {
             reader.Read(); // Move to child element
             reader.Read(); // Move to whitespace
 
-            converter.ConvertNode(reader, writer);
+            converter.ConvertNode(reader, writer, new ConversionData());
 
             whitespaceConverter.Received().Convert(reader, writer);
         }
@@ -212,7 +212,7 @@ namespace VDT.Core.XmlConverter.Tests {
             reader.Read(); // Move to child element
             reader.Read(); // Move to significant whitespace
 
-            converter.ConvertNode(reader, writer);
+            converter.ConvertNode(reader, writer, new ConversionData());
 
             significantWhitespaceConverter.Received().Convert(reader, writer);
         }
@@ -230,7 +230,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             reader.Read(); // Move to document type
 
-            converter.ConvertNode(reader, writer);
+            converter.ConvertNode(reader, writer, new ConversionData());
 
             documentTypeConverter.Received().Convert(reader, writer);
         }
@@ -248,7 +248,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             reader.Read(); // Move to processing instruction
 
-            converter.ConvertNode(reader, writer);
+            converter.ConvertNode(reader, writer, new ConversionData());
 
             processingInstructionConverter.Received().Convert(reader, writer);
         }
@@ -264,7 +264,7 @@ namespace VDT.Core.XmlConverter.Tests {
             reader.Read(); // Move to element
             reader.Read(); // Move to end element
 
-            var exception = Assert.Throws<UnexpectedNodeTypeException>(() => converter.ConvertNode(reader, writer));
+            var exception = Assert.Throws<UnexpectedNodeTypeException>(() => converter.ConvertNode(reader, writer, new ConversionData()));
             
             Assert.Equal(XmlNodeType.EndElement, exception.NodeType);
             Assert.Equal("Node type 'EndElement' was not handled by ConvertElement; ensure reader is in correct position before calling Convert", exception.Message);
@@ -281,7 +281,7 @@ namespace VDT.Core.XmlConverter.Tests {
             reader.Read(); // Move to element
             reader.MoveToAttribute(0);
 
-            var exception = Assert.Throws<UnexpectedNodeTypeException>(() => converter.ConvertNode(reader, writer));
+            var exception = Assert.Throws<UnexpectedNodeTypeException>(() => converter.ConvertNode(reader, writer, new ConversionData()));
 
             Assert.Equal(XmlNodeType.Attribute, exception.NodeType);
             Assert.Equal("Node type 'Attribute' was not handled by ConvertElement; ensure reader is in correct position before calling Convert", exception.Message);
@@ -303,7 +303,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             reader.Read(); // Move to element
 
-            converter.ConvertElement(reader, writer);
+            converter.ConvertElement(reader, writer, new ConversionData());
 
             Assert.Equal(expectedNodeType, reader.NodeType);
             Assert.Equal(expectedDepth, reader.Depth);
@@ -326,7 +326,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             reader.Read(); // Move to element
 
-            converter.ConvertElement(reader, writer);
+            converter.ConvertElement(reader, writer, new ConversionData());
 
             defaultElementConverter.Received().ShouldRenderContent(Arg.Is<ElementData>(d => VerifyElementData(d, expectedName, expectedAttributeCount, expectedIsSelfClosing)));
             defaultElementConverter.Received().RenderStart(Arg.Is<ElementData>(d => VerifyElementData(d, expectedName, expectedAttributeCount, expectedIsSelfClosing)), writer);
@@ -357,7 +357,7 @@ namespace VDT.Core.XmlConverter.Tests {
             defaultElementConverter.ShouldRenderContent(Arg.Any<ElementData>()).Returns(true);
             reader.Read(); // Move to element
 
-            converter.ConvertElement(reader, writer);
+            converter.ConvertElement(reader, writer, new ConversionData());
 
             Received.InOrder(() => {
                 defaultElementConverter.Received().RenderStart(Arg.Is<ElementData>(d => VerifyElementAncestors(d, "foo")), writer);
@@ -395,7 +395,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             reader.Read(); // Move to element
 
-            converter.ConvertElement(reader, writer);
+            converter.ConvertElement(reader, writer, new ConversionData());
                         
             VerifyConverterIsUsed(validElementConverter, writer);
             VerifyConverterIsNotUsed(additionalElementConverter, writer);
@@ -419,7 +419,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             reader.Read(); // Move to element
 
-            converter.ConvertElement(reader, writer);
+            converter.ConvertElement(reader, writer, new ConversionData());
 
             VerifyConverterIsUsed(defaultElementConverter, writer);
             VerifyConverterIsNotUsed(invalidElementConverter, writer);
@@ -438,7 +438,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             reader.Read(); // Move to element
 
-            converter.ConvertElement(reader, writer);
+            converter.ConvertElement(reader, writer, new ConversionData());
 
             VerifyConverterIsUsed(defaultElementConverter, writer);
         }

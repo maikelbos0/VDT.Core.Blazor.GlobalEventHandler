@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -10,9 +9,6 @@ namespace VDT.Core.XmlConverter {
     /// Allows converting xml documents into other text-based document formats
     /// </summary>
     public class Converter {
-        // TODO make thread safe
-        private Stack<ElementData> elementAncestors = new Stack<ElementData>();
-
         /// <summary>
         /// Options to use when calling <see cref="Convert(XmlReader, TextWriter)"/> or any of its overloads
         /// </summary>
@@ -101,19 +97,21 @@ namespace VDT.Core.XmlConverter {
         /// <param name="reader">Xml document to convert</param>
         /// <param name="writer">Converted document is written to this <see cref="TextWriter"/></param>
         public void Convert(XmlReader reader, TextWriter writer) {
+            var data = new ConversionData();
+
             if (reader.NodeType == XmlNodeType.None) {
                 reader.Read();
             }
 
             do {
-                ConvertNode(reader, writer);
+                ConvertNode(reader, writer, data);
             } while (reader.Read());
         }
 
-        internal void ConvertNode(XmlReader reader, TextWriter writer) {
+        internal void ConvertNode(XmlReader reader, TextWriter writer, ConversionData data) {
             switch (reader.NodeType) {
                 case XmlNodeType.Element:
-                    ConvertElement(reader, writer);
+                    ConvertElement(reader, writer, data);
                     break;
                 case XmlNodeType.Text:
                     Options.TextConverter.Convert(reader, writer);
@@ -153,29 +151,29 @@ namespace VDT.Core.XmlConverter {
             }
         }
 
-        internal void ConvertElement(XmlReader reader, TextWriter writer) {
+        internal void ConvertElement(XmlReader reader, TextWriter writer, ConversionData data) {
             var depth = reader.Depth;
             var elementData = new ElementData(
                 reader.Name,
                 reader.GetAttributes(),
                 reader.IsEmptyElement,
-                elementAncestors.Reverse().ToArray()
+                data.ElementAncestors.Reverse().ToArray()
             );
             var elementConverter = Options.ElementConverters.FirstOrDefault(c => c.IsValidFor(elementData)) ?? Options.DefaultElementConverter;
             var shouldRenderContent = elementConverter.ShouldRenderContent(elementData);
 
             elementConverter.RenderStart(elementData, writer);
-            elementAncestors.Push(elementData);
+            data.ElementAncestors.Push(elementData);
 
             if (!reader.IsEmptyElement) {
                 while (reader.Read() && reader.Depth > depth) {
                     if (shouldRenderContent) {
-                        ConvertNode(reader, writer);
+                        ConvertNode(reader, writer, data);
                     }
                 }
             }
 
-            elementAncestors.Pop();
+            data.ElementAncestors.Pop();
             elementConverter.RenderEnd(elementData, writer);
         }
     }

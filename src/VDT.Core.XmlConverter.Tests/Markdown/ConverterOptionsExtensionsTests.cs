@@ -7,12 +7,12 @@ using Xunit;
 namespace VDT.Core.XmlConverter.Tests.Markdown {
     public class ConverterOptionsExtensionsTests {
         [Theory]
-        [InlineData("<h1>Heading 1</h1>", "# Heading 1\r\n\r\n")]
-        [InlineData("<h2>Heading 2</h2>", "## Heading 2\r\n\r\n")]
-        [InlineData("<h3>Heading 3</h3>", "### Heading 3\r\n\r\n")]
-        [InlineData("<h4>Heading 4</h4>", "#### Heading 4\r\n\r\n")]
-        [InlineData("<h5>Heading 5</h5>", "##### Heading 5\r\n\r\n")]
-        [InlineData("<h6>Heading 6</h6>", "###### Heading 6\r\n\r\n")]
+        [InlineData("<h1>Heading 1</h1>", "# Heading 1\r\n")]
+        [InlineData("<h2>Heading 2</h2>", "## Heading 2\r\n")]
+        [InlineData("<h3>Heading 3</h3>", "### Heading 3\r\n")]
+        [InlineData("<h4>Heading 4</h4>", "#### Heading 4\r\n")]
+        [InlineData("<h5>Heading 5</h5>", "##### Heading 5\r\n")]
+        [InlineData("<h6>Heading 6</h6>", "###### Heading 6\r\n")]
         public void UseMarkdown_Converts_Header(string xml, string expectedMarkdown) {
             var options = new ConverterOptions().UseMarkdown();
             var converter = new Converter(options);

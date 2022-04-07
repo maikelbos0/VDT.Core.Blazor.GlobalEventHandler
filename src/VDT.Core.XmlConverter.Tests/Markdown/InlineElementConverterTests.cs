@@ -36,7 +36,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [Fact]
         public void RenderEnd_Renders_EndOuput() {
             using var writer = new StringWriter();
-            var converter = new InlineElementConverter("end", "end", "foo", "bar");
+            var converter = new InlineElementConverter("start", "end", "foo", "bar");
 
             converter.RenderEnd(new ElementData("bar", new Dictionary<string, string>(), false), writer);
 

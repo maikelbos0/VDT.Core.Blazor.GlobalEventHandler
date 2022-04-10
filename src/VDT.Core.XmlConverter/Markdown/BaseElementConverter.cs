@@ -18,13 +18,13 @@ namespace VDT.Core.XmlConverter.Markdown {
         }
         
         /// <inheritdoc/>
-        public bool IsValidFor(ElementData elementData) => validForElementNames.Any(e => string.Equals(e, elementData.Name, StringComparison.OrdinalIgnoreCase));
+        public virtual bool IsValidFor(ElementData elementData) => validForElementNames.Any(e => string.Equals(e, elementData.Name, StringComparison.OrdinalIgnoreCase));
 
         /// <inheritdoc/>
         public abstract void RenderStart(ElementData elementData, TextWriter writer);
 
         /// <inheritdoc/>
-        public bool ShouldRenderContent(ElementData elementData) => true;
+        public virtual bool ShouldRenderContent(ElementData elementData) => true;
 
         /// <inheritdoc/>
         public abstract void RenderEnd(ElementData elementData, TextWriter writer);

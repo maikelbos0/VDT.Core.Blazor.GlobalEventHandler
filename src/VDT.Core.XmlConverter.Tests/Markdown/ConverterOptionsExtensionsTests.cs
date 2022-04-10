@@ -7,6 +7,18 @@ using Xunit;
 namespace VDT.Core.XmlConverter.Tests.Markdown {
     public class ConverterOptionsExtensionsTests {
         [Theory]
+        [InlineData("<li>List item</li>", "- List item\r\n")]
+        [InlineData("<menu><li>List item</li></menu>", "- List item\r\n")]
+        [InlineData("<ul><li>List item</li></ul>", "- List item\r\n")]
+        [InlineData("<ol><li>List item</li></ol>", "1. List item\r\n")]
+        public void UseMarkdown_Converts_List_Items(string xml, string expectedMarkdown) {
+            var options = new ConverterOptions().UseMarkdown();
+            var converter = new Converter(options);
+
+            Assert.Equal(expectedMarkdown, converter.Convert(xml));
+        }
+
+        [Theory]
         [InlineData("<h1>Heading 1</h1>", "# Heading 1\r\n")]
         [InlineData("<h2>Heading 2</h2>", "## Heading 2\r\n")]
         [InlineData("<h3>Heading 3</h3>", "### Heading 3\r\n")]

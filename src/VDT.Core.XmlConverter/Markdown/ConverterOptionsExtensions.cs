@@ -3,7 +3,6 @@
 namespace VDT.Core.XmlConverter.Markdown {
     public static class ConverterOptionsExtensions {
         public static ConverterOptions UseMarkdown(this ConverterOptions options) {
-
             var removingNodeConverter = new FormattingNodeConverter((name, value) => "", false);
             
             options.CDataConverter = removingNodeConverter;
@@ -15,21 +14,26 @@ namespace VDT.Core.XmlConverter.Markdown {
             options.SignificantWhitespaceConverter = removingNodeConverter;
             options.WhitespaceConverter = removingNodeConverter;
             
-            options.TextConverter = new FormattingNodeConverter((name, value) => value.Trim(), false);
+            options.TextConverter = new TextConverter();
 
-            // TODO blockquote, figure out escaping, etc
+            // TODO blockquote, image, hyperlink, figure out escaping, etc
 
+            // html, body
             options.ElementConverters.Add(new NullElementConverter("ul", "ol", "menu"));
 
-            options.ElementConverters.Add(new OrderedListItemConverter());
-            options.ElementConverters.Add(new BlockElementConverter("- ", Environment.NewLine, "li"));
+            // TODO add converters to remove script, style, head, frame, meta, iframe, frameset, col, colgroup?
 
-            options.ElementConverters.Add(new BlockElementConverter("# ", Environment.NewLine, "h1"));
-            options.ElementConverters.Add(new BlockElementConverter("## ", Environment.NewLine, "h2"));
-            options.ElementConverters.Add(new BlockElementConverter("### ", Environment.NewLine, "h3"));
-            options.ElementConverters.Add(new BlockElementConverter("#### ", Environment.NewLine, "h4"));
-            options.ElementConverters.Add(new BlockElementConverter("##### ", Environment.NewLine, "h5"));
-            options.ElementConverters.Add(new BlockElementConverter("###### ", Environment.NewLine, "h6"));
+            // TODO handle form elements?
+
+            options.ElementConverters.Add(new OrderedListItemConverter());
+            options.ElementConverters.Add(new BlockElementConverter("- ", "li"));
+
+            options.ElementConverters.Add(new BlockElementConverter("# ", "h1"));
+            options.ElementConverters.Add(new BlockElementConverter("## ", "h2"));
+            options.ElementConverters.Add(new BlockElementConverter("### ", "h3"));
+            options.ElementConverters.Add(new BlockElementConverter("#### ", "h4"));
+            options.ElementConverters.Add(new BlockElementConverter("##### ", "h5"));
+            options.ElementConverters.Add(new BlockElementConverter("###### ", "h6"));
 
             options.ElementConverters.Add(new InlineElementConverter("**", "**", "strong", "b"));
             options.ElementConverters.Add(new InlineElementConverter("*", "*", "em", "i"));

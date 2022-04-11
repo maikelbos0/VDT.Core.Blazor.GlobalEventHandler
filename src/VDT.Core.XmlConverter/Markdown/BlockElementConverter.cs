@@ -10,27 +10,25 @@ namespace VDT.Core.XmlConverter.Markdown {
         private const string listItemName = "li";
 
         private readonly string startOutput;
-        private readonly string endOutput;
 
         /// <summary>
         /// Constructs an instance of a block Markdown element converter
         /// </summary>
-        /// <param name="startOutput"></param>
-        /// <param name="endOutput"></param>
+        /// <param name="startOutput">Value to render at the start of the element, before any possible child content is rendered</param>
         /// <param name="validForElementNames">Element names for which this converter is valid; names are case-insensitive</param>
-        public BlockElementConverter(string startOutput, string endOutput, params string[] validForElementNames) : base(validForElementNames) {
+        public BlockElementConverter(string startOutput, params string[] validForElementNames) : base(validForElementNames) {
             this.startOutput = startOutput;
-            this.endOutput = endOutput;
         }
 
         /// <inheritdoc/>
         public override void RenderStart(ElementData elementData, TextWriter writer) {
+            writer.WriteLine();
             writer.Write(new string('\t', GetAncestorListItemCount(elementData)));
             writer.Write(startOutput);
         }
 
         /// <inheritdoc/>
-        public override void RenderEnd(ElementData elementData, TextWriter writer) => writer.Write(endOutput);
+        public override void RenderEnd(ElementData elementData, TextWriter writer) => writer.WriteLine();
 
         internal int GetAncestorListItemCount(ElementData elementData) => elementData.Ancestors.Count(d => string.Equals(d.Name, listItemName, StringComparison.OrdinalIgnoreCase));
     }

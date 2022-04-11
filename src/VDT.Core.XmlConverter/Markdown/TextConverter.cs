@@ -43,8 +43,6 @@ namespace VDT.Core.XmlConverter.Markdown {
                     writer.Write(c);
                 }
             }
-
-            writer.WriteLine();
         }
     }
 }

@@ -12,7 +12,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [InlineData("bar", true)]
         [InlineData("baz", false)]
         public void IsValidFor(string elementName, bool expectedIsValid) {
-            var converter = new BlockElementConverter("start", "end", "foo", "bar");
+            var converter = new BlockElementConverter("start", "foo", "bar");
 
             Assert.Equal(expectedIsValid, converter.IsValidFor(new ElementData(elementName, new Dictionary<string, string>(), false)));
         }
@@ -20,7 +20,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [Fact]
         public void RenderStart_Renders_StartOuput() {
             using var writer = new StringWriter();
-            var converter = new BlockElementConverter("start", "end", "foo", "bar");
+            var converter = new BlockElementConverter("start", "foo", "bar");
             var elementData = new ElementData(
                 "bar",
                 new Dictionary<string, string>(),
@@ -31,12 +31,12 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             converter.RenderStart(elementData, writer);
 
-            Assert.Equal("\t\tstart", writer.ToString());
+            Assert.Equal("\r\n\t\tstart", writer.ToString());
         }
 
         [Fact]
         public void ShouldRenderContent_Returns_True() {
-            var converter = new BlockElementConverter("start", "end", "foo", "bar");
+            var converter = new BlockElementConverter("start", "foo", "bar");
 
             Assert.True(converter.ShouldRenderContent(new ElementData("bar", new Dictionary<string, string>(), false)));
         }
@@ -44,11 +44,11 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [Fact]
         public void RenderEnd_Renders_EndOuput() {
             using var writer = new StringWriter();
-            var converter = new BlockElementConverter("start", "end", "foo", "bar");
+            var converter = new BlockElementConverter("start", "foo", "bar");
 
             converter.RenderEnd(new ElementData("bar", new Dictionary<string, string>(), false), writer);
 
-            Assert.Equal("end", writer.ToString());
+            Assert.Equal("\r\n", writer.ToString());
         }
 
         [Theory]
@@ -60,7 +60,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [InlineData(2, "LI", "LI")]
         [InlineData(2, "ol", "li", "ul", "li", "div")]
         public void GetAncestorListItemCount(int expectedCount, params string[] elementNames) {
-            var converter = new BlockElementConverter("start", "end", "foo", "bar");
+            var converter = new BlockElementConverter("start", "foo", "bar");
             var elementData = new ElementData(
                 "li",
                 new Dictionary<string, string>(),

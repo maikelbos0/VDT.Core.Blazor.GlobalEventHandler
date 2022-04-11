@@ -11,7 +11,7 @@ namespace VDT.Core.XmlConverter.Markdown {
         /// <summary>
         /// Construct an instance of an Markdown ordered list item converter
         /// </summary>
-        public OrderedListItemConverter() : base("1. ", Environment.NewLine, "li") { }
+        public OrderedListItemConverter() : base("1. ", "li") { }
 
         /// <inheritdoc/>
         public override bool IsValidFor(ElementData elementData) 

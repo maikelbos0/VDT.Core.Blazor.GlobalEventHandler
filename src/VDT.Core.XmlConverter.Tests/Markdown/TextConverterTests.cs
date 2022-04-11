@@ -18,29 +18,29 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             converter.Convert(reader, writer);
 
-            Assert.Equal("Test\r\n", writer.ToString());
+            Assert.Equal("Test", writer.ToString());
         }
 
         [Theory]
-        [InlineData("Foo \\ bar", "Foo \\\\ bar\r\n")]
-        [InlineData("Foo ` bar", "Foo \\` bar\r\n")]
-        [InlineData("Foo * bar", "Foo \\* bar\r\n")]
-        [InlineData("Foo _ bar", "Foo \\_ bar\r\n")]
-        [InlineData("Foo { bar", "Foo \\{ bar\r\n")]
-        [InlineData("Foo } bar", "Foo \\} bar\r\n")]
-        [InlineData("Foo [ bar", "Foo \\[ bar\r\n")]
-        [InlineData("Foo ] bar", "Foo \\] bar\r\n")]
-        [InlineData("Foo ( bar", "Foo \\( bar\r\n")]
-        [InlineData("Foo ) bar", "Foo \\) bar\r\n")]
-        [InlineData("Foo # bar", "Foo \\# bar\r\n")]
-        [InlineData("Foo + bar", "Foo \\+ bar\r\n")]
-        [InlineData("Foo - bar", "Foo \\- bar\r\n")]
-        [InlineData("Foo . bar", "Foo \\. bar\r\n")]
-        [InlineData("Foo ! bar", "Foo \\! bar\r\n")]
-        [InlineData("Foo | bar", "Foo \\| bar\r\n")]
-        [InlineData("Foo &lt; bar", "Foo &lt; bar\r\n")]
-        [InlineData("Foo &gt; bar", "Foo &gt; bar\r\n")]
-        [InlineData("Foo &amp; bar", "Foo &amp; bar\r\n")]
+        [InlineData("Foo \\ bar", "Foo \\\\ bar")]
+        [InlineData("Foo ` bar", "Foo \\` bar")]
+        [InlineData("Foo * bar", "Foo \\* bar")]
+        [InlineData("Foo _ bar", "Foo \\_ bar")]
+        [InlineData("Foo { bar", "Foo \\{ bar")]
+        [InlineData("Foo } bar", "Foo \\} bar")]
+        [InlineData("Foo [ bar", "Foo \\[ bar")]
+        [InlineData("Foo ] bar", "Foo \\] bar")]
+        [InlineData("Foo ( bar", "Foo \\( bar")]
+        [InlineData("Foo ) bar", "Foo \\) bar")]
+        [InlineData("Foo # bar", "Foo \\# bar")]
+        [InlineData("Foo + bar", "Foo \\+ bar")]
+        [InlineData("Foo - bar", "Foo \\- bar")]
+        [InlineData("Foo . bar", "Foo \\. bar")]
+        [InlineData("Foo ! bar", "Foo \\! bar")]
+        [InlineData("Foo | bar", "Foo \\| bar")]
+        [InlineData("Foo &lt; bar", "Foo &lt; bar")]
+        [InlineData("Foo &gt; bar", "Foo &gt; bar")]
+        [InlineData("Foo &amp; bar", "Foo &amp; bar")]
         public void Convert_Escapes_Characters(string xml, string expectedText) {
             using var writer = new StringWriter();
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));

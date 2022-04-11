@@ -6,11 +6,18 @@ using Xunit;
 
 namespace VDT.Core.XmlConverter.Tests.Markdown {
     public class ConverterOptionsExtensionsTests {
+        [Fact]
+        public void UseMarkdown_Returns_Self() {
+            var options = new ConverterOptions();
+            
+            Assert.Equal(options, options.UseMarkdown());
+        }
+
         [Theory]
-        [InlineData("<li>List item</li>", "- List item\r\n")]
-        [InlineData("<menu><li>List item</li></menu>", "- List item\r\n")]
-        [InlineData("<ul><li>List item</li></ul>", "- List item\r\n")]
-        [InlineData("<ol><li>List item</li></ol>", "1. List item\r\n")]
+        [InlineData("<li>List item</li>", "\r\n- List item\r\n")]
+        [InlineData("<menu><li>List item</li></menu>", "\r\n- List item\r\n")]
+        [InlineData("<ul><li>List item</li></ul>", "\r\n- List item\r\n")]
+        [InlineData("<ol><li>List item</li></ol>", "\r\n1. List item\r\n")]
         public void UseMarkdown_Converts_List_Items(string xml, string expectedMarkdown) {
             var options = new ConverterOptions().UseMarkdown();
             var converter = new Converter(options);
@@ -19,12 +26,12 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Theory]
-        [InlineData("<h1>Heading 1</h1>", "# Heading 1\r\n")]
-        [InlineData("<h2>Heading 2</h2>", "## Heading 2\r\n")]
-        [InlineData("<h3>Heading 3</h3>", "### Heading 3\r\n")]
-        [InlineData("<h4>Heading 4</h4>", "#### Heading 4\r\n")]
-        [InlineData("<h5>Heading 5</h5>", "##### Heading 5\r\n")]
-        [InlineData("<h6>Heading 6</h6>", "###### Heading 6\r\n")]
+        [InlineData("<h1>Heading 1</h1>", "\r\n# Heading 1\r\n")]
+        [InlineData("<h2>Heading 2</h2>", "\r\n## Heading 2\r\n")]
+        [InlineData("<h3>Heading 3</h3>", "\r\n### Heading 3\r\n")]
+        [InlineData("<h4>Heading 4</h4>", "\r\n#### Heading 4\r\n")]
+        [InlineData("<h5>Heading 5</h5>", "\r\n##### Heading 5\r\n")]
+        [InlineData("<h6>Heading 6</h6>", "\r\n###### Heading 6\r\n")]
         public void UseMarkdown_Converts_Header(string xml, string expectedMarkdown) {
             var options = new ConverterOptions().UseMarkdown();
             var converter = new Converter(options);
@@ -86,6 +93,35 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             using var reader = XmlReader.Create(stream, new XmlReaderSettings() { DtdProcessing = DtdProcessing.Parse });
 
             Assert.Equal("Test\r\n\r\n", converter.Convert(reader));
+        }
+
+        [Fact]
+        public void UseMarkdown_Converts_Nested_Elements() {
+            const string xml = @"
+<p>This is a paragraph.</p>
+
+<p>
+    This paragraph has a line break.<br/>
+    This is line 2.
+</p>
+
+<ol>
+    <li>Here we have some numbers</li>
+    <li>This number has bullets:
+        <ul>
+            <li>Bullet</li>
+            <li>Foo</li>
+        </ul>
+    </li>
+    <li><h2>A header in a list item!</h2></li>
+</ol>
+";
+            var options = new ConverterOptions().UseMarkdown();
+            var converter = new Converter(options);
+
+            // Resolve issue with too many line breaks; should be only 1 between list items and 2 between unrelated items
+
+            Assert.Equal("This is a paragraph\\.\r\n\r\nThis paragraph has a line break\\.  \r\nThis is line 2\\.\r\n\r\n\r\n1. Here we have some numbers\r\n\r\n1. This number has bullets:\r\n\t- Bullet\r\n\r\n\t- Foo\r\n\r\n\r\n1. \r\n\t## A header in a list item\\!\r\n\r\n", converter.Convert(xml));
         }
     }
 }

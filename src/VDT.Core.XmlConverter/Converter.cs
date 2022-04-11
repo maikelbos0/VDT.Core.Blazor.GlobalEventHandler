@@ -156,7 +156,7 @@ namespace VDT.Core.XmlConverter {
                 reader.Name,
                 reader.GetAttributes(),
                 reader.IsEmptyElement,
-                data.ElementAncestors.Reverse().ToArray()
+                data.ElementAncestors.ToArray()
             );
             var elementConverter = Options.ElementConverters.FirstOrDefault(c => c.IsValidFor(elementData)) ?? Options.DefaultElementConverter;
             var shouldRenderContent = elementConverter.ShouldRenderContent(elementData);

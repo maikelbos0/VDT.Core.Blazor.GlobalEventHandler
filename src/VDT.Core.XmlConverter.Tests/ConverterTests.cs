@@ -360,8 +360,8 @@ namespace VDT.Core.XmlConverter.Tests {
             Received.InOrder(() => {
                 defaultElementConverter.Received().RenderStart(Arg.Is<ElementData>(d => VerifyElementAncestors(d, "foo")), writer);
                 defaultElementConverter.Received().RenderStart(Arg.Is<ElementData>(d => VerifyElementAncestors(d, "bar", "foo")), writer);
-                defaultElementConverter.Received().RenderStart(Arg.Is<ElementData>(d => VerifyElementAncestors(d, "baz", "foo", "bar")), writer);
-                defaultElementConverter.Received().RenderEnd(Arg.Is<ElementData>(d => VerifyElementAncestors(d, "baz", "foo", "bar")), writer);
+                defaultElementConverter.Received().RenderStart(Arg.Is<ElementData>(d => VerifyElementAncestors(d, "baz", "bar", "foo")), writer);
+                defaultElementConverter.Received().RenderEnd(Arg.Is<ElementData>(d => VerifyElementAncestors(d, "baz", "bar", "foo")), writer);
                 defaultElementConverter.Received().RenderEnd(Arg.Is<ElementData>(d => VerifyElementAncestors(d, "bar", "foo")), writer);
                 defaultElementConverter.Received().RenderEnd(Arg.Is<ElementData>(d => VerifyElementAncestors(d, "foo")), writer);
             });

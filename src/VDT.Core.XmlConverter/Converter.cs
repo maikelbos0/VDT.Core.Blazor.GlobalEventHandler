@@ -113,28 +113,28 @@ namespace VDT.Core.XmlConverter {
                     ConvertElement(reader, writer, data);
                     break;
                 case XmlNodeType.Text:
-                    Options.TextConverter.Convert(reader, writer);
+                    Options.TextConverter.Convert(reader, writer, data);
                     break;
                 case XmlNodeType.CDATA:
-                    Options.CDataConverter.Convert(reader, writer);
+                    Options.CDataConverter.Convert(reader, writer, data);
                     break;
                 case XmlNodeType.Comment:
-                    Options.CommentConverter.Convert(reader, writer);
+                    Options.CommentConverter.Convert(reader, writer, data);
                     break;
                 case XmlNodeType.XmlDeclaration:
-                    Options.XmlDeclarationConverter.Convert(reader, writer);
+                    Options.XmlDeclarationConverter.Convert(reader, writer, data);
                     break;
                 case XmlNodeType.Whitespace:
-                    Options.WhitespaceConverter.Convert(reader, writer);
+                    Options.WhitespaceConverter.Convert(reader, writer, data);
                     break;
                 case XmlNodeType.SignificantWhitespace:
-                    Options.SignificantWhitespaceConverter.Convert(reader, writer);
+                    Options.SignificantWhitespaceConverter.Convert(reader, writer, data);
                     break;
                 case XmlNodeType.DocumentType:
-                    Options.DocumentTypeConverter.Convert(reader, writer);
+                    Options.DocumentTypeConverter.Convert(reader, writer, data);
                     break;
                 case XmlNodeType.ProcessingInstruction:
-                    Options.ProcessingInstructionConverter.Convert(reader, writer);
+                    Options.ProcessingInstructionConverter.Convert(reader, writer, data);
                     break;
                 case XmlNodeType.EndElement:
                 case XmlNodeType.Attribute:

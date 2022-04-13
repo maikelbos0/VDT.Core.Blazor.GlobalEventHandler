@@ -15,7 +15,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             reader.Read(); // Move to processing instruction
 
-            converter.Convert(reader, writer);
+            converter.Convert(reader, writer, new ConversionData());
 
             Assert.Equal("[name]='value'", writer.ToString());
         }
@@ -33,7 +33,7 @@ namespace VDT.Core.XmlConverter.Tests {
             reader.Read(); // Move to element
             reader.Read(); // Move to text
 
-            converter.Convert(reader, writer);
+            converter.Convert(reader, writer, new ConversionData());
 
             Assert.Equal(expectedValue, writer.ToString());
         }

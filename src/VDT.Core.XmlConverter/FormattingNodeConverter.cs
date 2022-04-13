@@ -14,7 +14,8 @@ namespace VDT.Core.XmlConverter {
             XmlEncodeValue = xmlEncodeValue;
         }
 
-        public void Convert(XmlReader reader, TextWriter writer) {
+        /// <inheritdoc/>
+        public void Convert(XmlReader reader, TextWriter writer, ConversionData data) {
             var name = reader.Name;
             var value = reader.Value;
 

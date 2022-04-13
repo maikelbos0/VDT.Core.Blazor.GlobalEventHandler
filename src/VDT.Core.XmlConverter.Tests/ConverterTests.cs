@@ -106,6 +106,7 @@ namespace VDT.Core.XmlConverter.Tests {
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\">Content</foo>"));
             using var reader = XmlReader.Create(stream);
 
+            var data = new ConversionData();
             var textConverter = Substitute.For<INodeConverter>();
             var converter = new Converter(new ConverterOptions() {
                 TextConverter = textConverter
@@ -114,9 +115,9 @@ namespace VDT.Core.XmlConverter.Tests {
             reader.Read(); // Move to element
             reader.Read(); // Move to text
 
-            converter.ConvertNode(reader, writer, new ConversionData());
+            converter.ConvertNode(reader, writer, data);
 
-            textConverter.Received().Convert(reader, writer);
+            textConverter.Received().Convert(reader, writer, data);
         }
 
         [Fact]
@@ -125,6 +126,7 @@ namespace VDT.Core.XmlConverter.Tests {
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\"><![CDATA[Content]]></foo>"));
             using var reader = XmlReader.Create(stream);
 
+            var data = new ConversionData();
             var cDataConverter = Substitute.For<INodeConverter>();
             var converter = new Converter(new ConverterOptions() {
                 CDataConverter = cDataConverter
@@ -133,9 +135,9 @@ namespace VDT.Core.XmlConverter.Tests {
             reader.Read(); // Move to element
             reader.Read(); // Move to CData
 
-            converter.ConvertNode(reader, writer, new ConversionData());
+            converter.ConvertNode(reader, writer, data);
 
-            cDataConverter.Received().Convert(reader, writer);
+            cDataConverter.Received().Convert(reader, writer, data);
         }
 
         [Fact]
@@ -144,6 +146,7 @@ namespace VDT.Core.XmlConverter.Tests {
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\"><!-- Test --></foo>"));
             using var reader = XmlReader.Create(stream);
 
+            var data = new ConversionData();
             var commentConverter = Substitute.For<INodeConverter>();
             var converter = new Converter(new ConverterOptions() {
                 CommentConverter = commentConverter
@@ -152,9 +155,9 @@ namespace VDT.Core.XmlConverter.Tests {
             reader.Read(); // Move to element
             reader.Read(); // Move to comment
 
-            converter.ConvertNode(reader, writer, new ConversionData());
+            converter.ConvertNode(reader, writer, data);
 
-            commentConverter.Received().Convert(reader, writer);
+            commentConverter.Received().Convert(reader, writer, data);
         }
 
         [Fact]
@@ -163,6 +166,7 @@ namespace VDT.Core.XmlConverter.Tests {
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?><foo bar=\"baz\"/>"));
             using var reader = XmlReader.Create(stream);
 
+            var data = new ConversionData();
             var xmlDeclarationConverter = Substitute.For<INodeConverter>();
             var converter = new Converter(new ConverterOptions() {
                 XmlDeclarationConverter = xmlDeclarationConverter
@@ -170,9 +174,9 @@ namespace VDT.Core.XmlConverter.Tests {
 
             reader.Read(); // Move to xml declaration
 
-            converter.ConvertNode(reader, writer, new ConversionData());
+            converter.ConvertNode(reader, writer, data);
 
-            xmlDeclarationConverter.Received().Convert(reader, writer);
+            xmlDeclarationConverter.Received().Convert(reader, writer, data);
         }
 
         [Fact]
@@ -181,6 +185,7 @@ namespace VDT.Core.XmlConverter.Tests {
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\"><quux/>    <quux/></foo>"));
             using var reader = XmlReader.Create(stream);
 
+            var data = new ConversionData();
             var whitespaceConverter = Substitute.For<INodeConverter>();
             var converter = new Converter(new ConverterOptions() {
                 WhitespaceConverter = whitespaceConverter
@@ -190,9 +195,9 @@ namespace VDT.Core.XmlConverter.Tests {
             reader.Read(); // Move to child element
             reader.Read(); // Move to whitespace
 
-            converter.ConvertNode(reader, writer, new ConversionData());
+            converter.ConvertNode(reader, writer, data);
 
-            whitespaceConverter.Received().Convert(reader, writer);
+            whitespaceConverter.Received().Convert(reader, writer, data);
         }
 
         [Fact]
@@ -201,6 +206,7 @@ namespace VDT.Core.XmlConverter.Tests {
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\" xml:space=\"preserve\"><quux/>    <quux/></foo>"));
             using var reader = XmlReader.Create(stream);
 
+            var data = new ConversionData();
             var significantWhitespaceConverter = Substitute.For<INodeConverter>();
             var converter = new Converter(new ConverterOptions() {
                 SignificantWhitespaceConverter = significantWhitespaceConverter
@@ -210,9 +216,9 @@ namespace VDT.Core.XmlConverter.Tests {
             reader.Read(); // Move to child element
             reader.Read(); // Move to significant whitespace
 
-            converter.ConvertNode(reader, writer, new ConversionData());
+            converter.ConvertNode(reader, writer, data);
 
-            significantWhitespaceConverter.Received().Convert(reader, writer);
+            significantWhitespaceConverter.Received().Convert(reader, writer, data);
         }
 
         [Fact]
@@ -221,6 +227,7 @@ namespace VDT.Core.XmlConverter.Tests {
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<!DOCTYPE foo [ <!ENTITY val \"bar\"> ]><foo/>"));
             using var reader = XmlReader.Create(stream, new XmlReaderSettings() { DtdProcessing = DtdProcessing.Parse });
 
+            var data = new ConversionData();
             var documentTypeConverter = Substitute.For<INodeConverter>();
             var converter = new Converter(new ConverterOptions() {
                 DocumentTypeConverter = documentTypeConverter
@@ -228,9 +235,9 @@ namespace VDT.Core.XmlConverter.Tests {
 
             reader.Read(); // Move to document type
 
-            converter.ConvertNode(reader, writer, new ConversionData());
+            converter.ConvertNode(reader, writer, data);
 
-            documentTypeConverter.Received().Convert(reader, writer);
+            documentTypeConverter.Received().Convert(reader, writer, data);
         }
 
         [Fact]
@@ -239,6 +246,7 @@ namespace VDT.Core.XmlConverter.Tests {
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<?xml-stylesheet type=\"text/xsl\" href=\"style.xsl\"?><foo/>"));
             using var reader = XmlReader.Create(stream);
 
+            var data = new ConversionData();
             var processingInstructionConverter = Substitute.For<INodeConverter>();
             var converter = new Converter(new ConverterOptions() {
                 ProcessingInstructionConverter = processingInstructionConverter
@@ -246,9 +254,9 @@ namespace VDT.Core.XmlConverter.Tests {
 
             reader.Read(); // Move to processing instruction
 
-            converter.ConvertNode(reader, writer, new ConversionData());
+            converter.ConvertNode(reader, writer, data);
 
-            processingInstructionConverter.Received().Convert(reader, writer);
+            processingInstructionConverter.Received().Convert(reader, writer, data);
         }
 
         [Fact]

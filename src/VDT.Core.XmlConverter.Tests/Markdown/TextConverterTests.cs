@@ -16,7 +16,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             reader.Read(); // Move to text
 
-            converter.Convert(reader, writer);
+            converter.Convert(reader, writer, new ConversionData());
 
             Assert.Equal("Test", writer.ToString());
         }
@@ -50,7 +50,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             reader.Read(); // Move to text
 
-            converter.Convert(reader, writer);
+            converter.Convert(reader, writer, new ConversionData());
 
             Assert.Equal(expectedText, writer.ToString());
         }

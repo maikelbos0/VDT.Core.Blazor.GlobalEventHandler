@@ -11,6 +11,7 @@ namespace VDT.Core.XmlConverter {
         /// </summary>
         /// <param name="reader">Xml reader for which to convert the current node</param>
         /// <param name="writer">Text writer to write the resulting output to</param>
-        public void Convert(XmlReader reader, TextWriter writer);
+        /// <param name="data">Data relating to the current conversion</param>
+        public void Convert(XmlReader reader, TextWriter writer, ConversionData data);
     }
 }

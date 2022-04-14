@@ -24,10 +24,10 @@ namespace VDT.Core.XmlConverter.Tests {
         }
 
         [Theory]
-        [InlineData("<!-- Test -->")]
-        [InlineData("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")]
-        [InlineData("<?xml-stylesheet type=\"text/xsl\" href=\"style.xsl\"?>")]
-        public void ReadNode_Clears_CurrentElement_If_Needed(string xml) {
+        [InlineData("<!-- Test -->", XmlNodeType.Comment)]
+        [InlineData("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", XmlNodeType.XmlDeclaration)]
+        [InlineData("<?xml-stylesheet type=\"text/xsl\" href=\"style.xsl\"?>", XmlNodeType.ProcessingInstruction)]
+        public void ReadNode_Sets_CurrentNode_If_Not_Element(string xml, XmlNodeType expectedNodeType) {
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
             using var reader = XmlReader.Create(stream);
 
@@ -37,6 +37,9 @@ namespace VDT.Core.XmlConverter.Tests {
 
             data.ReadNode(reader);
 
+            Assert.NotNull(data.CurrentNode);
+            Assert.Equal(expectedNodeType, data.CurrentNode?.NodeType);
+
             Assert.Null(data.CurrentElement);
         }
 
@@ -45,7 +48,7 @@ namespace VDT.Core.XmlConverter.Tests {
         [InlineData("<foo bar=\"baz\"/>", "foo", 1, true)]
         [InlineData("<foo>Content</foo>", "foo", 0, false)]
         [InlineData("<foo/>", "foo", 0, true)]
-        public void ReadNode_Sets_ElementData(string xml, string expectedName, int expectedAttributeCount, bool expectedIsSelfClosing) {
+        public void ReadNode_Sets_ElementData_If_Element(string xml, string expectedName, int expectedAttributeCount, bool expectedIsSelfClosing) {
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
             using var reader = XmlReader.Create(stream);
 
@@ -59,6 +62,8 @@ namespace VDT.Core.XmlConverter.Tests {
             Assert.Equal(expectedName, data.CurrentElement?.Name);
             Assert.Equal(expectedAttributeCount, data.CurrentElement?.Attributes.Count);
             Assert.Equal(expectedIsSelfClosing, data.CurrentElement?.IsSelfClosing);
+
+            Assert.Null(data.CurrentNode);
         }
     }
 }

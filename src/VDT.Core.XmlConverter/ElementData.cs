@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace VDT.Core.XmlConverter {
     /// <summary>
-    /// Information about the element currently being converted
+    /// Information about an element being converted
     /// </summary>
     public class ElementData {
         /// <summary>
@@ -26,7 +26,7 @@ namespace VDT.Core.XmlConverter {
         /// </summary>
         public IReadOnlyList<ElementData> Ancestors { get; }
 
-        internal ElementData(string name, Dictionary<string, string> attributes, bool isSelfClosing, params ElementData[] ancestors) {
+        internal ElementData(string name, Dictionary<string, string> attributes, bool isSelfClosing, IList<ElementData> ancestors) {
             Name = name;
             Attributes = new ReadOnlyDictionary<string, string>(attributes);
             IsSelfClosing = isSelfClosing;

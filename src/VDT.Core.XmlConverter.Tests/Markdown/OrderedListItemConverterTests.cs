@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using VDT.Core.XmlConverter.Markdown;
@@ -20,7 +21,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
                 elementName,
                 new Dictionary<string, string>(),
                 false,
-                parentElementNames.Select(n => new ElementData(n, new Dictionary<string, string>(), false)).ToArray()
+                parentElementNames.Select(n => new ElementData(n, new Dictionary<string, string>(), false, Array.Empty<ElementData>())).ToArray()
             );
 
             Assert.Equal(expectedIsValidFor, converter.IsValidFor(elementData));
@@ -35,8 +36,10 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
                 "li",
                 new Dictionary<string, string>(),
                 false,
-                new ElementData("ol", new Dictionary<string, string>(), false),
-                new ElementData("li", new Dictionary<string, string>(), false)
+                new[] {
+                    new ElementData("ol", new Dictionary<string, string>(), false, Array.Empty<ElementData>()),
+                    new ElementData("li", new Dictionary<string, string>(), false, Array.Empty<ElementData>())
+                }
             );
 
             converter.RenderStart(elementData, writer);

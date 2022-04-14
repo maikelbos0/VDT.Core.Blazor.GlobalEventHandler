@@ -12,7 +12,7 @@ namespace VDT.Core.XmlConverter {
         public string Name { get; }
 
         /// <summary>
-        /// 
+        /// Collection of attributes found on the element
         /// </summary>
         public IReadOnlyDictionary<string, string> Attributes { get; }
 

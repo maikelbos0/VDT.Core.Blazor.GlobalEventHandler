@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using VDT.Core.XmlConverter.Markdown;
 using Xunit;
 
@@ -14,7 +12,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         public void IsValidFor(string elementName, bool expectedIsValid) {
             var converter = new NullElementConverter("foo", "bar");
 
-            Assert.Equal(expectedIsValid, converter.IsValidFor(new ElementData(elementName, new Dictionary<string, string>(), false, Array.Empty<ElementData>())));
+            Assert.Equal(expectedIsValid, converter.IsValidFor(ElementDataHelper.Create(elementName)));
         }
 
         [Fact]
@@ -22,7 +20,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             using var writer = new StringWriter();
             var converter = new NullElementConverter("foo", "bar");
 
-            converter.RenderStart(new ElementData("bar", new Dictionary<string, string>(), false, Array.Empty<ElementData>()), writer);
+            converter.RenderStart(ElementDataHelper.Create("bar"), writer);
 
             Assert.Equal("", writer.ToString());
         }
@@ -31,7 +29,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         public void ShouldRenderContent_Returns_True() {
             var converter = new NullElementConverter("foo", "bar");
 
-            Assert.True(converter.ShouldRenderContent(new ElementData("bar", new Dictionary<string, string>(), false, Array.Empty<ElementData>())));
+            Assert.True(converter.ShouldRenderContent(ElementDataHelper.Create("bar")));
         }
 
         [Fact]
@@ -39,7 +37,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             using var writer = new StringWriter();
             var converter = new NullElementConverter("foo", "bar");
 
-            converter.RenderEnd(new ElementData("bar", new Dictionary<string, string>(), false, Array.Empty<ElementData>()), writer);
+            converter.RenderEnd(ElementDataHelper.Create("bar"), writer);
 
             Assert.Equal("", writer.ToString());
         }

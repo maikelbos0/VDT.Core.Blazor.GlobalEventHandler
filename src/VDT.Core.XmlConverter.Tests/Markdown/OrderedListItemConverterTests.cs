@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using VDT.Core.XmlConverter.Markdown;
 using Xunit;
@@ -17,11 +15,9 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [InlineData(true, "li", "ol", "ul")]
         public void IsValidFor(bool expectedIsValidFor, string elementName, params string[] parentElementNames) {
             var converter = new OrderedListItemConverter();
-            var elementData = new ElementData(
+            var elementData = ElementDataHelper.Create(
                 elementName,
-                new Dictionary<string, string>(),
-                false,
-                parentElementNames.Select(n => new ElementData(n, new Dictionary<string, string>(), false, Array.Empty<ElementData>())).ToArray()
+                parentElementNames.Select(n => ElementDataHelper.Create(n))
             );
 
             Assert.Equal(expectedIsValidFor, converter.IsValidFor(elementData));
@@ -32,14 +28,10 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         public void RenderStart_Renders_StartOuput() {
             using var writer = new StringWriter();
             var converter = new OrderedListItemConverter();
-            var elementData = new ElementData(
+            var elementData = ElementDataHelper.Create(
                 "li",
-                new Dictionary<string, string>(),
-                false,
-                new[] {
-                    new ElementData("ol", new Dictionary<string, string>(), false, Array.Empty<ElementData>()),
-                    new ElementData("li", new Dictionary<string, string>(), false, Array.Empty<ElementData>())
-                }
+                ElementDataHelper.Create("ol"),
+                ElementDataHelper.Create("li")
             );
 
             converter.RenderStart(elementData, writer);

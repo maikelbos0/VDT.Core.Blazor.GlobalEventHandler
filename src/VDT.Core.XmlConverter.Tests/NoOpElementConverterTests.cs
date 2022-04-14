@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using Xunit;
 
@@ -9,7 +8,7 @@ namespace VDT.Core.XmlConverter.Tests {
         public void IsValidFor_Returns_True() {
             var converter = new NoOpElementConverter();
 
-            Assert.True(converter.IsValidFor(new ElementData("bar", new Dictionary<string, string>(), false, Array.Empty<ElementData>())));
+            Assert.True(converter.IsValidFor(ElementDataHelper.Create("bar")));
         }
 
         [Fact]
@@ -17,11 +16,14 @@ namespace VDT.Core.XmlConverter.Tests {
             using var writer = new StringWriter();
             var converter = new NoOpElementConverter();
 
-            converter.RenderStart(new ElementData("bar", new Dictionary<string, string>() {
-                { "baz", "baz" },
-                { "foo", "\"foo\"" },
-                { "quux", "qu&ux" }
-            }, false, Array.Empty<ElementData>()), writer);
+            converter.RenderStart(ElementDataHelper.Create(
+                "bar", 
+                attributes: new Dictionary<string, string>() {
+                    { "baz", "baz" },
+                    { "foo", "\"foo\"" },
+                    { "quux", "qu&ux" }
+                }
+            ), writer);
 
             Assert.Equal("<bar baz=\"baz\" foo=\"&quot;foo&quot;\" quux=\"qu&amp;ux\">", writer.ToString());
         }
@@ -31,7 +33,7 @@ namespace VDT.Core.XmlConverter.Tests {
             using var writer = new StringWriter();
             var converter = new NoOpElementConverter();
 
-            converter.RenderStart(new ElementData("bar", new Dictionary<string, string>(), true, Array.Empty<ElementData>()), writer);
+            converter.RenderStart(ElementDataHelper.Create("bar", isSelfClosing: true), writer);
 
             Assert.Equal("<bar/>", writer.ToString());
         }
@@ -40,14 +42,14 @@ namespace VDT.Core.XmlConverter.Tests {
         public void ShouldRenderContent_Returns_True_When_IsSelfClosing_Is_False() {
             var converter = new NoOpElementConverter();
 
-            Assert.True(converter.ShouldRenderContent(new ElementData("bar", new Dictionary<string, string>(), false, Array.Empty<ElementData>())));
+            Assert.True(converter.ShouldRenderContent(ElementDataHelper.Create("bar")));
         }
 
         [Fact]
         public void ShouldRenderContent_Returns_False_When_IsSelfClosing_Is_True() {
             var converter = new NoOpElementConverter();
 
-            Assert.False(converter.ShouldRenderContent(new ElementData("bar", new Dictionary<string, string>(), true, Array.Empty<ElementData>())));
+            Assert.False(converter.ShouldRenderContent(ElementDataHelper.Create("bar", isSelfClosing: true)));
         }
 
         [Fact]
@@ -55,7 +57,7 @@ namespace VDT.Core.XmlConverter.Tests {
             using var writer = new StringWriter();
             var converter = new NoOpElementConverter();
 
-            converter.RenderEnd(new ElementData("bar", new Dictionary<string, string>(), false, Array.Empty<ElementData>()), writer);
+            converter.RenderEnd(ElementDataHelper.Create("bar"), writer);
 
             Assert.Equal("</bar>", writer.ToString());
         }

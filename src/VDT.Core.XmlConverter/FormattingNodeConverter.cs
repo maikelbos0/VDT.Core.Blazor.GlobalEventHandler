@@ -36,7 +36,7 @@ namespace VDT.Core.XmlConverter {
         }
 
         /// <inheritdoc/>
-        public void Convert(XmlReader reader, TextWriter writer, ConversionData data) {
+        public void Convert(XmlReader reader, TextWriter writer, NodeData data) {
             var name = reader.Name;
             var value = reader.Value;
 

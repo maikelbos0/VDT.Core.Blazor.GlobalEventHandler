@@ -32,7 +32,7 @@ namespace VDT.Core.XmlConverter.Markdown {
         };
 
         /// <inheritdoc/>
-        public void Convert(XmlReader reader, TextWriter writer, ConversionData data) {
+        public void Convert(XmlReader reader, TextWriter writer, NodeData data) {
             var value = reader.Value.Trim();
             
             foreach (var c in value) {

@@ -113,28 +113,28 @@ namespace VDT.Core.XmlConverter {
                     ConvertElement(reader, writer, data);
                     break;
                 case XmlNodeType.Text:
-                    Options.TextConverter.Convert(reader, writer, data);
+                    Options.TextConverter.Convert(reader, writer, data.CurrentNode!); // TODO fix nullability
                     break;
                 case XmlNodeType.CDATA:
-                    Options.CDataConverter.Convert(reader, writer, data);
+                    Options.CDataConverter.Convert(reader, writer, data.CurrentNode!);
                     break;
                 case XmlNodeType.Comment:
-                    Options.CommentConverter.Convert(reader, writer, data);
+                    Options.CommentConverter.Convert(reader, writer, data.CurrentNode!);
                     break;
                 case XmlNodeType.XmlDeclaration:
-                    Options.XmlDeclarationConverter.Convert(reader, writer, data);
+                    Options.XmlDeclarationConverter.Convert(reader, writer, data.CurrentNode!);
                     break;
                 case XmlNodeType.Whitespace:
-                    Options.WhitespaceConverter.Convert(reader, writer, data);
+                    Options.WhitespaceConverter.Convert(reader, writer, data.CurrentNode!);
                     break;
                 case XmlNodeType.SignificantWhitespace:
-                    Options.SignificantWhitespaceConverter.Convert(reader, writer, data);
+                    Options.SignificantWhitespaceConverter.Convert(reader, writer, data.CurrentNode!);
                     break;
                 case XmlNodeType.DocumentType:
-                    Options.DocumentTypeConverter.Convert(reader, writer, data);
+                    Options.DocumentTypeConverter.Convert(reader, writer, data.CurrentNode!);
                     break;
                 case XmlNodeType.ProcessingInstruction:
-                    Options.ProcessingInstructionConverter.Convert(reader, writer, data);
+                    Options.ProcessingInstructionConverter.Convert(reader, writer, data.CurrentNode!);
                     break;
                 case XmlNodeType.EndElement:
                 case XmlNodeType.Attribute:

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using System.Xml;
 using VDT.Core.XmlConverter.Markdown;
@@ -16,7 +17,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             reader.Read(); // Move to text
 
-            converter.Convert(reader, writer, new ConversionData());
+            converter.Convert(reader, writer, new NodeData(XmlNodeType.Text, Array.Empty<ElementData>()));
 
             Assert.Equal("Test", writer.ToString());
         }
@@ -50,7 +51,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             reader.Read(); // Move to text
 
-            converter.Convert(reader, writer, new ConversionData());
+            converter.Convert(reader, writer, new NodeData(XmlNodeType.Text, Array.Empty<ElementData>()));
 
             Assert.Equal(expectedText, writer.ToString());
         }

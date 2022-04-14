@@ -16,15 +16,16 @@ namespace VDT.Core.XmlConverter {
         public XmlNodeType CurrentNodeType { get; private set; } = XmlNodeType.None;
 
         /// <summary>
-        /// Data about the node being converted if the current node is not a <see cref="XmlNodeType.Element"/>; otherwise <see langword="null"/>
+        /// Data about the node being converted if the current node is not an <see cref="XmlNodeType.Element"/>; otherwise <see langword="null"/>
         /// </summary>
         public NodeData? CurrentNode { get; private set; }
 
         /// <summary>
-        /// Data about the element being converted if the current node is a <see cref="XmlNodeType.Element"/>; otherwise <see langword="null"/>
+        /// Data about the element being converted if the current node is an <see cref="XmlNodeType.Element"/>; otherwise <see langword="null"/>
         /// </summary>
         public ElementData? CurrentElement { get; private set; }
 
+        // TODO ancestors
         internal void ReadNode(XmlReader reader) {
             CurrentNodeType = reader.NodeType;
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml;
 
 namespace VDT.Core.XmlConverter {
@@ -13,6 +14,7 @@ namespace VDT.Core.XmlConverter {
         /// <summary>
         /// Type of the current node of the <see cref="XmlReader"/> being converted
         /// </summary>
+        // might be obsolete
         public XmlNodeType CurrentNodeType { get; private set; } = XmlNodeType.None;
 
         /// <summary>
@@ -25,8 +27,15 @@ namespace VDT.Core.XmlConverter {
         /// </summary>
         public ElementData? CurrentElement { get; private set; }
 
-        // TODO ancestors
         internal void ReadNode(XmlReader reader) {
+            while (ElementAncestors.Count > reader.Depth) {
+                ElementAncestors.Pop();
+            }
+
+            if (reader.Depth > ElementAncestors.Count) {
+                ElementAncestors.Push(CurrentElement ?? throw new InvalidOperationException($"Expected parent node to be an {XmlNodeType.Element} but found an {CurrentNodeType}"));
+            }
+
             CurrentNodeType = reader.NodeType;
 
             if (CurrentNodeType == XmlNodeType.Element) {
@@ -36,7 +45,7 @@ namespace VDT.Core.XmlConverter {
                     reader.IsEmptyElement,
                     ElementAncestors.ToArray()
                 );
-                CurrentNode = null;
+                CurrentNode = null;                
             }
             else {
                 CurrentElement = null;

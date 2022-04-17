@@ -1,6 +1,6 @@
 ﻿namespace VDT.Core.XmlConverter.Tests {
-    public static class ConversionDataHelper {
-        public static ConversionData Create(ElementData currentElementData)
+    internal static class ConversionDataHelper {
+        internal static ConversionData Create(ElementData currentElementData)
             => new ConversionData() {
                 CurrentElementData = currentElementData
             };

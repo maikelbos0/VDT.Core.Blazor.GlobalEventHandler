@@ -3,23 +3,13 @@ using System.Collections.Generic;
 using System.Xml;
 
 namespace VDT.Core.XmlConverter {
-    /// <summary>
-    /// Data relating to a conversion that is in progress
-    /// </summary>
-    // TODO make internal again?
-    public class ConversionData {
+    internal class ConversionData {
         // TODO something with this; rename?
         internal Stack<ElementData> ElementAncestors { get; set; } = new Stack<ElementData>();
 
-        /// <summary>
-        /// Data about the node being converted if the current node is not an <see cref="XmlNodeType.Element"/>; otherwise <see langword="null"/>
-        /// </summary>
-        public NodeData? CurrentNodeData { get; internal set; }
+        internal NodeData? CurrentNodeData { get; set; }
 
-        /// <summary>
-        /// Data about the element being converted if the current node is an <see cref="XmlNodeType.Element"/>; otherwise <see langword="null"/>
-        /// </summary>
-        public ElementData? CurrentElementData { get; internal set; }
+        internal ElementData? CurrentElementData { get; set; }
 
         internal void ReadNode(XmlReader reader) {
             while (ElementAncestors.Count > reader.Depth) {

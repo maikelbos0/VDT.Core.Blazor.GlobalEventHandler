@@ -66,7 +66,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             data.ReadNode(reader);
 
-            Assert.Equal(ancestors, data.ElementAncestors);
+            Assert.Equal(ancestors, data.Ancestors);
 
             if (isElement) {
                 Assert.Equal(ancestors, data.CurrentElementData?.Ancestors);
@@ -91,11 +91,11 @@ namespace VDT.Core.XmlConverter.Tests {
             ReadNextElement(reader, data); // Child baz
             ReadNextElement(reader, data); // Parent sibling bar
 
-            Assert.Equal(ancestor, Assert.Single(data.ElementAncestors));
+            Assert.Equal(ancestor, Assert.Single(data.Ancestors));
 
             ReadNextElement(reader, data); // Grandparent sibling foo
 
-            Assert.Empty(data.ElementAncestors);
+            Assert.Empty(data.Ancestors);
         }
 
         [Fact]
@@ -111,11 +111,11 @@ namespace VDT.Core.XmlConverter.Tests {
 
             ReadNextElement(reader, data); // Bar 1
 
-            Assert.Equal(ancestor, Assert.Single(data.ElementAncestors));
+            Assert.Equal(ancestor, Assert.Single(data.Ancestors));
 
             ReadNextElement(reader, data); // Bar 2
 
-            Assert.Equal(ancestor, Assert.Single(data.ElementAncestors));
+            Assert.Equal(ancestor, Assert.Single(data.Ancestors));
         }
 
         private ElementData ReadNextElement(XmlReader reader, ConversionData data) {

@@ -4,20 +4,19 @@ using System.Xml;
 
 namespace VDT.Core.XmlConverter {
     internal class ConversionData {
-        // TODO something with this; rename?
-        internal Stack<ElementData> ElementAncestors { get; set; } = new Stack<ElementData>();
+        internal Stack<ElementData> Ancestors { get; set; } = new Stack<ElementData>();
 
         internal NodeData? CurrentNodeData { get; set; }
 
         internal ElementData? CurrentElementData { get; set; }
 
         internal void ReadNode(XmlReader reader) {
-            while (ElementAncestors.Count > reader.Depth) {
-                ElementAncestors.Pop();
+            while (Ancestors.Count > reader.Depth) {
+                Ancestors.Pop();
             }
 
-            if (reader.Depth > ElementAncestors.Count) {
-                ElementAncestors.Push(CurrentElementData ?? throw new InvalidOperationException($"Expected parent node to be an {XmlNodeType.Element} but found {CurrentNodeData?.NodeType}"));
+            if (reader.Depth > Ancestors.Count) {
+                Ancestors.Push(CurrentElementData ?? throw new InvalidOperationException($"Expected parent node to be an {XmlNodeType.Element} but found {CurrentNodeData?.NodeType}"));
             }
 
             if (reader.NodeType == XmlNodeType.Element) {
@@ -25,13 +24,13 @@ namespace VDT.Core.XmlConverter {
                     reader.Name,
                     reader.GetAttributes(),
                     reader.IsEmptyElement,
-                    ElementAncestors.ToArray()
+                    Ancestors.ToArray()
                 );
                 CurrentNodeData = null;                
             }
             else {
                 CurrentElementData = null;
-                CurrentNodeData = new NodeData(reader.NodeType, ElementAncestors.ToArray());
+                CurrentNodeData = new NodeData(reader.NodeType, Ancestors.ToArray());
             }
         }
 

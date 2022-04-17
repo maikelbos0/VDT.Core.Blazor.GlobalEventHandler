@@ -12,12 +12,6 @@ namespace VDT.Core.XmlConverter {
         internal Stack<ElementData> ElementAncestors { get; set; } = new Stack<ElementData>();
 
         /// <summary>
-        /// Type of the current node of the <see cref="XmlReader"/> being converted
-        /// </summary>
-        // might be obsolete
-        public XmlNodeType CurrentNodeType { get; internal set; } = XmlNodeType.None;
-
-        /// <summary>
         /// Data about the node being converted if the current node is not an <see cref="XmlNodeType.Element"/>; otherwise <see langword="null"/>
         /// </summary>
         public NodeData? CurrentNodeData { get; internal set; }
@@ -33,12 +27,10 @@ namespace VDT.Core.XmlConverter {
             }
 
             if (reader.Depth > ElementAncestors.Count) {
-                ElementAncestors.Push(CurrentElementData ?? throw new InvalidOperationException($"Expected parent node to be an {XmlNodeType.Element} but found {CurrentNodeType}"));
+                ElementAncestors.Push(CurrentElementData ?? throw new InvalidOperationException($"Expected parent node to be an {XmlNodeType.Element} but found {CurrentNodeData?.NodeType}"));
             }
 
-            CurrentNodeType = reader.NodeType;
-
-            if (CurrentNodeType == XmlNodeType.Element) {
+            if (reader.NodeType == XmlNodeType.Element) {
                 CurrentElementData = new ElementData(
                     reader.Name,
                     reader.GetAttributes(),

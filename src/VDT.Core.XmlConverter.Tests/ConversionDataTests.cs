@@ -7,24 +7,6 @@ using Xunit;
 namespace VDT.Core.XmlConverter.Tests {
     public class ConversionDataTests {
         [Theory]
-        [InlineData("<foo/>", XmlNodeType.Element)]
-        [InlineData("<!-- Test -->", XmlNodeType.Comment)]
-        [InlineData("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", XmlNodeType.XmlDeclaration)]
-        [InlineData("<?xml-stylesheet type=\"text/xsl\" href=\"style.xsl\"?>", XmlNodeType.ProcessingInstruction)]
-        public void ReadNode_Sets_NodeType(string xml, XmlNodeType expectedNodeType) {
-            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
-            using var reader = XmlReader.Create(stream);
-
-            var data = new ConversionData();
-
-            reader.Read(); // Move to node
-
-            data.ReadNode(reader);
-
-            Assert.Equal(expectedNodeType, data.CurrentNodeType);
-        }
-
-        [Theory]
         [InlineData("<!-- Test -->", XmlNodeType.Comment)]
         [InlineData("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", XmlNodeType.XmlDeclaration)]
         [InlineData("<?xml-stylesheet type=\"text/xsl\" href=\"style.xsl\"?>", XmlNodeType.ProcessingInstruction)]

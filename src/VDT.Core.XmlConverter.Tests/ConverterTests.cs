@@ -82,12 +82,14 @@ namespace VDT.Core.XmlConverter.Tests {
             Assert.Equal(xml, converter.Convert(reader), ignoreLineEndingDifferences: true);
         }
 
+        // TODO more test
         [Fact]
-        public void ConvertNode_Converts_Element() {
+        public void Convert_Converts_Element() {
             using var writer = new StringWriter();
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\"></foo>"));
             using var reader = XmlReader.Create(stream);
 
+            var data = new ConversionData();
             var elementConverter = Substitute.For<IElementConverter>();
             var converter = new Converter(new ConverterOptions() {
                 DefaultElementConverter = elementConverter
@@ -95,174 +97,148 @@ namespace VDT.Core.XmlConverter.Tests {
 
             reader.Read(); // Move to element
 
-            converter.ConvertNode(reader, writer, new ConversionData());
+            converter.Convert(reader, writer, data);
 
             VerifyConverterIsUsed(elementConverter, writer);
         }
 
         [Fact]
         public void ConvertNode_Converts_Text() {
-            using var writer = new StringWriter();
-            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\">Content</foo>"));
-            using var reader = XmlReader.Create(stream);
+            using var writer = Substitute.For<TextWriter>();
+            using var reader = Substitute.For<XmlReader>();
 
+            var data = NodeDataHelper.Create(XmlNodeType.Text);
             var textConverter = Substitute.For<INodeConverter>();
             var converter = new Converter(new ConverterOptions() {
                 TextConverter = textConverter
             });
 
-            reader.Read(); // Move to element
-            reader.Read(); // Move to text
+            converter.ConvertNode(reader, writer, data);
 
-            converter.ConvertNode(reader, writer, new ConversionData());
-
-            textConverter.Received().Convert(reader, writer, Arg.Any<NodeData>());
+            textConverter.Received().Convert(reader, writer, data);
         }
 
         [Fact]
         public void ConvertNode_Converts_CData() {
-            using var writer = new StringWriter();
-            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\"><![CDATA[Content]]></foo>"));
-            using var reader = XmlReader.Create(stream);
+            using var writer = Substitute.For<TextWriter>();
+            using var reader = Substitute.For<XmlReader>();
 
+            var data = NodeDataHelper.Create(XmlNodeType.CDATA);
             var cDataConverter = Substitute.For<INodeConverter>();
             var converter = new Converter(new ConverterOptions() {
                 CDataConverter = cDataConverter
             });
 
-            reader.Read(); // Move to element
-            reader.Read(); // Move to CData
+            converter.ConvertNode(reader, writer, data);
 
-            converter.ConvertNode(reader, writer, new ConversionData());
-
-            cDataConverter.Received().Convert(reader, writer, Arg.Any<NodeData>());
+            cDataConverter.Received().Convert(reader, writer, data);
         }
 
         [Fact]
         public void ConvertNode_Converts_Comment() {
-            using var writer = new StringWriter();
-            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\"><!-- Test --></foo>"));
-            using var reader = XmlReader.Create(stream);
+            using var writer = Substitute.For<TextWriter>();
+            using var reader = Substitute.For<XmlReader>();
 
+            var data = NodeDataHelper.Create(XmlNodeType.Comment);
             var commentConverter = Substitute.For<INodeConverter>();
             var converter = new Converter(new ConverterOptions() {
                 CommentConverter = commentConverter
             });
 
-            reader.Read(); // Move to element
-            reader.Read(); // Move to comment
+            converter.ConvertNode(reader, writer, data);
 
-            converter.ConvertNode(reader, writer, new ConversionData());
-
-            commentConverter.Received().Convert(reader, writer, Arg.Any<NodeData>());
+            commentConverter.Received().Convert(reader, writer, data);
         }
 
         [Fact]
         public void ConvertNode_Converts_XmlDeclaration() {
-            using var writer = new StringWriter();
-            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?><foo bar=\"baz\"/>"));
-            using var reader = XmlReader.Create(stream);
+            using var writer = Substitute.For<TextWriter>();
+            using var reader = Substitute.For<XmlReader>();
 
+            var data = NodeDataHelper.Create(XmlNodeType.XmlDeclaration);
             var xmlDeclarationConverter = Substitute.For<INodeConverter>();
             var converter = new Converter(new ConverterOptions() {
                 XmlDeclarationConverter = xmlDeclarationConverter
             });
 
-            reader.Read(); // Move to xml declaration
+            converter.ConvertNode(reader, writer, data);
 
-            converter.ConvertNode(reader, writer, new ConversionData());
-
-            xmlDeclarationConverter.Received().Convert(reader, writer, Arg.Any<NodeData>());
+            xmlDeclarationConverter.Received().Convert(reader, writer, data);
         }
 
         [Fact]
         public void ConvertNode_Converts_Whitespace() {
-            using var writer = new StringWriter();
-            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\"><quux/>    <quux/></foo>"));
-            using var reader = XmlReader.Create(stream);
+            using var writer = Substitute.For<TextWriter>();
+            using var reader = Substitute.For<XmlReader>();
 
+            var data = NodeDataHelper.Create(XmlNodeType.Whitespace);
             var whitespaceConverter = Substitute.For<INodeConverter>();
             var converter = new Converter(new ConverterOptions() {
                 WhitespaceConverter = whitespaceConverter
             });
 
-            reader.Read(); // Move to element
-            reader.Read(); // Move to child element
-            reader.Read(); // Move to whitespace
+            converter.ConvertNode(reader, writer, data);
 
-            converter.ConvertNode(reader, writer, new ConversionData());
-
-            whitespaceConverter.Received().Convert(reader, writer, Arg.Any<NodeData>());
+            whitespaceConverter.Received().Convert(reader, writer, data);
         }
 
         [Fact]
         public void ConvertNode_Converts_SignificantWhitespace() {
-            using var writer = new StringWriter();
-            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\" xml:space=\"preserve\"><quux/>    <quux/></foo>"));
-            using var reader = XmlReader.Create(stream);
+            using var writer = Substitute.For<TextWriter>();
+            using var reader = Substitute.For<XmlReader>();
 
+            var data = NodeDataHelper.Create(XmlNodeType.SignificantWhitespace);
             var significantWhitespaceConverter = Substitute.For<INodeConverter>();
             var converter = new Converter(new ConverterOptions() {
                 SignificantWhitespaceConverter = significantWhitespaceConverter
             });
 
-            reader.Read(); // Move to element
-            reader.Read(); // Move to child element
-            reader.Read(); // Move to significant whitespace
+            converter.ConvertNode(reader, writer, data);
 
-            converter.ConvertNode(reader, writer, new ConversionData());
-
-            significantWhitespaceConverter.Received().Convert(reader, writer, Arg.Any<NodeData>());
+            significantWhitespaceConverter.Received().Convert(reader, writer, data);
         }
 
         [Fact]
         public void ConvertNode_Converts_DocumentType() {
-            using var writer = new StringWriter();
-            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<!DOCTYPE foo [ <!ENTITY val \"bar\"> ]><foo/>"));
-            using var reader = XmlReader.Create(stream, new XmlReaderSettings() { DtdProcessing = DtdProcessing.Parse });
+            using var writer = Substitute.For<TextWriter>();
+            using var reader = Substitute.For<XmlReader>();
 
+            var data = NodeDataHelper.Create(XmlNodeType.DocumentType);
             var documentTypeConverter = Substitute.For<INodeConverter>();
             var converter = new Converter(new ConverterOptions() {
                 DocumentTypeConverter = documentTypeConverter
             });
 
-            reader.Read(); // Move to document type
+            converter.ConvertNode(reader, writer, data);
 
-            converter.ConvertNode(reader, writer, new ConversionData());
-
-            documentTypeConverter.Received().Convert(reader, writer, Arg.Any<NodeData>());
+            documentTypeConverter.Received().Convert(reader, writer, data);
         }
 
         [Fact]
         public void ConvertNode_Converts_ProcessingInstruction() {
-            using var writer = new StringWriter();
-            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<?xml-stylesheet type=\"text/xsl\" href=\"style.xsl\"?><foo/>"));
-            using var reader = XmlReader.Create(stream);
+            using var writer = Substitute.For<TextWriter>();
+            using var reader = Substitute.For<XmlReader>();
 
+            var data = NodeDataHelper.Create(XmlNodeType.ProcessingInstruction);
             var processingInstructionConverter = Substitute.For<INodeConverter>();
             var converter = new Converter(new ConverterOptions() {
                 ProcessingInstructionConverter = processingInstructionConverter
             });
 
-            reader.Read(); // Move to processing instruction
+            converter.ConvertNode(reader, writer, data);
 
-            converter.ConvertNode(reader, writer, new ConversionData());
-
-            processingInstructionConverter.Received().Convert(reader, writer, Arg.Any<NodeData>());
+            processingInstructionConverter.Received().Convert(reader, writer, data);
         }
 
         [Fact]
         public void ConvertNode_Throws_Exception_For_EndElement() {
-            using var writer = new StringWriter();
-            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\"></foo>"));
-            using var reader = XmlReader.Create(stream);
+            using var writer = Substitute.For<TextWriter>();
+            using var reader = Substitute.For<XmlReader>();
 
+            var data = NodeDataHelper.Create(XmlNodeType.EndElement);
             var converter = new Converter();
 
-            reader.Read(); // Move to element
-            reader.Read(); // Move to end element
-
-            var exception = Assert.Throws<UnexpectedNodeTypeException>(() => converter.ConvertNode(reader, writer, new ConversionData()));
+            var exception = Assert.Throws<UnexpectedNodeTypeException>(() => converter.ConvertNode(reader, writer, data));
             
             Assert.Equal(XmlNodeType.EndElement, exception.NodeType);
             Assert.Equal("Node type 'EndElement' was not handled by ConvertElement; ensure reader is in correct position before calling Convert", exception.Message);
@@ -270,16 +246,13 @@ namespace VDT.Core.XmlConverter.Tests {
 
         [Fact]
         public void ConvertNode_Throws_Exception_For_Attribute() {
-            using var writer = new StringWriter();
-            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\" />"));
-            using var reader = XmlReader.Create(stream);
+            using var writer = Substitute.For<TextWriter>();
+            using var reader = Substitute.For<XmlReader>();
 
+            var data = NodeDataHelper.Create(XmlNodeType.Attribute);
             var converter = new Converter();
 
-            reader.Read(); // Move to element
-            reader.MoveToAttribute(0);
-
-            var exception = Assert.Throws<UnexpectedNodeTypeException>(() => converter.ConvertNode(reader, writer, new ConversionData()));
+            var exception = Assert.Throws<UnexpectedNodeTypeException>(() => converter.ConvertNode(reader, writer, data));
 
             Assert.Equal(XmlNodeType.Attribute, exception.NodeType);
             Assert.Equal("Node type 'Attribute' was not handled by ConvertElement; ensure reader is in correct position before calling Convert", exception.Message);
@@ -294,92 +267,28 @@ namespace VDT.Core.XmlConverter.Tests {
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
             using var reader = XmlReader.Create(stream);
 
+            var data = new ConversionData();
             var defaultElementConverter = Substitute.For<IElementConverter>();
             var converter = new Converter(new ConverterOptions() {
                 DefaultElementConverter = defaultElementConverter
             });
 
             reader.Read(); // Move to element
+            data.ReadNode(reader); // Read element
 
-            converter.ConvertElement(reader, writer, new ConversionData());
+            converter.ConvertElement(reader, writer, data, data.CurrentElementData!);
 
             Assert.Equal(expectedNodeType, reader.NodeType);
             Assert.Equal(expectedDepth, reader.Depth);
         }
 
-        [Theory]
-        [InlineData("<foo bar=\"baz\">Content</foo>", "foo", 1, false)]
-        [InlineData("<foo bar=\"baz\"/>", "foo", 1, true)]
-        [InlineData("<foo>Content</foo>", "foo", 0, false)]
-        [InlineData("<foo/>", "foo", 0, true)]
-        public void ConvertElement_ElementData_Is_Parsed_Correctly(string xml, string expectedName, int expectedAttributeCount, bool expectedIsSelfClosing) {
-            using var writer = new StringWriter();
-            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
-            using var reader = XmlReader.Create(stream);
-
-            var defaultElementConverter = Substitute.For<IElementConverter>();
-            var converter = new Converter(new ConverterOptions() {
-                DefaultElementConverter = defaultElementConverter
-            });
-
-            reader.Read(); // Move to element
-
-            converter.ConvertElement(reader, writer, new ConversionData());
-
-            defaultElementConverter.Received().ShouldRenderContent(Arg.Is<ElementData>(d => VerifyElementData(d, expectedName, expectedAttributeCount, expectedIsSelfClosing)));
-            defaultElementConverter.Received().RenderStart(Arg.Is<ElementData>(d => VerifyElementData(d, expectedName, expectedAttributeCount, expectedIsSelfClosing)), writer);
-            defaultElementConverter.Received().RenderEnd(Arg.Is<ElementData>(d => VerifyElementData(d, expectedName, expectedAttributeCount, expectedIsSelfClosing)), writer);
-        }
-
-        private bool VerifyElementData(ElementData elementData, string expectedName, int expectedAttributeCount, bool expectedIsSelfClosing) {
-            Assert.Equal(expectedName, elementData.Name);
-            Assert.Equal(expectedAttributeCount, elementData.Attributes.Count);
-            Assert.Equal(expectedIsSelfClosing, elementData.IsSelfClosing);
-
-            return true;
-        }
-
-        [Fact]
-        public void ConvertElement_Tracks_Ancestors_Correctly() {
-            const string xml = "<foo><bar><baz/></bar></foo>";
-
-            using var writer = new StringWriter();
-            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
-            using var reader = XmlReader.Create(stream);
-
-            var defaultElementConverter = Substitute.For<IElementConverter>();
-            var converter = new Converter(new ConverterOptions() {
-                DefaultElementConverter = defaultElementConverter
-            });
-
-            defaultElementConverter.ShouldRenderContent(Arg.Any<ElementData>()).Returns(true);
-            reader.Read(); // Move to element
-
-            converter.ConvertElement(reader, writer, new ConversionData());
-
-            Received.InOrder(() => {
-                defaultElementConverter.Received().RenderStart(Arg.Is<ElementData>(d => VerifyElementAncestors(d, "foo")), writer);
-                defaultElementConverter.Received().RenderStart(Arg.Is<ElementData>(d => VerifyElementAncestors(d, "bar", "foo")), writer);
-                defaultElementConverter.Received().RenderStart(Arg.Is<ElementData>(d => VerifyElementAncestors(d, "baz", "bar", "foo")), writer);
-                defaultElementConverter.Received().RenderEnd(Arg.Is<ElementData>(d => VerifyElementAncestors(d, "baz", "bar", "foo")), writer);
-                defaultElementConverter.Received().RenderEnd(Arg.Is<ElementData>(d => VerifyElementAncestors(d, "bar", "foo")), writer);
-                defaultElementConverter.Received().RenderEnd(Arg.Is<ElementData>(d => VerifyElementAncestors(d, "foo")), writer);
-            });
-        }
-
-        private bool VerifyElementAncestors(ElementData elementData, string expectedName, params string[] expectedAncestorNames) {
-            Assert.Equal(expectedName, elementData.Name);
-            Assert.Equal(expectedAncestorNames, elementData.Ancestors.Select(d => d.Name));
-            
-            return true;
-        }
-
         [Fact]
         public void ConvertElement_Uses_First_Valid_ElementConverter() {
-            using var writer = new StringWriter();
-            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\">Content</foo>"));
-            using var reader = XmlReader.Create(stream);
+            using var writer = Substitute.For<TextWriter>();
+            using var reader = Substitute.For<XmlReader>();
 
+            var elementData = ElementDataHelper.Create("foo");
+            var data = ConversionDataHelper.Create(elementData);
             var defaultElementConverter = Substitute.For<IElementConverter>();
             var validElementConverter = Substitute.For<IElementConverter>();
             var additionalElementConverter = Substitute.For<IElementConverter>();
@@ -391,9 +300,7 @@ namespace VDT.Core.XmlConverter.Tests {
             validElementConverter.IsValidFor(Arg.Any<ElementData>()).Returns(true);
             additionalElementConverter.IsValidFor(Arg.Any<ElementData>()).Returns(true);
 
-            reader.Read(); // Move to element
-
-            converter.ConvertElement(reader, writer, new ConversionData());
+            converter.ConvertElement(reader, writer, data, elementData);
                         
             VerifyConverterIsUsed(validElementConverter, writer);
             VerifyConverterIsNotUsed(additionalElementConverter, writer);
@@ -402,10 +309,11 @@ namespace VDT.Core.XmlConverter.Tests {
 
         [Fact]
         public void ConvertElement_Uses_DefaultElementConverter_When_No_Valid_ElementConverters_Are_Found() {
-            using var writer = new StringWriter();
-            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\">Content</foo>"));
-            using var reader = XmlReader.Create(stream);
+            using var writer = Substitute.For<TextWriter>();
+            using var reader = Substitute.For<XmlReader>();
 
+            var elementData = ElementDataHelper.Create("foo");
+            var data = ConversionDataHelper.Create(elementData);
             var invalidElementConverter = Substitute.For<IElementConverter>();
             var defaultElementConverter = Substitute.For<IElementConverter>();
             var converter = new Converter(new ConverterOptions() {
@@ -415,9 +323,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             invalidElementConverter.IsValidFor(Arg.Any<ElementData>()).Returns(false);
 
-            reader.Read(); // Move to element
-
-            converter.ConvertElement(reader, writer, new ConversionData());
+            converter.ConvertElement(reader, writer, data, data.CurrentElementData!);
 
             VerifyConverterIsUsed(defaultElementConverter, writer);
             VerifyConverterIsNotUsed(invalidElementConverter, writer);
@@ -425,18 +331,17 @@ namespace VDT.Core.XmlConverter.Tests {
 
         [Fact]
         public void ConvertElement_Uses_DefaultElementConverter_When_No_ElementConverters_Are_Specified() {
-            using var writer = new StringWriter();
-            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\">Content</foo>"));
-            using var reader = XmlReader.Create(stream);
+            using var writer = Substitute.For<TextWriter>();
+            using var reader = Substitute.For<XmlReader>();
 
+            var elementData = ElementDataHelper.Create("foo");
+            var data = ConversionDataHelper.Create(elementData);
             var defaultElementConverter = Substitute.For<IElementConverter>();
             var converter = new Converter(new ConverterOptions() {
                 DefaultElementConverter = defaultElementConverter
             });
 
-            reader.Read(); // Move to element
-
-            converter.ConvertElement(reader, writer, new ConversionData());
+            converter.ConvertElement(reader, writer, data, data.CurrentElementData!);
 
             VerifyConverterIsUsed(defaultElementConverter, writer);
         }

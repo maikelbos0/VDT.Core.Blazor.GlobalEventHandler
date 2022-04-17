@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -103,42 +104,54 @@ namespace VDT.Core.XmlConverter {
             }
 
             do {
-                ConvertNode(reader, writer, data);
+                Convert(reader, writer, data);
             } while (reader.Read());
         }
 
-        internal void ConvertNode(XmlReader reader, TextWriter writer, ConversionData data) {
-            switch (reader.NodeType) {
-                case XmlNodeType.Element:
-                    ConvertElement(reader, writer, data);
-                    break;
+        // TODO test and rename
+        internal void Convert(XmlReader reader, TextWriter writer, ConversionData data) {
+            data.ReadNode(reader);
+
+            if (data.CurrentNodeData != null) {
+                ConvertNode(reader, writer, data.CurrentNodeData);
+            }
+            else if (data.CurrentElementData != null) {
+                ConvertElement(reader, writer, data, data.CurrentElementData);
+            }
+            else {
+                throw new InvalidOperationException($"Unexpectedly found both {data.CurrentNodeData} and {data.CurrentElementData} to be null");
+            }
+        }
+
+        internal void ConvertNode(XmlReader reader, TextWriter writer, NodeData nodeData) {
+            switch (nodeData.NodeType) {
                 case XmlNodeType.Text:
-                    Options.TextConverter.Convert(reader, writer, data.CurrentNode!); // TODO fix nullability
+                    Options.TextConverter.Convert(reader, writer, nodeData);
                     break;
                 case XmlNodeType.CDATA:
-                    Options.CDataConverter.Convert(reader, writer, data.CurrentNode!);
+                    Options.CDataConverter.Convert(reader, writer, nodeData);
                     break;
                 case XmlNodeType.Comment:
-                    Options.CommentConverter.Convert(reader, writer, data.CurrentNode!);
+                    Options.CommentConverter.Convert(reader, writer, nodeData);
                     break;
                 case XmlNodeType.XmlDeclaration:
-                    Options.XmlDeclarationConverter.Convert(reader, writer, data.CurrentNode!);
+                    Options.XmlDeclarationConverter.Convert(reader, writer, nodeData);
                     break;
                 case XmlNodeType.Whitespace:
-                    Options.WhitespaceConverter.Convert(reader, writer, data.CurrentNode!);
+                    Options.WhitespaceConverter.Convert(reader, writer, nodeData);
                     break;
                 case XmlNodeType.SignificantWhitespace:
-                    Options.SignificantWhitespaceConverter.Convert(reader, writer, data.CurrentNode!);
+                    Options.SignificantWhitespaceConverter.Convert(reader, writer, nodeData);
                     break;
                 case XmlNodeType.DocumentType:
-                    Options.DocumentTypeConverter.Convert(reader, writer, data.CurrentNode!);
+                    Options.DocumentTypeConverter.Convert(reader, writer, nodeData);
                     break;
                 case XmlNodeType.ProcessingInstruction:
-                    Options.ProcessingInstructionConverter.Convert(reader, writer, data.CurrentNode!);
+                    Options.ProcessingInstructionConverter.Convert(reader, writer, nodeData);
                     break;
                 case XmlNodeType.EndElement:
                 case XmlNodeType.Attribute:
-                    throw new UnexpectedNodeTypeException($"Node type '{reader.NodeType}' was not handled by {nameof(ConvertElement)}; ensure {nameof(reader)} is in correct position before calling {nameof(Convert)}", reader.NodeType);
+                    throw new UnexpectedNodeTypeException($"Node type '{nodeData.NodeType}' was not handled by {nameof(ConvertElement)}; ensure {nameof(reader)} is in correct position before calling {nameof(Convert)}", nodeData.NodeType);
                 case XmlNodeType.Document:
                 case XmlNodeType.DocumentFragment:
                 case XmlNodeType.EndEntity:
@@ -146,33 +159,25 @@ namespace VDT.Core.XmlConverter {
                 case XmlNodeType.EntityReference:
                 case XmlNodeType.Notation:
                 default:
-                    throw new UnexpectedNodeTypeException($"Node type '{reader.NodeType}' is currently not supported", reader.NodeType);
+                    throw new UnexpectedNodeTypeException($"Node type '{nodeData.NodeType}' is currently not supported", nodeData.NodeType);
             }
         }
 
-        internal void ConvertElement(XmlReader reader, TextWriter writer, ConversionData data) {
+        internal void ConvertElement(XmlReader reader, TextWriter writer, ConversionData data, ElementData elementData) {
             var depth = reader.Depth;
-            var elementData = new ElementData(
-                reader.Name,
-                reader.GetAttributes(),
-                reader.IsEmptyElement,
-                data.ElementAncestors.ToArray()
-            );
             var elementConverter = Options.ElementConverters.FirstOrDefault(c => c.IsValidFor(elementData)) ?? Options.DefaultElementConverter;
             var shouldRenderContent = elementConverter.ShouldRenderContent(elementData);
 
             elementConverter.RenderStart(elementData, writer);
-            data.ElementAncestors.Push(elementData);
 
-            if (!reader.IsEmptyElement) {
+            if (!elementData.IsSelfClosing) {
                 while (reader.Read() && reader.Depth > depth) {
                     if (shouldRenderContent) {
-                        ConvertNode(reader, writer, data);
+                        Convert(reader, writer, data);
                     }
                 }
             }
 
-            data.ElementAncestors.Pop();
             elementConverter.RenderEnd(elementData, writer);
         }
     }

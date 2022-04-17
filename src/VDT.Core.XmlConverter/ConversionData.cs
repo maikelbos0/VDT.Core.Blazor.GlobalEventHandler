@@ -15,17 +15,17 @@ namespace VDT.Core.XmlConverter {
         /// Type of the current node of the <see cref="XmlReader"/> being converted
         /// </summary>
         // might be obsolete
-        public XmlNodeType CurrentNodeType { get; private set; } = XmlNodeType.None;
+        public XmlNodeType CurrentNodeType { get; internal set; } = XmlNodeType.None;
 
         /// <summary>
         /// Data about the node being converted if the current node is not an <see cref="XmlNodeType.Element"/>; otherwise <see langword="null"/>
         /// </summary>
-        public NodeData? CurrentNode { get; private set; }
+        public NodeData? CurrentNodeData { get; internal set; }
 
         /// <summary>
         /// Data about the element being converted if the current node is an <see cref="XmlNodeType.Element"/>; otherwise <see langword="null"/>
         /// </summary>
-        public ElementData? CurrentElement { get; private set; }
+        public ElementData? CurrentElementData { get; internal set; }
 
         internal void ReadNode(XmlReader reader) {
             while (ElementAncestors.Count > reader.Depth) {
@@ -33,23 +33,23 @@ namespace VDT.Core.XmlConverter {
             }
 
             if (reader.Depth > ElementAncestors.Count) {
-                ElementAncestors.Push(CurrentElement ?? throw new InvalidOperationException($"Expected parent node to be an {XmlNodeType.Element} but found an {CurrentNodeType}"));
+                ElementAncestors.Push(CurrentElementData ?? throw new InvalidOperationException($"Expected parent node to be an {XmlNodeType.Element} but found {CurrentNodeType}"));
             }
 
             CurrentNodeType = reader.NodeType;
 
             if (CurrentNodeType == XmlNodeType.Element) {
-                CurrentElement = new ElementData(
+                CurrentElementData = new ElementData(
                     reader.Name,
                     reader.GetAttributes(),
                     reader.IsEmptyElement,
                     ElementAncestors.ToArray()
                 );
-                CurrentNode = null;                
+                CurrentNodeData = null;                
             }
             else {
-                CurrentElement = null;
-                CurrentNode = new NodeData(reader.NodeType, ElementAncestors.ToArray());
+                CurrentElementData = null;
+                CurrentNodeData = new NodeData(reader.NodeType, ElementAncestors.ToArray());
             }
         }
 

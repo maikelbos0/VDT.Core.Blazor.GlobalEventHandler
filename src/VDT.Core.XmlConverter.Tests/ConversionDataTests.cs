@@ -28,7 +28,7 @@ namespace VDT.Core.XmlConverter.Tests {
         [InlineData("<!-- Test -->", XmlNodeType.Comment)]
         [InlineData("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", XmlNodeType.XmlDeclaration)]
         [InlineData("<?xml-stylesheet type=\"text/xsl\" href=\"style.xsl\"?>", XmlNodeType.ProcessingInstruction)]
-        public void ReadNode_Sets_CurrentNode_If_Not_Element(string xml, XmlNodeType expectedNodeType) {
+        public void ReadNode_Sets_CurrentNodeData_If_Not_Element(string xml, XmlNodeType expectedNodeType) {
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
             using var reader = XmlReader.Create(stream);
 
@@ -38,10 +38,10 @@ namespace VDT.Core.XmlConverter.Tests {
 
             data.ReadNode(reader);
 
-            Assert.NotNull(data.CurrentNode);
-            Assert.Equal(expectedNodeType, data.CurrentNode?.NodeType);
+            Assert.NotNull(data.CurrentNodeData);
+            Assert.Equal(expectedNodeType, data.CurrentNodeData?.NodeType);
 
-            Assert.Null(data.CurrentElement);
+            Assert.Null(data.CurrentElementData);
         }
 
         [Theory]
@@ -49,7 +49,7 @@ namespace VDT.Core.XmlConverter.Tests {
         [InlineData("<foo bar=\"baz\"/>", "foo", 1, true)]
         [InlineData("<foo>Content</foo>", "foo", 0, false)]
         [InlineData("<foo/>", "foo", 0, true)]
-        public void ReadNode_Sets_ElementData_If_Element(string xml, string expectedName, int expectedAttributeCount, bool expectedIsSelfClosing) {
+        public void ReadNode_Sets_CurrentElementData_If_Element(string xml, string expectedName, int expectedAttributeCount, bool expectedIsSelfClosing) {
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
             using var reader = XmlReader.Create(stream);
 
@@ -59,12 +59,12 @@ namespace VDT.Core.XmlConverter.Tests {
 
             data.ReadNode(reader);
 
-            Assert.NotNull(data.CurrentElement);
-            Assert.Equal(expectedName, data.CurrentElement?.Name);
-            Assert.Equal(expectedAttributeCount, data.CurrentElement?.Attributes.Count);
-            Assert.Equal(expectedIsSelfClosing, data.CurrentElement?.IsSelfClosing);
+            Assert.NotNull(data.CurrentElementData);
+            Assert.Equal(expectedName, data.CurrentElementData?.Name);
+            Assert.Equal(expectedAttributeCount, data.CurrentElementData?.Attributes.Count);
+            Assert.Equal(expectedIsSelfClosing, data.CurrentElementData?.IsSelfClosing);
 
-            Assert.Null(data.CurrentNode);
+            Assert.Null(data.CurrentNodeData);
         }
 
         [Theory]
@@ -87,10 +87,10 @@ namespace VDT.Core.XmlConverter.Tests {
             Assert.Equal(ancestors, data.ElementAncestors);
 
             if (isElement) {
-                Assert.Equal(ancestors, data.CurrentElement?.Ancestors);
+                Assert.Equal(ancestors, data.CurrentElementData?.Ancestors);
             }
             else {
-                Assert.Equal(ancestors, data.CurrentNode?.Ancestors);
+                Assert.Equal(ancestors, data.CurrentNodeData?.Ancestors);
             }
         }
 
@@ -144,9 +144,9 @@ namespace VDT.Core.XmlConverter.Tests {
             }
 
             data.ReadNode(reader);
-            Assert.NotNull(data.CurrentElement);
+            Assert.NotNull(data.CurrentElementData);
 
-            return data.CurrentElement!;
+            return data.CurrentElementData!;
         }
     }
 }

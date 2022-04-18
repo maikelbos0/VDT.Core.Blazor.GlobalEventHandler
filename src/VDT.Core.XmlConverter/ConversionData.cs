@@ -5,7 +5,7 @@ using System.Xml;
 namespace VDT.Core.XmlConverter {
     internal class ConversionData {
         internal Stack<ElementData> Ancestors { get; } = new Stack<ElementData>();
-        internal Dictionary<string, object> AdditionalData { get; } = new Dictionary<string, object>();
+        internal Dictionary<string, object?> AdditionalData { get; } = new Dictionary<string, object?>();
         internal INodeData CurrentNodeData { get; set; }
 
         internal ConversionData() {

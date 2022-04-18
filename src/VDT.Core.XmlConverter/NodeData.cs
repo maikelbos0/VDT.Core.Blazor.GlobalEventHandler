@@ -16,9 +16,9 @@ namespace VDT.Core.XmlConverter {
         public IReadOnlyList<ElementData> Ancestors { get; }
 
         /// <inheritdoc/>
-        public Dictionary<string, object> AdditionalData { get; }
+        public Dictionary<string, object?> AdditionalData { get; }
 
-        internal NodeData(XmlNodeType nodeType, IList<ElementData> ancestors, Dictionary<string, object> additionalData) {
+        internal NodeData(XmlNodeType nodeType, IList<ElementData> ancestors, Dictionary<string, object?> additionalData) {
             NodeType = nodeType;
             Ancestors = new ReadOnlyCollection<ElementData>(ancestors);
             AdditionalData = additionalData;

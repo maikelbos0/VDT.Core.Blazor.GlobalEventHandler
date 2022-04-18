@@ -13,6 +13,6 @@ namespace VDT.Core.XmlConverter {
         /// <summary>
         /// Additional data that is shared by the entire conversion of an xml document and can be freely used by converters
         /// </summary>
-        Dictionary<string, object> AdditionalData { get; }
+        Dictionary<string, object?> AdditionalData { get; }
     }
 }

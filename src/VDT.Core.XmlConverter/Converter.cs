@@ -111,10 +111,10 @@ namespace VDT.Core.XmlConverter {
         internal void ConvertNode(XmlReader reader, TextWriter writer, ConversionData data) {
             data.ReadNode(reader);
 
-            if (data.CurrentNodeData is NodeData nodeData && nodeData != null) {
+            if (data.CurrentNodeData is NodeData nodeData) {
                 ConvertNode(reader, writer, nodeData);
             }
-            else if (data.CurrentNodeData is ElementData elementData && elementData != null) {
+            else if (data.CurrentNodeData is ElementData elementData) {
                 ConvertElement(reader, writer, data, elementData);
             }
             else {

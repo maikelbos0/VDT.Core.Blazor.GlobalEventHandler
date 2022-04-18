@@ -98,7 +98,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             converter.ConvertPosition(reader, writer, data);
 
-            textConverter.Received().Convert(reader, writer, data.CurrentNodeData!);
+            textConverter.Received().Convert(reader, writer, Assert.IsType<NodeData>(data.CurrentNodeData));
         }
 
         [Fact]
@@ -257,7 +257,7 @@ namespace VDT.Core.XmlConverter.Tests {
             var converter = new Converter();
 
             var exception = Assert.Throws<UnexpectedNodeTypeException>(() => converter.ConvertNode(reader, writer, data));
-            
+
             Assert.Equal(XmlNodeType.EndElement, exception.NodeType);
             Assert.Equal("Node type 'EndElement' was not handled by ConvertElement; ensure reader is in correct position before calling Convert", exception.Message);
         }
@@ -294,7 +294,7 @@ namespace VDT.Core.XmlConverter.Tests {
             reader.Read(); // Move to element
             data.ReadNode(reader); // Read element
 
-            converter.ConvertElement(reader, writer, data, data.CurrentElementData!);
+            converter.ConvertElement(reader, writer, data, Assert.IsType<ElementData>(data.CurrentNodeData));
 
             Assert.Equal(expectedNodeType, reader.NodeType);
             Assert.Equal(expectedDepth, reader.Depth);
@@ -319,7 +319,7 @@ namespace VDT.Core.XmlConverter.Tests {
             additionalElementConverter.IsValidFor(Arg.Any<ElementData>()).Returns(true);
 
             converter.ConvertElement(reader, writer, data, elementData);
-                        
+
             VerifyConverterIsUsed(validElementConverter, writer);
             VerifyConverterIsNotUsed(additionalElementConverter, writer);
             VerifyConverterIsNotUsed(defaultElementConverter, writer);
@@ -341,7 +341,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             invalidElementConverter.IsValidFor(Arg.Any<ElementData>()).Returns(false);
 
-            converter.ConvertElement(reader, writer, data, data.CurrentElementData!);
+            converter.ConvertElement(reader, writer, data, Assert.IsType<ElementData>(data.CurrentNodeData));
 
             VerifyConverterIsUsed(defaultElementConverter, writer);
             VerifyConverterIsNotUsed(invalidElementConverter, writer);
@@ -359,7 +359,7 @@ namespace VDT.Core.XmlConverter.Tests {
                 DefaultElementConverter = defaultElementConverter
             });
 
-            converter.ConvertElement(reader, writer, data, data.CurrentElementData!);
+            converter.ConvertElement(reader, writer, data, Assert.IsType<ElementData>(data.CurrentNodeData));
 
             VerifyConverterIsUsed(defaultElementConverter, writer);
         }

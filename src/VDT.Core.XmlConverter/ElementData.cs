@@ -5,7 +5,7 @@ namespace VDT.Core.XmlConverter {
     /// <summary>
     /// Information about an element being converted
     /// </summary>
-    public class ElementData {
+    public class ElementData : INodeData {
         /// <summary>
         /// Tag name of the element
         /// </summary>
@@ -21,14 +21,10 @@ namespace VDT.Core.XmlConverter {
         /// </summary>
         public bool IsSelfClosing { get; }
 
-        /// <summary>
-        /// Ancestor elements to the current element in order from lowest (direct parent) to highest (most far removed ancestor)
-        /// </summary>
+        /// <inheritdoc/>
         public IReadOnlyList<ElementData> Ancestors { get; }
 
-        /// <summary>
-        /// Additional data that is shared by the entire conversion of an xml document and can be freely used by converters
-        /// </summary>
+        /// <inheritdoc/>
         public Dictionary<string, object> AdditionalData { get; }
 
         internal ElementData(string name, Dictionary<string, string> attributes, bool isSelfClosing, IList<ElementData> ancestors, Dictionary<string, object> additionalData) {

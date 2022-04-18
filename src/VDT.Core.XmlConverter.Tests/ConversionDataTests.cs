@@ -10,7 +10,7 @@ namespace VDT.Core.XmlConverter.Tests {
         [InlineData("<!-- Test -->", XmlNodeType.Comment)]
         [InlineData("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", XmlNodeType.XmlDeclaration)]
         [InlineData("<?xml-stylesheet type=\"text/xsl\" href=\"style.xsl\"?>", XmlNodeType.ProcessingInstruction)]
-        public void ReadNode_Sets_CurrentNodeData_If_Not_Element(string xml, XmlNodeType expectedNodeType) {
+        public void ReadNode_Sets_CurrentNodeData_To_NodeData_If_Not_Element(string xml, XmlNodeType expectedNodeType) {
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
             using var reader = XmlReader.Create(stream);
 
@@ -21,12 +21,11 @@ namespace VDT.Core.XmlConverter.Tests {
 
             data.ReadNode(reader);
 
-            Assert.NotNull(data.CurrentNodeData);
-            Assert.Equal(expectedNodeType, data.CurrentNodeData?.NodeType);
-            Assert.True(data.CurrentNodeData?.AdditionalData.ContainsKey("test"));
-            Assert.Equal("test", data.CurrentNodeData?.AdditionalData["test"]);
+            var nodeData = Assert.IsType<NodeData>(data.CurrentNodeData);
 
-            Assert.Null(data.CurrentElementData);
+            Assert.Equal(expectedNodeType, nodeData.NodeType);
+            Assert.True(nodeData.AdditionalData.ContainsKey("test"));
+            Assert.Equal("test", nodeData.AdditionalData["test"]);
         }
 
         [Theory]
@@ -34,7 +33,7 @@ namespace VDT.Core.XmlConverter.Tests {
         [InlineData("<foo bar=\"baz\"/>", "foo", 1, true)]
         [InlineData("<foo>Content</foo>", "foo", 0, false)]
         [InlineData("<foo/>", "foo", 0, true)]
-        public void ReadNode_Sets_CurrentElementData_If_Element(string xml, string expectedName, int expectedAttributeCount, bool expectedIsSelfClosing) {
+        public void ReadNode_Sets_CurrentElementData_To_ElementData_If_Element(string xml, string expectedName, int expectedAttributeCount, bool expectedIsSelfClosing) {
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
             using var reader = XmlReader.Create(stream);
 
@@ -45,20 +44,19 @@ namespace VDT.Core.XmlConverter.Tests {
 
             data.ReadNode(reader);
 
-            Assert.NotNull(data.CurrentElementData);
-            Assert.Equal(expectedName, data.CurrentElementData?.Name);
-            Assert.Equal(expectedAttributeCount, data.CurrentElementData?.Attributes.Count);
-            Assert.Equal(expectedIsSelfClosing, data.CurrentElementData?.IsSelfClosing);
-            Assert.True(data.CurrentElementData?.AdditionalData.ContainsKey("test"));
-            Assert.Equal("test", data.CurrentElementData?.AdditionalData["test"]);
+            var elementData = Assert.IsType<ElementData>(data.CurrentNodeData);
 
-            Assert.Null(data.CurrentNodeData);
+            Assert.Equal(expectedName, elementData.Name);
+            Assert.Equal(expectedAttributeCount, elementData.Attributes.Count);
+            Assert.Equal(expectedIsSelfClosing, elementData.IsSelfClosing);
+            Assert.True(elementData.AdditionalData.ContainsKey("test"));
+            Assert.Equal("test", elementData.AdditionalData["test"]);
         }
 
         [Theory]
-        [InlineData("<foo><bar><baz/></bar></foo>", true)]
-        [InlineData("<foo><bar>Content</bar></foo>", false)]
-        public void ReadNode_Adds_Ancestors_When_Depth_Increases(string xml, bool isElement) {
+        [InlineData("<foo><bar><baz/></bar></foo>")]
+        [InlineData("<foo><bar>Content</bar></foo>")]
+        public void ReadNode_Adds_Ancestors_When_Depth_Increases(string xml) {
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
             using var reader = XmlReader.Create(stream);
 
@@ -73,13 +71,7 @@ namespace VDT.Core.XmlConverter.Tests {
             data.ReadNode(reader);
 
             Assert.Equal(ancestors, data.Ancestors);
-
-            if (isElement) {
-                Assert.Equal(ancestors, data.CurrentElementData?.Ancestors);
-            }
-            else {
-                Assert.Equal(ancestors, data.CurrentNodeData?.Ancestors);
-            }
+            Assert.Equal(ancestors, data.CurrentNodeData.Ancestors);
         }
 
         [Fact]
@@ -132,9 +124,8 @@ namespace VDT.Core.XmlConverter.Tests {
             }
 
             data.ReadNode(reader);
-            Assert.NotNull(data.CurrentElementData);
 
-            return data.CurrentElementData!;
+            return Assert.IsType<ElementData>(data.CurrentNodeData);
         }
     }
 }

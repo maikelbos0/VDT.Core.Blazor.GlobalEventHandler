@@ -111,14 +111,14 @@ namespace VDT.Core.XmlConverter {
         internal void ConvertPosition(XmlReader reader, TextWriter writer, ConversionData data) {
             data.ReadNode(reader);
 
-            if (data.CurrentNodeData != null) {
-                ConvertNode(reader, writer, data.CurrentNodeData);
+            if (data.CurrentNodeData is NodeData nodeData && nodeData != null) {
+                ConvertNode(reader, writer, nodeData);
             }
-            else if (data.CurrentElementData != null) {
-                ConvertElement(reader, writer, data, data.CurrentElementData);
+            else if (data.CurrentNodeData is ElementData elementData && elementData != null) {
+                ConvertElement(reader, writer, data, elementData);
             }
             else {
-                throw new InvalidOperationException($"Unexpectedly found both {data.CurrentNodeData} and {data.CurrentElementData} to be null");
+                throw new InvalidOperationException($"Found unhandled implementation {data.CurrentNodeData.GetType().FullName} of {nameof(INodeData)}");
             }
         }
 

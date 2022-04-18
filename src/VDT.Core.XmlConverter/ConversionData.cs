@@ -5,12 +5,12 @@ using System.Xml;
 namespace VDT.Core.XmlConverter {
     internal class ConversionData {
         internal Stack<ElementData> Ancestors { get; } = new Stack<ElementData>();
-
         internal Dictionary<string, object> AdditionalData { get; } = new Dictionary<string, object>();
+        internal INodeData CurrentNodeData { get; set; }
 
-        internal NodeData? CurrentNodeData { get; set; }
-
-        internal ElementData? CurrentElementData { get; set; }
+        internal ConversionData() {
+            CurrentNodeData = new NodeData(XmlNodeType.None, Array.Empty<ElementData>(), AdditionalData);
+        }
 
         internal void ReadNode(XmlReader reader) {
             while (Ancestors.Count > reader.Depth) {
@@ -18,18 +18,17 @@ namespace VDT.Core.XmlConverter {
             }
 
             if (reader.Depth > Ancestors.Count) {
-                Ancestors.Push(CurrentElementData ?? throw new InvalidOperationException($"Expected parent node to be an {XmlNodeType.Element} but found {CurrentNodeData?.NodeType}"));
+                Ancestors.Push(CurrentNodeData as ElementData ?? throw new InvalidOperationException($"Expected parent node to be an {nameof(ElementData)} but found {CurrentNodeData.GetType().FullName}"));
             }
 
             if (reader.NodeType == XmlNodeType.Element) {
-                CurrentElementData = new ElementData(
+                CurrentNodeData = new ElementData(
                     reader.Name,
                     reader.GetAttributes(),
                     reader.IsEmptyElement,
                     Ancestors.ToArray(),
                     AdditionalData
-                );
-                CurrentNodeData = null;                
+                );             
             }
             else {
                 CurrentNodeData = new NodeData(
@@ -37,7 +36,6 @@ namespace VDT.Core.XmlConverter {
                     Ancestors.ToArray(),
                     AdditionalData
                 );
-                CurrentElementData = null;
             }
         }
     }

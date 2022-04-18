@@ -10,12 +10,13 @@ namespace VDT.Core.XmlConverter.Tests {
         public static ElementData Create(string name, IEnumerable<ElementData> ancestors)
             => Create(name, null, false, ancestors.ToList());
 
-        public static ElementData Create(string name, Dictionary<string, string>? attributes = null, bool isSelfClosing = false, IList<ElementData>? ancestors = null)
+        public static ElementData Create(string name, Dictionary<string, string>? attributes = null, bool isSelfClosing = false, IList<ElementData>? ancestors = null, Dictionary<string, object>? additionalData = null)
             => new ElementData(
                 name,
                 attributes ?? new Dictionary<string, string>(),
                 isSelfClosing,
-                ancestors ?? Array.Empty<ElementData>()
+                ancestors ?? Array.Empty<ElementData>(),
+                additionalData ?? new Dictionary<string, object>()
             );
     }
 }

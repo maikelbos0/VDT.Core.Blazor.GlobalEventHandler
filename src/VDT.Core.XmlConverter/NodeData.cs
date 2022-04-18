@@ -17,9 +17,15 @@ namespace VDT.Core.XmlConverter {
         /// </summary>
         public IReadOnlyList<ElementData> Ancestors { get; }
 
-        internal NodeData(XmlNodeType nodeType, IList<ElementData> ancestors) {
+        /// <summary>
+        /// Additional data that is shared by the entire conversion of an xml document and can be freely used by converters
+        /// </summary>
+        public Dictionary<string, object> AdditionalData { get; }
+
+        internal NodeData(XmlNodeType nodeType, IList<ElementData> ancestors, Dictionary<string, object> additionalData) {
             NodeType = nodeType;
             Ancestors = new ReadOnlyCollection<ElementData>(ancestors);
+            AdditionalData = additionalData;
         }
     }
 }

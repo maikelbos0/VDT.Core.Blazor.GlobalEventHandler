@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 using System.Xml;
 using Xunit;
@@ -16,7 +15,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             reader.Read(); // Move to processing instruction
 
-            converter.Convert(reader, writer, new NodeData(XmlNodeType.ProcessingInstruction, Array.Empty<ElementData>()));
+            converter.Convert(reader, writer, NodeDataHelper.Create(XmlNodeType.ProcessingInstruction));
 
             Assert.Equal("[name]='value'", writer.ToString());
         }
@@ -34,7 +33,7 @@ namespace VDT.Core.XmlConverter.Tests {
             reader.Read(); // Move to element
             reader.Read(); // Move to text
 
-            converter.Convert(reader, writer, new NodeData(XmlNodeType.Text, Array.Empty<ElementData>()));
+            converter.Convert(reader, writer, NodeDataHelper.Create(XmlNodeType.Text));
 
             Assert.Equal(expectedValue, writer.ToString());
         }

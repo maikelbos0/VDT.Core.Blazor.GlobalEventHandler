@@ -26,11 +26,17 @@ namespace VDT.Core.XmlConverter {
         /// </summary>
         public IReadOnlyList<ElementData> Ancestors { get; }
 
-        internal ElementData(string name, Dictionary<string, string> attributes, bool isSelfClosing, IList<ElementData> ancestors) {
+        /// <summary>
+        /// Additional data that is shared by the entire conversion of an xml document and can be freely used by converters
+        /// </summary>
+        public Dictionary<string, object> AdditionalData { get; }
+
+        internal ElementData(string name, Dictionary<string, string> attributes, bool isSelfClosing, IList<ElementData> ancestors, Dictionary<string, object> additionalData) {
             Name = name;
             Attributes = new ReadOnlyDictionary<string, string>(attributes);
             IsSelfClosing = isSelfClosing;
             Ancestors = new ReadOnlyCollection<ElementData>(ancestors);
+            AdditionalData = additionalData;
         }
     }
 }

@@ -17,11 +17,14 @@ namespace VDT.Core.XmlConverter.Tests {
             var data = new ConversionData();
 
             reader.Read(); // Move to node
+            data.AdditionalData["test"] = "test";
 
             data.ReadNode(reader);
 
             Assert.NotNull(data.CurrentNodeData);
             Assert.Equal(expectedNodeType, data.CurrentNodeData?.NodeType);
+            Assert.True(data.CurrentNodeData?.AdditionalData.ContainsKey("test"));
+            Assert.Equal("test", data.CurrentNodeData?.AdditionalData["test"]);
 
             Assert.Null(data.CurrentElementData);
         }
@@ -38,6 +41,7 @@ namespace VDT.Core.XmlConverter.Tests {
             var data = new ConversionData();
 
             reader.Read(); // Move to element
+            data.AdditionalData["test"] = "test";
 
             data.ReadNode(reader);
 
@@ -45,6 +49,8 @@ namespace VDT.Core.XmlConverter.Tests {
             Assert.Equal(expectedName, data.CurrentElementData?.Name);
             Assert.Equal(expectedAttributeCount, data.CurrentElementData?.Attributes.Count);
             Assert.Equal(expectedIsSelfClosing, data.CurrentElementData?.IsSelfClosing);
+            Assert.True(data.CurrentElementData?.AdditionalData.ContainsKey("test"));
+            Assert.Equal("test", data.CurrentElementData?.AdditionalData["test"]);
 
             Assert.Null(data.CurrentNodeData);
         }

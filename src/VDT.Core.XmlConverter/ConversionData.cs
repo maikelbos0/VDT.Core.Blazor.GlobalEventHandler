@@ -4,7 +4,9 @@ using System.Xml;
 
 namespace VDT.Core.XmlConverter {
     internal class ConversionData {
-        internal Stack<ElementData> Ancestors { get; set; } = new Stack<ElementData>();
+        internal Stack<ElementData> Ancestors { get; } = new Stack<ElementData>();
+
+        internal Dictionary<string, object> AdditionalData { get; } = new Dictionary<string, object>();
 
         internal NodeData? CurrentNodeData { get; set; }
 
@@ -24,16 +26,19 @@ namespace VDT.Core.XmlConverter {
                     reader.Name,
                     reader.GetAttributes(),
                     reader.IsEmptyElement,
-                    Ancestors.ToArray()
+                    Ancestors.ToArray(),
+                    AdditionalData
                 );
                 CurrentNodeData = null;                
             }
             else {
+                CurrentNodeData = new NodeData(
+                    reader.NodeType, 
+                    Ancestors.ToArray(),
+                    AdditionalData
+                );
                 CurrentElementData = null;
-                CurrentNodeData = new NodeData(reader.NodeType, Ancestors.ToArray());
             }
         }
-
-        // public Dictionary<string, object> AdditionalData { get; } = new Dictionary<string, object>();
     }
 }

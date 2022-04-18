@@ -104,11 +104,11 @@ namespace VDT.Core.XmlConverter {
             }
 
             do {
-                ConvertPosition(reader, writer, data);
+                ConvertNode(reader, writer, data);
             } while (reader.Read());
         }
 
-        internal void ConvertPosition(XmlReader reader, TextWriter writer, ConversionData data) {
+        internal void ConvertNode(XmlReader reader, TextWriter writer, ConversionData data) {
             data.ReadNode(reader);
 
             if (data.CurrentNodeData is NodeData nodeData && nodeData != null) {
@@ -172,7 +172,7 @@ namespace VDT.Core.XmlConverter {
             if (!elementData.IsSelfClosing) {
                 while (reader.Read() && reader.Depth > depth) {
                     if (shouldRenderContent) {
-                        ConvertPosition(reader, writer, data);
+                        ConvertNode(reader, writer, data);
                     }
                 }
             }

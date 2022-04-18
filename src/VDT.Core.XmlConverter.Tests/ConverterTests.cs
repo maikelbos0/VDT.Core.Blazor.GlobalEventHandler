@@ -82,7 +82,7 @@ namespace VDT.Core.XmlConverter.Tests {
         }
 
         [Fact]
-        public void ConvertPosition_Converts_Node() {
+        public void ConvertNode_Converts_Node() {
             using var writer = new StringWriter();
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\">Content</foo>"));
             using var reader = XmlReader.Create(stream);
@@ -96,13 +96,13 @@ namespace VDT.Core.XmlConverter.Tests {
             reader.Read(); // Move to element
             reader.Read(); // Move to text
 
-            converter.ConvertPosition(reader, writer, data);
+            converter.ConvertNode(reader, writer, data);
 
             textConverter.Received().Convert(reader, writer, Assert.IsType<NodeData>(data.CurrentNodeData));
         }
 
         [Fact]
-        public void ConvertPosition_Converts_Element() {
+        public void ConvertNode_Converts_Element() {
             using var writer = new StringWriter();
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\"></foo>"));
             using var reader = XmlReader.Create(stream);
@@ -115,7 +115,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             reader.Read(); // Move to element
 
-            converter.ConvertPosition(reader, writer, data);
+            converter.ConvertNode(reader, writer, data);
 
             VerifyConverterIsUsed(elementConverter, writer);
         }

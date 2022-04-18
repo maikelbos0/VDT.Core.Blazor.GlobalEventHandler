@@ -1,7 +1,6 @@
 ﻿using NSubstitute;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Xml;
 using Xunit;
@@ -82,9 +81,28 @@ namespace VDT.Core.XmlConverter.Tests {
             Assert.Equal(xml, converter.Convert(reader), ignoreLineEndingDifferences: true);
         }
 
-        // TODO more test
         [Fact]
-        public void Convert_Converts_Element() {
+        public void ConvertPosition_Converts_Node() {
+            using var writer = new StringWriter();
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\">Content</foo>"));
+            using var reader = XmlReader.Create(stream);
+
+            var data = ConversionDataHelper.Create(ElementDataHelper.Create("foo"));
+            var textConverter = Substitute.For<INodeConverter>();
+            var converter = new Converter(new ConverterOptions() {
+                TextConverter = textConverter
+            });
+
+            reader.Read(); // Move to element
+            reader.Read(); // Move to text
+
+            converter.ConvertPosition(reader, writer, data);
+
+            textConverter.Received().Convert(reader, writer, data.CurrentNodeData!);
+        }
+
+        [Fact]
+        public void ConvertPosition_Converts_Element() {
             using var writer = new StringWriter();
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo bar=\"baz\"></foo>"));
             using var reader = XmlReader.Create(stream);
@@ -97,7 +115,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             reader.Read(); // Move to element
 
-            converter.Convert(reader, writer, data);
+            converter.ConvertPosition(reader, writer, data);
 
             VerifyConverterIsUsed(elementConverter, writer);
         }

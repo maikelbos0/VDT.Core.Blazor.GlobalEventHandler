@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace VDT.Core.XmlConverter.Markdown {
@@ -7,6 +8,8 @@ namespace VDT.Core.XmlConverter.Markdown {
     /// Converter for rendering xml text as Markdown text
     /// </summary>
     public class TextConverter : INodeConverter {
+        private static Regex whitespaceNormalizer = new Regex("\\s+", RegexOptions.Compiled);
+
         private static Dictionary<char, string> markdownEscapeCharacters = new Dictionary<char, string>() {
             { '\\', "\\\\" },
             { '`', "\\`" },
@@ -33,7 +36,7 @@ namespace VDT.Core.XmlConverter.Markdown {
 
         /// <inheritdoc/>
         public void Convert(XmlReader reader, TextWriter writer, NodeData data) {
-            var value = reader.Value.Trim();
+            var value = whitespaceNormalizer.Replace(reader.Value.Trim(), " ");
             
             foreach (var c in value) {
                 if (markdownEscapeCharacters.TryGetValue(c, out var str)) {

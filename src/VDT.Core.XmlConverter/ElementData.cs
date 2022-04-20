@@ -25,13 +25,17 @@ namespace VDT.Core.XmlConverter {
         public IReadOnlyList<ElementData> Ancestors { get; }
 
         /// <inheritdoc/>
+        public bool IsFirstChild { get; }
+
+        /// <inheritdoc/>
         public Dictionary<string, object?> AdditionalData { get; }
 
-        internal ElementData(string name, Dictionary<string, string> attributes, bool isSelfClosing, IList<ElementData> ancestors, Dictionary<string, object?> additionalData) {
+        internal ElementData(string name, Dictionary<string, string> attributes, bool isSelfClosing, IList<ElementData> ancestors, bool isFirstChild, Dictionary<string, object?> additionalData) {
             Name = name;
             Attributes = new ReadOnlyDictionary<string, string>(attributes);
             IsSelfClosing = isSelfClosing;
             Ancestors = new ReadOnlyCollection<ElementData>(ancestors);
+            IsFirstChild = isFirstChild;
             AdditionalData = additionalData;
         }
     }

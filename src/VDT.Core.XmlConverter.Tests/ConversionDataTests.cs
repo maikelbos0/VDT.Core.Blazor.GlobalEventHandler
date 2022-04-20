@@ -24,6 +24,7 @@ namespace VDT.Core.XmlConverter.Tests {
             var nodeData = Assert.IsType<NodeData>(data.CurrentNodeData);
 
             Assert.Equal(expectedNodeType, nodeData.NodeType);
+            Assert.True(nodeData.IsFirstChild);
             Assert.True(nodeData.AdditionalData.ContainsKey("test"));
             Assert.Equal("test", nodeData.AdditionalData["test"]);
         }
@@ -49,8 +50,61 @@ namespace VDT.Core.XmlConverter.Tests {
             Assert.Equal(expectedName, elementData.Name);
             Assert.Equal(expectedAttributeCount, elementData.Attributes.Count);
             Assert.Equal(expectedIsSelfClosing, elementData.IsSelfClosing);
+            Assert.True(elementData.IsFirstChild);
             Assert.True(elementData.AdditionalData.ContainsKey("test"));
             Assert.Equal("test", elementData.AdditionalData["test"]);
+        }
+
+        [Fact]
+        public void ReadNode_Sets_IsFirstChild_True_For_First_Node() {
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo/><foo/>"));
+            using var reader = XmlReader.Create(stream, new XmlReaderSettings() { ConformanceLevel = ConformanceLevel.Fragment });
+
+            var data = new ConversionData();
+
+            data.ReadNode(reader); // First element
+
+            Assert.True(data.CurrentNodeData.IsFirstChild);
+        }
+
+        [Fact]
+        public void ReadNode_Sets_IsFirstChild_False_For_Not_First_Node() {
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo/><foo/>"));
+            using var reader = XmlReader.Create(stream, new XmlReaderSettings() { ConformanceLevel = ConformanceLevel.Fragment });
+
+            var data = new ConversionData();
+
+            ReadNextElement(reader, data); // First element
+            ReadNextElement(reader, data); // Next element
+
+            Assert.False(data.CurrentNodeData.IsFirstChild);
+        }
+
+        [Fact]
+        public void ReadNode_Sets_IsFirstChild_True_For_First_Child() {
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo><bar/><bar/></foo>"));
+            using var reader = XmlReader.Create(stream, new XmlReaderSettings() { ConformanceLevel = ConformanceLevel.Fragment });
+
+            var data = new ConversionData();
+
+            ReadNextElement(reader, data); // Parent element
+            ReadNextElement(reader, data); // First child element
+
+            Assert.True(data.CurrentNodeData.IsFirstChild);
+        }
+
+        [Fact]
+        public void ReadNode_Sets_IsFirstChild_False_For_Not_First_Child() {
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes("<foo><bar/><bar/></foo>"));
+            using var reader = XmlReader.Create(stream, new XmlReaderSettings() { ConformanceLevel = ConformanceLevel.Fragment });
+
+            var data = new ConversionData();
+
+            ReadNextElement(reader, data); // Parent element
+            ReadNextElement(reader, data); // First child element
+            ReadNextElement(reader, data); // Next child element
+
+            Assert.False(data.CurrentNodeData.IsFirstChild);
         }
 
         [Theory]

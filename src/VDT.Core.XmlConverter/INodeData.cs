@@ -11,6 +11,11 @@ namespace VDT.Core.XmlConverter {
         IReadOnlyList<ElementData> Ancestors { get; }
 
         /// <summary>
+        /// <see langword="true"/> if this node is the first child of its parent, otherwise <see langword="false"/>
+        /// </summary>
+        bool IsFirstChild { get; }
+
+        /// <summary>
         /// Additional data that is shared by the entire conversion of an xml document and can be freely used by converters
         /// </summary>
         Dictionary<string, object?> AdditionalData { get; }

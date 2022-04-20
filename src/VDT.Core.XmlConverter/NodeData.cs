@@ -16,11 +16,15 @@ namespace VDT.Core.XmlConverter {
         public IReadOnlyList<ElementData> Ancestors { get; }
 
         /// <inheritdoc/>
+        public bool IsFirstChild { get; }
+
+        /// <inheritdoc/>
         public Dictionary<string, object?> AdditionalData { get; }
 
-        internal NodeData(XmlNodeType nodeType, IList<ElementData> ancestors, Dictionary<string, object?> additionalData) {
+        internal NodeData(XmlNodeType nodeType, IList<ElementData> ancestors, bool isFirstChild, Dictionary<string, object?> additionalData) {
             NodeType = nodeType;
             Ancestors = new ReadOnlyCollection<ElementData>(ancestors);
+            IsFirstChild = isFirstChild;
             AdditionalData = additionalData;
         }
     }

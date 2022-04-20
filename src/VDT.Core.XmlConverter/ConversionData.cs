@@ -6,17 +6,17 @@ namespace VDT.Core.XmlConverter {
     internal class ConversionData {
         internal Stack<ElementData> Ancestors { get; } = new Stack<ElementData>();
         internal Dictionary<string, object?> AdditionalData { get; } = new Dictionary<string, object?>();
-        internal INodeData CurrentNodeData { get; set; } = null!;
+        internal INodeData CurrentNodeData { get; set; } = new NullNodeData();
 
         internal void ReadNode(XmlReader reader) {
-            var isFirstChild = CurrentNodeData == null || reader.Depth > Ancestors.Count;
+            var isFirstChild = CurrentNodeData is NullNodeData || reader.Depth > Ancestors.Count;
 
             while (Ancestors.Count > reader.Depth) {
                 Ancestors.Pop();
             }
 
             if (reader.Depth > Ancestors.Count) {
-                Ancestors.Push(CurrentNodeData as ElementData ?? throw new InvalidOperationException($"Expected parent node to be an {nameof(ElementData)} but found {CurrentNodeData!.GetType().FullName}"));
+                Ancestors.Push(CurrentNodeData as ElementData ?? throw new InvalidOperationException($"Expected parent node to be an {nameof(ElementData)} but found {CurrentNodeData.GetType().FullName}"));
             }
 
             if (reader.NodeType == XmlNodeType.Element) {

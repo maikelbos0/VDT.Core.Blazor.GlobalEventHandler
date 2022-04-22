@@ -16,19 +16,24 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Equal(expectedIsValid, converter.IsValidFor(ElementDataHelper.Create(elementName)));
         }
 
-        [Fact]
-        public void RenderStart_Renders_StartOuput() {
+        [Theory]
+        [InlineData(false, "\r\n\t\tstart")]
+        [InlineData(true, "start")]
+        public void RenderStart_Renders_StartOuput(bool isFirstChild, string expectedOutput) {
             using var writer = new StringWriter();
             var converter = new BlockElementConverter("start", "foo", "bar");
             var elementData = ElementDataHelper.Create(
                 "bar",
-                ElementDataHelper.Create("li"),
-                ElementDataHelper.Create("li")
+                ancestors: new[] {
+                    ElementDataHelper.Create("li"),
+                    ElementDataHelper.Create("li")
+                },
+                isFirstChild: isFirstChild
             );
 
             converter.RenderStart(elementData, writer);
 
-            Assert.Equal("\r\n\t\tstart", writer.ToString());
+            Assert.Equal(expectedOutput, writer.ToString());
         }
 
         [Fact]

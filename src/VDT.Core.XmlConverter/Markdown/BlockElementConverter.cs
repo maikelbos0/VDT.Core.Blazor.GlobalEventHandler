@@ -22,17 +22,26 @@ namespace VDT.Core.XmlConverter.Markdown {
 
         /// <inheritdoc/>
         public override void RenderStart(ElementData elementData, TextWriter writer) {
+            var tracker = elementData.GetTrailingNewLineTracker();
+
             if (!elementData.IsFirstChild) {
-                writer.WriteLine();
-                writer.Write(new string('\t', GetAncestorListItemCount(elementData)));
+                if (tracker.NewLineCount == 0) {
+                    tracker.WriteLine(writer);
+                }
+
+                tracker.Write(writer, new string('\t', GetAncestorListItemCount(elementData)));
             }
 
-            writer.Write(startOutput);
+            tracker.Write(writer, startOutput);
         }
 
         /// <inheritdoc/>
         public override void RenderEnd(ElementData elementData, TextWriter writer) {
-            writer.WriteLine();
+            var tracker = elementData.GetTrailingNewLineTracker();
+
+            if (tracker.NewLineCount == 0) {
+                tracker.WriteLine(writer);
+            }
         }
 
         internal int GetAncestorListItemCount(ElementData elementData) => elementData.Ancestors.Count(d => string.Equals(d.Name, listItemName, StringComparison.OrdinalIgnoreCase));

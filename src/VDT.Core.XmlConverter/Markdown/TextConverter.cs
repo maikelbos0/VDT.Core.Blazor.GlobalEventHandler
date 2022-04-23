@@ -37,7 +37,7 @@ namespace VDT.Core.XmlConverter.Markdown {
         /// <inheritdoc/>
         public void Convert(XmlReader reader, TextWriter writer, NodeData data) {
             var value = whitespaceNormalizer.Replace(reader.Value.Trim(), " ");
-            
+
             foreach (var c in value) {
                 if (markdownEscapeCharacters.TryGetValue(c, out var str)) {
                     writer.Write(str);

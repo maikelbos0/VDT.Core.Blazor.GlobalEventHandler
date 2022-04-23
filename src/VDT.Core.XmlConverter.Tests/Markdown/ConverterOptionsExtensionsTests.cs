@@ -118,10 +118,8 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 ";
             var options = new ConverterOptions().UseMarkdown();
             var converter = new Converter(options);
-
-            // Resolve issue with too many line breaks; should be only 1 between list items and 2 between unrelated items
-
-            Assert.Equal("This is a paragraph\\.\r\n\r\nThis paragraph has a line break\\.  \r\nThis is line 2\\.\r\n\r\n\r\n1. Here we have some numbers\r\n\r\n1. This number has bullets:\r\n\t- Bullet\r\n\r\n\t- Foo\r\n\r\n\r\n1. ## A header in a list item\\!\r\n\r\n", converter.Convert(xml));
+            
+            Assert.Equal("This is a paragraph\\.\r\n\r\nThis paragraph has a line break\\.  \r\nThis is line 2\\.\r\n\r\n1. Here we have some numbers\r\n1. This number has bullets:\r\n\t- Bullet\r\n\t- Foo\r\n1. ## A header in a list item\\!\r\n", converter.Convert(xml));
         }
     }
 }

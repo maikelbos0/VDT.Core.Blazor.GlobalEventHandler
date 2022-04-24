@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using VDT.Core.XmlConverter.Markdown;
 using Xunit;
@@ -17,9 +18,11 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Theory]
-        [InlineData(false, "\r\n\t\tstart")]
-        [InlineData(true, "start")]
-        public void RenderStart_Renders_StartOuput(bool isFirstChild, string expectedOutput) {
+        [InlineData(false, false, "\r\n\t\tstart")]
+        [InlineData(true, false, "start")]
+        [InlineData(false, true, "\t\tstart")]
+        [InlineData(true, true, "start")]
+        public void RenderStart_Renders_StartOuput(bool isFirstChild, bool hasTrailingNewLine, string expectedOutput) {
             using var writer = new StringWriter();
             var converter = new BlockElementConverter("start", "foo", "bar");
             var elementData = ElementDataHelper.Create(
@@ -28,7 +31,10 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
                     ElementDataHelper.Create("li"),
                     ElementDataHelper.Create("li")
                 },
-                isFirstChild: isFirstChild
+                isFirstChild: isFirstChild,
+                additionalData: new Dictionary<string, object?> {
+                    { nameof(TrailingNewLineTracker.NewLineCount), hasTrailingNewLine ? 1 : 0 }
+                }
             );
 
             converter.RenderStart(elementData, writer);
@@ -42,15 +48,23 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             Assert.True(converter.ShouldRenderContent(ElementDataHelper.Create("bar")));
         }
-
-        [Fact]
-        public void RenderEnd_Renders_EndOuput() {
+        
+        [Theory]
+        [InlineData(false, "\r\n")]
+        [InlineData(true, "")]
+        public void RenderEnd_Renders_EndOuput(bool hasTrailingNewLine, string expectedOutput) {
             using var writer = new StringWriter();
             var converter = new BlockElementConverter("start", "foo", "bar");
+            var elementData = ElementDataHelper.Create(
+                "bar",
+                additionalData: new Dictionary<string, object?> {
+                    { nameof(TrailingNewLineTracker.NewLineCount), hasTrailingNewLine ? 1 : 0 }
+                }
+            );
 
-            converter.RenderEnd(ElementDataHelper.Create("bar"), writer);
+            converter.RenderEnd(elementData, writer);
 
-            Assert.Equal("\r\n", writer.ToString());
+            Assert.Equal(expectedOutput, writer.ToString());
         }
 
         [Theory]

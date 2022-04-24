@@ -23,13 +23,25 @@ namespace VDT.Core.XmlConverter.Markdown {
             }
             private set {
                 additionalData[nameof(NewLineCount)] = value;
+                HasTrailingNewLine = value > 0;
             }
         }
 
         /// <summary>
         /// <see langword="true"/> if the last things written was a trailing line terminator; otherwise <see langword="false"/>
         /// </summary>
-        public bool HasTrailingNewLine => NewLineCount > 0;
+        public bool HasTrailingNewLine {
+            get {
+                if (additionalData.TryGetValue(nameof(HasTrailingNewLine), out var valueObj) && valueObj is bool value) {
+                    return value;
+                }
+
+                return false;
+            }
+            private set {
+                additionalData[nameof(HasTrailingNewLine)] = value;
+            }
+        }
 
         /// <summary>
         /// Construct a trailing new line tracker
@@ -75,7 +87,7 @@ namespace VDT.Core.XmlConverter.Markdown {
             if (newLineCount == values.Length) {
                 NewLineCount += newLineCount - 1 + additionalNewLineCount;
             }
-            else { 
+            else {
                 NewLineCount = newLineCount + additionalNewLineCount;
             }
         }

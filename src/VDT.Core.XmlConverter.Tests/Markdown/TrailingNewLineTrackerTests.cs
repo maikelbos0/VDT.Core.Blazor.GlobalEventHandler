@@ -7,73 +7,67 @@ using Xunit;
 namespace VDT.Core.XmlConverter.Tests.Markdown {
     public class TrailingNewLineTrackerTests {
         [Theory]
-        [InlineData(null, "", 0)]
-        [InlineData(0, "", 0)]
-        [InlineData(1, "", 1)]
-        [InlineData(null, "\r\ntest\r\n", 1)]
-        [InlineData(2, "\r\ntest\r\n", 1)]
-        [InlineData(null, "\r\ntest", 0)]
-        [InlineData(2, "\r\ntest", 0)]
-        [InlineData(null, "\r\n\r\n", 2)]
-        [InlineData(2, "\r\n\r\n", 4)]
-        public void NewLineTracker_Write_Succeeds(int? currentNewLineCount, string value, int expectedNewLineCount) {
+        [InlineData(null, "", false)]
+        [InlineData(false, "", false)]
+        [InlineData(true, "", true)]
+        [InlineData(null, "\r\ntest\r\n", true)]
+        [InlineData(false, "\r\ntest\r\n", true)]
+        [InlineData(true, "\r\ntest\r\n", true)]
+        [InlineData(null, "\r\ntest", false)]
+        [InlineData(false, "\r\ntest", false)]
+        [InlineData(true, "\r\ntest", false)]
+        public void NewLineTracker_Write_Succeeds(bool? currentHasTrailingNewLine, string value, bool expectedHasTrailingNewLine) {
             using var writer = Substitute.For<TextWriter>();
 
-            var additionalData = GetAdditionalData(currentNewLineCount);
+            var additionalData = GetAdditionalData(currentHasTrailingNewLine);
             var tracker = new TrailingNewLineTracker(additionalData);
 
             tracker.Write(writer, value);
 
             writer.Received().Write(value);
-            Assert.True(additionalData.ContainsKey(nameof(TrailingNewLineTracker.NewLineCount)));
-            Assert.Equal(expectedNewLineCount, additionalData[nameof(TrailingNewLineTracker.NewLineCount)]);
+            Assert.True(additionalData.ContainsKey(nameof(TrailingNewLineTracker.HasTrailingNewLine)));
+            Assert.Equal(expectedHasTrailingNewLine, additionalData[nameof(TrailingNewLineTracker.HasTrailingNewLine)]);
         }
 
         [Theory]
-        [InlineData(null, "", 1)]
-        [InlineData(0, "", 1)]
-        [InlineData(1, "", 2)]
-        [InlineData(null, "\r\ntest\r\n", 2)]
-        [InlineData(2, "\r\ntest\r\n", 2)]
-        [InlineData(null, "\r\ntest", 1)]
-        [InlineData(2, "\r\ntest", 1)]
-        [InlineData(null, "\r\n\r\n", 3)]
-        [InlineData(2, "\r\n\r\n", 5)]
-        public void NewLineTracker_WriteLine_Value_Succeeds(int? currentNewLineCount, string value, int expectedNewLineCount) {
+        [InlineData(null)]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void NewLineTracker_WriteLine_Value_Succeeds(bool? currentHasTrailingNewLine) {
             using var writer = Substitute.For<TextWriter>();
 
-            var additionalData = GetAdditionalData(currentNewLineCount);
+            var additionalData = GetAdditionalData(currentHasTrailingNewLine);
             var tracker = new TrailingNewLineTracker(additionalData);
 
-            tracker.WriteLine(writer, value);
+            tracker.WriteLine(writer, "foo");
 
-            writer.Received().WriteLine(value);
-            Assert.True(additionalData.ContainsKey(nameof(TrailingNewLineTracker.NewLineCount)));
-            Assert.Equal(expectedNewLineCount, additionalData[nameof(TrailingNewLineTracker.NewLineCount)]);
+            writer.Received().WriteLine("foo");
+            Assert.True(additionalData.ContainsKey(nameof(TrailingNewLineTracker.HasTrailingNewLine)));
+            Assert.True(Assert.IsType<bool>(additionalData[nameof(TrailingNewLineTracker.HasTrailingNewLine)]));
         }
 
         [Theory]
-        [InlineData(null, 1)]
-        [InlineData(0, 1)]
-        [InlineData(1, 2)]
-        public void NewLineTracker_WriteLine_Succeeds(int? currentNewLineCount, int expectedNewLineCount) {
+        [InlineData(null)]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void NewLineTracker_WriteLine_Succeeds(bool? currentHasTrailingNewLine) {
             using var writer = Substitute.For<TextWriter>();
 
-            var additionalData = GetAdditionalData(currentNewLineCount);
+            var additionalData = GetAdditionalData(currentHasTrailingNewLine);
             var tracker = new TrailingNewLineTracker(additionalData);
 
             tracker.WriteLine(writer);
 
             writer.Received().WriteLine();
-            Assert.True(additionalData.ContainsKey(nameof(TrailingNewLineTracker.NewLineCount)));
-            Assert.Equal(expectedNewLineCount, additionalData[nameof(TrailingNewLineTracker.NewLineCount)]);
+            Assert.True(additionalData.ContainsKey(nameof(TrailingNewLineTracker.HasTrailingNewLine)));
+            Assert.True(Assert.IsType<bool>(additionalData[nameof(TrailingNewLineTracker.HasTrailingNewLine)]));
         }
 
-        private Dictionary<string, object?> GetAdditionalData(int? currentNewLineCount) {
+        private Dictionary<string, object?> GetAdditionalData(bool? currentHasTrailingNewLine) {
             var additionalData = new Dictionary<string, object?>();
 
-            if (currentNewLineCount.HasValue) {
-                additionalData[nameof(TrailingNewLineTracker.NewLineCount)] = currentNewLineCount.Value;
+            if (currentHasTrailingNewLine.HasValue) {
+                additionalData[nameof(TrailingNewLineTracker.NewLineCount)] = currentHasTrailingNewLine.Value ? 1 : 0;
             }
 
             return additionalData;

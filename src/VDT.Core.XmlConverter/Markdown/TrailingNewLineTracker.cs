@@ -7,7 +7,7 @@ namespace VDT.Core.XmlConverter.Markdown {
     /// <summary>
     /// Tracks trailing line terminators when writing Markdown content to a <see cref="TextWriter"/>; used to determine if additional line terminators are needed in later content
     /// </summary>
-    public class TrailingNewLineTracker {
+    public class TrailingNewLineTracker { // TODO consider renaming; maybe additional things will need tracking
         private readonly Dictionary<string, object?> additionalData;
 
         /// <summary>
@@ -25,6 +25,11 @@ namespace VDT.Core.XmlConverter.Markdown {
                 additionalData[nameof(NewLineCount)] = value;
             }
         }
+
+        /// <summary>
+        /// <see langword="true"/> if the last things written was a trailing line terminator; otherwise <see langword="false"/>
+        /// </summary>
+        public bool HasTrailingNewLine => NewLineCount > 0;
 
         /// <summary>
         /// Construct a trailing new line tracker

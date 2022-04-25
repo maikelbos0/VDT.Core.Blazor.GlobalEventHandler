@@ -21,10 +21,10 @@ namespace VDT.Core.XmlConverter.Markdown {
 
         /// <inheritdoc/>
         public override void RenderStart(ElementData elementData, TextWriter writer) 
-            => elementData.GetTrailingNewLineTracker().Write(writer, startOutput);
+            => elementData.GetContentTracker().Write(writer, startOutput);
 
         /// <inheritdoc/>
         public override void RenderEnd(ElementData elementData, TextWriter writer)
-            => elementData.GetTrailingNewLineTracker().Write(writer, endOutput);
+            => elementData.GetContentTracker().Write(writer, endOutput);
     }
 }

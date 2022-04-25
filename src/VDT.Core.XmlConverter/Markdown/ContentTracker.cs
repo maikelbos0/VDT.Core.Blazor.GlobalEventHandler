@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace VDT.Core.XmlConverter.Markdown {
     /// <summary>
-    /// Tracks trailing line terminators when writing Markdown content to a <see cref="TextWriter"/>; used to determine if additional line terminators are needed in later content
+    /// Tracks Markdown content being written to a <see cref="TextWriter"/>; used to determine later output
     /// </summary>
-    public class TrailingNewLineTracker { // TODO consider renaming; maybe additional things will need tracking
+    public class ContentTracker {
         private readonly Dictionary<string, object?> additionalData;
 
         /// <summary>
@@ -27,10 +26,10 @@ namespace VDT.Core.XmlConverter.Markdown {
         }
 
         /// <summary>
-        /// Construct a trailing new line tracker
+        /// Construct a Markdown content tracker
         /// </summary>
         /// <param name="additionalData">Additional data for the current conversion</param>
-        public TrailingNewLineTracker(Dictionary<string, object?> additionalData) {
+        public ContentTracker(Dictionary<string, object?> additionalData) {
             this.additionalData = additionalData;
         }
 

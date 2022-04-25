@@ -33,7 +33,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
                 },
                 isFirstChild: isFirstChild,
                 additionalData: new Dictionary<string, object?> {
-                    { nameof(TrailingNewLineTracker.HasTrailingNewLine), hasTrailingNewLine }
+                    { nameof(ContentTracker.HasTrailingNewLine), hasTrailingNewLine }
                 }
             );
 
@@ -58,7 +58,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             var elementData = ElementDataHelper.Create(
                 "bar",
                 additionalData: new Dictionary<string, object?> {
-                    { nameof(TrailingNewLineTracker.HasTrailingNewLine), hasTrailingNewLine }
+                    { nameof(ContentTracker.HasTrailingNewLine), hasTrailingNewLine }
                 }
             );
 

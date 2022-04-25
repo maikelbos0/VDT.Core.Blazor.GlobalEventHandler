@@ -4,14 +4,14 @@
     /// </summary>
     public static class NodeDataExtensions {
         /// <summary>
-        /// Get the trailing new line tracker for the node data
+        /// Get the content tracker for the node data
         /// </summary>
         /// <param name="nodeData">Node data to which the tracker belongs</param>
-        /// <returns>Trailing new line tracker for the node data</returns>
-        public static TrailingNewLineTracker GetTrailingNewLineTracker(this INodeData nodeData) {
-            if (!nodeData.AdditionalData.TryGetValue(nameof(TrailingNewLineTracker), out var elementTrackerObj) || !(elementTrackerObj is TrailingNewLineTracker elementTracker)) {
-                elementTracker = new TrailingNewLineTracker(nodeData.AdditionalData);
-                nodeData.AdditionalData[nameof(TrailingNewLineTracker)] = elementTracker;
+        /// <returns>Content tracker for the node data</returns>
+        public static ContentTracker GetContentTracker(this INodeData nodeData) {
+            if (!nodeData.AdditionalData.TryGetValue(nameof(ContentTracker), out var elementTrackerObj) || !(elementTrackerObj is ContentTracker elementTracker)) {
+                elementTracker = new ContentTracker(nodeData.AdditionalData);
+                nodeData.AdditionalData[nameof(ContentTracker)] = elementTracker;
             }
 
             return elementTracker;

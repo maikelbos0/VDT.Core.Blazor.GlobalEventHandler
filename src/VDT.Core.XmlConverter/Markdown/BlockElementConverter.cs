@@ -22,7 +22,7 @@ namespace VDT.Core.XmlConverter.Markdown {
 
         /// <inheritdoc/>
         public override void RenderStart(ElementData elementData, TextWriter writer) {
-            var tracker = elementData.GetTrailingNewLineTracker();
+            var tracker = elementData.GetContentTracker();
 
             if (!elementData.IsFirstChild) {
                 if (!tracker.HasTrailingNewLine) {
@@ -37,7 +37,7 @@ namespace VDT.Core.XmlConverter.Markdown {
 
         /// <inheritdoc/>
         public override void RenderEnd(ElementData elementData, TextWriter writer) {
-            var tracker = elementData.GetTrailingNewLineTracker();
+            var tracker = elementData.GetContentTracker();
 
             if (!tracker.HasTrailingNewLine) {
                 tracker.WriteLine(writer);

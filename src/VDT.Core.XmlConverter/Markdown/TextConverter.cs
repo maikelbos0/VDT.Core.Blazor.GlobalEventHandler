@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 
@@ -36,16 +37,24 @@ namespace VDT.Core.XmlConverter.Markdown {
 
         /// <inheritdoc/>
         public void Convert(XmlReader reader, TextWriter writer, NodeData data) {
-            var value = whitespaceNormalizer.Replace(reader.Value.Trim(), " ");
+            var tracker = data.GetContentTracker();
+            var value = whitespaceNormalizer.Replace(reader.Value, " ");
+            var valueBuilder = new StringBuilder();
+
+            if (data.IsFirstChild || tracker.HasTrailingNewLine) {
+                value = value.TrimStart();
+            }
 
             foreach (var c in value) {
                 if (markdownEscapeCharacters.TryGetValue(c, out var str)) {
-                    writer.Write(str);
+                    valueBuilder.Append(str);
                 }
                 else {
-                    writer.Write(c);
+                    valueBuilder.Append(c);
                 }
             }
+
+            tracker.Write(writer, valueBuilder.ToString());
         }
     }
 }

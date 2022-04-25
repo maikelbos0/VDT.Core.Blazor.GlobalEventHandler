@@ -72,13 +72,13 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void UseMarkdown_Removes_All_Unneeded_Whitespace() {
+        public void UseMarkdown_Normalizes_Whitespace() {
             const string xml = "<p xml:space=\"preserve\">\t Test \t</p>\r\n\t <p> Test \t </p>";
 
             var options = new ConverterOptions().UseMarkdown();
             var converter = new Converter(options);
 
-            Assert.Equal("Test\r\n\r\nTest\r\n\r\n", converter.Convert(xml));
+            Assert.Equal("Test \r\n\r\nTest \r\n\r\n", converter.Convert(xml));
         }
 
         [Theory]
@@ -129,8 +129,8 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 ";
             var options = new ConverterOptions().UseMarkdown();
             var converter = new Converter(options);
-            
-            Assert.Equal("This is a paragraph\\.\r\n\r\nThis paragraph has a line break\\.  \r\nThis is line 2\\.\r\n\r\n1. Here we have some numbers\r\n1. This number has bullets:\r\n\t- Bullet\r\n\t- Foo\r\n1. ## A header in a list item\\!\r\n1. For more information, search on [**Google\\.com**](https://www.google.com)\r\n", converter.Convert(xml));
+
+            Assert.Equal("This is a paragraph\\.\r\n\r\nThis paragraph has a line break\\.  \r\nThis is line 2\\. \r\n\r\n1. Here we have some numbers\r\n1. This number has bullets: \r\n\t- Bullet\r\n\t- Foo\r\n1. ## A header in a list item\\!\r\n1. For more information, search on [**Google\\.com**](https://www.google.com)\r\n", converter.Convert(xml));
         }
     }
 }

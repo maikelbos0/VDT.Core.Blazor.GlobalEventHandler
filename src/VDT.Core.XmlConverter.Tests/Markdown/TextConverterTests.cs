@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Xml;
 using VDT.Core.XmlConverter.Markdown;
@@ -6,19 +7,30 @@ using Xunit;
 
 namespace VDT.Core.XmlConverter.Tests.Markdown {
     public class TextConverterTests {
-        [Fact]
-        public void Convert_Trims() {
+        [Theory]
+        [InlineData(false, false, " Foo ")]
+        [InlineData(false, true, "Foo ")]
+        [InlineData(true, false, "Foo ")]
+        [InlineData(true, true, "Foo ")]
+        public void Convert_Trims_As_Needed(bool isFirstChild, bool hasTrailingNewLine, string expectedValue) {
             using var writer = new StringWriter();
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes("\t Foo \t"));
             using var reader = XmlReader.Create(stream, new XmlReaderSettings() { ConformanceLevel = ConformanceLevel.Fragment });
 
             var converter = new TextConverter();
+            var nodeData = NodeDataHelper.Create(
+                XmlNodeType.Text,
+                isFirstChild: isFirstChild,
+                additionalData: new Dictionary<string, object?>() {
+                    { nameof(ContentTracker.HasTrailingNewLine), hasTrailingNewLine }
+                }
+            );
 
             reader.Read(); // Move to text
 
-            converter.Convert(reader, writer, NodeDataHelper.Create(XmlNodeType.Text));
+            converter.Convert(reader, writer, nodeData);
 
-            Assert.Equal("Foo", writer.ToString());
+            Assert.Equal(expectedValue, writer.ToString());
         }
 
         [Fact]

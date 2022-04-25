@@ -11,23 +11,6 @@ namespace VDT.Core.XmlConverter.Markdown {
         private readonly Dictionary<string, object?> additionalData;
 
         /// <summary>
-        /// Amount of trailing line terminators
-        /// </summary>
-        public int NewLineCount {
-            get {
-                if (additionalData.TryGetValue(nameof(NewLineCount), out var countObj) && countObj is int count) {
-                    return count;
-                }
-
-                return 0;
-            }
-            private set {
-                additionalData[nameof(NewLineCount)] = value;
-                HasTrailingNewLine = value > 0;
-            }
-        }
-
-        /// <summary>
         /// <see langword="true"/> if the last things written was a trailing line terminator; otherwise <see langword="false"/>
         /// </summary>
         public bool HasTrailingNewLine {
@@ -58,7 +41,7 @@ namespace VDT.Core.XmlConverter.Markdown {
         /// <param name="value">String to write</param>
         public void Write(TextWriter writer, string value) {
             writer.Write(value);
-            UpdateNewLineCount(value);
+            HasTrailingNewLine = value.EndsWith(Environment.NewLine) || (HasTrailingNewLine && value == string.Empty);
         }
 
         /// <summary>
@@ -68,7 +51,7 @@ namespace VDT.Core.XmlConverter.Markdown {
         /// <param name="value">String to write</param>
         public void WriteLine(TextWriter writer, string value) {
             writer.WriteLine(value);
-            UpdateNewLineCount(value, 1);
+            HasTrailingNewLine = true;
         }
 
         /// <summary>
@@ -77,19 +60,7 @@ namespace VDT.Core.XmlConverter.Markdown {
         /// <param name="writer">Writer to write the line terminator to</param>
         public void WriteLine(TextWriter writer) {
             writer.WriteLine();
-            NewLineCount++;
-        }
-
-        private void UpdateNewLineCount(string value, int additionalNewLineCount = 0) {
-            var values = value.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-            var newLineCount = values.Reverse().TakeWhile(s => string.IsNullOrEmpty(s)).Count();
-
-            if (newLineCount == values.Length) {
-                NewLineCount += newLineCount - 1 + additionalNewLineCount;
-            }
-            else {
-                NewLineCount = newLineCount + additionalNewLineCount;
-            }
+            HasTrailingNewLine = true;
         }
     }
 }

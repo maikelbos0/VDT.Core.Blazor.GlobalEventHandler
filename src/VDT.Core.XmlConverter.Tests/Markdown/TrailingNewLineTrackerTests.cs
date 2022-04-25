@@ -67,7 +67,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             var additionalData = new Dictionary<string, object?>();
 
             if (currentHasTrailingNewLine.HasValue) {
-                additionalData[nameof(TrailingNewLineTracker.NewLineCount)] = currentHasTrailingNewLine.Value ? 1 : 0;
+                additionalData[nameof(TrailingNewLineTracker.HasTrailingNewLine)] = currentHasTrailingNewLine.Value;
             }
 
             return additionalData;

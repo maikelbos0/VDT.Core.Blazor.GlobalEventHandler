@@ -14,7 +14,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void UseMarkdown_Converts_Hyperlinks() {
+        public void UseMarkdown_Convert_Hyperlink() {
             const string xml = "<a href=\"https://www.google.com\">Test</a>";
 
             var options = new ConverterOptions().UseMarkdown();
@@ -28,7 +28,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [InlineData("<menu><li>List item</li></menu>", "- List item\r\n")]
         [InlineData("<ul><li>List item</li></ul>", "- List item\r\n")]
         [InlineData("<ol><li>List item</li></ol>", "1. List item\r\n")]
-        public void UseMarkdown_Converts_List_Items(string xml, string expectedMarkdown) {
+        public void UseMarkdown_Convert_List_Item(string xml, string expectedMarkdown) {
             var options = new ConverterOptions().UseMarkdown();
             var converter = new Converter(options);
 
@@ -42,7 +42,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [InlineData("<h4>Heading 4</h4>", "#### Heading 4\r\n")]
         [InlineData("<h5>Heading 5</h5>", "##### Heading 5\r\n")]
         [InlineData("<h6>Heading 6</h6>", "###### Heading 6\r\n")]
-        public void UseMarkdown_Converts_Header(string xml, string expectedMarkdown) {
+        public void UseMarkdown_Convert_Header(string xml, string expectedMarkdown) {
             var options = new ConverterOptions().UseMarkdown();
             var converter = new Converter(options);
 
@@ -54,7 +54,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [InlineData("<b>Bold</b>", "**Bold**")]
         [InlineData("<em>Italic</em>", "*Italic*")]
         [InlineData("<i>Italic</i>", "*Italic*")]
-        public void UseMarkdown_Converts_Inline_Markup(string xml, string expectedMarkdown) {
+        public void UseMarkdown_Convert_Inline_Markup(string xml, string expectedMarkdown) {
             var options = new ConverterOptions().UseMarkdown();
             var converter = new Converter(options);
 
@@ -64,7 +64,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [Theory]
         [InlineData("Linebreak<br/>", "Linebreak  \r\n")]
         [InlineData("<p>Paragraph</p>", "Paragraph\r\n\r\n")]
-        public void UseMarkdown_Converts_Newlines(string xml, string expectedMarkdown) {
+        public void UseMarkdown_Convert_New_Lines(string xml, string expectedMarkdown) {
             var options = new ConverterOptions().UseMarkdown();
             var converter = new Converter(options);
 
@@ -72,7 +72,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void UseMarkdown_Normalizes_Whitespace() {
+        public void UseMarkdown_Convert_Text() {
             const string xml = "<p xml:space=\"preserve\">\t Test \t</p>\r\n\t <p> Test \t </p>";
 
             var options = new ConverterOptions().UseMarkdown();
@@ -85,7 +85,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [InlineData("<?xml-stylesheet type=\"text/xsl\" href=\"style.xsl\"?>Test", "Test")]
         [InlineData("<?xml version=\"1.0\" encoding=\"UTF-8\"?>Test", "Test")]
         [InlineData("<![CDATA[Content]]>Test", "Test")]
-        public void UseMarkdown_Removes_All_Unconvertible_Node_Types(string xml, string expectedMarkdown) {
+        public void UseMarkdown_Convert_Removes_All_Unconvertible_Node_Types(string xml, string expectedMarkdown) {
             var options = new ConverterOptions().UseMarkdown();
             var converter = new Converter(options);
 
@@ -93,7 +93,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void UseMarkdown_Removes_Document_Type_Declarations() {
+        public void UseMarkdown_Convert_Removes_Document_Type_Declarations() {
             const string xml = "<!DOCTYPE foo [ <!ENTITY val \"bar\"> ]><p>Test</p>";
 
             var options = new ConverterOptions().UseMarkdown();
@@ -106,7 +106,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void UseMarkdown_Converts_Nested_Elements() {
+        public void UseMarkdown_Convert() {
             const string xml = @"
 <p>This is a paragraph.</p>
 

@@ -13,6 +13,16 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Equal(options, options.UseMarkdown());
         }
 
+        [Fact]
+        public void UseMarkdown_Converts_Hyperlinks() {
+            const string xml = "<a href=\"https://www.google.com\">Test</a>";
+
+            var options = new ConverterOptions().UseMarkdown();
+            var converter = new Converter(options);
+
+            Assert.Equal("[Test](https://www.google.com)", converter.Convert(xml));
+        }
+
         [Theory]
         [InlineData("<li>List item</li>", "- List item\r\n")]
         [InlineData("<menu><li>List item</li></menu>", "- List item\r\n")]
@@ -114,12 +124,13 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         </ul>
     </li>
     <li><h2>A header in a list item!</h2></li>
+    <li>For more information, search on <a href=""https://www.google.com""><strong>Google.com</strong></a></li>
 </ol>
 ";
             var options = new ConverterOptions().UseMarkdown();
             var converter = new Converter(options);
             
-            Assert.Equal("This is a paragraph\\.\r\n\r\nThis paragraph has a line break\\.  \r\nThis is line 2\\.\r\n\r\n1. Here we have some numbers\r\n1. This number has bullets:\r\n\t- Bullet\r\n\t- Foo\r\n1. ## A header in a list item\\!\r\n", converter.Convert(xml));
+            Assert.Equal("This is a paragraph\\.\r\n\r\nThis paragraph has a line break\\.  \r\nThis is line 2\\.\r\n\r\n1. Here we have some numbers\r\n1. This number has bullets:\r\n\t- Bullet\r\n\t- Foo\r\n1. ## A header in a list item\\!\r\n1. For more information, search on [**Google\\.com**](https://www.google.com)\r\n", converter.Convert(xml));
         }
     }
 }

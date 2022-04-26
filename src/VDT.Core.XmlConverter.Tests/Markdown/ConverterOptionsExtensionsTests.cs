@@ -126,11 +126,15 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
     <li><h2>A header in a list item!</h2></li>
     <li>For more information, search on <a href=""https://www.google.com""><strong>Google.com</strong></a></li>
 </ol>
+
+<p>
+    Why not embed an image? <img src=""https://picsum.photos/200"" alt=""Like this one!""/>
+</p>
 ";
             var options = new ConverterOptions().UseMarkdown();
             var converter = new Converter(options);
-
-            Assert.Equal("This is a paragraph\\.\r\n\r\nThis paragraph has a line break\\.  \r\nThis is line 2\\. \r\n\r\n1. Here we have some numbers\r\n1. This number has bullets: \r\n\t- Bullet\r\n\t- Foo\r\n1. ## A header in a list item\\!\r\n1. For more information, search on [**Google\\.com**](https://www.google.com)\r\n", converter.Convert(xml));
+            
+            Assert.Equal("This is a paragraph\\.\r\n\r\nThis paragraph has a line break\\.  \r\nThis is line 2\\. \r\n\r\n1. Here we have some numbers\r\n1. This number has bullets: \r\n\t- Bullet\r\n\t- Foo\r\n1. ## A header in a list item\\!\r\n1. For more information, search on [**Google\\.com**](https://www.google.com)\r\nWhy not embed an image? ![Like this one!](https://picsum.photos/200)\r\n\r\n", converter.Convert(xml));
         }
     }
 }

@@ -16,7 +16,7 @@ namespace VDT.Core.XmlConverter.Markdown {
             
             options.TextConverter = new TextConverter();
 
-            // TODO blockquote, image, hyperlink
+            // TODO blockquote, figure, figcaption?
 
             // html, body
             options.ElementConverters.Add(new NullElementConverter("ul", "ol", "menu"));
@@ -26,6 +26,7 @@ namespace VDT.Core.XmlConverter.Markdown {
             // TODO handle form elements?
 
             options.ElementConverters.Add(new HyperlinkConverter());
+            options.ElementConverters.Add(new ImageConverter());
             options.ElementConverters.Add(new OrderedListItemConverter());
             options.ElementConverters.Add(new BlockElementConverter("- ", "li"));
 

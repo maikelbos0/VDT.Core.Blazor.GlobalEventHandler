@@ -34,5 +34,29 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Equal(tracker, additionalData[nameof(ContentTracker)]);
             Assert.Equal(tracker, existingTracker);
         }
+
+        [Theory]
+        [InlineData("bar", true)]
+        [InlineData("bAR", true)]
+        [InlineData("Bar", true)]
+        [InlineData("BAR", true)]
+        [InlineData("baz", false)]
+        [InlineData("quux", false)]
+        public void TryGetAttribute(string name, bool expectedIsFound) {
+            var elementData = ElementDataHelper.Create(
+                "foo",
+                attributes: new Dictionary<string, string>() {
+                    { "bar", "baz" }
+                }
+            );
+
+            var isFound = elementData.TryGetAttribute(name, out var value);
+
+            Assert.Equal(expectedIsFound, isFound);
+
+            if (isFound) {
+                Assert.Equal("baz", value);
+            }
+        }
     }
 }

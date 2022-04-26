@@ -1,23 +1,27 @@
-﻿using System;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 
 namespace VDT.Core.XmlConverter.Markdown {
-    internal class HyperlinkConverter : BaseElementConverter {
+    /// <summary>
+    /// Converter for rendering hyperlinks as Markdown
+    /// </summary>
+    public class HyperlinkConverter : BaseElementConverter {
+        /// <summary>
+        /// Construct an instance of a hyperlink converter
+        /// </summary>
         public HyperlinkConverter() : base("a") { }
 
+        /// <inheritdoc/>
         public override void RenderStart(ElementData elementData, TextWriter writer)
             => elementData.GetContentTracker().Write(writer, "[");
 
+        /// <inheritdoc/>
         public override void RenderEnd(ElementData elementData, TextWriter writer) {
             var tracker = elementData.GetContentTracker();
             
             tracker.Write(writer, "](");
 
-            var attributeName = elementData.Attributes.Keys.FirstOrDefault(k => string.Equals(k, "href", StringComparison.OrdinalIgnoreCase));
-
-            if (attributeName != null) {
-                tracker.Write(writer, elementData.Attributes[attributeName]);
+            if (elementData.TryGetAttribute("href", out var url)) {
+                tracker.Write(writer, url);
             }
 
             tracker.Write(writer, ")");

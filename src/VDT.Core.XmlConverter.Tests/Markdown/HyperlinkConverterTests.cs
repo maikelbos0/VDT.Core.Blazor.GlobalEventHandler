@@ -32,16 +32,15 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.True(converter.ShouldRenderContent(ElementDataHelper.Create("a")));
         }
 
-        [Theory]
-        [InlineData("HREF")]
-        [InlineData("href")]
-        public void RenderEnd_Renders_EndOuput(string attributeName) {
+        [Fact]
+        public void RenderEnd_Renders_EndOuput() {
             using var writer = new StringWriter();
+
             var converter = new HyperlinkConverter();
             var elementData = ElementDataHelper.Create(
                 "a",
                 attributes: new Dictionary<string, string>() {
-                    { attributeName, "https://www.google.com" }
+                    { "href", "https://www.google.com" }
                 }
             );
 

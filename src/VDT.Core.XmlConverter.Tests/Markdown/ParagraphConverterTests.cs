@@ -44,13 +44,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void ShouldRenderContent_Returns_True() {
-            var converter = new ParagraphConverter();
-
-            Assert.True(converter.ShouldRenderContent(ElementDataHelper.Create("p")));
-        }
-
-        [Fact]
         public void RenderEnd_Renders_EndOuput() {
             using var writer = new StringWriter();
 

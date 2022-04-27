@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace VDT.Core.XmlConverter.Markdown {
     /// <summary>
@@ -10,20 +11,25 @@ namespace VDT.Core.XmlConverter.Markdown {
         private readonly Dictionary<string, object?> additionalData;
 
         /// <summary>
-        /// <see langword="true"/> if the last things written was a trailing line terminator; otherwise <see langword="false"/>
+        /// Amount of trailing line terminators
         /// </summary>
-        public bool HasTrailingNewLine {
+        public int TrailingNewLineCount {
             get {
-                if (additionalData.TryGetValue(nameof(HasTrailingNewLine), out var valueObj) && valueObj is bool value) {
-                    return value;
+                if (additionalData.TryGetValue(nameof(TrailingNewLineCount), out var countObj) && countObj is int count) {
+                    return count;
                 }
 
-                return false;
+                return 0;
             }
             private set {
-                additionalData[nameof(HasTrailingNewLine)] = value;
+                additionalData[nameof(TrailingNewLineCount)] = value;
             }
         }
+
+        /// <summary>
+        /// <see langword="true"/> if the last things written was a trailing line terminator; otherwise <see langword="false"/>
+        /// </summary>
+        public bool HasTrailingNewLine => TrailingNewLineCount > 0;
 
         /// <summary>
         /// Construct a Markdown content tracker
@@ -40,7 +46,7 @@ namespace VDT.Core.XmlConverter.Markdown {
         /// <param name="value">String to write</param>
         public void Write(TextWriter writer, string value) {
             writer.Write(value);
-            HasTrailingNewLine = value.EndsWith(Environment.NewLine) || (HasTrailingNewLine && value == string.Empty);
+            TrailingNewLineCount = GetTrailingNewLineCount(value);
         }
 
         /// <summary>
@@ -50,7 +56,7 @@ namespace VDT.Core.XmlConverter.Markdown {
         /// <param name="value">String to write</param>
         public void WriteLine(TextWriter writer, string value) {
             writer.WriteLine(value);
-            HasTrailingNewLine = true;
+            TrailingNewLineCount = GetTrailingNewLineCount(value) + 1;
         }
 
         /// <summary>
@@ -59,7 +65,19 @@ namespace VDT.Core.XmlConverter.Markdown {
         /// <param name="writer">Writer to write the line terminator to</param>
         public void WriteLine(TextWriter writer) {
             writer.WriteLine();
-            HasTrailingNewLine = true;
+            TrailingNewLineCount++;
+        }
+
+        private int GetTrailingNewLineCount(string value) {
+            var values = value.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            var newLineCount = values.Reverse().TakeWhile(s => string.IsNullOrEmpty(s)).Count();
+
+            if (newLineCount == values.Length) {
+                return TrailingNewLineCount + newLineCount - 1;
+            }
+            else {
+                return newLineCount;
+            }
         }
     }
 }

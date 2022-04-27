@@ -8,11 +8,11 @@ using Xunit;
 namespace VDT.Core.XmlConverter.Tests.Markdown {
     public class TextConverterTests {
         [Theory]
-        [InlineData(false, false, " Foo ")]
-        [InlineData(false, true, "Foo ")]
-        [InlineData(true, false, "Foo ")]
-        [InlineData(true, true, "Foo ")]
-        public void Convert_Trims_As_Needed(bool isFirstChild, bool hasTrailingNewLine, string expectedValue) {
+        [InlineData(false, 0, " Foo ")]
+        [InlineData(false, 1, "Foo ")]
+        [InlineData(true, 0, "Foo ")]
+        [InlineData(true, 1, "Foo ")]
+        public void Convert_Trims_As_Needed(bool isFirstChild, int trailingNewLineCount, string expectedValue) {
             using var writer = new StringWriter();
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes("\t Foo \t"));
             using var reader = XmlReader.Create(stream, new XmlReaderSettings() { ConformanceLevel = ConformanceLevel.Fragment });
@@ -22,7 +22,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
                 XmlNodeType.Text,
                 isFirstChild: isFirstChild,
                 additionalData: new Dictionary<string, object?>() {
-                    { nameof(ContentTracker.HasTrailingNewLine), hasTrailingNewLine }
+                    { nameof(ContentTracker.TrailingNewLineCount), trailingNewLineCount }
                 }
             );
 

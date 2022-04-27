@@ -1,14 +1,10 @@
-﻿using System;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 
 namespace VDT.Core.XmlConverter.Markdown {
     /// <summary>
     /// Converter for rendering elements as block Markdown requiring indentation when nesting
     /// </summary>
     public class BlockElementConverter : BaseElementConverter {
-        private const string listItemName = "li";
-
         private readonly string startOutput;
 
         /// <summary>
@@ -43,7 +39,5 @@ namespace VDT.Core.XmlConverter.Markdown {
                 tracker.WriteLine(writer);
             }
         }
-
-        internal int GetAncestorListItemCount(ElementData elementData) => elementData.Ancestors.Count(d => string.Equals(d.Name, listItemName, StringComparison.OrdinalIgnoreCase));
     }
 }

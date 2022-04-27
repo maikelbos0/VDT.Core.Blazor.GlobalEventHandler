@@ -7,6 +7,8 @@ namespace VDT.Core.XmlConverter.Markdown {
     /// Base converter for rendering elements as Markdown
     /// </summary>
     public abstract class BaseElementConverter : IElementConverter {
+        private const string listItemName = "li";
+
         private readonly string[] validForElementNames;
 
         /// <summary>
@@ -28,5 +30,7 @@ namespace VDT.Core.XmlConverter.Markdown {
 
         /// <inheritdoc/>
         public abstract void RenderEnd(ElementData elementData, TextWriter writer);
+
+        internal int GetAncestorListItemCount(ElementData elementData) => elementData.Ancestors.Count(d => string.Equals(d.Name, listItemName, StringComparison.OrdinalIgnoreCase));
     }
 }

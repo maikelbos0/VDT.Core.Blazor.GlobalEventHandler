@@ -27,6 +27,7 @@ namespace VDT.Core.XmlConverter.Markdown {
 
             options.ElementConverters.Add(new HyperlinkConverter());
             options.ElementConverters.Add(new ImageConverter());
+
             options.ElementConverters.Add(new OrderedListItemConverter());
             options.ElementConverters.Add(new BlockElementConverter("- ", "li"));
 
@@ -37,11 +38,12 @@ namespace VDT.Core.XmlConverter.Markdown {
             options.ElementConverters.Add(new BlockElementConverter("##### ", "h5"));
             options.ElementConverters.Add(new BlockElementConverter("###### ", "h6"));
 
+            options.ElementConverters.Add(new ParagraphConverter());
+
             options.ElementConverters.Add(new InlineElementConverter("**", "**", "strong", "b"));
             options.ElementConverters.Add(new InlineElementConverter("*", "*", "em", "i"));
 
             options.ElementConverters.Add(new InlineElementConverter($"  {Environment.NewLine}", "", "br"));
-            options.ElementConverters.Add(new InlineElementConverter("", $"{Environment.NewLine}{Environment.NewLine}", "p"));
 
             return options;
         }

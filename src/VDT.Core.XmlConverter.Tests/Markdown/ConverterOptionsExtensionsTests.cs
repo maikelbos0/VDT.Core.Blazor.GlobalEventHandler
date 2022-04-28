@@ -71,6 +71,20 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Equal(expectedMarkdown, converter.Convert(xml));
         }
 
+        [Theory]
+        [InlineData("<html>Test</html>")]
+        [InlineData("<body>Test</body>")]
+        [InlineData("<html><body>Test</body></html>")]
+        [InlineData("<ul>Test</ul>")]
+        [InlineData("<ol>Test</ol>")]
+        [InlineData("<menu>Test</menu>")]
+        public void UseMarkdown_Convert_Removes_Unconvertible_Tags(string xml) {
+            var options = new ConverterOptions().UseMarkdown();
+            var converter = new Converter(options);
+
+            Assert.Equal("Test", converter.Convert(xml));
+        }
+
         [Fact]
         public void UseMarkdown_Convert_Text() {
             const string xml = "<p xml:space=\"preserve\">\t Test \t</p>\r\n\t <p> Test \t </p>";
@@ -82,14 +96,14 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Theory]
-        [InlineData("<?xml-stylesheet type=\"text/xsl\" href=\"style.xsl\"?>Test", "Test")]
-        [InlineData("<?xml version=\"1.0\" encoding=\"UTF-8\"?>Test", "Test")]
-        [InlineData("<![CDATA[Content]]>Test", "Test")]
-        public void UseMarkdown_Convert_Removes_All_Unconvertible_Node_Types(string xml, string expectedMarkdown) {
+        [InlineData("<?xml-stylesheet type=\"text/xsl\" href=\"style.xsl\"?>Test")]
+        [InlineData("<?xml version=\"1.0\" encoding=\"UTF-8\"?>Test")]
+        [InlineData("<![CDATA[Content]]>Test")]
+        public void UseMarkdown_Convert_Removes_Unconvertible_Node_Types(string xml) {
             var options = new ConverterOptions().UseMarkdown();
             var converter = new Converter(options);
 
-            Assert.Equal(expectedMarkdown, converter.Convert(xml));
+            Assert.Equal("Test", converter.Convert(xml));
         }
 
         [Fact]

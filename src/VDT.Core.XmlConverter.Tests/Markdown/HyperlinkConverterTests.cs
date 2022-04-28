@@ -16,7 +16,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void RenderStart_Renders_StartOuput() {
+        public void RenderStart() {
             using var writer = new StringWriter();
             var converter = new HyperlinkConverter();
 
@@ -26,7 +26,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void RenderEnd_Renders_EndOuput() {
+        public void RenderEnd() {
             using var writer = new StringWriter();
 
             var converter = new HyperlinkConverter();
@@ -43,7 +43,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void RenderEnd_Renders_EndOuput_Without_Url() {
+        public void RenderEnd_Without_Url() {
             using var writer = new StringWriter();
             var converter = new HyperlinkConverter();
 

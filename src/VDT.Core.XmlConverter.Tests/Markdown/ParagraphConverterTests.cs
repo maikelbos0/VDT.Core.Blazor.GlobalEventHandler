@@ -22,7 +22,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [InlineData(true, 1, "\r\n")]
         [InlineData(false, 2, "\t\t")]
         [InlineData(true, 2, "")]
-        public void RenderStart_Renders_StartOuput(bool isFirstChild, int trailingNewLineCount, string expectedOutput) {
+        public void RenderStart(bool isFirstChild, int trailingNewLineCount, string expectedOutput) {
             using var writer = new StringWriter();
 
             var converter = new ParagraphConverter();
@@ -44,7 +44,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void RenderEnd_Renders_EndOuput() {
+        public void RenderEnd() {
             using var writer = new StringWriter();
 
             var converter = new ParagraphConverter();

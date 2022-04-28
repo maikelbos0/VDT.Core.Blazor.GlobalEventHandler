@@ -29,7 +29,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [InlineData("", "https://picsum.photos/200", "The title", "![](https://picsum.photos/200 \"The title\")")]
         [InlineData(null, null, "The title", "![]( \"The title\")")]
         [InlineData("", "", "The title", "![]( \"The title\")")]
-        public void RenderStart_Renders_StartOuput(string alt, string src, string title, string expectedRender) {
+        public void RenderStart(string alt, string src, string title, string expectedRender) {
             using var writer = new StringWriter();
 
             var converter = new ImageConverter();
@@ -53,7 +53,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void RenderEnd_Renders_EndOuput() {
+        public void RenderEnd() {
             using var writer = new StringWriter();
             var converter = new ImageConverter();
 

@@ -2,6 +2,7 @@
 
 namespace VDT.Core.XmlConverter.Markdown {
     public static class ConverterOptionsExtensions {
+        // TODO default converter: unknownelementhandlemode enum?
         public static ConverterOptions UseMarkdown(this ConverterOptions options) {
             var removingNodeConverter = new FormattingNodeConverter((name, value) => "", false);
             
@@ -18,9 +19,9 @@ namespace VDT.Core.XmlConverter.Markdown {
 
             // TODO blockquote, figure, figcaption?
 
+            // div, span
             options.ElementConverters.Add(new NullElementConverter("html", "body", "ul", "ol", "menu"));
-
-            // TODO add converters to remove script, style, head, frame, meta, iframe, frameset, col, colgroup?
+            options.ElementConverters.Add(new ElementRemovingConverter("script", "style", "head", "frame", "meta", "iframe", "frameset", "col", "colgroup"));
 
             // TODO handle form elements?
 

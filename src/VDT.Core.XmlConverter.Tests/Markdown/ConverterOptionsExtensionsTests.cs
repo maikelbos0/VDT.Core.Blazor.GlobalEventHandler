@@ -54,6 +54,10 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [InlineData("<b>Bold</b>", "**Bold**")]
         [InlineData("<em>Italic</em>", "*Italic*")]
         [InlineData("<i>Italic</i>", "*Italic*")]
+        [InlineData("<code>Inline code</code>", "`Inline code`")]
+        [InlineData("<kbd>Inline code</kbd>", "`Inline code`")]
+        [InlineData("<samp>Inline code</samp>", "`Inline code`")]
+        [InlineData("<var>Inline code</var>", "`Inline code`")]
         public void UseMarkdown_Convert_Inline_Markup(string xml, string expectedMarkdown) {
             var options = new ConverterOptions().UseMarkdown();
             var converter = new Converter(options);

@@ -17,7 +17,8 @@ namespace VDT.Core.XmlConverter.Markdown {
             
             options.TextConverter = new TextConverter();
 
-            // TODO blockquote, figure, figcaption?
+            // TODO blockquote, pre
+
 
             // div, span
             options.ElementConverters.Add(new NullElementConverter("html", "body", "ul", "ol", "menu"));
@@ -42,6 +43,7 @@ namespace VDT.Core.XmlConverter.Markdown {
 
             options.ElementConverters.Add(new InlineElementConverter("**", "**", "strong", "b"));
             options.ElementConverters.Add(new InlineElementConverter("*", "*", "em", "i"));
+            options.ElementConverters.Add(new InlineElementConverter("`", "`", "code", "kbd", "samp", "var"));
 
             options.ElementConverters.Add(new InlineElementConverter($"  {Environment.NewLine}", "", "br"));
 

@@ -17,8 +17,11 @@ namespace VDT.Core.XmlConverter.Markdown {
             
             options.TextConverter = new TextConverter();
 
-            // TODO blockquote, pre
+            // TODO blockquote
 
+            // Register pre content converter before any other element converters so it clears 
+            options.ElementConverters.Add(new PreContentConverter());
+            options.ElementConverters.Add(new PreConverter());
 
             // div, span
             options.ElementConverters.Add(new NullElementConverter("html", "body", "ul", "ol", "menu"));

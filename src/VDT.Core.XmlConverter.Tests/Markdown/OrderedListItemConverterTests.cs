@@ -13,11 +13,11 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [InlineData(true, "li", "ol")]
         [InlineData(false, "li", "ul", "ol")]
         [InlineData(true, "li", "ol", "ul")]
-        public void IsValidFor(bool expectedIsValidFor, string elementName, params string[] parentElementNames) {
+        public void IsValidFor(bool expectedIsValidFor, string elementName, params string[] ancestorElementNames) {
             var converter = new OrderedListItemConverter();
             var elementData = ElementDataHelper.Create(
                 elementName,
-                parentElementNames.Select(n => ElementDataHelper.Create(n))
+                ancestorElementNames.Select(n => ElementDataHelper.Create(n))
             );
 
             Assert.Equal(expectedIsValidFor, converter.IsValidFor(elementData));

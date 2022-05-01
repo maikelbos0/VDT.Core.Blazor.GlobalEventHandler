@@ -25,7 +25,7 @@ namespace VDT.Core.XmlConverter.Markdown {
                     tracker.WriteLine(writer);
                 }
 
-                tracker.Write(writer, new string('\t', GetAncestorListItemCount(elementData)));
+                tracker.Write(writer, elementData.GetIndentation());
             }
 
             tracker.Write(writer, startOutput);

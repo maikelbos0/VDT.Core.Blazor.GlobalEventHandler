@@ -21,23 +21,5 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             Assert.True(converter.ShouldRenderContent(ElementDataHelper.Create("bar")));
         }
-
-        [Theory]
-        [InlineData(0)]
-        [InlineData(0, "ol")]
-        [InlineData(0, "div")]
-        [InlineData(1, "ol", "li")]
-        [InlineData(2, "li", "li")]
-        [InlineData(2, "LI", "LI")]
-        [InlineData(2, "ol", "li", "ul", "li", "div")]
-        public void GetAncestorListItemCount(int expectedCount, params string[] elementNames) {
-            var converter = new BlockElementConverter("start", "foo", "bar");
-            var elementData = ElementDataHelper.Create(
-                "li",
-                elementNames.Select(n => ElementDataHelper.Create(n))
-            );
-
-            Assert.Equal(expectedCount, converter.GetAncestorListItemCount(elementData));
-        }
     }
 }

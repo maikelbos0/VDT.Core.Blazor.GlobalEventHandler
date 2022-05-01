@@ -19,7 +19,7 @@ namespace VDT.Core.XmlConverter.Markdown {
             }
 
             if (!elementData.IsFirstChild) {
-                tracker.Write(writer, new string('\t', GetAncestorListItemCount(elementData)));
+                tracker.Write(writer, elementData.GetIndentation());
             }
         }
 

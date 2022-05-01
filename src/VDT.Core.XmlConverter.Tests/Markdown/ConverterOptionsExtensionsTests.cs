@@ -3,9 +3,16 @@ using System.Text;
 using System.Xml;
 using VDT.Core.XmlConverter.Markdown;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace VDT.Core.XmlConverter.Tests.Markdown {
     public class ConverterOptionsExtensionsTests {
+        private readonly ITestOutputHelper output;
+
+        public ConverterOptionsExtensionsTests(ITestOutputHelper output) {
+            this.output = output;
+        }
+
         [Fact]
         public void UseMarkdown_Returns_Self() {
             var options = new ConverterOptions();
@@ -177,7 +184,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 </ol>
 
 <pre>
-publc void ThisIsCode() {
+public void ThisIsCode() {
     Whitespace.Should().Be(""preserved"");
 }
 </pre>
@@ -189,8 +196,11 @@ publc void ThisIsCode() {
 ";
             var options = new ConverterOptions().UseMarkdown();
             var converter = new Converter(options);
-            
-            Assert.Equal("\r\n\r\nThis is a paragraph\\.\r\n\r\nThis paragraph has a line break\\.  \r\nThis is line 2\\. \r\n\r\n1. Here we have some numbers\r\n1. This number has bullets: \r\n\t- Bullet\r\n\t- Foo\r\n1. ## A header in a list item\\!\r\n1. For more information, search on [**Google\\.com**](https://www.google.com)\r\n\t### A header here\\!\r\n\r\n\tAnd a paragraph\\!\r\n\r\n```\r\npublc void ThisIsCode\\(\\) \\{\r\n    Whitespace.Should\\(\\).Be\\(\"preserved\"\\);\r\n\\}```\r\n\r\nWhy not embed an image?  \r\n![Like this one!](https://picsum.photos/200)\r\n\r\n", converter.Convert(xml));
+
+            var result = converter.Convert(xml);
+
+            output.WriteLine(result);
+            Assert.Equal("\r\n\r\nThis is a paragraph\\.\r\n\r\nThis paragraph has a line break\\.  \r\nThis is line 2\\. \r\n\r\n1. Here we have some numbers\r\n1. This number has bullets: \r\n\t- Bullet\r\n\t- Foo\r\n1. ## A header in a list item\\!\r\n1. For more information, search on [**Google\\.com**](https://www.google.com)\r\n\t### A header here\\!\r\n\r\n\tAnd a paragraph\\!\r\n\r\n```\r\npublic void ThisIsCode\\(\\) \\{\r\n    Whitespace\\.Should\\(\\)\\.Be\\(\"preserved\"\\);\r\n\\}\r\n```\r\n\r\nWhy not embed an image?  \r\n![Like this one!](https://picsum.photos/200)\r\n\r\n", result);
         }
     }
 }

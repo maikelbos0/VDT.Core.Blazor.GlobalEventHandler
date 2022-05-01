@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml;
 using VDT.Core.XmlConverter.Markdown;
@@ -46,6 +47,28 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             converter.Convert(reader, writer, NodeDataHelper.Create(XmlNodeType.Text));
 
             Assert.Equal("Foo bar baz", writer.ToString());
+        }
+
+        [Theory]
+        [InlineData("\r\n\tFoo\\(\\);\r\n\tBar\\(\\);", "Foo();\r\nBar();", "pre", "li")]
+        [InlineData("\r\nFoo\\(\\);\r\nBar\\(\\);", "Foo();\r\nBar();", "pre")]
+        [InlineData("\r\nFoo\\(\\);\r\nBar\\(\\);", "\r\nFoo();\r\nBar();", "pre")]
+        public void Convert_Indents_Without_Normalization_In_Pre(string expectedText, string xml, params string[] ancestorElementNames) {
+            using var writer = new StringWriter();
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
+            using var reader = XmlReader.Create(stream, new XmlReaderSettings() { ConformanceLevel = ConformanceLevel.Fragment });
+
+            var converter = new TextConverter();
+            var nodeData = NodeDataHelper.Create(
+                XmlNodeType.Text,
+                ancestorElementNames.Select(n => ElementDataHelper.Create(n))
+            );
+
+            reader.Read(); // Move to text
+
+            converter.Convert(reader, writer, nodeData);
+
+            Assert.Equal(expectedText, writer.ToString());
         }
 
         [Theory]

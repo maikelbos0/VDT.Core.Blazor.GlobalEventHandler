@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace VDT.Core.XmlConverter.Markdown {
@@ -27,7 +28,7 @@ namespace VDT.Core.XmlConverter.Markdown {
         /// <param name="name">Attribute name</param>
         /// <param name="value">Attribute value if found; otherwise <see langword="null"/></param>
         /// <returns><see langword="true"/> if the attribute was present; otherwise <see langword="false"/></returns>
-        public static bool TryGetAttribute(this ElementData elementData, string name, out string value) {
+        public static bool TryGetAttribute(this ElementData elementData, string name, [NotNullWhen(true)] out string? value) {
             var isFound = elementData.Attributes.TryGetValue(name, out value);
 
             if (!isFound) {

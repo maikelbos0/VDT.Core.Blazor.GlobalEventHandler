@@ -1,5 +1,6 @@
 ﻿using NSubstitute;
 using System.Collections.Generic;
+using System.Linq;
 using VDT.Core.XmlConverter.Markdown;
 using Xunit;
 
@@ -57,6 +58,24 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             if (isFound) {
                 Assert.Equal("baz", value);
             }
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("", "ol")]
+        [InlineData("", "div")]
+        [InlineData("\t", "ol", "li")]
+        [InlineData("\t\t", "li", "li")]
+        [InlineData("\t\t", "LI", "LI")]
+        [InlineData("\t\t", "ol", "li", "ul", "li", "div")]
+        public void GetIndentation(string expectedIndentation, params string[] ancestorElementNames) {
+            var converter = new BlockElementConverter("start", "foo", "bar");
+            var elementData = ElementDataHelper.Create(
+                "li",
+                ancestorElementNames.Select(n => ElementDataHelper.Create(n))
+            );
+
+            Assert.Equal(expectedIndentation, elementData.GetIndentation());
         }
     }
 }

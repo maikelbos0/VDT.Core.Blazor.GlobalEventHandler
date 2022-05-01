@@ -41,5 +41,16 @@ namespace VDT.Core.XmlConverter.Markdown {
 
             return isFound;
         }
+
+        /// <summary>
+        /// Get the indentation for elements and content inside lists
+        /// </summary>
+        /// <param name="nodeData">Node data for which to get the indentation</param>
+        /// <returns>String for indentation purposes</returns>
+        public static string GetIndentation(this INodeData nodeData) {
+            const string listItemName = "li";
+
+            return new string('\t', nodeData.Ancestors.Count(d => string.Equals(d.Name, listItemName, StringComparison.OrdinalIgnoreCase)));
+        }
     }
 }

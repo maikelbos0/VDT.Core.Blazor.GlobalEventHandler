@@ -17,11 +17,16 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [Fact]
         public void RenderStart() {
             using var writer = new StringWriter();
+
             var converter = new PreConverter();
+            var elementData = ElementDataHelper.Create(
+                "pre",
+                ElementDataHelper.Create("li")
+            );
 
-            converter.RenderStart(ElementDataHelper.Create("pre"), writer);
+            converter.RenderStart(elementData, writer);
 
-            Assert.Equal("\r\n```\r\n", writer.ToString());
+            Assert.Equal("\r\n\t```", writer.ToString());
         }
 
         [Fact]

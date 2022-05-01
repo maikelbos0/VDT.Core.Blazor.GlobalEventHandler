@@ -9,7 +9,7 @@ namespace VDT.Core.XmlConverter.Markdown {
         /// <summary>
         /// Construct an instance of a pre converter
         /// </summary>
-        public PreConverter() : base($"```{Environment.NewLine}", "pre") { }
+        public PreConverter() : base("```", "pre") { }
 
         /// <inheritdoc/>
         public override void RenderEnd(ElementData elementData, TextWriter writer) {
@@ -17,7 +17,7 @@ namespace VDT.Core.XmlConverter.Markdown {
 
             var tracker = elementData.GetContentTracker();
 
-            tracker.Write(writer, new string('\t', GetAncestorListItemCount(elementData)));
+            tracker.Write(writer, elementData.GetIndentation());
             tracker.WriteLine(writer, "```");
         }
     }

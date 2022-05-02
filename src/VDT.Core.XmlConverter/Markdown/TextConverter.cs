@@ -13,7 +13,7 @@ namespace VDT.Core.XmlConverter.Markdown {
     public class TextConverter : INodeConverter {
         private const string preName = "pre";
 
-        private static Regex newLineFinder = new Regex("(\r\n?|\n)", RegexOptions.Compiled);
+        private static Regex newLineFinder = new Regex("^(\r\n?|\n)", RegexOptions.Compiled);
         private static Regex whitespaceNormalizer = new Regex("\\s+", RegexOptions.Compiled);
         private static Dictionary<char, string> markdownEscapeCharacters = new Dictionary<char, string>() {
             { '\\', "\\\\" },
@@ -50,12 +50,9 @@ namespace VDT.Core.XmlConverter.Markdown {
         private void ConvertPreText(XmlReader reader, TextWriter writer, NodeData data) {
             var tracker = data.GetContentTracker();
             var value = reader.Value;
-            var indentation = data.GetIndentation();
 
-            value = newLineFinder.Replace(value, m => $"{Environment.NewLine}{indentation}");
-
-            if (!value.StartsWith(Environment.NewLine)) {
-                value = $"{Environment.NewLine}{indentation}{value}";
+            if (!newLineFinder.IsMatch(value)) {
+                tracker.WriteLine(writer);  
             }
 
             tracker.Write(writer, value);

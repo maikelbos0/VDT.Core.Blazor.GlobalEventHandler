@@ -50,10 +50,9 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Theory]
-        [InlineData("\r\n\tFoo();\r\n\tBar(i * j);", "Foo();\r\nBar(i * j);", "pre", "li")]
-        [InlineData("\r\nFoo();\r\nBar(i * j);", "Foo();\r\nBar(i * j);", "pre")]
-        [InlineData("\r\nFoo();\r\nBar(i * j);", "\r\nFoo();\r\nBar(i * j);", "pre")]
-        public void Convert_Indents_Without_Normalization_In_Pre(string expectedText, string xml, params string[] ancestorElementNames) {
+        [InlineData("\r\nFoo();\r\nBar(i * j);", "Foo();\r\nBar(i * j);")]
+        [InlineData("\r\nFoo();\r\nBar(i * j);", "\r\nFoo();\r\nBar(i * j);")]
+        public void Convert_Pre(string expectedText, string xml) {
             using var writer = new StringWriter();
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
             using var reader = XmlReader.Create(stream, new XmlReaderSettings() { ConformanceLevel = ConformanceLevel.Fragment });
@@ -61,7 +60,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             var converter = new TextConverter();
             var nodeData = NodeDataHelper.Create(
                 XmlNodeType.Text,
-                ancestorElementNames.Select(n => ElementDataHelper.Create(n))
+                ElementDataHelper.Create("pre")
             );
 
             reader.Read(); // Move to text

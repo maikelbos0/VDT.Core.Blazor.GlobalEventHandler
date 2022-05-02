@@ -16,23 +16,15 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Theory]
-        [InlineData(false, 0, "\r\n\r\n\t\t")]
-        [InlineData(true, 0, "\r\n\r\n")]
-        [InlineData(false, 1, "\r\n\t\t")]
-        [InlineData(true, 1, "\r\n")]
-        [InlineData(false, 2, "\t\t")]
-        [InlineData(true, 2, "")]
-        public void RenderStart(bool isFirstChild, int trailingNewLineCount, string expectedOutput) {
+        [InlineData(0, "\r\n\r\n")]
+        [InlineData(1, "\r\n")]
+        [InlineData(2, "")]
+        public void RenderStart(int trailingNewLineCount, string expectedOutput) {
             using var writer = new StringWriter();
 
             var converter = new ParagraphConverter();
             var elementData = ElementDataHelper.Create(
                 "bar",
-                ancestors: new[] {
-                    ElementDataHelper.Create("li"),
-                    ElementDataHelper.Create("li")
-                },
-                isFirstChild: isFirstChild,
                 additionalData: new Dictionary<string, object?> {
                     { nameof(ContentTracker.TrailingNewLineCount), trailingNewLineCount }
                 }

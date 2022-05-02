@@ -6,9 +6,9 @@ using Xunit;
 namespace VDT.Core.XmlConverter.Tests.Markdown {
     public class BlockElementConverterTests {
         [Theory]
-        [InlineData(false, 0, "\r\n\t\tstart")]
+        [InlineData(false, 0, "\r\nstart")]
         [InlineData(true, 0, "start")]
-        [InlineData(false, 1, "\t\tstart")]
+        [InlineData(false, 1, "start")]
         [InlineData(true, 1, "start")]
         public void RenderStart(bool isFirstChild, int trailingNewLineCount, string expectedOutput) {
             using var writer = new StringWriter();
@@ -16,10 +16,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             var converter = new BlockElementConverter("start", "foo", "bar");
             var elementData = ElementDataHelper.Create(
                 "bar",
-                ancestors: new[] {
-                    ElementDataHelper.Create("li"),
-                    ElementDataHelper.Create("li")
-                },
                 isFirstChild: isFirstChild,
                 additionalData: new Dictionary<string, object?> {
                     { nameof(ContentTracker.TrailingNewLineCount), trailingNewLineCount }

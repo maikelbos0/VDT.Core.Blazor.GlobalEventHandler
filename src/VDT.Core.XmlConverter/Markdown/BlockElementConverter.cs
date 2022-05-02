@@ -20,12 +20,8 @@ namespace VDT.Core.XmlConverter.Markdown {
         public override void RenderStart(ElementData elementData, TextWriter writer) {
             var tracker = elementData.GetContentTracker();
 
-            if (!elementData.IsFirstChild) {
-                if (!tracker.HasTrailingNewLine) {
-                    tracker.WriteLine(writer);
-                }
-
-                tracker.Write(writer, elementData.GetIndentation());
+            if (!elementData.IsFirstChild && !tracker.HasTrailingNewLine) {
+                tracker.WriteLine(writer);
             }
 
             tracker.Write(writer, startOutput);

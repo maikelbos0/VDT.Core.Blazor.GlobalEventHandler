@@ -17,10 +17,6 @@ namespace VDT.Core.XmlConverter.Markdown {
             while (tracker.TrailingNewLineCount < 2) {
                 tracker.WriteLine(writer);
             }
-
-            if (!elementData.IsFirstChild) {
-                tracker.Write(writer, elementData.GetIndentation());
-            }
         }
 
         /// <inheritdoc/>

@@ -28,15 +28,10 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         public void RenderStart() {
             using var writer = new StringWriter();
             var converter = new OrderedListItemConverter();
-            var elementData = ElementDataHelper.Create(
-                "li",
-                ElementDataHelper.Create("ol"),
-                ElementDataHelper.Create("li")
-            );
 
-            converter.RenderStart(elementData, writer);
+            converter.RenderStart(ElementDataHelper.Create("li"), writer);
 
-            Assert.Equal("\r\n\t1. ", writer.ToString());
+            Assert.Equal("\r\n1. ", writer.ToString());
         }
     }
 }

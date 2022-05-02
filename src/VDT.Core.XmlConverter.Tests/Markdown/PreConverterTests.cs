@@ -19,14 +19,10 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             using var writer = new StringWriter();
 
             var converter = new PreConverter();
-            var elementData = ElementDataHelper.Create(
-                "pre",
-                ElementDataHelper.Create("li")
-            );
 
-            converter.RenderStart(elementData, writer);
+            converter.RenderStart(ElementDataHelper.Create("pre"), writer);
 
-            Assert.Equal("\r\n\t```", writer.ToString());
+            Assert.Equal("\r\n```", writer.ToString());
         }
 
         [Fact]
@@ -34,14 +30,10 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             using var writer = new StringWriter();
 
             var converter = new PreConverter();
-            var elementData = ElementDataHelper.Create(
-                "pre",
-                ElementDataHelper.Create("li")
-            );
 
-            converter.RenderEnd(elementData, writer);
+            converter.RenderEnd(ElementDataHelper.Create("pre"), writer);
 
-            Assert.Equal("\r\n\t```\r\n", writer.ToString());
+            Assert.Equal("\r\n```\r\n", writer.ToString());
         }
     }
 }

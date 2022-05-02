@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 namespace VDT.Core.XmlConverter.Markdown {
     /// <summary>
@@ -15,10 +14,7 @@ namespace VDT.Core.XmlConverter.Markdown {
         public override void RenderEnd(ElementData elementData, TextWriter writer) {
             base.RenderEnd(elementData, writer);
 
-            var tracker = elementData.GetContentTracker();
-
-            tracker.Write(writer, elementData.GetIndentation());
-            tracker.WriteLine(writer, "```");
+            elementData.GetContentTracker().WriteLine(writer, "```");
         }
     }
 }

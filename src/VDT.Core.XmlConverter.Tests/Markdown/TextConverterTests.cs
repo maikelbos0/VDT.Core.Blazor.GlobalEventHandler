@@ -50,9 +50,9 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Theory]
-        [InlineData("\r\n\tFoo\\(\\);\r\n\tBar\\(\\);", "Foo();\r\nBar();", "pre", "li")]
-        [InlineData("\r\nFoo\\(\\);\r\nBar\\(\\);", "Foo();\r\nBar();", "pre")]
-        [InlineData("\r\nFoo\\(\\);\r\nBar\\(\\);", "\r\nFoo();\r\nBar();", "pre")]
+        [InlineData("\r\n\tFoo();\r\n\tBar(i * j);", "Foo();\r\nBar(i * j);", "pre", "li")]
+        [InlineData("\r\nFoo();\r\nBar(i * j);", "Foo();\r\nBar(i * j);", "pre")]
+        [InlineData("\r\nFoo();\r\nBar(i * j);", "\r\nFoo();\r\nBar(i * j);", "pre")]
         public void Convert_Indents_Without_Normalization_In_Pre(string expectedText, string xml, params string[] ancestorElementNames) {
             using var writer = new StringWriter();
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));

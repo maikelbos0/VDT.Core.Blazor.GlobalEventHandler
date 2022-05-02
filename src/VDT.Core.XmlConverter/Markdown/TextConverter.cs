@@ -13,9 +13,8 @@ namespace VDT.Core.XmlConverter.Markdown {
     public class TextConverter : INodeConverter {
         private const string preName = "pre";
 
-        private static Regex whitespaceNormalizer = new Regex("\\s+", RegexOptions.Compiled);
         private static Regex newLineFinder = new Regex("(\r\n?|\n)", RegexOptions.Compiled);
-
+        private static Regex whitespaceNormalizer = new Regex("\\s+", RegexOptions.Compiled);
         private static Dictionary<char, string> markdownEscapeCharacters = new Dictionary<char, string>() {
             { '\\', "\\\\" },
             { '`', "\\`" },
@@ -40,25 +39,35 @@ namespace VDT.Core.XmlConverter.Markdown {
 
         /// <inheritdoc/>
         public void Convert(XmlReader reader, TextWriter writer, NodeData data) {
-            var tracker = data.GetContentTracker();
-            var value = reader.Value;
-            var valueBuilder = new StringBuilder();
-
             if (data.Ancestors.Any(e => string.Equals(e.Name, preName, StringComparison.OrdinalIgnoreCase))) {
-                var indentation = data.GetIndentation();
-
-                value = newLineFinder.Replace(value, m => $"{Environment.NewLine}{indentation}");
-
-                if (!value.StartsWith(Environment.NewLine)) {
-                    value = $"{Environment.NewLine}{indentation}{value}";
-                }
+                ConvertPreText(reader, writer, data);
             }
             else {
-                value = whitespaceNormalizer.Replace(reader.Value, " ");
+                ConvertText(reader, writer, data);
+            }
+        }
 
-                if (data.IsFirstChild || tracker.HasTrailingNewLine) {
-                    value = value.TrimStart();
-                }
+        private void ConvertPreText(XmlReader reader, TextWriter writer, NodeData data) {
+            var tracker = data.GetContentTracker();
+            var value = reader.Value;
+            var indentation = data.GetIndentation();
+
+            value = newLineFinder.Replace(value, m => $"{Environment.NewLine}{indentation}");
+
+            if (!value.StartsWith(Environment.NewLine)) {
+                value = $"{Environment.NewLine}{indentation}{value}";
+            }
+
+            tracker.Write(writer, value);
+        }
+
+        private void ConvertText(XmlReader reader, TextWriter writer, NodeData data) {
+            var tracker = data.GetContentTracker();
+            var value = whitespaceNormalizer.Replace(reader.Value, " ");
+            var valueBuilder = new StringBuilder();
+
+            if (data.IsFirstChild || tracker.HasTrailingNewLine) {
+                value = value.TrimStart();
             }
 
             foreach (var c in value) {

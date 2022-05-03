@@ -85,10 +85,16 @@ namespace VDT.Core.XmlConverter.Markdown {
         }
 
         private void WriteInternal(TextWriter writer, string? value, bool addNewLine) {
+            var indentation = new string('\t', IndentationCount);
+
+            if (HasTrailingNewLine) {
+                writer.Write(indentation);
+            }
+
             if (value != null) {
                 var lines = newLineFinder.Split(value);
                 var newLineCount = lines.Reverse().TakeWhile(s => string.IsNullOrEmpty(s)).Count();
-                var newLine = $"{Environment.NewLine}{new string('\t', IndentationCount)}";
+                var newLine = $"{Environment.NewLine}{indentation}";
 
                 if (newLineCount == lines.Length) {
                     TrailingNewLineCount += newLineCount - 1;
@@ -101,7 +107,6 @@ namespace VDT.Core.XmlConverter.Markdown {
             }
 
             if (addNewLine) {
-                // TODO figure out: does the new line here need indentation?
                 writer.WriteLine();
                 TrailingNewLineCount++;
             }

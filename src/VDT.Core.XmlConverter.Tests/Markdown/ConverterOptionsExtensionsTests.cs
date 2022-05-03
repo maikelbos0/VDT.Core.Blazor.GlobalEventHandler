@@ -198,7 +198,7 @@ public void ThisIsCode() {
             var result = converter.Convert(xml);
 
             output.WriteLine(result);
-            Assert.Equal("\r\n\r\nThis is a paragraph\\.\r\n\r\nThis paragraph has a line break\\.  \r\nThis is line 2\\. \r\n\r\n1. Here we have some numbers\r\n1. This number has bullets: \r\n\t- Bullet\r\n\t- Foo\r\n1. ## A header in a list item\\!\r\n1. For more information, search on [**Google\\.com**](https://www.google.com)\r\n\t### A header here\\!\r\n\r\n\tAnd a paragraph\\!\r\n\r\n\t```\r\n\tpublic void ThisIsCode() {\r\n\t    Whitespace.Should().Be(\"preserved\");\r\n\t}\r\n\t```\r\n\r\nWhy not embed an image?  \r\n![Like this one!](https://picsum.photos/200)\r\n\r\n", result);
+            Assert.Equal("\r\n\r\nThis is a paragraph\\.\r\n\r\nThis paragraph has a line break\\.  \r\nThis is line 2\\. \r\n\r\n1. Here we have some numbers\r\n1. This number has bullets: \r\n\t- Bullet\r\n\t- Foo\r\n1. ## A header in a list item\\!\r\n1. For more information, search on [**Google\\.com**](https://www.google.com)\r\n\t### A header here\\!\r\n\t\r\n\tAnd a paragraph\\!\r\n\t\r\n\t```\r\n\tpublic void ThisIsCode() {\r\n\t    Whitespace.Should().Be(\"preserved\");\r\n\t}\r\n\t```\r\n\r\nWhy not embed an image?  \r\n![Like this one!](https://picsum.photos/200)\r\n\r\n", result);
         }
     }
 }

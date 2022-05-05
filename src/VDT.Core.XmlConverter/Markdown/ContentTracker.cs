@@ -35,18 +35,16 @@ namespace VDT.Core.XmlConverter.Markdown {
         public bool HasTrailingNewLine => TrailingNewLineCount > 0;
 
         /// <summary>
-        /// Number of tabs that will be added to all lines as an indentation prefix
+        /// Prefixes to add to all lines
         /// </summary>
-        public int IndentationCount {
+        public Stack<string> Prefixes {
             get {
-                if (additionalData.TryGetValue(nameof(IndentationCount), out var countObj) && countObj is int count) {
-                    return count;
+                if (!(additionalData.TryGetValue(nameof(Prefixes), out var prefixesObj) && prefixesObj is Stack<string> prefixes)) {
+                    prefixes = new Stack<string>();
+                    additionalData[nameof(Prefixes)] = prefixes;
                 }
 
-                return 0;
-            }
-            set {
-                additionalData[nameof(IndentationCount)] = value;
+                return prefixes;
             }
         }
 
@@ -85,16 +83,16 @@ namespace VDT.Core.XmlConverter.Markdown {
         }
 
         private void WriteInternal(TextWriter writer, string? value, bool addNewLine) {
-            var indentation = new string('\t', IndentationCount);
+            var prefix = string.Join("", Prefixes.Reverse());
 
             if (HasTrailingNewLine) {
-                writer.Write(indentation);
+                writer.Write(prefix);
             }
 
             if (value != null) {
                 var lines = newLineFinder.Split(value);
                 var newLineCount = lines.Reverse().TakeWhile(s => string.IsNullOrEmpty(s)).Count();
-                var newLine = $"{Environment.NewLine}{indentation}";
+                var newLine = $"{Environment.NewLine}{prefix}";
 
                 if (newLineCount == lines.Length) {
                     TrailingNewLineCount += newLineCount - 1;

@@ -1,26 +1,27 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using VDT.Core.XmlConverter.Markdown;
 using Xunit;
 
 namespace VDT.Core.XmlConverter.Tests.Markdown {
     public class ContentTrackerTests {
         [Theory]
-        [InlineData(null, null, "", 0, false, "")]
-        [InlineData(0, 1, "", 0, false, "")]
-        [InlineData(2, 1, "", 2, true, "\t")]
+        [InlineData(null, false, "", 0, false, "")]
+        [InlineData(0, true, "", 0, false, "")]
+        [InlineData(2, true, "", 2, true, "\t> ")]
 
-        [InlineData(null, null, "\r\ntest\r\n", 1, true, "\r\ntest\r\n")]
-        [InlineData(0, 1, "\r\ntest\r\n", 1, true, "\r\n\ttest\r\n\t")]
-        [InlineData(2, 1, "\r\ntest\r\n", 1, true, "\t\r\n\ttest\r\n\t")]
+        [InlineData(null, false, "\r\ntest\r\n", 1, true, "\r\ntest\r\n")]
+        [InlineData(0, true, "\r\ntest\r\n", 1, true, "\r\n\t> test\r\n\t> ")]
+        [InlineData(2, true, "\r\ntest\r\n", 1, true, "\t> \r\n\t> test\r\n\t> ")]
 
-        [InlineData(null, null, "\r\ntest", 0, false, "\r\ntest")]
-        [InlineData(0, 1, "\r\ntest", 0, false, "\r\n\ttest")]
-        [InlineData(2, 1, "\r\ntest", 0, false, "\t\r\n\ttest")]
-        public void Write(int? trailingNewLineCount, int? indentationCount, string value, int expectedTrailingNewLineCount, bool expectedHasTrailingNewLine, string expectedValue) {
+        [InlineData(null, false, "\r\ntest", 0, false, "\r\ntest")]
+        [InlineData(0, true, "\r\ntest", 0, false, "\r\n\t> test")]
+        [InlineData(2, true, "\r\ntest", 0, false, "\t> \r\n\t> test")]
+        public void Write(int? trailingNewLineCount, bool hasPrefixes, string value, int expectedTrailingNewLineCount, bool expectedHasTrailingNewLine, string expectedValue) {
             using var writer = new StringWriter();
 
-            var additionalData = GetAdditionalData(trailingNewLineCount, indentationCount);
+            var additionalData = GetAdditionalData(trailingNewLineCount, hasPrefixes);
             var tracker = new ContentTracker(additionalData);
 
             tracker.Write(writer, value);
@@ -31,25 +32,25 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Theory]
-        [InlineData(null, null, "", 1, "\r\n")]
-        [InlineData(0, 1, "", 1, "\r\n")]
-        [InlineData(2, 1, "", 3, "\t\r\n")]
+        [InlineData(null, false, "", 1, "\r\n")]
+        [InlineData(0, true, "", 1, "\r\n")]
+        [InlineData(2, true, "", 3, "\t> \r\n")]
 
-        [InlineData(null, null, "\r\ntest\r\n", 2, "\r\ntest\r\n\r\n")]
-        [InlineData(0, 1, "\r\ntest\r\n", 2, "\r\n\ttest\r\n\t\r\n")]
-        [InlineData(2, 1, "\r\ntest\r\n", 2, "\t\r\n\ttest\r\n\t\r\n")]
+        [InlineData(null, false, "\r\ntest\r\n", 2, "\r\ntest\r\n\r\n")]
+        [InlineData(0, true, "\r\ntest\r\n", 2, "\r\n\t> test\r\n\t> \r\n")]
+        [InlineData(2, true, "\r\ntest\r\n", 2, "\t> \r\n\t> test\r\n\t> \r\n")]
 
-        [InlineData(null, null, "\r\ntest", 1, "\r\ntest\r\n")]
-        [InlineData(0, 1, "\r\ntest", 1, "\r\n\ttest\r\n")]
-        [InlineData(2, 1, "\r\ntest", 1, "\t\r\n\ttest\r\n")]
+        [InlineData(null, false, "\r\ntest", 1, "\r\ntest\r\n")]
+        [InlineData(0, true, "\r\ntest", 1, "\r\n\t> test\r\n")]
+        [InlineData(2, true, "\r\ntest", 1, "\t> \r\n\t> test\r\n")]
 
-        [InlineData(null, null, "\r\n\r\n", 3, "\r\n\r\n\r\n")]
-        [InlineData(0, 1, "\r\n\r\n", 3, "\r\n\t\r\n\t\r\n")]
-        [InlineData(2, 1, "\r\n\r\n", 5, "\t\r\n\t\r\n\t\r\n")]
-        public void WriteLine_With_Value(int? trailingNewLineCount, int? indentationCount, string value, int expectedTrailingNewLineCount, string expectedValue) {
+        [InlineData(null, false, "\r\n\r\n", 3, "\r\n\r\n\r\n")]
+        [InlineData(0, true, "\r\n\r\n", 3, "\r\n\t> \r\n\t> \r\n")]
+        [InlineData(2, true, "\r\n\r\n", 5, "\t> \r\n\t> \r\n\t> \r\n")]
+        public void WriteLine_With_Value(int? trailingNewLineCount, bool hasPrefixes, string value, int expectedTrailingNewLineCount, string expectedValue) {
             using var writer = new StringWriter();
 
-            var additionalData = GetAdditionalData(trailingNewLineCount, indentationCount);
+            var additionalData = GetAdditionalData(trailingNewLineCount, hasPrefixes);
             var tracker = new ContentTracker(additionalData);
 
             tracker.WriteLine(writer, value);
@@ -60,13 +61,13 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Theory]
-        [InlineData(null, null, 1, "\r\n")]
-        [InlineData(0, 1, 1, "\r\n")]
-        [InlineData(1, 1, 2, "\t\r\n")]
-        public void WriteLine_Without_Value(int? trailingNewLineCount, int? indentationCount, int expectedTrailingNewLineCount, string expectedValue) {
+        [InlineData(null, false, 1, "\r\n")]
+        [InlineData(0, true, 1, "\r\n")]
+        [InlineData(1, true, 2, "\t> \r\n")]
+        public void WriteLine_Without_Value(int? trailingNewLineCount, bool hasPrefixes, int expectedTrailingNewLineCount, string expectedValue) {
             using var writer = new StringWriter();
 
-            var additionalData = GetAdditionalData(trailingNewLineCount, indentationCount);
+            var additionalData = GetAdditionalData(trailingNewLineCount, hasPrefixes);
             var tracker = new ContentTracker(additionalData);
 
             tracker.WriteLine(writer);
@@ -76,15 +77,15 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.True(tracker.HasTrailingNewLine);
         }
 
-        private Dictionary<string, object?> GetAdditionalData(int? trailingNewLineCount, int? indentationCount) {
+        private Dictionary<string, object?> GetAdditionalData(int? trailingNewLineCount, bool hasPrefixes) {
             var additionalData = new Dictionary<string, object?>();
 
             if (trailingNewLineCount.HasValue) {
                 additionalData[nameof(ContentTracker.TrailingNewLineCount)] = trailingNewLineCount.Value;
             }
 
-            if (indentationCount.HasValue) {
-                additionalData[nameof(ContentTracker.IndentationCount)] = indentationCount.Value;
+            if (hasPrefixes) {
+                additionalData[nameof(ContentTracker.Prefixes)] = new Stack<string>(new string[] { "\t", "> " });
             }
 
             return additionalData;

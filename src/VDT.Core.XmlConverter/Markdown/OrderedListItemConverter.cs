@@ -22,12 +22,12 @@ namespace VDT.Core.XmlConverter.Markdown {
         /// <inheritdoc/>
         public override void RenderStart(ElementData elementData, TextWriter writer) {
             base.RenderStart(elementData, writer);
-            elementData.GetContentTracker().IndentationCount++;
+            elementData.GetContentTracker().Prefixes.Push("\t");
         }
 
         /// <inheritdoc/>
         override public void RenderEnd(ElementData elementData, TextWriter writer) {
-            elementData.GetContentTracker().IndentationCount--;
+            elementData.GetContentTracker().Prefixes.Pop();
             base.RenderEnd(elementData, writer);
         }
     }

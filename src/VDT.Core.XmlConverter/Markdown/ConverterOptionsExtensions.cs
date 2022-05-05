@@ -23,8 +23,7 @@ namespace VDT.Core.XmlConverter.Markdown {
             options.ElementConverters.Add(new PreContentConverter());
             options.ElementConverters.Add(new PreConverter());
 
-            // div, span
-            options.ElementConverters.Add(new NullElementConverter("html", "body", "ul", "ol", "menu"));
+            options.ElementConverters.Add(new NullElementConverter("html", "body", "ul", "ol", "menu", "div", "span"));
             options.ElementConverters.Add(new ElementRemovingConverter("script", "style", "head", "frame", "meta", "iframe", "frameset", "col", "colgroup"));
 
             // TODO handle form elements?

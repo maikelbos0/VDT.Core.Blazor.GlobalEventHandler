@@ -99,6 +99,8 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [InlineData("<ul>Test</ul>")]
         [InlineData("<ol>Test</ol>")]
         [InlineData("<menu>Test</menu>")]
+        [InlineData("<span>Test</span>")]
+        [InlineData("<div>Test</div>")]
         public void UseMarkdown_Convert_Removes_Unconvertible_Tags(string xml) {
             var options = new ConverterOptions().UseMarkdown();
             var converter = new Converter(options);

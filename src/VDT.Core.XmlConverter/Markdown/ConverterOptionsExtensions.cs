@@ -32,8 +32,8 @@ namespace VDT.Core.XmlConverter.Markdown {
             options.ElementConverters.Add(new ImageConverter());
 
             options.ElementConverters.Add(new OrderedListItemConverter());
-            options.ElementConverters.Add(new BlockElementConverter("- ", "li"));
-
+            options.ElementConverters.Add(new UnorderedListItemConverter());
+            
             options.ElementConverters.Add(new BlockElementConverter("# ", "h1"));
             options.ElementConverters.Add(new BlockElementConverter("## ", "h2"));
             options.ElementConverters.Add(new BlockElementConverter("### ", "h3"));

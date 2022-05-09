@@ -43,12 +43,11 @@ namespace VDT.Core.XmlConverter.Markdown {
             options.ElementConverters.Add(new BlockElementConverter("###### ", "h6"));
 
             options.ElementConverters.Add(new ParagraphConverter());
+            options.ElementConverters.Add(new LinebreakConverter());
 
             options.ElementConverters.Add(new InlineElementConverter("**", "**", "strong", "b"));
             options.ElementConverters.Add(new InlineElementConverter("*", "*", "em", "i"));
             options.ElementConverters.Add(new InlineElementConverter("`", "`", "code", "kbd", "samp", "var"));
-
-            options.ElementConverters.Add(new InlineElementConverter($"  {Environment.NewLine}", "", "br"));
 
             return options;
         }

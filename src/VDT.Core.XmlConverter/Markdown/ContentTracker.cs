@@ -11,21 +11,21 @@ namespace VDT.Core.XmlConverter.Markdown {
     public class ContentTracker {
         private static Regex newLineFinder = new Regex("\r\n?|\n", RegexOptions.Compiled);
 
-        private readonly Dictionary<string, object?> additionalData;
+        private readonly INodeData nodeData;
 
         /// <summary>
         /// Amount of trailing line terminators
         /// </summary>
         public int TrailingNewLineCount {
             get {
-                if (additionalData.TryGetValue(nameof(TrailingNewLineCount), out var countObj) && countObj is int count) {
+                if (nodeData.AdditionalData.TryGetValue(nameof(TrailingNewLineCount), out var countObj) && countObj is int count) {
                     return count;
                 }
 
                 return 0;
             }
             private set {
-                additionalData[nameof(TrailingNewLineCount)] = value;
+                nodeData.AdditionalData[nameof(TrailingNewLineCount)] = value;
             }
         }
 
@@ -39,9 +39,9 @@ namespace VDT.Core.XmlConverter.Markdown {
         /// </summary>
         public Stack<string> Prefixes {
             get {
-                if (!(additionalData.TryGetValue(nameof(Prefixes), out var prefixesObj) && prefixesObj is Stack<string> prefixes)) {
+                if (!(nodeData.AdditionalData.TryGetValue(nameof(Prefixes), out var prefixesObj) && prefixesObj is Stack<string> prefixes)) {
                     prefixes = new Stack<string>();
-                    additionalData[nameof(Prefixes)] = prefixes;
+                    nodeData.AdditionalData[nameof(Prefixes)] = prefixes;
                 }
 
                 return prefixes;
@@ -51,9 +51,9 @@ namespace VDT.Core.XmlConverter.Markdown {
         /// <summary>
         /// Construct a Markdown content tracker
         /// </summary>
-        /// <param name="additionalData">Additional data for the current conversion</param>
-        public ContentTracker(Dictionary<string, object?> additionalData) {
-            this.additionalData = additionalData;
+        /// <param name="nodeData">Node currently being converted</param>
+        public ContentTracker(INodeData nodeData) {
+            this.nodeData = nodeData;
         }
 
         /// <summary>

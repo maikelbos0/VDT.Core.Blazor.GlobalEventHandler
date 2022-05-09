@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using NSubstitute;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using VDT.Core.XmlConverter.Markdown;
 using Xunit;
 
@@ -21,8 +21,8 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         public void Write(int? trailingNewLineCount, bool hasPrefixes, string value, int expectedTrailingNewLineCount, bool expectedHasTrailingNewLine, string expectedValue) {
             using var writer = new StringWriter();
 
-            var additionalData = GetAdditionalData(trailingNewLineCount, hasPrefixes);
-            var tracker = new ContentTracker(additionalData);
+            var nodeData = GetNodeData(trailingNewLineCount, hasPrefixes);
+            var tracker = new ContentTracker(nodeData);
 
             tracker.Write(writer, value);
 
@@ -50,8 +50,8 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         public void WriteLine_With_Value(int? trailingNewLineCount, bool hasPrefixes, string value, int expectedTrailingNewLineCount, string expectedValue) {
             using var writer = new StringWriter();
 
-            var additionalData = GetAdditionalData(trailingNewLineCount, hasPrefixes);
-            var tracker = new ContentTracker(additionalData);
+            var nodeData = GetNodeData(trailingNewLineCount, hasPrefixes);
+            var tracker = new ContentTracker(nodeData);
 
             tracker.WriteLine(writer, value);
 
@@ -67,8 +67,8 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         public void WriteLine_Without_Value(int? trailingNewLineCount, bool hasPrefixes, int expectedTrailingNewLineCount, string expectedValue) {
             using var writer = new StringWriter();
 
-            var additionalData = GetAdditionalData(trailingNewLineCount, hasPrefixes);
-            var tracker = new ContentTracker(additionalData);
+            var nodeData = GetNodeData(trailingNewLineCount, hasPrefixes);
+            var tracker = new ContentTracker(nodeData);
 
             tracker.WriteLine(writer);
 
@@ -77,8 +77,11 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.True(tracker.HasTrailingNewLine);
         }
 
-        private Dictionary<string, object?> GetAdditionalData(int? trailingNewLineCount, bool hasPrefixes) {
+        private INodeData GetNodeData(int? trailingNewLineCount, bool hasPrefixes) {
+            var nodeData = Substitute.For<INodeData>();
             var additionalData = new Dictionary<string, object?>();
+
+            nodeData.AdditionalData.Returns(additionalData);
 
             if (trailingNewLineCount.HasValue) {
                 additionalData[nameof(ContentTracker.TrailingNewLineCount)] = trailingNewLineCount.Value;
@@ -88,7 +91,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
                 additionalData[nameof(ContentTracker.Prefixes)] = new Stack<string>(new string[] { "\t", "> " });
             }
 
-            return additionalData;
+            return nodeData;
         }
     }
 }

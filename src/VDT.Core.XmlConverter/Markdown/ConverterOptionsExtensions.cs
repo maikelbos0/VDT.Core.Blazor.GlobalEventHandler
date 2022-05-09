@@ -33,6 +33,7 @@ namespace VDT.Core.XmlConverter.Markdown {
 
             options.ElementConverters.Add(new OrderedListItemConverter());
             options.ElementConverters.Add(new UnorderedListItemConverter());
+            options.ElementConverters.Add(new BlockquoteConverter());
             
             options.ElementConverters.Add(new BlockElementConverter("# ", "h1"));
             options.ElementConverters.Add(new BlockElementConverter("## ", "h2"));

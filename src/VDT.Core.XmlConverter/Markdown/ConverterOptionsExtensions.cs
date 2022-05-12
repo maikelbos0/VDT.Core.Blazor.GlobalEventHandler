@@ -1,9 +1,15 @@
-﻿using System;
-
-namespace VDT.Core.XmlConverter.Markdown {
+﻿namespace VDT.Core.XmlConverter.Markdown {
+    /// <summary>
+    /// Extension methods for adding Markdown converters to <see cref="ConverterOptions"/>
+    /// </summary>
     public static class ConverterOptionsExtensions {
-        // TODO default converter: unknownelementhandlemode enum?
-        public static ConverterOptions UseMarkdown(this ConverterOptions options) {
+        /// <summary>
+        /// Add converters for all markup supported by basic Markdown
+        /// </summary>
+        /// <param name="options">The options for converting xml</param>
+        /// <param name="unknownElementHandlingMode">Specifies the way to handle elements that can't be converted to Markdown</param>
+        /// <returns>A reference to this instance after the operation has completed</returns>
+        public static ConverterOptions UseMarkdown(this ConverterOptions options, UnknownElementHandlingMode unknownElementHandlingMode = UnknownElementHandlingMode.None) {
             var removingNodeConverter = new FormattingNodeConverter((name, value) => "", false);
             
             options.CDataConverter = removingNodeConverter;
@@ -17,8 +23,6 @@ namespace VDT.Core.XmlConverter.Markdown {
             
             options.TextConverter = new TextConverter();
 
-            // TODO blockquote
-
             // Register pre content converter before any other element converters so it clears 
             options.ElementConverters.Add(new PreContentConverter());
             options.ElementConverters.Add(new PreConverter());
@@ -26,7 +30,9 @@ namespace VDT.Core.XmlConverter.Markdown {
             options.ElementConverters.Add(new NullElementConverter("html", "body", "ul", "ol", "menu", "div", "span"));
             options.ElementConverters.Add(new ElementRemovingConverter("script", "style", "head", "frame", "meta", "iframe", "frameset", "col", "colgroup"));
 
-            // TODO handle form elements?
+            // TODO:
+            // - HR
+            // - A title
 
             options.ElementConverters.Add(new HyperlinkConverter());
             options.ElementConverters.Add(new ImageConverter());
@@ -48,6 +54,15 @@ namespace VDT.Core.XmlConverter.Markdown {
             options.ElementConverters.Add(new InlineElementConverter("**", "**", "strong", "b"));
             options.ElementConverters.Add(new InlineElementConverter("*", "*", "em", "i"));
             options.ElementConverters.Add(new InlineElementConverter("`", "`", "code", "kbd", "samp", "var"));
+
+            switch (unknownElementHandlingMode) {
+                case UnknownElementHandlingMode.RemoveTags:
+                    options.DefaultElementConverter = new UnknownElementConverter(true);
+                    break;
+                case UnknownElementHandlingMode.RemoveElements:
+                    options.DefaultElementConverter = new UnknownElementConverter(false);
+                    break;
+            }
 
             return options;
         }

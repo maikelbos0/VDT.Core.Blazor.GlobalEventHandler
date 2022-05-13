@@ -30,10 +30,6 @@
             options.ElementConverters.Add(new NullElementConverter("html", "body", "ul", "ol", "menu", "div", "span"));
             options.ElementConverters.Add(new ElementRemovingConverter("script", "style", "head", "frame", "meta", "iframe", "frameset", "col", "colgroup"));
 
-            // TODO:
-            // - HR
-            // - A title
-
             options.ElementConverters.Add(new HyperlinkConverter());
             options.ElementConverters.Add(new ImageConverter());
 
@@ -47,6 +43,7 @@
             options.ElementConverters.Add(new BlockElementConverter("#### ", "h4"));
             options.ElementConverters.Add(new BlockElementConverter("##### ", "h5"));
             options.ElementConverters.Add(new BlockElementConverter("###### ", "h6"));
+            options.ElementConverters.Add(new BlockElementConverter("---", "hr"));
 
             options.ElementConverters.Add(new ParagraphConverter());
             options.ElementConverters.Add(new LinebreakConverter());

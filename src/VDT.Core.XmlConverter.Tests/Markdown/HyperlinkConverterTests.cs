@@ -25,21 +25,27 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Equal("[", writer.ToString());
         }
 
-        [Fact]
-        public void RenderEnd() {
+        [Theory]
+        [InlineData(null, null, "]()")]
+        [InlineData("https://www.google.com", null, "](https://www.google.com)")]
+        [InlineData("https://www.google.com", "Google.com", "](https://www.google.com \"Google.com\")")]
+        public void RenderEnd(string href, string title, string expectedOutput) {
             using var writer = new StringWriter();
 
             var converter = new HyperlinkConverter();
-            var elementData = ElementDataHelper.Create(
-                "a",
-                attributes: new Dictionary<string, string>() {
-                    { "href", "https://www.google.com" }
-                }
-            );
+            var attributes = new Dictionary<string, string>();
 
-            converter.RenderEnd(elementData, writer);
+            if (href != null) {
+                attributes["href"] = href;
+            }
 
-            Assert.Equal("](https://www.google.com)", writer.ToString());
+            if (title != null) {
+                attributes["title"] = title;
+            }
+
+            converter.RenderEnd(ElementDataHelper.Create("a", attributes: attributes), writer);
+
+            Assert.Equal(expectedOutput, writer.ToString());
         }
 
         [Fact]

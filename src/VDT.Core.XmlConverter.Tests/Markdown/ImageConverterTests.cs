@@ -29,7 +29,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [InlineData("", "https://picsum.photos/200", "The title", "![](https://picsum.photos/200 \"The title\")")]
         [InlineData(null, null, "The title", "![]( \"The title\")")]
         [InlineData("", "", "The title", "![]( \"The title\")")]
-        public void RenderStart(string alt, string src, string title, string expectedRender) {
+        public void RenderStart(string alt, string src, string title, string expectedOutput) {
             using var writer = new StringWriter();
 
             var converter = new ImageConverter();
@@ -49,7 +49,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             converter.RenderStart(ElementDataHelper.Create("img", attributes: attributes), writer);
 
-            Assert.Equal(expectedRender, writer.ToString());
+            Assert.Equal(expectedOutput, writer.ToString());
         }
 
         [Fact]

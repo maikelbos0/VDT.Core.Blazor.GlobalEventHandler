@@ -2,11 +2,11 @@
 
 namespace VDT.Core.XmlConverter {
     /// <summary>
-    /// Definition of a converter that can convert an xml element to the desired output
+    /// Definition of a converter that can convert an XML element to the desired output
     /// </summary>
     public interface IElementConverter {
         /// <summary>
-        /// Determines if the converter can be used for the current xml element
+        /// Determines if the converter can be used for the current XML element
         /// </summary>
         /// <param name="elementData">Information about the element currently being converted</param>
         /// <returns><see langword="true"/> if the converter should be used; otherwise, <see langword="false"/></returns>

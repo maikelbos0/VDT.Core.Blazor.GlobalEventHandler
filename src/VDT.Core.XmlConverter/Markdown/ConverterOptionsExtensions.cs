@@ -6,7 +6,7 @@
         /// <summary>
         /// Add converters for all markup supported by basic Markdown
         /// </summary>
-        /// <param name="options">The options for converting xml</param>
+        /// <param name="options">The options for converting XML</param>
         /// <param name="unknownElementHandlingMode">Specifies the way to handle elements that can't be converted to Markdown</param>
         /// <returns>A reference to this instance after the operation has completed</returns>
         public static ConverterOptions UseMarkdown(this ConverterOptions options, UnknownElementHandlingMode unknownElementHandlingMode = UnknownElementHandlingMode.None) {

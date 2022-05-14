@@ -3,7 +3,7 @@ using System.Xml;
 
 namespace VDT.Core.XmlConverter {
     /// <summary>
-    /// Represents errors that occur when converting xml nodes
+    /// Represents errors that occur when converting XML nodes
     /// </summary>
     public class UnexpectedNodeTypeException : Exception {
         /// <summary>

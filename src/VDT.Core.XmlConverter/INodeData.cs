@@ -16,7 +16,7 @@ namespace VDT.Core.XmlConverter {
         bool IsFirstChild { get; }
 
         /// <summary>
-        /// Additional data that is shared by the entire conversion of an xml document and can be freely used by converters
+        /// Additional data that is shared by the entire conversion of an XML document and can be freely used by converters
         /// </summary>
         Dictionary<string, object?> AdditionalData { get; }
     }

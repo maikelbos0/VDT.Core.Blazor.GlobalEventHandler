@@ -3,7 +3,7 @@ using System.Security;
 
 namespace VDT.Core.XmlConverter {
     /// <summary>
-    /// Converter that outputs xml semantically identical to the input
+    /// Converter that outputs XML semantically identical to the input
     /// </summary>
     public class NoOpElementConverter : IElementConverter {
         /// <inheritdoc/>

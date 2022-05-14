@@ -6,7 +6,7 @@ using System.Xml;
 
 namespace VDT.Core.XmlConverter {
     /// <summary>
-    /// Allows converting xml documents into other text-based document formats
+    /// Allows converting XML documents into other text-based document formats
     /// </summary>
     public class Converter {
         /// <summary>
@@ -29,9 +29,9 @@ namespace VDT.Core.XmlConverter {
         }
 
         /// <summary>
-        /// Convert an xml document string using the provided <see cref="ConverterOptions"/>
+        /// Convert an XML document string using the provided <see cref="ConverterOptions"/>
         /// </summary>
-        /// <param name="xml">Xml document to convert</param>
+        /// <param name="xml">XML document to convert</param>
         /// <returns>Converted document</returns>
         public string Convert(string xml) {
             using var writer = new StringWriter();
@@ -42,9 +42,9 @@ namespace VDT.Core.XmlConverter {
         }
 
         /// <summary>
-        /// Convert an xml document string using the provided <see cref="ConverterOptions"/>
+        /// Convert an XML document string using the provided <see cref="ConverterOptions"/>
         /// </summary>
-        /// <param name="xml">Xml document to convert</param>
+        /// <param name="xml">XML document to convert</param>
         /// <param name="writer">Converted document is written to this <see cref="TextWriter"/></param>
         public void Convert(string xml, TextWriter writer) {
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
@@ -53,9 +53,9 @@ namespace VDT.Core.XmlConverter {
         }
 
         /// <summary>
-        /// Convert a stream containing an xml document using the provided <see cref="ConverterOptions"/>
+        /// Convert a stream containing an XML document using the provided <see cref="ConverterOptions"/>
         /// </summary>
-        /// <param name="stream">Stream containing the xml document to convert</param>
+        /// <param name="stream">Stream containing the XML document to convert</param>
         /// <returns>Converted document</returns>
         public string Convert(Stream stream) {
             using var writer = new StringWriter();
@@ -66,9 +66,9 @@ namespace VDT.Core.XmlConverter {
         }
 
         /// <summary>
-        /// Convert a stream containing an xml document using the provided <see cref="ConverterOptions"/>
+        /// Convert a stream containing an XML document using the provided <see cref="ConverterOptions"/>
         /// </summary>
-        /// <param name="stream">Stream containing the xml document to convert</param>
+        /// <param name="stream">Stream containing the XML document to convert</param>
         /// <param name="writer">Converted document is written to this <see cref="TextWriter"/></param>
         public void Convert(Stream stream, TextWriter writer) {
             using var reader = XmlReader.Create(stream, new XmlReaderSettings() {
@@ -79,9 +79,9 @@ namespace VDT.Core.XmlConverter {
         }
 
         /// <summary>
-        /// Convert an xml document using the provided <see cref="ConverterOptions"/>
+        /// Convert an XML document using the provided <see cref="ConverterOptions"/>
         /// </summary>
-        /// <param name="reader">Xml document to convert</param>
+        /// <param name="reader">XML document to convert</param>
         /// <returns>Converted document</returns>
         public string Convert(XmlReader reader) {
             using var writer = new StringWriter();
@@ -92,9 +92,9 @@ namespace VDT.Core.XmlConverter {
         }
 
         /// <summary>
-        /// Convert an xml document using the provided <see cref="ConverterOptions"/>
+        /// Convert an XML document using the provided <see cref="ConverterOptions"/>
         /// </summary>
-        /// <param name="reader">Xml document to convert</param>
+        /// <param name="reader">XML document to convert</param>
         /// <param name="writer">Converted document is written to this <see cref="TextWriter"/></param>
         public void Convert(XmlReader reader, TextWriter writer) {
             var data = new ConversionData();

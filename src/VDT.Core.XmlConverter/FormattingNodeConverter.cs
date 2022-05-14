@@ -21,7 +21,7 @@ namespace VDT.Core.XmlConverter {
         public NameValueFormatter Formatter { get; set; }
 
         /// <summary>
-        /// <see langword="true"/> of the value should be xml encoded, or <see langword="false"/> if not
+        /// <see langword="true"/> of the value should be XML encoded, or <see langword="false"/> if not
         /// </summary>
         public bool XmlEncodeValue { get; set; }
 
@@ -29,7 +29,7 @@ namespace VDT.Core.XmlConverter {
         /// Construct a formatting node converter
         /// </summary>
         /// <param name="formatter">Formatting method to use</param>
-        /// <param name="xmlEncodeValue"><see langword="true"/> of the value should be xml encoded, or <see langword="false"/> if not</param>
+        /// <param name="xmlEncodeValue"><see langword="true"/> of the value should be XML encoded, or <see langword="false"/> if not</param>
         public FormattingNodeConverter(NameValueFormatter formatter, bool xmlEncodeValue) {
             Formatter = formatter;
             XmlEncodeValue = xmlEncodeValue;

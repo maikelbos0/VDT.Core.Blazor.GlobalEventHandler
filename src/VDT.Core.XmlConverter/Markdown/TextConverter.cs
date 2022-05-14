@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace VDT.Core.XmlConverter.Markdown {
     /// <summary>
-    /// Converter for rendering xml text as Markdown text
+    /// Converter for rendering XML text as Markdown text
     /// </summary>
     public class TextConverter : INodeConverter {
         private const string preName = "pre";

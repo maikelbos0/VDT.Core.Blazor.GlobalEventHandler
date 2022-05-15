@@ -2,19 +2,17 @@
 
 Converter for converting XML documents to other formats such as Markdown
 
+A new XmlConverter with default options converts each node and each element into a semantically identical version of itself. Essentially it does nothing. To
+convert nodes into other content, implement your own `INodeConverter` or `IElementConverter` and set it up using the `ConverterOptions` object passed when
+creating your `XmlConverter`. This allows you to strip or replace specific XML nodes or XML elements with your own content.
+
 ## Features
 
 - A converter to allow you to convert XML documents to any other text format
 - Easily extensible options for converting different node types and elements exactly as desired
 - Specific extensions for easily converting (X)HTML to basic Markdown
 
-## XmlConverter basics
-
-A new XmlConverter with default options converts each node and each element into a semantically identical version of itself. Essentially it does nothing. To
-convert nodes into other content, implement your own `INodeConverter` or `IElementConverter` and set it up using the `ConverterOptions` object passed when
-creating your `XmlConverter`. This allows you to strip or replace specific XML nodes or XML elements with your own content.
-
-## INodeConverter
+## INodeConverter for converting nodes of different types
 
 Each node type (except for `XmlNodeType.Element` which has more detailed options, see below) that is supported by `XmlReader` can be converted by using this
 converter. To convert only a specific node type, change the converter for that specific type on the `ConverterOptions` object:
@@ -35,6 +33,7 @@ receives three parameters:
 - `data`: data relating to the current node
 
 The `NodeData` object contains the following information:
+
 - `NodeType`: type of the node
 - `Ancestors`: ancestor elements to the current node in order from lowest (direct parent) to highest (most far removed ancestor)
 - `IsFirstChild`: true if this node is the first child of its parent, otherwise false
@@ -49,7 +48,7 @@ enabling you to share context between different conversion steps.
 
 ```
 
-## IElementConverter
+## IElementConverter for converting element nodes
 
 Nodes of type `XmlNodeType.Element` can be converted with the help of implementations of `IElementConverter`. Element converters can be added to the list of
 converters in `ConverterOptions.ElementConverters`. By default this list is empty and the `ConverterOptions.DefaultElementConverter` will be used to convert
@@ -83,36 +82,37 @@ Implementations of `IElementData` must also implement the following methods to c
 ### Example
 
 ```
-
-```
-
-## Extensibility
-
-TODO
-
-### Converting nodes of different types
-
-TODO
-
-#### Example
-
-```
-TODO
-```
-
-### Converting elements with different names and attributes
-
-TODO
-
-#### Example
-
-```
 TODO
 ```
 
 ## Markdown extensions
 
-TODO
+The extension methods in the `VDT.Core.XmlConverter.Markdown` namespace extend the `ConverterOptions` class to automatically provide you with a set of 
+converters that convert any HTML that is also valid XML.
+
+`ConverterOptionsExtensions.UseBasicMarkdown` adds support for converting the following elements to Markdown:
+
+- `h1` through `h6`: headings 1 through 6
+- `p`: paragraph
+- `li` inside `ol` or `ul`: ordered or unordered list; supports nesting
+- `a`: hyperlink with content and optional title
+- `img`: image with optional alt text and title
+- `strong` or `b`: bold
+- `emp` and `i`: italic
+- `blockquote`: blockquote; supports nesting
+- `code`, `kbd`, `samp` or `var`: inline code
+- `pre`: code block
+- `hr`: horizontal rule
+- `br`: linebreak
+
+By default for the following elements only the content is rendered: `html`, `body`, `ul`, `ol`, `menu`, `div` and `span`
+
+By default the following elements are removed entirely: `script`, `style`, `head`, `frame`, `meta`, `iframe`, `frameset`, `col` and `colgroup`
+
+Finally, the optional parameter `unknownElementHandlingMode` can be used to specify how to handle elements that can't be converted:
+- `UnknownElementHandlingMode.None`: leave the elements as-is
+- `UnknownElementHandlingMode.RemoveTags`: remove only the tags but render the child content of the elements
+- `UnknownElementHandlingMode.RemoveElements`: remove the entire elements including child content
 
 ### Example
 

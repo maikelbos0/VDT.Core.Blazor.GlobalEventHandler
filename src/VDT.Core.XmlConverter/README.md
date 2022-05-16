@@ -87,7 +87,7 @@ TODO
 
 ## Markdown extensions
 
-The extension methods in the `VDT.Core.XmlConverter.Markdown` namespace extend the `ConverterOptions` class to automatically provide you with a set of 
+The extension methods in the `VDT.Core.XmlConverter.Markdown` namespace extend the `ConverterOptions` class to automatically provide you with a set of
 converters that convert any HTML that is also valid XML.
 
 `ConverterOptionsExtensions.UseBasicMarkdown` adds support for converting the following elements to Markdown:
@@ -117,5 +117,31 @@ Finally, the optional parameter `unknownElementHandlingMode` can be used to spec
 ### Example
 
 ```
-TODO
-`` 
+var xml = @"
+<h1>Header</h1>
+
+<p>This is an example document. It will get converted to Markdown.</p>
+
+<ol>
+	<li>Here is a list item</li>
+	<li>And another <strong>very important</strong> one</li>
+</ol>
+";
+var options = new ConverterOptions().UseMarkdown();
+var converter = new Converter(options);
+
+var converter.Convert(xml);
+```
+
+Above example document will result in the following Markdown:
+
+```
+ 
+\# Header
+
+This is an example document\. It will get converted to Markdown\.
+
+1\. Here is a list item
+1\. And another \*\*very important\*\* one
+
+```

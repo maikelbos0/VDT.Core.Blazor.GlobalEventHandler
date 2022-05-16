@@ -45,8 +45,42 @@ enabling you to share context between different conversion steps.
 ### Example
 
 ```
+// Create your own converter to 
+public class CustomCommentConverter : INodeConverter {
+    public void Convert(XmlReader reader, TextWriter writer, NodeData data) {
+        if (data.Ancestors.FirstOrDefault().Name == "CommentData") {
+            writer.Write(reader.Value);
+        }
+        else {
+            writer.Write("<!--");
+            writer.Write(reader.Value);
+            writer.Write("-->");
+        }
+    }
+}
+
+var xml = @"<Data>
+    <!-- This comment will be left -->
+    <CommentData><!-- This comment will be turned into a text node --></CommentData>
+</Data>";
+
+var converter = new Converter(new ConverterOptions() {
+    CommentConverter = new CustomCommentConverter()
+});
+
+var newXml = converter.Convert(xml);
 
 ```
+
+Above example document will result in the following XML:
+
+```
+<Data>
+    <!-- This comment will be left -->
+    <CommentData> This comment will be turned into a text node </CommentData>
+</Data>
+```
+
 
 ## IElementConverter for converting element nodes
 
@@ -130,7 +164,7 @@ var xml = @"
 var options = new ConverterOptions().UseMarkdown();
 var converter = new Converter(options);
 
-var converter.Convert(xml);
+var markdown = converter.Convert(xml);
 ```
 
 Above example document will result in the following Markdown:

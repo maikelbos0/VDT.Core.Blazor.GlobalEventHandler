@@ -44,8 +44,10 @@ enabling you to share context between different conversion steps.
 
 ### Example
 
+Suppose you have XML documents in which some comments need to be converted into text nodes depending on what parent element they have. You can create a custom
+converter to turn comment nodes in certain elements into text.
+
 ```
-// Create your own converter to 
 public class CustomCommentConverter : INodeConverter {
     public void Convert(XmlReader reader, TextWriter writer, NodeData data) {
         if (data.Ancestors.FirstOrDefault().Name == "CommentData") {
@@ -68,11 +70,11 @@ var converter = new Converter(new ConverterOptions() {
     CommentConverter = new CustomCommentConverter()
 });
 
-var newXml = converter.Convert(xml);
+var result = converter.Convert(xml);
 
 ```
 
-Above example document will result in the following XML:
+Above example will result in the following XML:
 
 ```
 <Data>
@@ -80,7 +82,6 @@ Above example document will result in the following XML:
     <CommentData> This comment will be turned into a text node </CommentData>
 </Data>
 ```
-
 
 ## IElementConverter for converting element nodes
 
@@ -115,8 +116,62 @@ Implementations of `IElementData` must also implement the following methods to c
 
 ### Example
 
+Suppose you have HTML documents where bold and italic text are achieved by inline CSS and you want to use proper semantic HTML tags such as STRONG and EM.
+You can create a custom converter that checks the style content of SPAN tags and converts them as appropriate.
+
 ```
-TODO
+public class InlineStyleConverter : IElementConverter {
+    public bool IsValidFor(ElementData elementData) => string.Equals("span", elementData.Name, System.StringComparison.OrdinalIgnoreCase);
+
+    public void RenderStart(ElementData elementData, TextWriter writer) {
+        if (IsBold(elementData)) {
+            writer.Write("<strong>");
+        }
+
+        if (IsItalic(elementData)) {
+            writer.Write("<em>");
+        }
+    }
+
+    public bool ShouldRenderContent(ElementData elementData) => true;
+
+    public void RenderEnd(ElementData elementData, TextWriter writer) {
+        if (IsItalic(elementData)) {
+            writer.Write("</em>");
+        }
+
+        if (IsBold(elementData)) {
+            writer.Write("</strong>");
+        }
+    }
+
+    private bool IsBold(ElementData elementData) => GetStyle(elementData)?.Contains("bold", StringComparison.OrdinalIgnoreCase) ?? false;
+
+    private bool IsItalic(ElementData elementData) => GetStyle(elementData)?.Contains("italic", StringComparison.OrdinalIgnoreCase) ?? false;
+
+    private string? GetStyle(ElementData elementData) {
+        if (!elementData.Attributes.TryGetValue("style", out var style)) {
+            style = elementData.Attributes.FirstOrDefault(a => string.Equals("style", a.Key, StringComparison.OrdinalIgnoreCase)).Value;
+        }
+
+        return style;
+    }
+}
+
+var xml = "<p>This paragraph converts <span style=\"font-style: italic\">italic</span> and <span style=\"font-weight: bold\">bold</span> spans to more appropriate tags.</p>";
+
+var converterOptions = new ConverterOptions();
+var converter = new Converter(converterOptions);
+
+converterOptions.ElementConverters.Add(new InlineStyleConverter());
+
+var result = converter.Convert(xml);
+```
+
+Above example will result in the following XML:
+
+```
+<p>This paragraph converts <em>italic</em> and <strong>bold</strong> spans to more appropriate tags.</p>
 ```
 
 ## Markdown extensions
@@ -167,7 +222,7 @@ var converter = new Converter(options);
 var markdown = converter.Convert(xml);
 ```
 
-Above example document will result in the following Markdown:
+Above example will result in the following Markdown:
 
 ```
  

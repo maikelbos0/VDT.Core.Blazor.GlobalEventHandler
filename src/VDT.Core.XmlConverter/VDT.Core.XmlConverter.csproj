@@ -4,11 +4,28 @@
 		<TargetFrameworks>netstandard2.1;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<WarningsAsErrors>nullable</WarningsAsErrors>
-	</PropertyGroup>	
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<PackageId>VDT.Core.XmlConverter</PackageId>
+		<Version>1.0.0</Version>
+		<Title>VDT.Core.XmlConverter</Title>
+		<Description>Converter for converting XML documents to other formats such as Markdown</Description>
+		<Authors>Maikel Bos</Authors>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Copyright>Copyright © 2022 Maikel Bos</Copyright>
+		<PackageTags>XML, HTML, Markdown, convert, converter</PackageTags>
+		<PackageProjectUrl>https://github.com/maikelbos0/VDT.Core</PackageProjectUrl>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
 
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="README.md" pack="true" PackagePath="." />
+	</ItemGroup>
 
 	<ItemGroup>
 		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">

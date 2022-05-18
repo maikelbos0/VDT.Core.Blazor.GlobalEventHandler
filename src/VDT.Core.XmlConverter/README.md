@@ -1,6 +1,6 @@
 ﻿# VDT.Core.XmlConverter
 
-Converter for converting XML documents to other formats such as Markdown
+Converter for converting XML documents to other formats such as Markdown.
 
 A new XmlConverter with default options converts each node and each element into a semantically identical version of itself. Essentially it does nothing. To
 convert nodes into other content, implement your own `INodeConverter` or `IElementConverter` and set it up using the `ConverterOptions` object passed when

@@ -4,9 +4,6 @@ using System.Linq;
 
 namespace VDT.Core.XmlConverter.Tests {
     public static class ElementDataHelper {
-        public static ElementData Create(string name, params ElementData[] ancestors)
-            => Create(name, null, false, ancestors);
-
         public static ElementData Create(string name, IEnumerable<ElementData> ancestors)
             => Create(name, null, false, ancestors.ToList());
 

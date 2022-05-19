@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Xml;
 
 namespace VDT.Core.XmlConverter.Tests {
@@ -9,13 +8,13 @@ namespace VDT.Core.XmlConverter.Tests {
             => Create(nodeType, ancestors, false, null);
 
         public static NodeData Create(
-            XmlNodeType nodeType, 
-            IList<ElementData>? ancestors = null, 
+            XmlNodeType nodeType,
+            IList<ElementData>? ancestors = null,
             bool isFirstChild = false,
             Dictionary<string, object?>? additionalData = null
         )
             => new NodeData(
-                nodeType, 
+                nodeType,
                 ancestors ?? Array.Empty<ElementData>(),
                 isFirstChild,
                 additionalData ?? new Dictionary<string, object?>()

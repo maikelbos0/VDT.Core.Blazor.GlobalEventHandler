@@ -277,10 +277,10 @@ namespace VDT.Core.XmlConverter.Tests {
         }
 
         [Theory]
-        [InlineData("<foo bar=\"baz\">Content</foo>", XmlNodeType.EndElement, 0)]
-        [InlineData("<foo bar=\"baz\"></foo>", XmlNodeType.EndElement, 0)]
-        [InlineData("<foo bar=\"baz\"/>", XmlNodeType.Element, 0)]
-        public void ConvertElement_Leaves_Reader_At_End_Of_Element(string xml, XmlNodeType expectedNodeType, int expectedDepth) {
+        [InlineData("<foo bar=\"baz\">Content</foo>", XmlNodeType.EndElement)]
+        [InlineData("<foo bar=\"baz\"></foo>", XmlNodeType.EndElement)]
+        [InlineData("<foo bar=\"baz\"/>", XmlNodeType.Element)]
+        public void ConvertElement_Leaves_Reader_At_End_Of_Element(string xml, XmlNodeType expectedNodeType) {
             using var writer = new StringWriter();
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
             using var reader = XmlReader.Create(stream);
@@ -297,7 +297,6 @@ namespace VDT.Core.XmlConverter.Tests {
             converter.ConvertElement(reader, writer, data, Assert.IsType<ElementData>(data.CurrentNodeData));
 
             Assert.Equal(expectedNodeType, reader.NodeType);
-            Assert.Equal(expectedDepth, reader.Depth);
         }
 
         [Fact]

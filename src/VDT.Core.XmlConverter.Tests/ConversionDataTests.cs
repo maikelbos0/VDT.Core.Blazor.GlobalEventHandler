@@ -30,11 +30,9 @@ namespace VDT.Core.XmlConverter.Tests {
         }
 
         [Theory]
-        [InlineData("<foo bar=\"baz\">Content</foo>", "foo", 1, false)]
-        [InlineData("<foo bar=\"baz\"/>", "foo", 1, true)]
-        [InlineData("<foo>Content</foo>", "foo", 0, false)]
-        [InlineData("<foo/>", "foo", 0, true)]
-        public void ReadNode_Sets_CurrentElementData_To_ElementData_If_Element(string xml, string expectedName, int expectedAttributeCount, bool expectedIsSelfClosing) {
+        [InlineData("<foo bar=\"baz\">Content</foo>", "foo", false)]
+        [InlineData("<foo bar=\"baz\"/>", "foo", true)]
+        public void ReadNode_Sets_CurrentNodeData_To_ElementData_If_Element(string xml, string expectedName, bool expectedIsSelfClosing) {
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
             using var reader = XmlReader.Create(stream);
 
@@ -48,7 +46,7 @@ namespace VDT.Core.XmlConverter.Tests {
             var elementData = Assert.IsType<ElementData>(data.CurrentNodeData);
 
             Assert.Equal(expectedName, elementData.Name);
-            Assert.Equal(expectedAttributeCount, elementData.Attributes.Count);
+            Assert.NotEmpty(elementData.Attributes);
             Assert.Equal(expectedIsSelfClosing, elementData.IsSelfClosing);
             Assert.True(elementData.IsFirstChild);
             Assert.True(elementData.AdditionalData.ContainsKey("test"));

@@ -39,6 +39,17 @@ namespace VDT.Core.XmlConverter.Tests {
         }
 
         [Fact]
+        public void Convert_Converts_Empty_Fragment() {
+            const string xml = @"";
+
+            using var writer = new StringWriter();
+
+            var converter = new Converter();
+
+            Assert.Equal(xml, converter.Convert(xml), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
         public void Convert_Stream() {
             const string xml = @"<?xml version=""1.0"" encoding=""UTF-8""?>
 <?processing instruction?>
@@ -79,6 +90,23 @@ namespace VDT.Core.XmlConverter.Tests {
             var converter = new Converter();
 
             Assert.Equal(xml, converter.Convert(reader), ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void Convert_Throws_Exception_For_Partially_Read_XmlReader() {
+            const string xml = "<foo bar=\"baz\">Content</foo>";
+
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
+            using var reader = XmlReader.Create(stream, new XmlReaderSettings() { DtdProcessing = DtdProcessing.Parse });
+
+            var converter = new Converter();
+
+            reader.Read(); // Move to element
+
+            var exception = Assert.Throws<UnexpectedNodeTypeException>(() => converter.Convert(reader));
+
+            Assert.Equal(XmlNodeType.Element, exception.NodeType);
+            Assert.Equal("Node type 'Element' was not expected; ensure reader is in starting position before calling Convert", exception.Message);
         }
 
         [Fact]
@@ -248,32 +276,20 @@ namespace VDT.Core.XmlConverter.Tests {
             processingInstructionConverter.Received().Convert(reader, writer, data);
         }
 
-        [Fact]
-        public void ConvertNode_Throws_Exception_For_EndElement() {
+        [Theory]
+        [InlineData(XmlNodeType.EndElement)]
+        [InlineData(XmlNodeType.Attribute)]
+        public void ConvertNode_Throws_Exception_For_Unexpected_NodeType(XmlNodeType nodeType) {
             using var writer = Substitute.For<TextWriter>();
             using var reader = Substitute.For<XmlReader>();
 
-            var data = NodeDataHelper.Create(XmlNodeType.EndElement);
+            var data = NodeDataHelper.Create(nodeType);
             var converter = new Converter();
 
             var exception = Assert.Throws<UnexpectedNodeTypeException>(() => converter.ConvertNode(reader, writer, data));
 
-            Assert.Equal(XmlNodeType.EndElement, exception.NodeType);
-            Assert.Equal("Node type 'EndElement' was not handled by ConvertElement; ensure reader is in correct position before calling Convert", exception.Message);
-        }
-
-        [Fact]
-        public void ConvertNode_Throws_Exception_For_Attribute() {
-            using var writer = Substitute.For<TextWriter>();
-            using var reader = Substitute.For<XmlReader>();
-
-            var data = NodeDataHelper.Create(XmlNodeType.Attribute);
-            var converter = new Converter();
-
-            var exception = Assert.Throws<UnexpectedNodeTypeException>(() => converter.ConvertNode(reader, writer, data));
-
-            Assert.Equal(XmlNodeType.Attribute, exception.NodeType);
-            Assert.Equal("Node type 'Attribute' was not handled by ConvertElement; ensure reader is in correct position before calling Convert", exception.Message);
+            Assert.Equal(nodeType, exception.NodeType);
+            Assert.Equal($"Node type '{nodeType}' was not expected; ensure reader is in starting position before calling Convert", exception.Message);
         }
 
         [Theory]

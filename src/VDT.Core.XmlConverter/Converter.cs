@@ -6,7 +6,7 @@ using System.Xml;
 
 namespace VDT.Core.XmlConverter {
     /// <summary>
-    /// Allows converting XML documents into other text-based document formats
+    /// Converts XML documents into other text-based document formats
     /// </summary>
     public class Converter {
         /// <summary>
@@ -55,7 +55,7 @@ namespace VDT.Core.XmlConverter {
         /// <summary>
         /// Convert a stream containing an XML document using the provided <see cref="ConverterOptions"/>
         /// </summary>
-        /// <param name="stream">Stream containing the XML document to convert</param>
+        /// <param name="stream">XML document to convert</param>
         /// <returns>Converted document</returns>
         public string Convert(Stream stream) {
             using var writer = new StringWriter();
@@ -68,7 +68,7 @@ namespace VDT.Core.XmlConverter {
         /// <summary>
         /// Convert a stream containing an XML document using the provided <see cref="ConverterOptions"/>
         /// </summary>
-        /// <param name="stream">Stream containing the XML document to convert</param>
+        /// <param name="stream">XML document to convert</param>
         /// <param name="writer">Converted document is written to this <see cref="TextWriter"/></param>
         public void Convert(Stream stream, TextWriter writer) {
             using var reader = XmlReader.Create(stream, new XmlReaderSettings() {
@@ -99,13 +99,13 @@ namespace VDT.Core.XmlConverter {
         public void Convert(XmlReader reader, TextWriter writer) {
             var data = new ConversionData();
 
-            if (reader.NodeType == XmlNodeType.None) {
-                reader.Read();
+            if (reader.NodeType != XmlNodeType.None) {
+                throw new UnexpectedNodeTypeException($"Node type '{reader.NodeType}' was not expected; ensure {nameof(reader)} is in starting position before calling {nameof(Convert)}", reader.NodeType);
             }
 
-            do {
+            while (reader.Read()) {
                 ConvertNode(reader, writer, data);
-            } while (reader.Read());
+            }
         }
 
         internal void ConvertNode(XmlReader reader, TextWriter writer, ConversionData data) {
@@ -150,7 +150,7 @@ namespace VDT.Core.XmlConverter {
                     break;
                 case XmlNodeType.EndElement:
                 case XmlNodeType.Attribute:
-                    throw new UnexpectedNodeTypeException($"Node type '{nodeData.NodeType}' was not handled by {nameof(ConvertElement)}; ensure {nameof(reader)} is in correct position before calling {nameof(Convert)}", nodeData.NodeType);
+                    throw new UnexpectedNodeTypeException($"Node type '{nodeData.NodeType}' was not expected; ensure {nameof(reader)} is in starting position before calling {nameof(Convert)}", nodeData.NodeType);
                 case XmlNodeType.Document:
                 case XmlNodeType.DocumentFragment:
                 case XmlNodeType.EndEntity:

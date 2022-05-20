@@ -11,7 +11,7 @@ namespace VDT.Core.XmlConverter {
         IReadOnlyList<ElementData> Ancestors { get; }
 
         /// <summary>
-        /// <see langword="true"/> if this node is the first child of its parent, otherwise <see langword="false"/>
+        /// <see langword="true"/> if this node is the first child of its parent; otherwise <see langword="false"/>
         /// </summary>
         bool IsFirstChild { get; }
 

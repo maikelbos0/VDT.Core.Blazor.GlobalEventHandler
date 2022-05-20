@@ -36,7 +36,7 @@ The `NodeData` object contains the following information:
 
 - `NodeType`: type of the node
 - `Ancestors`: ancestor elements to the current node in order from lowest (direct parent) to highest (most far removed ancestor)
-- `IsFirstChild`: true if this node is the first child of its parent, otherwise false
+- `IsFirstChild`: true if this node is the first child of its parent; otherwise false
 - `AdditionalData`: additional data that is shared by the entire conversion of an XML document and can be freely used by converters
 
 Specifically worth mentioning is that AdditionalData will refer to the exact same dictionary across all node data and element data during a single conversion,
@@ -97,7 +97,7 @@ The method `IElementConverter.IsValidFor` receives the parameter `ElementData` w
 - `Attributes`: collection of attributes found on the element
 - `IsSelfClosing`: true if the element is an empty, self-closing element and false if the element has a separate opening and closing tag
 - `Ancestors`: ancestor elements to the current node in order from lowest (direct parent) to highest (most far removed ancestor)
-- `IsFirstChild`: true if this node is the first child of its parent, otherwise false
+- `IsFirstChild`: true if this node is the first child of its parent; otherwise false
 - `AdditionalData`: additional data that is shared by the entire conversion of an XML document and can be freely used by converters
 
 Specifically worth mentioning is that AdditionalData will refer to the exact same dictionary across all node data and element data during a single conversion,

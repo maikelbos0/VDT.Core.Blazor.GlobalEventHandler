@@ -24,7 +24,7 @@ namespace VDT.Core.XmlConverter.Markdown {
                 tracker.Write(writer, url);
             }
 
-            if (elementData.TryGetAttribute("title", out var title) && !string.IsNullOrWhiteSpace(title)) {
+            if (elementData.TryGetAttribute("title", out var title)) {
                 tracker.Write(writer, " \"");
                 tracker.Write(writer, title);
                 tracker.Write(writer, "\"");

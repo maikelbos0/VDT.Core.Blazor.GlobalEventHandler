@@ -17,18 +17,12 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
         [Theory]
         [InlineData(null, null, null, "![]()")]
-        [InlineData("", "", "", "![]()")]
         [InlineData("A picture", null, null, "![A picture]()")]
-        [InlineData("A picture", "", "", "![A picture]()")]
         [InlineData("A picture", "https://picsum.photos/200", null, "![A picture](https://picsum.photos/200)")]
-        [InlineData("A picture", "https://picsum.photos/200", "", "![A picture](https://picsum.photos/200)")]
         [InlineData(null, "https://picsum.photos/200", null, "![](https://picsum.photos/200)")]
-        [InlineData("", "https://picsum.photos/200", "", "![](https://picsum.photos/200)")]
         [InlineData("A picture", "https://picsum.photos/200", "The title", "![A picture](https://picsum.photos/200 \"The title\")")]
         [InlineData(null, "https://picsum.photos/200", "The title", "![](https://picsum.photos/200 \"The title\")")]
-        [InlineData("", "https://picsum.photos/200", "The title", "![](https://picsum.photos/200 \"The title\")")]
         [InlineData(null, null, "The title", "![]( \"The title\")")]
-        [InlineData("", "", "The title", "![]( \"The title\")")]
         public void RenderStart(string alt, string src, string title, string expectedOutput) {
             using var writer = new StringWriter();
 
@@ -52,9 +46,18 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Equal(expectedOutput, writer.ToString());
         }
 
+
+        [Fact]
+        public void ShouldRenderContent_Returns_False() {
+            var converter = new ImageConverter();
+
+            Assert.False(converter.ShouldRenderContent(ElementDataHelper.Create("bar")));
+        }
+
         [Fact]
         public void RenderEnd() {
             using var writer = new StringWriter();
+
             var converter = new ImageConverter();
 
             converter.RenderEnd(ElementDataHelper.Create("bar"), writer);

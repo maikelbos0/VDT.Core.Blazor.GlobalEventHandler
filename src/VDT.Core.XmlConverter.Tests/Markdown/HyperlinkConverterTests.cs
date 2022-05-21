@@ -18,6 +18,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [Fact]
         public void RenderStart() {
             using var writer = new StringWriter();
+
             var converter = new HyperlinkConverter();
 
             converter.RenderStart(ElementDataHelper.Create("a"), writer);
@@ -51,6 +52,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [Fact]
         public void RenderEnd_Without_Url() {
             using var writer = new StringWriter();
+
             var converter = new HyperlinkConverter();
 
             converter.RenderEnd(ElementDataHelper.Create("a"), writer);

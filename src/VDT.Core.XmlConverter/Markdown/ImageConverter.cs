@@ -16,17 +16,17 @@ namespace VDT.Core.XmlConverter.Markdown {
 
             tracker.Write(writer, "![");
 
-            if (elementData.TryGetAttribute("alt", out var alt) && !string.IsNullOrWhiteSpace(alt)) {
+            if (elementData.TryGetAttribute("alt", out var alt)) {
                 tracker.Write(writer, alt);
             }
 
             tracker.Write(writer, "](");
 
-            if (elementData.TryGetAttribute("src", out var src) && !string.IsNullOrWhiteSpace(src)) {
+            if (elementData.TryGetAttribute("src", out var src)) {
                 tracker.Write(writer, src);
             }
 
-            if (elementData.TryGetAttribute("title", out var title) && !string.IsNullOrWhiteSpace(title)) {
+            if (elementData.TryGetAttribute("title", out var title)) {
                 tracker.Write(writer, " \"");
                 tracker.Write(writer, title);
                 tracker.Write(writer, "\"");
@@ -34,6 +34,9 @@ namespace VDT.Core.XmlConverter.Markdown {
 
             tracker.Write(writer, ")");
         }
+
+        /// <inheritdoc/>
+        public override bool ShouldRenderContent(ElementData elementData) => false;
 
         /// <inheritdoc/>
         public override void RenderEnd(ElementData elementData, TextWriter writer) { }

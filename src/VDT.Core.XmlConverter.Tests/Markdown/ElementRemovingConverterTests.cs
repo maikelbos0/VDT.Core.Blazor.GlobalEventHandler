@@ -7,6 +7,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [Fact]
         public void RenderStart() {
             using var writer = new StringWriter();
+
             var converter = new ElementRemovingConverter("foo", "bar");
 
             converter.RenderStart(ElementDataHelper.Create("bar"), writer);
@@ -24,6 +25,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [Fact]
         public void RenderEnd() {
             using var writer = new StringWriter();
+
             var converter = new ElementRemovingConverter("foo", "bar");
 
             converter.RenderEnd(ElementDataHelper.Create("bar"), writer);

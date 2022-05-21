@@ -17,9 +17,7 @@ namespace VDT.Core.XmlConverter.Tests {
             var attributes = reader.GetAttributes();
 
             Assert.Equal(2, attributes.Count);
-            Assert.True(attributes.ContainsKey("bar"));
             Assert.Equal("bar", attributes["bar"]);
-            Assert.True(attributes.ContainsKey("baz"));
             Assert.Equal("quux quux", attributes["baz"]);
         }
 

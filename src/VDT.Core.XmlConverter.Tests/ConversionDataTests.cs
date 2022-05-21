@@ -25,7 +25,6 @@ namespace VDT.Core.XmlConverter.Tests {
 
             Assert.Equal(expectedNodeType, nodeData.NodeType);
             Assert.True(nodeData.IsFirstChild);
-            Assert.True(nodeData.AdditionalData.ContainsKey("test"));
             Assert.Equal("test", nodeData.AdditionalData["test"]);
         }
 
@@ -49,7 +48,6 @@ namespace VDT.Core.XmlConverter.Tests {
             Assert.NotEmpty(elementData.Attributes);
             Assert.Equal(expectedIsSelfClosing, elementData.IsSelfClosing);
             Assert.True(elementData.IsFirstChild);
-            Assert.True(elementData.AdditionalData.ContainsKey("test"));
             Assert.Equal("test", elementData.AdditionalData["test"]);
         }
 

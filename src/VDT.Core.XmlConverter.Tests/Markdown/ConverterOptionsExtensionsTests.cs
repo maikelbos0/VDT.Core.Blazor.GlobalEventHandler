@@ -42,8 +42,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
         [Theory]
         [InlineData("<li>List item</li>", "- List item\r\n")]
-        [InlineData("<menu><li>List item</li></menu>", "- List item\r\n")]
-        [InlineData("<ul><li>List item</li></ul>", "- List item\r\n")]
         [InlineData("<ol><li>List item</li></ol>", "1. List item\r\n")]
         public void UseMarkdown_Convert_List_Item(string xml, string expectedMarkdown) {
             var options = new ConverterOptions().UseMarkdown();
@@ -124,8 +122,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [InlineData("<meta>Don't render me</meta>Test")]
         [InlineData("<iframe>Don't render me</iframe>Test")]
         [InlineData("<frameset>Don't render me</frameset>Test")]
-        [InlineData("<col>Don't render me</col>Test")]
-        [InlineData("<colgroup>Don't render me</colgroup>Test")]
         public void UseMarkdown_Convert_Removes_Elements_Without_Content(string xml) {
             var options = new ConverterOptions().UseMarkdown();
             var converter = new Converter(options);

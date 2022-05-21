@@ -28,7 +28,7 @@
             options.ElementConverters.Add(new PreConverter());
 
             options.ElementConverters.Add(new NullElementConverter("html", "body", "ul", "ol", "menu", "div", "span"));
-            options.ElementConverters.Add(new ElementRemovingConverter("script", "style", "head", "frame", "meta", "iframe", "frameset", "col", "colgroup"));
+            options.ElementConverters.Add(new ElementRemovingConverter("script", "style", "head", "frame", "meta", "iframe", "frameset"));
 
             options.ElementConverters.Add(new HyperlinkConverter());
             options.ElementConverters.Add(new ImageConverter());

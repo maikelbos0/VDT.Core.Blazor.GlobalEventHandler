@@ -63,7 +63,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [Theory]
         [InlineData(null, false, 1, "\r\n")]
         [InlineData(0, true, 1, "\r\n")]
-        [InlineData(1, true, 2, "\t> \r\n")]
+        [InlineData(2, true, 3, "\t> \r\n")]
         public void WriteLine_Without_Value(int? trailingNewLineCount, bool hasPrefixes, int expectedTrailingNewLineCount, string expectedValue) {
             using var writer = new StringWriter();
 

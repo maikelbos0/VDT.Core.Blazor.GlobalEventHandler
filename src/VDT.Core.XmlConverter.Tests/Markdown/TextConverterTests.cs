@@ -50,9 +50,9 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Theory]
-        [InlineData("\r\nFoo();\r\nBar(i * j);", "Foo();\r\nBar(i * j);")]
+        [InlineData("Foo();\r\nBar(i * j);", "\r\nFoo();\r\nBar(i * j);")]
         [InlineData("\r\nFoo();\r\nBar(i * j);", "\r\nFoo();\r\nBar(i * j);")]
-        public void Convert_Pre(string expectedText, string xml) {
+        public void Convert_Pre(string xml, string expectedText) {
             using var writer = new StringWriter();
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
             using var reader = XmlReader.Create(stream, new XmlReaderSettings() { ConformanceLevel = ConformanceLevel.Fragment });

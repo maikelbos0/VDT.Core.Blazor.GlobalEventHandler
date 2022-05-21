@@ -15,7 +15,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         public void RenderStart() {
             using var writer = new StringWriter();
 
-            var converter = new NullElementConverter("foo", "bar");
+            var converter = new UnknownElementConverter(true);
 
             converter.RenderStart(ElementDataHelper.Create("bar"), writer);
 
@@ -35,7 +35,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         public void RenderEnd() {
             using var writer = new StringWriter();
 
-            var converter = new NullElementConverter("foo", "bar");
+            var converter = new UnknownElementConverter(true);
 
             converter.RenderEnd(ElementDataHelper.Create("bar"), writer);
 

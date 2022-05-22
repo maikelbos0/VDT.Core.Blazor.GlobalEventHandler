@@ -6,7 +6,7 @@ namespace VDT.Core.XmlConverter.Markdown {
     /// </summary>
     public class LinebreakConverter : BaseElementConverter {
         /// <summary>
-        /// Construct an instance of an Markdown linebreak converter
+        /// Construct an instance of a Markdown linebreak converter
         /// </summary>
         public LinebreakConverter() : base("br") { }
 
@@ -14,6 +14,9 @@ namespace VDT.Core.XmlConverter.Markdown {
         public override void RenderStart(ElementData elementData, TextWriter writer) {
             elementData.GetContentTracker().WriteLine(writer, "  ");
         }
+
+        /// <inheritdoc/>
+        public override bool ShouldRenderContent(ElementData elementData) => false;
 
         /// <inheritdoc/>
         public override void RenderEnd(ElementData elementData, TextWriter writer) { }

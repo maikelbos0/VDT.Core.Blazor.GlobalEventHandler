@@ -27,6 +27,13 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
+        public void ShouldRenderContent_Returns_False() {
+            var converter = new LinebreakConverter();
+
+            Assert.False(converter.ShouldRenderContent(ElementDataHelper.Create("bar")));
+        }
+
+        [Fact]
         public void RenderEnd() {
             using var writer = new StringWriter();
 

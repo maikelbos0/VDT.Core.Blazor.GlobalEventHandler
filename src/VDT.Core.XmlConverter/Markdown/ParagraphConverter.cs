@@ -6,7 +6,7 @@ namespace VDT.Core.XmlConverter.Markdown {
     /// </summary>
     public class ParagraphConverter : BaseElementConverter {
         /// <summary>
-        /// Construct an instance of a paragraph converter
+        /// Construct an instance of a Markdown paragraph converter
         /// </summary>
         public ParagraphConverter() : base("", "p") { }
 

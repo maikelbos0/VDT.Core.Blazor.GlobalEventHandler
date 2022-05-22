@@ -6,7 +6,7 @@ namespace VDT.Core.XmlConverter.Markdown {
     /// </summary>
     public class PreConverter : BlockElementConverter {
         /// <summary>
-        /// Construct an instance of a pre converter
+        /// Construct an instance of a Markdown pre converter
         /// </summary>
         public PreConverter() : base("```", "pre") { }
 

@@ -6,7 +6,7 @@ namespace VDT.Core.XmlConverter.Markdown {
     /// </summary>
     public class ImageConverter : BaseElementConverter {
         /// <summary>
-        /// Construct an instance of an image converter
+        /// Construct an instance of a Markdown image converter
         /// </summary>
         public ImageConverter() : base("img") { }
 

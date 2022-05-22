@@ -30,7 +30,7 @@ namespace VDT.Core.XmlConverter.Markdown {
         }
 
         /// <summary>
-        /// <see langword="true"/> if the last things written was a trailing line terminator; otherwise <see langword="false"/>
+        /// <see langword="true"/> if the last things written ended in a trailing line terminator; otherwise <see langword="false"/>
         /// </summary>
         public bool HasTrailingNewLine => TrailingNewLineCount > 0;
 

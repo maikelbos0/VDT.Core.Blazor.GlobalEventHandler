@@ -6,7 +6,7 @@ namespace VDT.Core.XmlConverter.Markdown {
     /// </summary>
     public class HyperlinkConverter : BaseElementConverter {
         /// <summary>
-        /// Construct an instance of a hyperlink converter
+        /// Construct an instance of a Markdown hyperlink converter
         /// </summary>
         public HyperlinkConverter() : base("a") { }
 

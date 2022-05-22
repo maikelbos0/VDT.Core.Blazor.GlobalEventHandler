@@ -6,7 +6,7 @@ namespace VDT.Core.XmlConverter.Markdown {
     /// </summary>
     public class NullElementConverter : BaseElementConverter {
         /// <summary>
-        /// Construct an instance of a null Markdown element converter
+        /// Construct an instance of a Markdown null element converter
         /// </summary>
         /// <param name="validForElementNames">Element names for which this converter is valid; names are case-insensitive</param>
         public NullElementConverter(params string[] validForElementNames) : base(validForElementNames) { }

@@ -46,7 +46,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Equal(expectedOutput, writer.ToString());
         }
 
-
         [Fact]
         public void ShouldRenderContent_Returns_False() {
             var converter = new ImageConverter();

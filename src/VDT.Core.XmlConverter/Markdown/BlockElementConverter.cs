@@ -8,7 +8,7 @@ namespace VDT.Core.XmlConverter.Markdown {
         private readonly string startOutput;
 
         /// <summary>
-        /// Constructs an instance of a block Markdown element converter
+        /// Constructs an instance of a Markdown block element converter
         /// </summary>
         /// <param name="startOutput">Value to render at the start of the element, before any possible child content is rendered</param>
         /// <param name="validForElementNames">Element names for which this converter is valid; names are case-insensitive</param>

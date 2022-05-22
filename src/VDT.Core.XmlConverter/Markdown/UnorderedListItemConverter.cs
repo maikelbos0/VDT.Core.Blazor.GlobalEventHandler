@@ -10,7 +10,7 @@ namespace VDT.Core.XmlConverter.Markdown {
         private const string orderedListName = "ol";
 
         /// <summary>
-        /// Construct an instance of an Markdown unordered list item converter
+        /// Construct an instance of a Markdown unordered list item converter
         /// </summary>
         public UnorderedListItemConverter() : base("- ", "li") { }
 

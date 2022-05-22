@@ -6,7 +6,7 @@ namespace VDT.Core.XmlConverter.Markdown {
     /// </summary>
     public class BlockquoteConverter : BlockElementConverter {
         /// <summary>
-        /// Construct an instance of an Markdown blockquote converter
+        /// Construct an instance of a Markdown blockquote converter
         /// </summary>
         public BlockquoteConverter() : base("", "blockquote") { }
                 

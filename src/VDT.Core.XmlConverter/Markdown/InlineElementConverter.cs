@@ -9,7 +9,7 @@ namespace VDT.Core.XmlConverter.Markdown {
         private readonly string endOutput;
 
         /// <summary>
-        /// Constructs an instance of an inline Markdown element converter
+        /// Constructs an instance of a Markdown inline element converter
         /// </summary>
         /// <param name="startOutput">Value to render at the start of the element, before any possible child content is rendered</param>
         /// <param name="endOutput">Value to render at the end of the element, after any possible child content is rendered</param>

@@ -27,16 +27,9 @@
             options.ElementConverters.Add(new PreContentConverter());
             options.ElementConverters.Add(new PreConverter());
 
-            options.ElementConverters.Add(new NullElementConverter("html", "body", "ul", "ol", "menu", "div", "span"));
-            options.ElementConverters.Add(new ElementRemovingConverter("script", "style", "head", "frame", "meta", "iframe", "frameset"));
-
-            options.ElementConverters.Add(new HyperlinkConverter());
-            options.ElementConverters.Add(new ImageConverter());
-
             options.ElementConverters.Add(new OrderedListItemConverter());
             options.ElementConverters.Add(new UnorderedListItemConverter());
-            options.ElementConverters.Add(new BlockquoteConverter());
-            
+                        
             options.ElementConverters.Add(new BlockElementConverter("# ", "h1"));
             options.ElementConverters.Add(new BlockElementConverter("## ", "h2"));
             options.ElementConverters.Add(new BlockElementConverter("### ", "h3"));
@@ -45,12 +38,19 @@
             options.ElementConverters.Add(new BlockElementConverter("###### ", "h6"));
             options.ElementConverters.Add(new BlockElementConverter("---", "hr"));
 
+            options.ElementConverters.Add(new BlockquoteConverter());
             options.ElementConverters.Add(new ParagraphConverter());
             options.ElementConverters.Add(new LinebreakConverter());
+
+            options.ElementConverters.Add(new HyperlinkConverter());
+            options.ElementConverters.Add(new ImageConverter());
 
             options.ElementConverters.Add(new InlineElementConverter("**", "**", "strong", "b"));
             options.ElementConverters.Add(new InlineElementConverter("*", "*", "em", "i"));
             options.ElementConverters.Add(new InlineElementConverter("`", "`", "code", "kbd", "samp", "var"));
+
+            options.ElementConverters.Add(new NullElementConverter("html", "body", "ul", "ol", "menu", "div", "span"));
+            options.ElementConverters.Add(new ElementRemovingConverter("script", "style", "head", "frame", "meta", "iframe", "frameset"));
 
             switch (unknownElementHandlingMode) {
                 case UnknownElementHandlingMode.RemoveTags:

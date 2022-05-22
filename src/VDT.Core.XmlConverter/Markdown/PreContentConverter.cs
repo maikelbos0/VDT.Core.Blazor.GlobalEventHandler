@@ -3,7 +3,10 @@ using System.IO;
 using System.Linq;
 
 namespace VDT.Core.XmlConverter.Markdown {
-    internal class PreContentConverter : IElementConverter {
+    /// <summary>
+    /// Converter for rendering elements as content inside a Markdown code block
+    /// </summary>
+    public class PreContentConverter : IElementConverter {
         private const string preName = "pre";
 
         /// <inheritdoc/>

@@ -2,7 +2,7 @@
 
 Converter for converting XML documents to other formats such as Markdown.
 
-A new XmlConverter with default options converts each node and each element into a semantically identical version of itself. Essentially it does nothing. To
+A new XmlConverter with default options converts each node and each element into a semantically identical version of itself; essentially it does nothing. To
 convert nodes into other content, implement your own `INodeConverter` or `IElementConverter` and set it up using the `ConverterOptions` object passed when
 creating your `XmlConverter`. This allows you to strip or replace specific XML nodes or XML elements with your own content.
 
@@ -10,15 +10,15 @@ creating your `XmlConverter`. This allows you to strip or replace specific XML n
 
 - A converter to allow you to convert XML documents to any other text format
 - Easily extensible options for converting different node types and elements exactly as desired
-- Specific extensions for easily converting (X)HTML to basic Markdown
+- Specific extensions for easily converting (X)HTML to Markdown
 
 ## INodeConverter for converting nodes of different types
 
-Each node type (except for `XmlNodeType.Element` which has more detailed options, see below) that is supported by `XmlReader` can be converted by using this
-converter. To convert only a specific node type, change the converter for that specific type on the `ConverterOptions` object:
+Any node type (except for `XmlNodeType.Element` which has more detailed options, see below) that is supported by `XmlReader` can be converted by using this
+converter. To convert a specific node type, change the converter for that specific type on the `ConverterOptions` object:
 
-- `ConverterOptions.TextConverter` for node text content
-- `ConverterOptions.CDataConverter` for CDATA
+- `ConverterOptions.TextConverter` for text content
+- `ConverterOptions.CDataConverter` for CDATA content
 - `ConverterOptions.CommentConverter` for comments
 - `ConverterOptions.XmlDeclarationConverter` for the XML declaration
 - `ConverterOptions.WhitespaceConverter` for insignificant whitespace
@@ -28,6 +28,7 @@ converter. To convert only a specific node type, change the converter for that s
 
 Implementations of `INodeConverter` must implement the `INodeConverter.Convert` method which writes the converted content to a `TextWriter`. This method
 receives three parameters:
+
 - `reader`: XML reader for which to convert the current node; it is at the position of the node which needs converting
 - `writer`: text writer to write the resulting output to
 - `data`: data relating to the current node
@@ -51,7 +52,7 @@ converter to turn comment nodes in certain elements into text.
 public class CustomCommentConverter : INodeConverter {
     public void Convert(XmlReader reader, TextWriter writer, NodeData data) {
         if (data.Ancestors.FirstOrDefault().Name == "CommentData") {
-            writer.Write(reader.Value);
+            writer.Write(reader.Value.Trim());
         }
         else {
             writer.Write("<!--");
@@ -62,7 +63,7 @@ public class CustomCommentConverter : INodeConverter {
 }
 
 var xml = @"<Data>
-    <!-- This comment will be left -->
+    <!-- This comment will be left as-is -->
     <CommentData><!-- This comment will be turned into a text node --></CommentData>
 </Data>";
 
@@ -78,8 +79,8 @@ Above example will result in the following XML:
 
 ```
 <Data>
-    <!-- This comment will be left -->
-    <CommentData> This comment will be turned into a text node </CommentData>
+    <!-- This comment will be left as-is -->
+    <CommentData>This comment will be turned into a text node</CommentData>
 </Data>
 ```
 
@@ -87,9 +88,8 @@ Above example will result in the following XML:
 
 Nodes of type `XmlNodeType.Element` can be converted with the help of implementations of `IElementConverter`. Element converters can be added to the list of
 converters in `ConverterOptions.ElementConverters`. By default this list is empty and the `ConverterOptions.DefaultElementConverter` will be used to convert
-all element nodes. If any element converters are present in `ConverterOptions.ElementConverters` then each converter will be considered for use in order from
-first to last, using the `IElementConverter.IsValidFor` method to determine if a converter can be used. Once found, only this converter will be used for the
-current element.
+all element nodes. Each converter in `ConverterOptions.ElementConverters` will be considered for use in order from first to last, using the 
+`IElementConverter.IsValidFor` method to determine if a converter can be used. Once found, only this converter will be used for the current element.
 
 The method `IElementConverter.IsValidFor` receives the parameter `ElementData` which contains the following information:
 
@@ -116,8 +116,8 @@ Implementations of `IElementData` must also implement the following methods to c
 
 ### Example
 
-Suppose you have HTML documents where bold and italic text are achieved by inline CSS and you want to use proper semantic HTML tags such as STRONG and EM.
-You can create a custom converter that checks the style content of SPAN tags and converts them as appropriate.
+Suppose you have HTML documents where bold and italic text are achieved by inline CSS and you want to use proper semantic HTML tags such as `strong` and `em`.
+You can create a custom converter that checks the style content of `span` tags and converts them as appropriate.
 
 ```
 public class InlineStyleConverter : IElementConverter {
@@ -150,11 +150,11 @@ public class InlineStyleConverter : IElementConverter {
     private bool IsItalic(ElementData elementData) => GetStyle(elementData)?.Contains("italic", StringComparison.OrdinalIgnoreCase) ?? false;
 
     private string? GetStyle(ElementData elementData) {
-        if (!elementData.Attributes.TryGetValue("style", out var style)) {
-            style = elementData.Attributes.FirstOrDefault(a => string.Equals("style", a.Key, StringComparison.OrdinalIgnoreCase)).Value;
+        if (elementData.TryGetAttribute("style", out var style)) {
+            return style;
         }
 
-        return style;
+        return null;
     }
 }
 
@@ -177,7 +177,7 @@ Above example will result in the following XML:
 ## Markdown extensions
 
 The extension methods in the `VDT.Core.XmlConverter.Markdown` namespace extend the `ConverterOptions` class to automatically provide you with a set of
-converters that convert any HTML that is also valid XML.
+converters that convert any HTML that is also valid XML into a Markdown formatted document.
 
 `ConverterOptionsExtensions.UseBasicMarkdown` adds support for converting the following elements to Markdown:
 
@@ -187,16 +187,16 @@ converters that convert any HTML that is also valid XML.
 - `a`: hyperlink with content and optional title
 - `img`: image with optional alt text and title
 - `strong` or `b`: bold
-- `emp` and `i`: italic
+- `emp` or `i`: italic
 - `blockquote`: blockquote; supports nesting
 - `code`, `kbd`, `samp` or `var`: inline code
 - `pre`: code block
 - `hr`: horizontal rule
 - `br`: linebreak
 
-By default for the following elements only the content is rendered: `html`, `body`, `ul`, `ol`, `menu`, `div` and `span`
+By default for the following elements only the content is rendered: `html`, `body`, `ul`, `ol`, `menu`, `div` and `span`.
 
-By default the following elements are removed entirely: `script`, `style`, `head`, `frame`, `meta`, `iframe`, `frameset`, `col` and `colgroup`
+By default the following elements are removed entirely: `script`, `style`, `head`, `frame`, `meta`, `iframe` and `frameset`.
 
 Finally, the optional parameter `unknownElementHandlingMode` can be used to specify how to handle elements that can't be converted:
 - `UnknownElementHandlingMode.None`: leave the elements as-is

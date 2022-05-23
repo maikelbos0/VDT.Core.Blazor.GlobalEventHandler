@@ -12,6 +12,16 @@ namespace VDT.Core.XmlConverter {
         /// </summary>
         public XmlNodeType NodeType { get; }
 
+        /// <summary>
+        /// Qualified name
+        /// </summary>
+        public string Name { get; }
+        
+        /// <summary>
+        /// Text value
+        /// </summary>
+        public string Value { get; }
+
         /// <inheritdoc/>
         public IReadOnlyList<ElementData> Ancestors { get; }
 
@@ -21,8 +31,10 @@ namespace VDT.Core.XmlConverter {
         /// <inheritdoc/>
         public Dictionary<string, object?> AdditionalData { get; }
 
-        internal NodeData(XmlNodeType nodeType, IList<ElementData> ancestors, bool isFirstChild, Dictionary<string, object?> additionalData) {
+        internal NodeData(XmlNodeType nodeType, string name, string value, IList<ElementData> ancestors, bool isFirstChild, Dictionary<string, object?> additionalData) {
             NodeType = nodeType;
+            Name = name;
+            Value = value;
             Ancestors = new ReadOnlyCollection<ElementData>(ancestors);
             IsFirstChild = isFirstChild;
             AdditionalData = additionalData;

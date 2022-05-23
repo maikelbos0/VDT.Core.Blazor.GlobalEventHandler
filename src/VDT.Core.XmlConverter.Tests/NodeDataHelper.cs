@@ -15,6 +15,8 @@ namespace VDT.Core.XmlConverter.Tests {
         )
             => new NodeData(
                 nodeType,
+                "", // TODO
+                "", // TODO
                 ancestors ?? Array.Empty<ElementData>(),
                 isFirstChild,
                 additionalData ?? new Dictionary<string, object?>()

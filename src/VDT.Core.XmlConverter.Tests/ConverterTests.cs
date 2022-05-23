@@ -126,7 +126,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             converter.ConvertNode(reader, writer, data);
 
-            textConverter.Received().Convert(reader, writer, Assert.IsType<NodeData>(data.CurrentNodeData));
+            textConverter.Received().Convert(writer, Assert.IsType<NodeData>(data.CurrentNodeData));
         }
 
         [Fact]
@@ -161,7 +161,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             converter.ConvertNode(reader, writer, data);
 
-            textConverter.Received().Convert(reader, writer, data);
+            textConverter.Received().Convert(writer, data);
         }
 
         [Fact]
@@ -177,7 +177,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             converter.ConvertNode(reader, writer, data);
 
-            cDataConverter.Received().Convert(reader, writer, data);
+            cDataConverter.Received().Convert(writer, data);
         }
 
         [Fact]
@@ -193,7 +193,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             converter.ConvertNode(reader, writer, data);
 
-            commentConverter.Received().Convert(reader, writer, data);
+            commentConverter.Received().Convert(writer, data);
         }
 
         [Fact]
@@ -209,7 +209,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             converter.ConvertNode(reader, writer, data);
 
-            xmlDeclarationConverter.Received().Convert(reader, writer, data);
+            xmlDeclarationConverter.Received().Convert(writer, data);
         }
 
         [Fact]
@@ -225,7 +225,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             converter.ConvertNode(reader, writer, data);
 
-            whitespaceConverter.Received().Convert(reader, writer, data);
+            whitespaceConverter.Received().Convert(writer, data);
         }
 
         [Fact]
@@ -241,7 +241,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             converter.ConvertNode(reader, writer, data);
 
-            significantWhitespaceConverter.Received().Convert(reader, writer, data);
+            significantWhitespaceConverter.Received().Convert(writer, data);
         }
 
         [Fact]
@@ -257,7 +257,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             converter.ConvertNode(reader, writer, data);
 
-            documentTypeConverter.Received().Convert(reader, writer, data);
+            documentTypeConverter.Received().Convert(writer, data);
         }
 
         [Fact]
@@ -273,7 +273,7 @@ namespace VDT.Core.XmlConverter.Tests {
 
             converter.ConvertNode(reader, writer, data);
 
-            processingInstructionConverter.Received().Convert(reader, writer, data);
+            processingInstructionConverter.Received().Convert(writer, data);
         }
 
         [Theory]

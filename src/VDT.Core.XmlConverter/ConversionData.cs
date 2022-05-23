@@ -32,6 +32,8 @@ namespace VDT.Core.XmlConverter {
             else {
                 CurrentNodeData = new NodeData(
                     reader.NodeType,
+                    reader.Name,
+                    reader.Value,
                     Ancestors.ToArray(),
                     isFirstChild,
                     AdditionalData

@@ -7,10 +7,10 @@ using Xunit;
 namespace VDT.Core.XmlConverter.Tests {
     public class ConversionDataTests {
         [Theory]
-        [InlineData("<!-- Test -->", XmlNodeType.Comment)]
-        [InlineData("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", XmlNodeType.XmlDeclaration)]
-        [InlineData("<?xml-stylesheet type=\"text/xsl\" href=\"style.xsl\"?>", XmlNodeType.ProcessingInstruction)]
-        public void ReadNode_Sets_CurrentNodeData_To_NodeData_If_Not_Element(string xml, XmlNodeType expectedNodeType) {
+        [InlineData("<!-- Test -->", XmlNodeType.Comment, "", " Test ")]
+        [InlineData("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", XmlNodeType.XmlDeclaration, "xml", "version=\"1.0\" encoding=\"UTF-8\"")]
+        [InlineData("<?xml-stylesheet type=\"text/xsl\" href=\"style.xsl\"?>", XmlNodeType.ProcessingInstruction, "xml-stylesheet", "type=\"text/xsl\" href=\"style.xsl\"")]
+        public void ReadNode_Sets_CurrentNodeData_To_NodeData_If_Not_Element(string xml, XmlNodeType expectedNodeType, string expectedName, string expectedValue) {
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
             using var reader = XmlReader.Create(stream);
 
@@ -24,6 +24,8 @@ namespace VDT.Core.XmlConverter.Tests {
             var nodeData = Assert.IsType<NodeData>(data.CurrentNodeData);
 
             Assert.Equal(expectedNodeType, nodeData.NodeType);
+            Assert.Equal(expectedName, nodeData.Name);
+            Assert.Equal(expectedValue, nodeData.Value);
             Assert.True(nodeData.IsFirstChild);
             Assert.Equal("test", nodeData.AdditionalData["test"]);
         }

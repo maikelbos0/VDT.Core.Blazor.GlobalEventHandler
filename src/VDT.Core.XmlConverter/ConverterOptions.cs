@@ -38,7 +38,7 @@ namespace VDT.Core.XmlConverter {
         /// <summary>
         /// Used to convert <see cref="XmlNodeType.XmlDeclaration"/> nodes
         /// </summary>
-        public INodeConverter XmlDeclarationConverter { get; set; } = new FormattingNodeConverter((name, value) => $"<?xml {value}?>", false);
+        public INodeConverter XmlDeclarationConverter { get; set; } = new FormattingNodeConverter((name, value) => $"<?{name} {value}?>", false);
 
         /// <summary>
         /// Used to convert <see cref="XmlNodeType.Whitespace"/> nodes

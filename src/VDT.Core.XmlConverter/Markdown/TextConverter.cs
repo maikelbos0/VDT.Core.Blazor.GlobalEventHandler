@@ -38,18 +38,18 @@ namespace VDT.Core.XmlConverter.Markdown {
         };
 
         /// <inheritdoc/>
-        public void Convert(XmlReader reader, TextWriter writer, NodeData data) {
+        public void Convert(TextWriter writer, NodeData data) {
             if (data.Ancestors.Any(e => string.Equals(e.Name, preName, StringComparison.OrdinalIgnoreCase))) {
-                ConvertPreText(reader, writer, data);
+                ConvertPreText(writer, data);
             }
             else {
-                ConvertText(reader, writer, data);
+                ConvertText(writer, data);
             }
         }
 
-        private void ConvertPreText(XmlReader reader, TextWriter writer, NodeData data) {
+        private void ConvertPreText(TextWriter writer, NodeData data) {
             var tracker = data.GetContentTracker();
-            var value = reader.Value;
+            var value = data.Value;
 
             if (!newLineFinder.IsMatch(value)) {
                 tracker.WriteLine(writer);  
@@ -58,9 +58,9 @@ namespace VDT.Core.XmlConverter.Markdown {
             tracker.Write(writer, value);
         }
 
-        private void ConvertText(XmlReader reader, TextWriter writer, NodeData data) {
+        private void ConvertText(TextWriter writer, NodeData data) {
             var tracker = data.GetContentTracker();
-            var value = whitespaceNormalizer.Replace(reader.Value, " ");
+            var value = whitespaceNormalizer.Replace(data.Value, " ");
             var valueBuilder = new StringBuilder();
 
             if (data.IsFirstChild || tracker.HasTrailingNewLine) {

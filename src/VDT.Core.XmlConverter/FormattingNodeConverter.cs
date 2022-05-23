@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Security;
-using System.Xml;
 
 namespace VDT.Core.XmlConverter {
     /// <summary>
@@ -36,15 +35,14 @@ namespace VDT.Core.XmlConverter {
         }
 
         /// <inheritdoc/>
-        public void Convert(XmlReader reader, TextWriter writer, NodeData data) {
-            var name = reader.Name;
-            var value = reader.Value;
+        public void Convert(TextWriter writer, NodeData data) {
+            var value = data.Value;
 
             if (XmlEncodeValue) {
                 value = SecurityElement.Escape(value) ?? string.Empty;
             }
 
-            writer.Write(Formatter(name, value));
+            writer.Write(Formatter(data.Name, value));
         }
     }
 }

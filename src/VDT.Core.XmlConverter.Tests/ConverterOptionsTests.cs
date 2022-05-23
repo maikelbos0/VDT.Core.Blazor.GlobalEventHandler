@@ -49,7 +49,7 @@ namespace VDT.Core.XmlConverter.Tests {
             var converter = Assert.IsType<FormattingNodeConverter>(options.XmlDeclarationConverter);
 
             Assert.False(converter.XmlEncodeValue);
-            Assert.Equal("<?xml value?>", converter.Formatter("name", "value"));
+            Assert.Equal("<?name value?>", converter.Formatter("name", "value"));
         }
 
         [Fact]

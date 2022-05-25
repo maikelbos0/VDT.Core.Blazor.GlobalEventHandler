@@ -16,7 +16,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [Fact]
         public void UseMarkdown_Returns_Self() {
             var options = new ConverterOptions();
-            
+
             Assert.Equal(options, options.UseMarkdown());
         }
 
@@ -161,6 +161,25 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             using var reader = XmlReader.Create(stream, new XmlReaderSettings() { DtdProcessing = DtdProcessing.Parse });
 
             Assert.Equal("\r\n\r\nTest\r\n\r\n", converter.Convert(reader));
+        }
+
+        [Theory]
+        [InlineData(UnknownElementHandlingMode.None, "<form>Test</form>")]
+        [InlineData(UnknownElementHandlingMode.RemoveTags, "Test")]
+        [InlineData(UnknownElementHandlingMode.RemoveElements, "")]
+        public void UseMarkdown_Convert_Uses_UnknownElementHandlingMode(UnknownElementHandlingMode unknownElementHandlingMode, string expectedMarkdown) {
+            var options = new ConverterOptions().UseMarkdown(unknownElementHandlingMode);
+            var converter = new Converter(options);
+
+            Assert.Equal(expectedMarkdown, converter.Convert("<form>Test</form>"));
+        }
+
+        [Fact]
+        public void UseMarkdown_Convert_Uses_Default_UnknownElementHandlingMode_Node() {
+            var options = new ConverterOptions().UseMarkdown();
+            var converter = new Converter(options);
+
+            Assert.Equal("<form>Test</form>", converter.Convert("<form>Test</form>"));
         }
 
         [Fact]

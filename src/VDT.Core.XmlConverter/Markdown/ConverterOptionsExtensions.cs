@@ -10,9 +10,9 @@
         /// <param name="unknownElementHandlingMode">Specifies the way to handle elements that can't be converted to Markdown</param>
         /// <returns>A reference to this instance after the operation has completed</returns>
         public static ConverterOptions UseMarkdown(this ConverterOptions options, UnknownElementHandlingMode unknownElementHandlingMode = UnknownElementHandlingMode.None) {
-            return new MarkdownConverterOptionsBuilder()
+            return new ConverterOptionsBuilder()
                 .UseUnknownElementHandlingMode(unknownElementHandlingMode)
-                .Build(options);
+                .Build(options, new ConverterOptionsAssembler());
         }
 
         /// <summary>
@@ -34,15 +34,6 @@
         // TODO split this up?
         internal static ConverterOptions AddDefaultMarkdown(this ConverterOptions options) {
             var removingNodeConverter = new FormattingNodeConverter((name, value) => "", false);
-
-            options.CDataConverter = removingNodeConverter;
-            options.CommentConverter = removingNodeConverter;
-            options.DocumentTypeConverter = removingNodeConverter;
-            options.ProcessingInstructionConverter = removingNodeConverter;
-            options.XmlDeclarationConverter = removingNodeConverter;
-
-            options.SignificantWhitespaceConverter = removingNodeConverter;
-            options.WhitespaceConverter = removingNodeConverter;
 
             // TODO add escape characters for ~, =, ^ for extended as needed
             options.TextConverter = new TextConverter();

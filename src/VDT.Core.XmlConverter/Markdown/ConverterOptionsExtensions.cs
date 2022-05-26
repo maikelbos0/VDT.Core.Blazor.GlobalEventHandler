@@ -72,6 +72,8 @@
         public static ConverterOptions AddExtendedMarkdown(this ConverterOptions options) {
             options.ElementConverters.Add(new InlineElementConverter("~~", "~~", "del"));
             options.ElementConverters.Add(new InlineElementConverter("==", "==", "mark"));
+            options.ElementConverters.Add(new InlineElementConverter("~", "~", "sub"));
+            options.ElementConverters.Add(new InlineElementConverter("^", "^", "sup"));
 
             return options;
         }

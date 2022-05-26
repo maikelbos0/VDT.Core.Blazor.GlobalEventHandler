@@ -243,6 +243,8 @@ Unquote
         [Theory]
         [InlineData("<del>Strikethrough</del>", "~~Strikethrough~~")]
         [InlineData("<mark>Highlighted</mark>", "==Highlighted==")]
+        [InlineData("<sub>Subscript</sub>", "~Subscript~")]
+        [InlineData("<sup>Superscript</sup>", "^Superscript^")]
         public void AddExtendedMarkdown__Convert_Inline_Markup(string xml, string expectedMarkdown) {
             var options = new ConverterOptions().UseMarkdown().AddExtendedMarkdown();
             var converter = new Converter(options);

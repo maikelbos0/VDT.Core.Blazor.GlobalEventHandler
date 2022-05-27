@@ -140,30 +140,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Theory]
-        [InlineData("<?xml-stylesheet type=\"text/xsl\" href=\"style.xsl\"?>Test")]
-        [InlineData("<?xml version=\"1.0\" encoding=\"UTF-8\"?>Test")]
-        [InlineData("<![CDATA[Content]]>Test")]
-        public void UseMarkdown_Convert_Removes_Unconvertible_Node_Types(string xml) {
-            var options = new ConverterOptions().UseMarkdown();
-            var converter = new Converter(options);
-
-            Assert.Equal("Test", converter.Convert(xml));
-        }
-
-        [Fact]
-        public void UseMarkdown_Convert_Removes_Document_Type_Declarations() {
-            const string xml = "<!DOCTYPE foo [ <!ENTITY val \"bar\"> ]><p>Test</p>";
-
-            var options = new ConverterOptions().UseMarkdown();
-            var converter = new Converter(options);
-
-            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
-            using var reader = XmlReader.Create(stream, new XmlReaderSettings() { DtdProcessing = DtdProcessing.Parse });
-
-            Assert.Equal("\r\n\r\nTest\r\n\r\n", converter.Convert(reader));
-        }
-
-        [Theory]
         [InlineData(UnknownElementHandlingMode.None, "<form>Test</form>")]
         [InlineData(UnknownElementHandlingMode.RemoveTags, "Test")]
         [InlineData(UnknownElementHandlingMode.RemoveElements, "")]

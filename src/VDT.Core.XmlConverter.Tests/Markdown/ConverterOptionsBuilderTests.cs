@@ -14,5 +14,16 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             assembler.Received().SetNodeRemovingConverterForNonMarkdownNodeTypes(options);
         }
+
+        [Fact]
+        public void Build_Always_Calls_AddHeaderElementConverters() {
+            var options = new ConverterOptions();
+            var builder = new ConverterOptionsBuilder();
+            var assembler = Substitute.For<IConverterOptionsAssembler>();
+
+            builder.Build(options, assembler);
+
+            assembler.Received().AddHeaderElementConverters(options);
+        }
     }
 }

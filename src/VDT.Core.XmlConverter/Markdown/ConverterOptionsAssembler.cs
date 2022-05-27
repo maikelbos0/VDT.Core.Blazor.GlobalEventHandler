@@ -9,5 +9,14 @@
             options.SignificantWhitespaceConverter = new NodeRemovingConverter();
             options.WhitespaceConverter = new NodeRemovingConverter();
         }
+
+        public void AddHeaderElementConverters(ConverterOptions options) {
+            options.ElementConverters.Add(new BlockElementConverter("# ", "h1"));
+            options.ElementConverters.Add(new BlockElementConverter("## ", "h2"));
+            options.ElementConverters.Add(new BlockElementConverter("### ", "h3"));
+            options.ElementConverters.Add(new BlockElementConverter("#### ", "h4"));
+            options.ElementConverters.Add(new BlockElementConverter("##### ", "h5"));
+            options.ElementConverters.Add(new BlockElementConverter("###### ", "h6"));
+        }
     }
 }

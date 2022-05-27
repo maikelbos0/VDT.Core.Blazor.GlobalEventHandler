@@ -46,12 +46,6 @@
             options.ElementConverters.Add(new OrderedListItemConverter());
             options.ElementConverters.Add(new UnorderedListItemConverter());
 
-            options.ElementConverters.Add(new BlockElementConverter("# ", "h1"));
-            options.ElementConverters.Add(new BlockElementConverter("## ", "h2"));
-            options.ElementConverters.Add(new BlockElementConverter("### ", "h3"));
-            options.ElementConverters.Add(new BlockElementConverter("#### ", "h4"));
-            options.ElementConverters.Add(new BlockElementConverter("##### ", "h5"));
-            options.ElementConverters.Add(new BlockElementConverter("###### ", "h6"));
             options.ElementConverters.Add(new BlockElementConverter("---", "hr"));
 
             options.ElementConverters.Add(new BlockquoteConverter());

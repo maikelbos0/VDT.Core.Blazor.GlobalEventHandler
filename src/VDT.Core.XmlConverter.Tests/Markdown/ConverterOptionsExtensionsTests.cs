@@ -1,7 +1,4 @@
-﻿using System.IO;
-using System.Text;
-using System.Xml;
-using VDT.Core.XmlConverter.Markdown;
+﻿using VDT.Core.XmlConverter.Markdown;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -44,20 +41,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [InlineData("<li>List item</li>", "- List item\r\n")]
         [InlineData("<ol><li>List item</li></ol>", "1. List item\r\n")]
         public void UseMarkdown_Convert_List_Item(string xml, string expectedMarkdown) {
-            var options = new ConverterOptions().UseMarkdown();
-            var converter = new Converter(options);
-
-            Assert.Equal(expectedMarkdown, converter.Convert(xml));
-        }
-
-        [Theory]
-        [InlineData("<h1>Heading 1</h1>", "# Heading 1\r\n")]
-        [InlineData("<h2>Heading 2</h2>", "## Heading 2\r\n")]
-        [InlineData("<h3>Heading 3</h3>", "### Heading 3\r\n")]
-        [InlineData("<h4>Heading 4</h4>", "#### Heading 4\r\n")]
-        [InlineData("<h5>Heading 5</h5>", "##### Heading 5\r\n")]
-        [InlineData("<h6>Heading 6</h6>", "###### Heading 6\r\n")]
-        public void UseMarkdown_Convert_Header(string xml, string expectedMarkdown) {
             var options = new ConverterOptions().UseMarkdown();
             var converter = new Converter(options);
 

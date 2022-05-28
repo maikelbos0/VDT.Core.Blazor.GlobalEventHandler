@@ -109,6 +109,16 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             Assert.Single(options.ElementConverters, converter => converter is UnorderedListItemConverter);
         }
+        
+        [Fact]
+        public void AddHorizontalRuleConverter_Adds_BlockElementConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddHorizontalRuleConverter(options);
+
+            Assert.Single(options.ElementConverters, converter => IsBlockElementConverter(converter, "---", "hr"));
+        }
 
         private bool IsBlockElementConverter(IElementConverter converter, string expectedStartOutput, params string[] expectedValidForElementNames) 
             => converter is BlockElementConverter blockElementConverter

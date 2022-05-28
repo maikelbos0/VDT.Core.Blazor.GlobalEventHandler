@@ -5,5 +5,7 @@
         public void AddHeaderElementConverters(ConverterOptions options);
 
         public void AddListItemElementConverters(ConverterOptions options);
+
+        public void AddHorizontalRuleConverter(ConverterOptions options);
     }
 }

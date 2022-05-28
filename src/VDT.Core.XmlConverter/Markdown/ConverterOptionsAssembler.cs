@@ -23,5 +23,9 @@
             options.ElementConverters.Add(new OrderedListItemConverter());
             options.ElementConverters.Add(new UnorderedListItemConverter());
         }
+
+        public void AddHorizontalRuleConverter(ConverterOptions options) {
+            options.ElementConverters.Add(new BlockElementConverter("---", "hr"));
+        }
     }
 }

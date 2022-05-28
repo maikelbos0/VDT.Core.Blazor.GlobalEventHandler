@@ -37,14 +37,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Equal("[Test](https://www.google.com)", converter.Convert(xml));
         }
 
-        [Fact]
-        public void UseMarkdown_Convert_Horizontal_Rule() {
-            var options = new ConverterOptions().UseMarkdown();
-            var converter = new Converter(options);
-
-            Assert.Equal("---\r\n", converter.Convert("<hr/>"));
-        }
-
         [Theory]
         [InlineData("<strong>Bold</strong>", "**Bold**")]
         [InlineData("<b>Bold</b>", "**Bold**")]

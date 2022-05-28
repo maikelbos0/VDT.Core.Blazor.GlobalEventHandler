@@ -28,6 +28,7 @@
             assembler.SetNodeRemovingConverterForNonMarkdownNodeTypes(options);
             assembler.AddListItemElementConverters(options);
             assembler.AddHeaderElementConverters(options);
+            assembler.AddHorizontalRuleConverter(options);
 
             return options
                 .AddDefaultMarkdown()

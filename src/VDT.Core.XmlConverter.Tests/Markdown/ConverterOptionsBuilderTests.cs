@@ -36,5 +36,16 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             assembler.Received().AddListItemElementConverters(options);
         }
+
+        [Fact]
+        public void Build_Always_Calls_AddHorizontalRuleConverter() {
+            var options = new ConverterOptions();
+            var builder = new ConverterOptionsBuilder();
+            var assembler = Substitute.For<IConverterOptionsAssembler>();
+
+            builder.Build(options, assembler);
+
+            assembler.Received().AddHorizontalRuleConverter(options);
+        }
     }
 }

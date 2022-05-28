@@ -26,6 +26,7 @@
 
         internal ConverterOptions Build(ConverterOptions options, IConverterOptionsAssembler assembler) {
             assembler.SetNodeRemovingConverterForNonMarkdownNodeTypes(options);
+            assembler.AddListItemElementConverters(options);
             assembler.AddHeaderElementConverters(options);
 
             return options

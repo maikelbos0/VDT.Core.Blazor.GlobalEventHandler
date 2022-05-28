@@ -43,9 +43,6 @@
             // TODO allow switch between indented and fenced code block
             options.ElementConverters.Add(new PreConverter());
 
-            options.ElementConverters.Add(new OrderedListItemConverter());
-            options.ElementConverters.Add(new UnorderedListItemConverter());
-
             options.ElementConverters.Add(new BlockElementConverter("---", "hr"));
 
             options.ElementConverters.Add(new BlockquoteConverter());

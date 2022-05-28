@@ -90,6 +90,26 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Single(options.ElementConverters, converter => IsBlockElementConverter(converter, expectedStartOutput, expectedValidForElementName));
         }
 
+        [Fact]
+        public void AddListItemElementConverters_Adds_OrderedListItemConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddListItemElementConverters(options);
+
+            Assert.Single(options.ElementConverters, converter => converter is OrderedListItemConverter);
+        }
+
+        [Fact]
+        public void AddListItemElementConverters_Adds_UnorderedListItemConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddListItemElementConverters(options);
+
+            Assert.Single(options.ElementConverters, converter => converter is UnorderedListItemConverter);
+        }
+
         private bool IsBlockElementConverter(IElementConverter converter, string expectedStartOutput, params string[] expectedValidForElementNames) 
             => converter is BlockElementConverter blockElementConverter
                 && blockElementConverter.StartOutput == expectedStartOutput

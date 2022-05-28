@@ -37,16 +37,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Equal("[Test](https://www.google.com)", converter.Convert(xml));
         }
 
-        [Theory]
-        [InlineData("<li>List item</li>", "- List item\r\n")]
-        [InlineData("<ol><li>List item</li></ol>", "1. List item\r\n")]
-        public void UseMarkdown_Convert_List_Item(string xml, string expectedMarkdown) {
-            var options = new ConverterOptions().UseMarkdown();
-            var converter = new Converter(options);
-
-            Assert.Equal(expectedMarkdown, converter.Convert(xml));
-        }
-
         [Fact]
         public void UseMarkdown_Convert_Horizontal_Rule() {
             var options = new ConverterOptions().UseMarkdown();

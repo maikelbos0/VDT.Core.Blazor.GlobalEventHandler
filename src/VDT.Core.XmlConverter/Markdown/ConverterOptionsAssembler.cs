@@ -18,5 +18,10 @@
             options.ElementConverters.Add(new BlockElementConverter("##### ", "h5"));
             options.ElementConverters.Add(new BlockElementConverter("###### ", "h6"));
         }
+
+        public void AddListItemElementConverters(ConverterOptions options) {
+            options.ElementConverters.Add(new OrderedListItemConverter());
+            options.ElementConverters.Add(new UnorderedListItemConverter());
+        }
     }
 }

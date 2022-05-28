@@ -25,5 +25,16 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             assembler.Received().AddHeaderElementConverters(options);
         }
+
+        [Fact]
+        public void Build_Always_Calls_AddListItemElementConverters() {
+            var options = new ConverterOptions();
+            var builder = new ConverterOptionsBuilder();
+            var assembler = Substitute.For<IConverterOptionsAssembler>();
+
+            builder.Build(options, assembler);
+
+            assembler.Received().AddListItemElementConverters(options);
+        }
     }
 }

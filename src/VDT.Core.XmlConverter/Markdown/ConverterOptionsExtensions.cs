@@ -44,7 +44,6 @@
             options.ElementConverters.Add(new PreConverter());
 
             options.ElementConverters.Add(new BlockquoteConverter());
-            options.ElementConverters.Add(new ParagraphConverter());
             options.ElementConverters.Add(new LinebreakConverter());
 
             options.ElementConverters.Add(new HyperlinkConverter());

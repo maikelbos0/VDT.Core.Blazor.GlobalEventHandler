@@ -91,6 +91,16 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
+        public void AddParagraphConverter_Adds_ParagraphConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddParagraphConverter(options);
+
+            Assert.Single(options.ElementConverters, converter => converter is ParagraphConverter);
+        }
+
+        [Fact]
         public void AddListItemElementConverters_Adds_OrderedListItemConverter() {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();

@@ -19,6 +19,10 @@
             options.ElementConverters.Add(new BlockElementConverter("###### ", "h6"));
         }
 
+        public void AddParagraphConverter(ConverterOptions options) {
+            options.ElementConverters.Add(new ParagraphConverter());
+        }
+
         public void AddListItemElementConverters(ConverterOptions options) {
             options.ElementConverters.Add(new OrderedListItemConverter());
             options.ElementConverters.Add(new UnorderedListItemConverter());

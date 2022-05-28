@@ -54,15 +54,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Theory]
-        [InlineData("Linebreak<br/>", "Linebreak  \r\n")]
-        public void UseMarkdown_Convert_New_Lines(string xml, string expectedMarkdown) {
-            var options = new ConverterOptions().UseMarkdown();
-            var converter = new Converter(options);
-
-            Assert.Equal(expectedMarkdown, converter.Convert(xml));
-        }
-
-        [Theory]
         [InlineData("<html>Test</html>")]
         [InlineData("<body>Test</body>")]
         [InlineData("<html><body>Test</body></html>")]

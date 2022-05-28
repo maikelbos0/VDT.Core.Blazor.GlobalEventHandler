@@ -101,6 +101,16 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
+        public void AddLinebreakConverter_Adds_LinebreakConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddLinebreakConverter(options);
+
+            Assert.Single(options.ElementConverters, converter => converter is LinebreakConverter);
+        }
+
+        [Fact]
         public void AddListItemElementConverters_Adds_OrderedListItemConverter() {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();

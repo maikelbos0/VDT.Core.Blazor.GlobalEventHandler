@@ -23,6 +23,10 @@
             options.ElementConverters.Add(new ParagraphConverter());
         }
 
+        public void AddLinebreakConverter(ConverterOptions options) {
+            options.ElementConverters.Add(new LinebreakConverter());
+        }
+
         public void AddListItemElementConverters(ConverterOptions options) {
             options.ElementConverters.Add(new OrderedListItemConverter());
             options.ElementConverters.Add(new UnorderedListItemConverter());

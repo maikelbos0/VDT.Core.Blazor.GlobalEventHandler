@@ -31,6 +31,7 @@
             assembler.AddLinebreakConverter(options);
             assembler.AddListItemElementConverters(options);
             assembler.AddHorizontalRuleConverter(options);
+            assembler.AddBlockquoteConverter(options);
             assembler.AddHyperlinkConverter(options);
             assembler.AddImageConverter(options);
             assembler.SetDefaultElementConverter(options, unknownElementHandlingMode);

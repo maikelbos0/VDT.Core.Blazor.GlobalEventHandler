@@ -12,6 +12,8 @@
 
         public void AddHorizontalRuleConverter(ConverterOptions options);
 
+        public void AddBlockquoteConverter(ConverterOptions options);
+
         public void AddHyperlinkConverter(ConverterOptions options);
 
         public void AddImageConverter(ConverterOptions options);

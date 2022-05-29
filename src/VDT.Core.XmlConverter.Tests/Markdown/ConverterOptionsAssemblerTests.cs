@@ -139,6 +139,16 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             Assert.Single(options.ElementConverters, converter => IsBlockElementConverter(converter, "---", "hr"));
         }
+        
+        [Fact]
+        public void AddBlockquoteConverter_Adds_BlockquoteConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddBlockquoteConverter(options);
+
+            Assert.Single(options.ElementConverters, converter => converter is BlockquoteConverter);
+        }
 
         [Fact]
         public void AddHyperlinkConverter_Adds_HyperlinkConverter() {

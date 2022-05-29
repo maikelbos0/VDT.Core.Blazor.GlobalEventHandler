@@ -38,6 +38,10 @@ namespace VDT.Core.XmlConverter.Markdown {
             options.ElementConverters.Add(new BlockElementConverter("---", "hr"));
         }
 
+        public void AddBlockquoteConverter(ConverterOptions options) {
+            options.ElementConverters.Add(new BlockquoteConverter());
+        }
+
         public void AddHyperlinkConverter(ConverterOptions options) {
             options.ElementConverters.Add(new HyperlinkConverter());
         }

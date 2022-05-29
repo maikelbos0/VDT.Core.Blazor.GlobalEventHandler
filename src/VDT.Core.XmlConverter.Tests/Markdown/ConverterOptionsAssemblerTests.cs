@@ -154,5 +154,27 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             => converter is BlockElementConverter blockElementConverter
                 && blockElementConverter.StartOutput == expectedStartOutput
                 && blockElementConverter.ValidForElementNames.SequenceEqual(expectedValidForElementNames);
+
+        [Theory]
+        [InlineData(UnknownElementHandlingMode.RemoveTags, true)]
+        [InlineData(UnknownElementHandlingMode.RemoveElements, false)]
+        public void SetDefaultElementConverter_Sets_DefaultElementConverter(UnknownElementHandlingMode unknownElementHandlingMode, bool expectedRenderContent) {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.SetDefaultElementConverter(options, unknownElementHandlingMode);
+
+            Assert.Equal(expectedRenderContent, Assert.IsType<UnknownElementConverter>(options.DefaultElementConverter).RenderContent);
+        }
+
+        [Fact]
+        public void SetDefaultElementConverter_Sets_DefaultElementConverter_NoOpElementConverter_For_UnknownElementHandlingMode_None() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.SetDefaultElementConverter(options, UnknownElementHandlingMode.None);
+
+            Assert.IsType<NoOpElementConverter>(options.DefaultElementConverter);
+        }
     }
 }

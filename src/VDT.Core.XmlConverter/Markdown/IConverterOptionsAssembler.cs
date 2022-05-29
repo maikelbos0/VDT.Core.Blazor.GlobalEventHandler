@@ -13,5 +13,7 @@
         public void AddHorizontalRuleConverter(ConverterOptions options);
 
         public void AddHyperlinkConverter(ConverterOptions options);
+        
+        public void SetDefaultElementConverter(ConverterOptions options, UnknownElementHandlingMode unknownElementHandlingMode);
     }
 }

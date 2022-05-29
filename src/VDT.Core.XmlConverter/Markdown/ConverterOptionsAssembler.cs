@@ -1,4 +1,6 @@
-﻿namespace VDT.Core.XmlConverter.Markdown {
+﻿using System;
+
+namespace VDT.Core.XmlConverter.Markdown {
     internal class ConverterOptionsAssembler : IConverterOptionsAssembler {
         public void SetNodeRemovingConverterForNonMarkdownNodeTypes(ConverterOptions options) {
             options.CDataConverter = new NodeRemovingConverter();
@@ -38,6 +40,15 @@
 
         public void AddHyperlinkConverter(ConverterOptions options) {
             options.ElementConverters.Add(new HyperlinkConverter());
+        }
+
+        public void SetDefaultElementConverter(ConverterOptions options, UnknownElementHandlingMode unknownElementHandlingMode) {
+            options.DefaultElementConverter = unknownElementHandlingMode switch {
+                UnknownElementHandlingMode.None => new NoOpElementConverter(),
+                UnknownElementHandlingMode.RemoveTags => new UnknownElementConverter(true),
+                UnknownElementHandlingMode.RemoveElements => new UnknownElementConverter(false),
+                _ => throw new NotImplementedException($"No implementation found for {nameof(UnknownElementHandlingMode)} '{unknownElementHandlingMode}'")
+            };
         }
     }
 }

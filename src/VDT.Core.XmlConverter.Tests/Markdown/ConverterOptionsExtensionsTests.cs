@@ -84,25 +84,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Equal("\r\n\r\nTest \r\n\r\nTest \r\n\r\n", converter.Convert(xml));
         }
 
-        [Theory]
-        [InlineData(UnknownElementHandlingMode.None, "<form>Test</form>")]
-        [InlineData(UnknownElementHandlingMode.RemoveTags, "Test")]
-        [InlineData(UnknownElementHandlingMode.RemoveElements, "")]
-        public void UseMarkdown_Convert_Uses_UnknownElementHandlingMode(UnknownElementHandlingMode unknownElementHandlingMode, string expectedMarkdown) {
-            var options = new ConverterOptions().UseMarkdown(unknownElementHandlingMode);
-            var converter = new Converter(options);
-
-            Assert.Equal(expectedMarkdown, converter.Convert("<form>Test</form>"));
-        }
-
-        [Fact]
-        public void UseMarkdown_Convert_Uses_Default_UnknownElementHandlingMode_Node() {
-            var options = new ConverterOptions().UseMarkdown();
-            var converter = new Converter(options);
-
-            Assert.Equal("<form>Test</form>", converter.Convert("<form>Test</form>"));
-        }
-
         [Fact]
         public void UseMarkdown_Convert() {
             const string xml = @"

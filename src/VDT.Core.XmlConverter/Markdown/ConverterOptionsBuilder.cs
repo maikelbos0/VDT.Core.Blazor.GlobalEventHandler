@@ -32,10 +32,10 @@
             assembler.AddListItemElementConverters(options);
             assembler.AddHorizontalRuleConverter(options);
             assembler.AddHyperlinkConverter(options);
+            assembler.SetDefaultElementConverter(options, unknownElementHandlingMode);
 
             return options
-                .AddDefaultMarkdown()
-                .UseUnknownElementHandlingMode(unknownElementHandlingMode);
+                .AddDefaultMarkdown();
         }
     }
 }

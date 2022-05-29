@@ -58,18 +58,5 @@
 
             return options;
         }
-
-        internal static ConverterOptions UseUnknownElementHandlingMode(this ConverterOptions options, UnknownElementHandlingMode unknownElementHandlingMode) {
-            switch (unknownElementHandlingMode) {
-                case UnknownElementHandlingMode.RemoveTags:
-                    options.DefaultElementConverter = new UnknownElementConverter(true);
-                    break;
-                case UnknownElementHandlingMode.RemoveElements:
-                    options.DefaultElementConverter = new UnknownElementConverter(false);
-                    break;
-            }
-
-            return options;
-        }
     }
 }

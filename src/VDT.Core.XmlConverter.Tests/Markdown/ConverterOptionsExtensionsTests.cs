@@ -27,16 +27,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Equal("```\r\nTest\r\n```\r\n", converter.Convert(xml));
         }
 
-        [Fact]
-        public void UseMarkdown_Convert_Hyperlink() {
-            const string xml = "<a href=\"https://www.google.com\">Test</a>";
-
-            var options = new ConverterOptions().UseMarkdown();
-            var converter = new Converter(options);
-
-            Assert.Equal("[Test](https://www.google.com)", converter.Convert(xml));
-        }
-
         [Theory]
         [InlineData("<strong>Bold</strong>", "**Bold**")]
         [InlineData("<b>Bold</b>", "**Bold**")]

@@ -45,7 +45,6 @@
 
             options.ElementConverters.Add(new BlockquoteConverter());
 
-            options.ElementConverters.Add(new HyperlinkConverter());
             options.ElementConverters.Add(new ImageConverter());
 
             options.ElementConverters.Add(new InlineElementConverter("**", "**", "strong", "b"));

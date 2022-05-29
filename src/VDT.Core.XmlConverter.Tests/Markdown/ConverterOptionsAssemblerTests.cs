@@ -140,6 +140,16 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Single(options.ElementConverters, converter => IsBlockElementConverter(converter, "---", "hr"));
         }
 
+        [Fact]
+        public void AddHyperlinkConverter_Adds_HyperlinkConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddHyperlinkConverter(options);
+
+            Assert.Single(options.ElementConverters, converter => converter is HyperlinkConverter);
+        }
+
         private bool IsBlockElementConverter(IElementConverter converter, string expectedStartOutput, params string[] expectedValidForElementNames) 
             => converter is BlockElementConverter blockElementConverter
                 && blockElementConverter.StartOutput == expectedStartOutput

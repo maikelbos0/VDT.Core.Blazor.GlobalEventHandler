@@ -35,5 +35,9 @@
         public void AddHorizontalRuleConverter(ConverterOptions options) {
             options.ElementConverters.Add(new BlockElementConverter("---", "hr"));
         }
+
+        public void AddHyperlinkConverter(ConverterOptions options) {
+            options.ElementConverters.Add(new HyperlinkConverter());
+        }
     }
 }

@@ -31,6 +31,7 @@
             assembler.AddLinebreakConverter(options);
             assembler.AddListItemElementConverters(options);
             assembler.AddHorizontalRuleConverter(options);
+            assembler.AddHyperlinkConverter(options);
 
             return options
                 .AddDefaultMarkdown()

@@ -11,5 +11,7 @@
         public void AddListItemElementConverters(ConverterOptions options);
 
         public void AddHorizontalRuleConverter(ConverterOptions options);
+
+        public void AddHyperlinkConverter(ConverterOptions options);
     }
 }

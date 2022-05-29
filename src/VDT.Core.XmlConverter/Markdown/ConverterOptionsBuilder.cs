@@ -32,6 +32,7 @@
             assembler.AddListItemElementConverters(options);
             assembler.AddHorizontalRuleConverter(options);
             assembler.AddHyperlinkConverter(options);
+            assembler.AddImageConverter(options);
             assembler.SetDefaultElementConverter(options, unknownElementHandlingMode);
 
             return options

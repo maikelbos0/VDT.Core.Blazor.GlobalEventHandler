@@ -82,6 +82,17 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
+        public void Build_Always_Calls_AddImageConverter() {
+            var options = new ConverterOptions();
+            var builder = new ConverterOptionsBuilder();
+            var assembler = Substitute.For<IConverterOptionsAssembler>();
+
+            builder.Build(options, assembler);
+
+            assembler.Received().AddImageConverter(options);
+        }
+
+        [Fact]
         public void Build_Always_Calls_SetDefaultElementConverter() {
             var options = new ConverterOptions();
             var builder = new ConverterOptionsBuilder();

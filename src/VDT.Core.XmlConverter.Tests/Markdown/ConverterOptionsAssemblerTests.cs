@@ -150,6 +150,16 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Single(options.ElementConverters, converter => converter is HyperlinkConverter);
         }
 
+        [Fact]
+        public void AddImageConverter_Adds_ImageConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddImageConverter(options);
+
+            Assert.Single(options.ElementConverters, converter => converter is ImageConverter);
+        }
+
         private bool IsBlockElementConverter(IElementConverter converter, string expectedStartOutput, params string[] expectedValidForElementNames) 
             => converter is BlockElementConverter blockElementConverter
                 && blockElementConverter.StartOutput == expectedStartOutput

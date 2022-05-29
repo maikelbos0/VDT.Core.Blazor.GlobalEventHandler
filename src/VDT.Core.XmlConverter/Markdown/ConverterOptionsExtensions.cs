@@ -45,8 +45,6 @@
 
             options.ElementConverters.Add(new BlockquoteConverter());
 
-            options.ElementConverters.Add(new ImageConverter());
-
             options.ElementConverters.Add(new InlineElementConverter("**", "**", "strong", "b"));
             options.ElementConverters.Add(new InlineElementConverter("*", "*", "em", "i"));
             options.ElementConverters.Add(new InlineElementConverter("`", "`", "code", "kbd", "samp", "var"));

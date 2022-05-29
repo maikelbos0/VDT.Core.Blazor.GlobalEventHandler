@@ -42,6 +42,10 @@ namespace VDT.Core.XmlConverter.Markdown {
             options.ElementConverters.Add(new HyperlinkConverter());
         }
 
+        public void AddImageConverter(ConverterOptions options) {
+            options.ElementConverters.Add(new ImageConverter());
+        }
+
         public void SetDefaultElementConverter(ConverterOptions options, UnknownElementHandlingMode unknownElementHandlingMode) {
             options.DefaultElementConverter = unknownElementHandlingMode switch {
                 UnknownElementHandlingMode.None => new NoOpElementConverter(),

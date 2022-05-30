@@ -49,16 +49,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void UseMarkdown_Convert_Text() {
-            const string xml = "<p xml:space=\"preserve\">\t Test \t</p>\r\n\t <p> Test \t </p>";
-
-            var options = new ConverterOptions().UseMarkdown();
-            var converter = new Converter(options);
-
-            Assert.Equal("\r\n\r\nTest \r\n\r\nTest \r\n\r\n", converter.Convert(xml));
-        }
-
-        [Fact]
         public void UseMarkdown_Convert() {
             const string xml = @"
 <p>This is a paragraph.</p>

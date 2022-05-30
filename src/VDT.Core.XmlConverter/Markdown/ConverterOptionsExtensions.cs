@@ -33,8 +33,7 @@
 
         // TODO split this up?
         internal static ConverterOptions AddDefaultMarkdown(this ConverterOptions options) {
-            // TODO add escape characters for ~, =, ^ for extended as needed
-            options.TextConverter = new TextConverter();
+
 
             options.ElementConverters.Add(new TagRemovingElementConverter("html", "body", "ul", "ol", "menu", "div", "span"));
 

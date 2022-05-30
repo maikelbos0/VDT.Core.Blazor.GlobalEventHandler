@@ -25,6 +25,7 @@
         }
 
         internal ConverterOptions Build(ConverterOptions options, IConverterOptionsAssembler assembler) {
+            assembler.SetTextConverter(options);
             assembler.SetNodeConverterForNonMarkdownNodeTypes(options);
             assembler.AddHeaderConverters(options);
             assembler.AddParagraphConverter(options);

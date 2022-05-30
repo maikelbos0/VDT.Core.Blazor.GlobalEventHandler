@@ -1,5 +1,7 @@
 ﻿namespace VDT.Core.XmlConverter.Markdown {
     internal interface IConverterOptionsAssembler {
+        public void SetTextConverter(ConverterOptions options);
+
         public void SetNodeConverterForNonMarkdownNodeTypes(ConverterOptions options);
 
         public void AddHeaderConverters(ConverterOptions options);

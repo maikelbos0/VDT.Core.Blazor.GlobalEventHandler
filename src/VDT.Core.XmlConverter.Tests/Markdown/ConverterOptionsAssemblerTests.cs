@@ -5,6 +5,16 @@ using Xunit;
 namespace VDT.Core.XmlConverter.Tests.Markdown {
     public class ConverterOptionsAssemblerTests {
         [Fact]
+        public void SetTextConverter_Sets_TextConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.SetTextConverter(options);
+
+            Assert.IsType<TextConverter>(options.TextConverter);
+        }
+        
+        [Fact]
         public void SetNodeConverterForNonMarkdownNodeTypes_Sets_CDataConverter() {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();

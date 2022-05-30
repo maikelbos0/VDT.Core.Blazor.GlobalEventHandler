@@ -36,7 +36,7 @@
             // TODO add escape characters for ~, =, ^ for extended as needed
             options.TextConverter = new TextConverter();
 
-            options.ElementConverters.Add(new NullElementConverter("html", "body", "ul", "ol", "menu", "div", "span"));
+            options.ElementConverters.Add(new TagRemovingElementConverter("html", "body", "ul", "ol", "menu", "div", "span"));
 
             // TODO consider not removing some of these? Meta, frame, iframe, frameset?
             options.ElementConverters.Add(new ElementRemovingConverter("script", "style", "head", "frame", "meta", "iframe", "frameset"));

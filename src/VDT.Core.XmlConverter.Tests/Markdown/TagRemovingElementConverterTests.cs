@@ -3,12 +3,12 @@ using VDT.Core.XmlConverter.Markdown;
 using Xunit;
 
 namespace VDT.Core.XmlConverter.Tests.Markdown {
-    public class NullElementConverterTests {
+    public class TagRemovingElementConverterTests {
         [Fact]
         public void RenderStart() {
             using var writer = new StringWriter();
 
-            var converter = new NullElementConverter("foo", "bar");
+            var converter = new TagRemovingElementConverter("foo", "bar");
 
             converter.RenderStart(ElementDataHelper.Create("bar"), writer);
 
@@ -19,7 +19,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         public void RenderEnd() {
             using var writer = new StringWriter();
 
-            var converter = new NullElementConverter("foo", "bar");
+            var converter = new TagRemovingElementConverter("foo", "bar");
 
             converter.RenderEnd(ElementDataHelper.Create("bar"), writer);
 

@@ -2,7 +2,7 @@
 
 namespace VDT.Core.XmlConverter.Markdown {
     internal class ConverterOptionsAssembler : IConverterOptionsAssembler {
-        public void SetNodeRemovingConverterForNonMarkdownNodeTypes(ConverterOptions options) {
+        public void SetNodeConverterForNonMarkdownNodeTypes(ConverterOptions options) {
             options.CDataConverter = new NodeRemovingConverter();
             options.CommentConverter = new NodeRemovingConverter();
             options.DocumentTypeConverter = new NodeRemovingConverter();
@@ -12,7 +12,7 @@ namespace VDT.Core.XmlConverter.Markdown {
             options.WhitespaceConverter = new NodeRemovingConverter();
         }
 
-        public void AddHeaderElementConverters(ConverterOptions options) {
+        public void AddHeaderConverters(ConverterOptions options) {
             options.ElementConverters.Add(new BlockElementConverter("# ", "h1"));
             options.ElementConverters.Add(new BlockElementConverter("## ", "h2"));
             options.ElementConverters.Add(new BlockElementConverter("### ", "h3"));
@@ -48,6 +48,11 @@ namespace VDT.Core.XmlConverter.Markdown {
 
         public void AddImageConverter(ConverterOptions options) {
             options.ElementConverters.Add(new ImageConverter());
+        }
+
+        public void AddEmphasisConverters(ConverterOptions options) {
+            options.ElementConverters.Add(new InlineElementConverter("**", "**", "strong", "b"));
+            options.ElementConverters.Add(new InlineElementConverter("*", "*", "em", "i"));
         }
 
         public void SetDefaultElementConverter(ConverterOptions options, UnknownElementHandlingMode unknownElementHandlingMode) {

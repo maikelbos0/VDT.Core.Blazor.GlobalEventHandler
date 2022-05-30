@@ -28,10 +28,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Theory]
-        [InlineData("<strong>Bold</strong>", "**Bold**")]
-        [InlineData("<b>Bold</b>", "**Bold**")]
-        [InlineData("<em>Italic</em>", "*Italic*")]
-        [InlineData("<i>Italic</i>", "*Italic*")]
         [InlineData("<code>Inline code</code>", "`Inline code`")]
         [InlineData("<kbd>Inline code</kbd>", "`Inline code`")]
         [InlineData("<samp>Inline code</samp>", "`Inline code`")]

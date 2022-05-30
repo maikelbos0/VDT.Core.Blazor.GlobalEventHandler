@@ -5,25 +5,25 @@ using Xunit;
 namespace VDT.Core.XmlConverter.Tests.Markdown {
     public class ConverterOptionsBuilderTests {
         [Fact]
-        public void Build_Always_Calls_SetNodeRemovingConverterForNonMarkdownNodeTypes() {
+        public void Build_Always_Calls_SetNodeConverterForNonMarkdownNodeTypes() {
             var options = new ConverterOptions();
             var builder = new ConverterOptionsBuilder();
             var assembler = Substitute.For<IConverterOptionsAssembler>();
 
             builder.Build(options, assembler);
 
-            assembler.Received().SetNodeRemovingConverterForNonMarkdownNodeTypes(options);
+            assembler.Received().SetNodeConverterForNonMarkdownNodeTypes(options);
         }
 
         [Fact]
-        public void Build_Always_Calls_AddHeaderElementConverters() {
+        public void Build_Always_Calls_AddHeaderConverters() {
             var options = new ConverterOptions();
             var builder = new ConverterOptionsBuilder();
             var assembler = Substitute.For<IConverterOptionsAssembler>();
 
             builder.Build(options, assembler);
 
-            assembler.Received().AddHeaderElementConverters(options);
+            assembler.Received().AddHeaderConverters(options);
         }
 
         [Fact]
@@ -101,6 +101,17 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             builder.Build(options, assembler);
 
             assembler.Received().AddImageConverter(options);
+        }
+
+        [Fact]
+        public void Build_Always_Calls_AddEmphasisConverters() {
+            var options = new ConverterOptions();
+            var builder = new ConverterOptionsBuilder();
+            var assembler = Substitute.For<IConverterOptionsAssembler>();
+
+            builder.Build(options, assembler);
+
+            assembler.Received().AddEmphasisConverters(options);
         }
 
         [Fact]

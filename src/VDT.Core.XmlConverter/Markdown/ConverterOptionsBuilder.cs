@@ -25,8 +25,8 @@
         }
 
         internal ConverterOptions Build(ConverterOptions options, IConverterOptionsAssembler assembler) {
-            assembler.SetNodeRemovingConverterForNonMarkdownNodeTypes(options);
-            assembler.AddHeaderElementConverters(options);
+            assembler.SetNodeConverterForNonMarkdownNodeTypes(options);
+            assembler.AddHeaderConverters(options);
             assembler.AddParagraphConverter(options);
             assembler.AddLinebreakConverter(options);
             assembler.AddListItemElementConverters(options);
@@ -34,6 +34,7 @@
             assembler.AddBlockquoteConverter(options);
             assembler.AddHyperlinkConverter(options);
             assembler.AddImageConverter(options);
+            assembler.AddEmphasisConverters(options);
             assembler.SetDefaultElementConverter(options, unknownElementHandlingMode);
 
             return options

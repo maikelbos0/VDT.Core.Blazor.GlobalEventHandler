@@ -43,8 +43,6 @@
             // TODO allow switch between indented and fenced code block
             options.ElementConverters.Add(new PreConverter());
 
-            options.ElementConverters.Add(new InlineElementConverter("**", "**", "strong", "b"));
-            options.ElementConverters.Add(new InlineElementConverter("*", "*", "em", "i"));
             options.ElementConverters.Add(new InlineElementConverter("`", "`", "code", "kbd", "samp", "var"));
 
             options.ElementConverters.Add(new NullElementConverter("html", "body", "ul", "ol", "menu", "div", "span"));

@@ -5,71 +5,71 @@ using Xunit;
 namespace VDT.Core.XmlConverter.Tests.Markdown {
     public class ConverterOptionsAssemblerTests {
         [Fact]
-        public void SetNodeRemovingConverterForNonMarkdownNodeTypes_Sets_CDataConverter() {
+        public void SetNodeConverterForNonMarkdownNodeTypes_Sets_CDataConverter() {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();
 
-            assembler.SetNodeRemovingConverterForNonMarkdownNodeTypes(options);
+            assembler.SetNodeConverterForNonMarkdownNodeTypes(options);
 
             Assert.IsType<NodeRemovingConverter>(options.CDataConverter);
         }
 
         [Fact]
-        public void SetNodeRemovingConverterForNonMarkdownNodeTypes_Sets_CommentConverter() {
+        public void SetNodeConverterForNonMarkdownNodeTypes_Sets_CommentConverter() {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();
 
-            assembler.SetNodeRemovingConverterForNonMarkdownNodeTypes(options);
+            assembler.SetNodeConverterForNonMarkdownNodeTypes(options);
 
             Assert.IsType<NodeRemovingConverter>(options.CommentConverter);
         }
 
         [Fact]
-        public void SetNodeRemovingConverterForNonMarkdownNodeTypes_Sets_XmlDeclarationConverter() {
+        public void SetNodeConverterForNonMarkdownNodeTypes_Sets_XmlDeclarationConverter() {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();
 
-            assembler.SetNodeRemovingConverterForNonMarkdownNodeTypes(options);
+            assembler.SetNodeConverterForNonMarkdownNodeTypes(options);
 
             Assert.IsType<NodeRemovingConverter>(options.XmlDeclarationConverter);
         }
 
         [Fact]
-        public void SetNodeRemovingConverterForNonMarkdownNodeTypes_Sets_WhitespaceConverter() {
+        public void SetNodeConverterForNonMarkdownNodeTypes_Sets_WhitespaceConverter() {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();
 
-            assembler.SetNodeRemovingConverterForNonMarkdownNodeTypes(options);
+            assembler.SetNodeConverterForNonMarkdownNodeTypes(options);
 
             Assert.IsType<NodeRemovingConverter>(options.WhitespaceConverter);
         }
 
         [Fact]
-        public void SetNodeRemovingConverterForNonMarkdownNodeTypes_Sets_SignificantWhitespaceConverter() {
+        public void SetNodeConverterForNonMarkdownNodeTypes_Sets_SignificantWhitespaceConverter() {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();
 
-            assembler.SetNodeRemovingConverterForNonMarkdownNodeTypes(options);
+            assembler.SetNodeConverterForNonMarkdownNodeTypes(options);
 
             Assert.IsType<NodeRemovingConverter>(options.SignificantWhitespaceConverter);
         }
 
         [Fact]
-        public void SetNodeRemovingConverterForNonMarkdownNodeTypes_Sets_DocumentTypeConverter() {
+        public void SetNodeConverterForNonMarkdownNodeTypes_Sets_DocumentTypeConverter() {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();
 
-            assembler.SetNodeRemovingConverterForNonMarkdownNodeTypes(options);
+            assembler.SetNodeConverterForNonMarkdownNodeTypes(options);
 
             Assert.IsType<NodeRemovingConverter>(options.DocumentTypeConverter);
         }
 
         [Fact]
-        public void SetNodeRemovingConverterForNonMarkdownNodeTypes_Sets_ProcessingInstructionConverter() {
+        public void SetNodeConverterForNonMarkdownNodeTypes_Sets_ProcessingInstructionConverter() {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();
 
-            assembler.SetNodeRemovingConverterForNonMarkdownNodeTypes(options);
+            assembler.SetNodeConverterForNonMarkdownNodeTypes(options);
 
             Assert.IsType<NodeRemovingConverter>(options.ProcessingInstructionConverter);
         }
@@ -81,11 +81,11 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [InlineData("#### ", "h4")]
         [InlineData("##### ", "h5")]
         [InlineData("###### ", "h6")]
-        public void AddHeaderElementConverters_Adds_BlockElementConverter(string expectedStartOutput, string expectedValidForElementName) {
+        public void AddHeaderConverters_Adds_ElementConverter(string expectedStartOutput, string expectedValidForElementName) {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();
 
-            assembler.AddHeaderElementConverters(options);
+            assembler.AddHeaderConverters(options);
 
             Assert.Single(options.ElementConverters, converter => IsBlockElementConverter(converter, expectedStartOutput, expectedValidForElementName));
         }
@@ -170,10 +170,28 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Single(options.ElementConverters, converter => converter is ImageConverter);
         }
 
+        [Theory]
+        [InlineData("**", "**", "strong", "b")]
+        [InlineData("*", "*", "em", "i")]
+        public void AddEmphasisConverters_Adds_ElementConverter(string expectedStartOutput, string expectedEndOutput, params string[] expectedValidForElementNames) {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddEmphasisConverters(options);
+
+            Assert.Single(options.ElementConverters, converter => IsInlineElementConverter(converter, expectedStartOutput, expectedEndOutput, expectedValidForElementNames));
+        }
+
         private bool IsBlockElementConverter(IElementConverter converter, string expectedStartOutput, params string[] expectedValidForElementNames) 
             => converter is BlockElementConverter blockElementConverter
                 && blockElementConverter.StartOutput == expectedStartOutput
                 && blockElementConverter.ValidForElementNames.SequenceEqual(expectedValidForElementNames);
+
+        private bool IsInlineElementConverter(IElementConverter converter, string expectedStartOutput, string expectedEndOutput, params string[] expectedValidForElementNames) 
+            => converter is InlineElementConverter inlineElementConverter
+                && inlineElementConverter.StartOutput == expectedStartOutput
+                && inlineElementConverter.EndOutput == expectedEndOutput
+                && inlineElementConverter.ValidForElementNames.SequenceEqual(expectedValidForElementNames);
 
         [Theory]
         [InlineData(UnknownElementHandlingMode.RemoveTags, true)]

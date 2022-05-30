@@ -151,6 +151,26 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
+        public void AddPreConverters_Inserts_PreContentConverter_As_First_Converter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddPreConverters(options);
+
+            Assert.IsType<PreContentConverter>(options.ElementConverters.FirstOrDefault());
+        }
+
+        [Fact]
+        public void AddPreConverters_Adds_PreConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddPreConverters(options);
+
+            Assert.Single(options.ElementConverters, converter => converter is PreConverter);
+        }
+
+        [Fact]
         public void AddHyperlinkConverter_Adds_HyperlinkConverter() {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();

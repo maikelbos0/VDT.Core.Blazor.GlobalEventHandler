@@ -32,6 +32,7 @@
             assembler.AddListItemElementConverters(options);
             assembler.AddHorizontalRuleConverter(options);
             assembler.AddBlockquoteConverter(options);
+            assembler.AddPreConverters(options);
             assembler.AddHyperlinkConverter(options);
             assembler.AddImageConverter(options);
             assembler.AddEmphasisConverters(options);

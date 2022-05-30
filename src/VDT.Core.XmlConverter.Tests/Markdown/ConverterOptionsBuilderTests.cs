@@ -82,6 +82,17 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
+        public void Build_Always_Calls_AddPreConverters() {
+            var options = new ConverterOptions();
+            var builder = new ConverterOptionsBuilder();
+            var assembler = Substitute.For<IConverterOptionsAssembler>();
+
+            builder.Build(options, assembler);
+
+            assembler.Received().AddPreConverters(options);
+        }
+
+        [Fact]
         public void Build_Always_Calls_AddHyperlinkConverter() {
             var options = new ConverterOptions();
             var builder = new ConverterOptionsBuilder();

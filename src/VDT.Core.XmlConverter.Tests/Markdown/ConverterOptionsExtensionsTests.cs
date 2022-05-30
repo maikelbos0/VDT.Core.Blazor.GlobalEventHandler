@@ -17,16 +17,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Equal(options, options.UseMarkdown());
         }
 
-        [Fact]
-        public void UseMarkdown_Convert_Pre() {
-            const string xml = "<pre><span>Test</span></pre>";
-
-            var options = new ConverterOptions().UseMarkdown();
-            var converter = new Converter(options);
-
-            Assert.Equal("```\r\nTest\r\n```\r\n", converter.Convert(xml));
-        }
-
         [Theory]
         [InlineData("<html>Test</html>")]
         [InlineData("<body>Test</body>")]

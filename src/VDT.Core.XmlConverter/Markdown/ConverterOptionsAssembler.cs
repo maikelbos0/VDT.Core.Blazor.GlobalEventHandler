@@ -42,6 +42,14 @@ namespace VDT.Core.XmlConverter.Markdown {
             options.ElementConverters.Add(new BlockquoteConverter());
         }
 
+        public void AddPreConverters(ConverterOptions options) {
+            // Register pre content converter before any other element converters so it clears 
+            options.ElementConverters.Insert(0, new PreContentConverter());
+
+            // TODO allow switch between indented and fenced code block
+            options.ElementConverters.Add(new PreConverter());
+        }
+
         public void AddHyperlinkConverter(ConverterOptions options) {
             options.ElementConverters.Add(new HyperlinkConverter());
         }

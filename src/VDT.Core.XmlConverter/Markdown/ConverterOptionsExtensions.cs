@@ -33,15 +33,8 @@
 
         // TODO split this up?
         internal static ConverterOptions AddDefaultMarkdown(this ConverterOptions options) {
-            var removingNodeConverter = new FormattingNodeConverter((name, value) => "", false);
-
             // TODO add escape characters for ~, =, ^ for extended as needed
             options.TextConverter = new TextConverter();
-
-            // Register pre content converter before any other element converters so it clears 
-            options.ElementConverters.Add(new PreContentConverter());
-            // TODO allow switch between indented and fenced code block
-            options.ElementConverters.Add(new PreConverter());
 
             options.ElementConverters.Add(new NullElementConverter("html", "body", "ul", "ol", "menu", "div", "span"));
 

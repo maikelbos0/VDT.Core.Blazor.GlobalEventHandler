@@ -72,6 +72,10 @@ namespace VDT.Core.XmlConverter.Markdown {
             options.ElementConverters.Add(new InlineElementConverter("`", "`", "code", "kbd", "samp", "var"));
         }
 
+        public void AddTagRemovingElementConverter(ConverterOptions options) {
+            options.ElementConverters.Add(new TagRemovingElementConverter("html", "body", "ul", "ol", "menu", "div", "span"));
+        }
+
         public void SetDefaultElementConverter(ConverterOptions options, UnknownElementHandlingMode unknownElementHandlingMode) {
             options.DefaultElementConverter = unknownElementHandlingMode switch {
                 UnknownElementHandlingMode.None => new NoOpElementConverter(),

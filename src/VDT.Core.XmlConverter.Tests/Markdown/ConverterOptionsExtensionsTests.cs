@@ -18,22 +18,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Theory]
-        [InlineData("<html>Test</html>")]
-        [InlineData("<body>Test</body>")]
-        [InlineData("<html><body>Test</body></html>")]
-        [InlineData("<ul>Test</ul>")]
-        [InlineData("<ol>Test</ol>")]
-        [InlineData("<menu>Test</menu>")]
-        [InlineData("<span>Test</span>")]
-        [InlineData("<div>Test</div>")]
-        public void UseMarkdown_Convert_Removes_Unconvertible_Tags(string xml) {
-            var options = new ConverterOptions().UseMarkdown();
-            var converter = new Converter(options);
-
-            Assert.Equal("Test", converter.Convert(xml));
-        }
-
-        [Theory]
         [InlineData("<script>Don't render me</script>Test")]
         [InlineData("<style>Don't render me</style>Test")]
         [InlineData("<head>Don't render me</head>Test")]

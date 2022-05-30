@@ -13,7 +13,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             Assert.IsType<TextConverter>(options.TextConverter);
         }
-        
+
         [Fact]
         public void SetNodeConverterForNonMarkdownNodeTypes_Sets_CDataConverter() {
             var options = new ConverterOptions();
@@ -139,7 +139,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             Assert.Single(options.ElementConverters, converter => converter is UnorderedListItemConverter);
         }
-        
+
         [Fact]
         public void AddHorizontalRuleConverter_Adds_BlockElementConverter() {
             var options = new ConverterOptions();
@@ -149,7 +149,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             Assert.Single(options.ElementConverters, converter => IsBlockElementConverter(converter, "---", "hr"));
         }
-        
+
         [Fact]
         public void AddBlockquoteConverter_Adds_BlockquoteConverter() {
             var options = new ConverterOptions();
@@ -222,12 +222,22 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Single(options.ElementConverters, converter => IsInlineElementConverter(converter, "`", "`", "code", "kbd", "samp", "var"));
         }
 
-        private static bool IsBlockElementConverter(IElementConverter converter, string expectedStartOutput, params string[] expectedValidForElementNames) 
+        [Fact]
+        public void AddTagRemovingElementConverter_Adds_TagRemovingElementConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddTagRemovingElementConverter(options);
+
+            Assert.Equal(new[] { "html", "body", "ul", "ol", "menu", "div", "span" }, Assert.IsType<TagRemovingElementConverter>(Assert.Single(options.ElementConverters)).ValidForElementNames);
+        }
+
+        private static bool IsBlockElementConverter(IElementConverter converter, string expectedStartOutput, params string[] expectedValidForElementNames)
             => converter is BlockElementConverter blockElementConverter
                 && blockElementConverter.StartOutput == expectedStartOutput
                 && blockElementConverter.ValidForElementNames.SequenceEqual(expectedValidForElementNames);
 
-        private static bool IsInlineElementConverter(IElementConverter converter, string expectedStartOutput, string expectedEndOutput, params string[] expectedValidForElementNames) 
+        private static bool IsInlineElementConverter(IElementConverter converter, string expectedStartOutput, string expectedEndOutput, params string[] expectedValidForElementNames)
             => converter is InlineElementConverter inlineElementConverter
                 && inlineElementConverter.StartOutput == expectedStartOutput
                 && inlineElementConverter.EndOutput == expectedEndOutput

@@ -38,6 +38,7 @@
             assembler.AddImageConverter(options);
             assembler.AddEmphasisConverters(options);
             assembler.AddInlineCodeConverter(options);
+            assembler.AddTagRemovingElementConverter(options);
             assembler.SetDefaultElementConverter(options, unknownElementHandlingMode);
 
             return options

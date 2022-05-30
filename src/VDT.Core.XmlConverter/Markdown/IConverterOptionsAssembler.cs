@@ -26,6 +26,8 @@
 
         public void AddInlineCodeConverter(ConverterOptions options);
 
+        public void AddTagRemovingElementConverter(ConverterOptions options);
+
         public void SetDefaultElementConverter(ConverterOptions options, UnknownElementHandlingMode unknownElementHandlingMode);
     }
 }

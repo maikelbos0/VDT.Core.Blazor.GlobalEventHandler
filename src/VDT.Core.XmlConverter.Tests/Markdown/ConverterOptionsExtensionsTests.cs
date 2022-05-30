@@ -28,18 +28,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Theory]
-        [InlineData("<code>Inline code</code>", "`Inline code`")]
-        [InlineData("<kbd>Inline code</kbd>", "`Inline code`")]
-        [InlineData("<samp>Inline code</samp>", "`Inline code`")]
-        [InlineData("<var>Inline code</var>", "`Inline code`")]
-        public void UseMarkdown_Convert_Inline_Markup(string xml, string expectedMarkdown) {
-            var options = new ConverterOptions().UseMarkdown();
-            var converter = new Converter(options);
-
-            Assert.Equal(expectedMarkdown, converter.Convert(xml));
-        }
-
-        [Theory]
         [InlineData("<html>Test</html>")]
         [InlineData("<body>Test</body>")]
         [InlineData("<html><body>Test</body></html>")]

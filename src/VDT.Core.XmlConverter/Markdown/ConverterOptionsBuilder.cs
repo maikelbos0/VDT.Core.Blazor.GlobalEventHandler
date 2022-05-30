@@ -35,6 +35,7 @@
             assembler.AddHyperlinkConverter(options);
             assembler.AddImageConverter(options);
             assembler.AddEmphasisConverters(options);
+            assembler.AddInlineCodeConverter(options);
             assembler.SetDefaultElementConverter(options, unknownElementHandlingMode);
 
             return options

@@ -55,6 +55,10 @@ namespace VDT.Core.XmlConverter.Markdown {
             options.ElementConverters.Add(new InlineElementConverter("*", "*", "em", "i"));
         }
 
+        public void AddInlineCodeConverter(ConverterOptions options) {
+            options.ElementConverters.Add(new InlineElementConverter("`", "`", "code", "kbd", "samp", "var"));
+        }
+
         public void SetDefaultElementConverter(ConverterOptions options, UnknownElementHandlingMode unknownElementHandlingMode) {
             options.DefaultElementConverter = unknownElementHandlingMode switch {
                 UnknownElementHandlingMode.None => new NoOpElementConverter(),

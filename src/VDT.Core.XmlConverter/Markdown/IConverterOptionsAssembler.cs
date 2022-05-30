@@ -19,7 +19,9 @@
         public void AddImageConverter(ConverterOptions options);
 
         public void AddEmphasisConverters(ConverterOptions options);
-        
+
+        public void AddInlineCodeConverter(ConverterOptions options);
+
         public void SetDefaultElementConverter(ConverterOptions options, UnknownElementHandlingMode unknownElementHandlingMode);
     }
 }

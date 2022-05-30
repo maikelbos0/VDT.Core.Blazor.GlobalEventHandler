@@ -182,12 +182,22 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Single(options.ElementConverters, converter => IsInlineElementConverter(converter, expectedStartOutput, expectedEndOutput, expectedValidForElementNames));
         }
 
-        private bool IsBlockElementConverter(IElementConverter converter, string expectedStartOutput, params string[] expectedValidForElementNames) 
+        [Fact]
+        public void AddInlineCodeConverter_Adds_ElementConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddInlineCodeConverter(options);
+
+            Assert.Single(options.ElementConverters, converter => IsInlineElementConverter(converter, "`", "`", "code", "kbd", "samp", "var"));
+        }
+
+        private static bool IsBlockElementConverter(IElementConverter converter, string expectedStartOutput, params string[] expectedValidForElementNames) 
             => converter is BlockElementConverter blockElementConverter
                 && blockElementConverter.StartOutput == expectedStartOutput
                 && blockElementConverter.ValidForElementNames.SequenceEqual(expectedValidForElementNames);
 
-        private bool IsInlineElementConverter(IElementConverter converter, string expectedStartOutput, string expectedEndOutput, params string[] expectedValidForElementNames) 
+        private static bool IsInlineElementConverter(IElementConverter converter, string expectedStartOutput, string expectedEndOutput, params string[] expectedValidForElementNames) 
             => converter is InlineElementConverter inlineElementConverter
                 && inlineElementConverter.StartOutput == expectedStartOutput
                 && inlineElementConverter.EndOutput == expectedEndOutput

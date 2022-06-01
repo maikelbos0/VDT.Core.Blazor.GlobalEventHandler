@@ -17,7 +17,7 @@ namespace VDT.Core.XmlConverter.Markdown {
             options.WhitespaceConverter = new NodeRemovingConverter();
         }
 
-        public void AddHeaderConverters(ConverterOptions options) {
+        public void AddHeadingConverters(ConverterOptions options) {
             options.ElementConverters.Add(new BlockElementConverter("# ", "h1"));
             options.ElementConverters.Add(new BlockElementConverter("## ", "h2"));
             options.ElementConverters.Add(new BlockElementConverter("### ", "h3"));

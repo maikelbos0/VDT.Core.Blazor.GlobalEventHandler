@@ -91,11 +91,11 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [InlineData("#### ", "h4")]
         [InlineData("##### ", "h5")]
         [InlineData("###### ", "h6")]
-        public void AddHeaderConverters_Adds_ElementConverter(string expectedStartOutput, string expectedValidForElementName) {
+        public void AddHeadingConverters_Adds_ElementConverter(string expectedStartOutput, string expectedValidForElementName) {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();
 
-            assembler.AddHeaderConverters(options);
+            assembler.AddHeadingConverters(options);
 
             Assert.Single(options.ElementConverters, converter => IsBlockElementConverter(converter, expectedStartOutput, expectedValidForElementName));
         }

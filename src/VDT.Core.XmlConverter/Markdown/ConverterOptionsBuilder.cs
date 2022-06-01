@@ -8,7 +8,7 @@ namespace VDT.Core.XmlConverter.Markdown {
     /// </summary>
     public class ConverterOptionsBuilder {
         private static Dictionary<ElementConverterTarget, Action<IConverterOptionsAssembler, ConverterOptionsBuilder, ConverterOptions>> targetAssemblerActionMapping = new Dictionary<ElementConverterTarget, Action<IConverterOptionsAssembler, ConverterOptionsBuilder, ConverterOptions>>() {
-            { ElementConverterTarget.Header, (assembler, _, options) =>  assembler.AddHeaderConverters(options) },
+            { ElementConverterTarget.Heading, (assembler, _, options) =>  assembler.AddHeadingConverters(options) },
             { ElementConverterTarget.Paragraph, (assembler, _, options) =>  assembler.AddParagraphConverter(options) },
             { ElementConverterTarget.Linebreak, (assembler, _, options) =>  assembler.AddLinebreakConverter(options) },
             { ElementConverterTarget.ListItem, (assembler, _, options) =>  assembler.AddListItemConverters(options) },
@@ -30,7 +30,7 @@ namespace VDT.Core.XmlConverter.Markdown {
 
         // TODO make public
         internal HashSet<ElementConverterTarget> ElementConverterTargets { get; set; } = new HashSet<ElementConverterTarget>() {
-            ElementConverterTarget.Header,
+            ElementConverterTarget.Heading,
             ElementConverterTarget.Paragraph,
             ElementConverterTarget.Linebreak,
             ElementConverterTarget.ListItem,

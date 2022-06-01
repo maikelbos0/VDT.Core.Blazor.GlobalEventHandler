@@ -4,7 +4,7 @@
 
         public void SetNodeConverterForNonMarkdownNodeTypes(ConverterOptions options);
 
-        public void AddHeaderConverters(ConverterOptions options);
+        public void AddHeadingConverters(ConverterOptions options);
 
         public void AddParagraphConverter(ConverterOptions options);
 

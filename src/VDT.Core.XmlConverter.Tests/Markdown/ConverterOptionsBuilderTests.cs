@@ -60,14 +60,14 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void Build_Always_Calls_AddListItemElementConverters() {
+        public void Build_Always_Calls_AddListItemConverters() {
             var options = new ConverterOptions();
             var builder = new ConverterOptionsBuilder();
             var assembler = Substitute.For<IConverterOptionsAssembler>();
 
             builder.Build(options, assembler);
 
-            assembler.Received().AddListItemElementConverters(options);
+            assembler.Received().AddListItemConverters(options);
         }
 
         [Fact]

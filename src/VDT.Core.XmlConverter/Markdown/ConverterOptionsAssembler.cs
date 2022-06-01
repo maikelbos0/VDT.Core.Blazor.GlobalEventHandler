@@ -34,7 +34,7 @@ namespace VDT.Core.XmlConverter.Markdown {
             options.ElementConverters.Add(new LinebreakConverter());
         }
 
-        public void AddListItemElementConverters(ConverterOptions options) {
+        public void AddListItemConverters(ConverterOptions options) {
             options.ElementConverters.Add(new OrderedListItemConverter());
             options.ElementConverters.Add(new UnorderedListItemConverter());
         }

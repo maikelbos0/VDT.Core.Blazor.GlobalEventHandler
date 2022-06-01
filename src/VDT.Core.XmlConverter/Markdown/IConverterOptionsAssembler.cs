@@ -10,7 +10,7 @@
 
         public void AddLinebreakConverter(ConverterOptions options);
 
-        public void AddListItemElementConverters(ConverterOptions options);
+        public void AddListItemConverters(ConverterOptions options);
 
         public void AddHorizontalRuleConverter(ConverterOptions options);
 

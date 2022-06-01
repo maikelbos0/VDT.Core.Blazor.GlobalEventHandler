@@ -121,21 +121,21 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void AddListItemElementConverters_Adds_OrderedListItemConverter() {
+        public void AddListItemConverters_Adds_OrderedListItemConverter() {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();
 
-            assembler.AddListItemElementConverters(options);
+            assembler.AddListItemConverters(options);
 
             Assert.Single(options.ElementConverters, converter => converter is OrderedListItemConverter);
         }
 
         [Fact]
-        public void AddListItemElementConverters_Adds_UnorderedListItemConverter() {
+        public void AddListItemConverters_Adds_UnorderedListItemConverter() {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();
 
-            assembler.AddListItemElementConverters(options);
+            assembler.AddListItemConverters(options);
 
             Assert.Single(options.ElementConverters, converter => converter is UnorderedListItemConverter);
         }

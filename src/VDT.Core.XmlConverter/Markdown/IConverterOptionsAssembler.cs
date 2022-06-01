@@ -28,6 +28,8 @@
 
         public void AddTagRemovingElementConverter(ConverterOptions options);
 
+        public void AddElementRemovingConverter(ConverterOptions options);
+
         public void SetDefaultElementConverter(ConverterOptions options, UnknownElementHandlingMode unknownElementHandlingMode);
     }
 }

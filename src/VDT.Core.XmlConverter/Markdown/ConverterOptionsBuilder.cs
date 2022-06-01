@@ -39,10 +39,10 @@
             assembler.AddEmphasisConverters(options);
             assembler.AddInlineCodeConverter(options);
             assembler.AddTagRemovingElementConverter(options);
+            assembler.AddElementRemovingConverter(options);
             assembler.SetDefaultElementConverter(options, unknownElementHandlingMode);
 
-            return options
-                .AddDefaultMarkdown();
+            return options;
         }
     }
 }

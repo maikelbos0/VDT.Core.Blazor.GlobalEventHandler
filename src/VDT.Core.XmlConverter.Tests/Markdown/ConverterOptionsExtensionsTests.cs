@@ -17,21 +17,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Equal(options, options.UseMarkdown());
         }
 
-        [Theory]
-        [InlineData("<script>Don't render me</script>Test")]
-        [InlineData("<style>Don't render me</style>Test")]
-        [InlineData("<head>Don't render me</head>Test")]
-        [InlineData("<frame>Don't render me</frame>Test")]
-        [InlineData("<meta>Don't render me</meta>Test")]
-        [InlineData("<iframe>Don't render me</iframe>Test")]
-        [InlineData("<frameset>Don't render me</frameset>Test")]
-        public void UseMarkdown_Convert_Removes_Elements_Without_Content(string xml) {
-            var options = new ConverterOptions().UseMarkdown();
-            var converter = new Converter(options);
-
-            Assert.Equal("Test", converter.Convert(xml));
-        }
-
         [Fact]
         public void UseMarkdown_Convert() {
             const string xml = @"

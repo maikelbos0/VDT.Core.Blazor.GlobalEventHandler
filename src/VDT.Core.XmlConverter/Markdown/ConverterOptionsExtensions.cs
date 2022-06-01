@@ -28,19 +28,5 @@
 
             return options;
         }
-
-
-
-        // TODO split this up?
-        internal static ConverterOptions AddDefaultMarkdown(this ConverterOptions options) {
-
-
-            
-
-            // TODO consider not removing some of these? Meta, frame, iframe, frameset?
-            options.ElementConverters.Add(new ElementRemovingConverter("script", "style", "head", "frame", "meta", "iframe", "frameset"));
-
-            return options;
-        }
     }
 }

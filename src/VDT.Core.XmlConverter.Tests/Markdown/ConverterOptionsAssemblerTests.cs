@@ -232,6 +232,16 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Equal(new[] { "html", "body", "ul", "ol", "menu", "div", "span" }, Assert.IsType<TagRemovingElementConverter>(Assert.Single(options.ElementConverters)).ValidForElementNames);
         }
 
+        [Fact]
+        public void AddElementRemovingConverter_Adds_ElementRemovingConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddElementRemovingConverter(options);
+
+            Assert.Equal(new[] { "script", "style", "head", "frame", "meta", "iframe", "frameset" }, Assert.IsType<ElementRemovingConverter>(Assert.Single(options.ElementConverters)).ValidForElementNames);
+        }
+
         private static bool IsBlockElementConverter(IElementConverter converter, string expectedStartOutput, params string[] expectedValidForElementNames)
             => converter is BlockElementConverter blockElementConverter
                 && blockElementConverter.StartOutput == expectedStartOutput

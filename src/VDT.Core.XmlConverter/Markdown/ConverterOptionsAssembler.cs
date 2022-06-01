@@ -76,6 +76,11 @@ namespace VDT.Core.XmlConverter.Markdown {
             options.ElementConverters.Add(new TagRemovingElementConverter("html", "body", "ul", "ol", "menu", "div", "span"));
         }
 
+        public void AddElementRemovingConverter(ConverterOptions options) {
+            // TODO consider not removing some of these? Meta, frame, iframe, frameset?
+            options.ElementConverters.Add(new ElementRemovingConverter("script", "style", "head", "frame", "meta", "iframe", "frameset"));
+        }
+
         public void SetDefaultElementConverter(ConverterOptions options, UnknownElementHandlingMode unknownElementHandlingMode) {
             options.DefaultElementConverter = unknownElementHandlingMode switch {
                 UnknownElementHandlingMode.None => new NoOpElementConverter(),

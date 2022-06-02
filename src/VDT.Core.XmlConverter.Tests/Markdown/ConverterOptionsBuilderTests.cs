@@ -1,4 +1,5 @@
 ﻿using NSubstitute;
+using System.Collections.Generic;
 using VDT.Core.XmlConverter.Markdown;
 using Xunit;
 
@@ -46,10 +47,8 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
         [Fact]
         public void AddTargets_Adds_Targets() {
-            var builder = new ConverterOptionsBuilder();
+            var builder = CreateBuilder(ElementConverterTarget.Hyperlink);
 
-            builder.ElementConverterTargets.Clear();
-            builder.ElementConverterTargets.Add(ElementConverterTarget.Hyperlink);
             builder.AddTargets(ElementConverterTarget.Hyperlink, ElementConverterTarget.Image, ElementConverterTarget.InlineCode);
 
             Assert.Equal(3, builder.ElementConverterTargets.Count);
@@ -67,23 +66,16 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
         [Fact]
         public void RemoveTargets_Removes_Targets() {
-            var builder = new ConverterOptionsBuilder();
-
-            builder.ElementConverterTargets.Clear();
-            builder.ElementConverterTargets.Add(ElementConverterTarget.Hyperlink);
-            builder.ElementConverterTargets.Add(ElementConverterTarget.Image);
-            builder.ElementConverterTargets.Add(ElementConverterTarget.InlineCode);
+            var builder = CreateBuilder(ElementConverterTarget.Hyperlink, ElementConverterTarget.Image, ElementConverterTarget.InlineCode);
             builder.RemoveTargets(ElementConverterTarget.Heading, ElementConverterTarget.Image, ElementConverterTarget.InlineCode);
 
             Assert.Equal(ElementConverterTarget.Hyperlink, Assert.Single(builder.ElementConverterTargets));
         }
 
-        // TODO convert below tests to be based on targets
-
         [Fact]
-        public void Build_Always_Calls_AddHeadingConverters() {
+        public void Build_ElementConverterTarget_Heading_Calls_AddHeadingConverters() {
             var options = new ConverterOptions();
-            var builder = new ConverterOptionsBuilder();
+            var builder = CreateBuilder(ElementConverterTarget.Heading);
             var assembler = Substitute.For<IConverterOptionsAssembler>();
 
             builder.Build(options, assembler);
@@ -92,9 +84,9 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void Build_Always_Calls_AddParagraphConverter() {
+        public void Build_ElementConverterTarget_Paragraph_Calls_AddParagraphConverter() {
             var options = new ConverterOptions();
-            var builder = new ConverterOptionsBuilder();
+            var builder = CreateBuilder(ElementConverterTarget.Paragraph);
             var assembler = Substitute.For<IConverterOptionsAssembler>();
 
             builder.Build(options, assembler);
@@ -103,9 +95,9 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void Build_Always_Calls_AddLinebreakConverter() {
+        public void Build_ElementConverterTarget_Linebreak_Calls_AddLinebreakConverter() {
             var options = new ConverterOptions();
-            var builder = new ConverterOptionsBuilder();
+            var builder = CreateBuilder(ElementConverterTarget.Linebreak);
             var assembler = Substitute.For<IConverterOptionsAssembler>();
 
             builder.Build(options, assembler);
@@ -114,9 +106,9 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void Build_Always_Calls_AddListItemConverters() {
+        public void Build_ElementConverterTarget_ListItem_Calls_AddListItemConverters() {
             var options = new ConverterOptions();
-            var builder = new ConverterOptionsBuilder();
+            var builder = CreateBuilder(ElementConverterTarget.ListItem);
             var assembler = Substitute.For<IConverterOptionsAssembler>();
 
             builder.Build(options, assembler);
@@ -125,9 +117,9 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void Build_Always_Calls_AddHorizontalRuleConverter() {
+        public void Build_ElementConverterTarget_HorizontalRule_Calls_AddHorizontalRuleConverter() {
             var options = new ConverterOptions();
-            var builder = new ConverterOptionsBuilder();
+            var builder = CreateBuilder(ElementConverterTarget.HorizontalRule);
             var assembler = Substitute.For<IConverterOptionsAssembler>();
 
             builder.Build(options, assembler);
@@ -136,9 +128,9 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void Build_Always_Calls_AddBlockquoteConverter() {
+        public void Build_ElementConverterTarget_Blockquote_Calls_AddBlockquoteConverter() {
             var options = new ConverterOptions();
-            var builder = new ConverterOptionsBuilder();
+            var builder = CreateBuilder(ElementConverterTarget.Blockquote);
             var assembler = Substitute.For<IConverterOptionsAssembler>();
 
             builder.Build(options, assembler);
@@ -147,15 +139,19 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void Build_Always_Calls_AddPreConverters() {
+        public void Build_ElementConverterTarget_Pre_Calls_AddPreConverters() {
             var options = new ConverterOptions();
-            var builder = new ConverterOptionsBuilder();
+            var builder = CreateBuilder(ElementConverterTarget.Pre);
             var assembler = Substitute.For<IConverterOptionsAssembler>();
 
             builder.Build(options, assembler);
 
             assembler.Received().AddPreConverters(options);
         }
+
+
+        // TODO convert below tests to be based on targets
+
 
         [Fact]
         public void Build_Always_Calls_AddHyperlinkConverter() {
@@ -222,5 +218,10 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             assembler.Received().AddElementRemovingConverter(options);
         }
+
+        private ConverterOptionsBuilder CreateBuilder(params ElementConverterTarget[] targets)
+            => new ConverterOptionsBuilder() {
+                ElementConverterTargets = new HashSet<ElementConverterTarget>(targets)
+            };
     }
 }

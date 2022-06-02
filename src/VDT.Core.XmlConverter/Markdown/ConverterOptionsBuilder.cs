@@ -19,7 +19,9 @@ namespace VDT.Core.XmlConverter.Markdown {
             { ElementConverterTarget.Image, (assembler, _, options) =>  assembler.AddImageConverter(options) },
             { ElementConverterTarget.Emphasis, (assembler, _, options) =>  assembler.AddEmphasisConverters(options) },
             { ElementConverterTarget.InlineCode, (assembler, _, options) =>  assembler.AddInlineCodeConverter(options) },
+            // TODO make configurable
             { ElementConverterTarget.RemoveTag, (assembler, _, options) =>  assembler.AddTagRemovingElementConverter(options) },
+            // TODO make configurable
             { ElementConverterTarget.RemoveElement, (assembler, _, options) =>  assembler.AddElementRemovingConverter(options) }
         };
 
@@ -28,8 +30,10 @@ namespace VDT.Core.XmlConverter.Markdown {
         /// </summary>
         public UnknownElementHandlingMode UnknownElementHandlingMode { get; set; }
 
-        // TODO make public
-        internal HashSet<ElementConverterTarget> ElementConverterTargets { get; set; } = new HashSet<ElementConverterTarget>() {
+        /// <summary>
+        /// Targets for converting HTML elements to Markdown to build options for
+        /// </summary>
+        public HashSet<ElementConverterTarget> ElementConverterTargets { get; set; } = new HashSet<ElementConverterTarget>() {
             ElementConverterTarget.Heading,
             ElementConverterTarget.Paragraph,
             ElementConverterTarget.Linebreak,

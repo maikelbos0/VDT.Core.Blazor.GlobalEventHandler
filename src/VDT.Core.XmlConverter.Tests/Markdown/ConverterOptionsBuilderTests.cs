@@ -14,7 +14,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             assembler.Received().SetNodeConverterForNonMarkdownNodeTypes(options);
         }
-        
+
         [Fact]
         public void Build_Always_Calls_SetTextConverter() {
             var options = new ConverterOptions();
@@ -25,6 +25,60 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             assembler.Received().SetTextConverter(options);
         }
+
+        [Fact]
+        public void Build_Always_Calls_SetDefaultElementConverter() {
+            var options = new ConverterOptions();
+            var builder = new ConverterOptionsBuilder();
+            var assembler = Substitute.For<IConverterOptionsAssembler>();
+
+            builder.Build(options, assembler);
+
+            assembler.Received().SetDefaultElementConverter(options, UnknownElementHandlingMode.None);
+        }
+
+        [Fact]
+        public void AddTargets_Returns_Self() {
+            var builder = new ConverterOptionsBuilder();
+
+            Assert.Same(builder, builder.AddTargets());
+        }
+
+        [Fact]
+        public void AddTargets_Adds_Targets() {
+            var builder = new ConverterOptionsBuilder();
+
+            builder.ElementConverterTargets.Clear();
+            builder.ElementConverterTargets.Add(ElementConverterTarget.Hyperlink);
+            builder.AddTargets(ElementConverterTarget.Hyperlink, ElementConverterTarget.Image, ElementConverterTarget.InlineCode);
+
+            Assert.Equal(3, builder.ElementConverterTargets.Count);
+            Assert.Contains(ElementConverterTarget.Hyperlink, builder.ElementConverterTargets);
+            Assert.Contains(ElementConverterTarget.Image, builder.ElementConverterTargets);
+            Assert.Contains(ElementConverterTarget.InlineCode, builder.ElementConverterTargets);
+        }
+
+        [Fact]
+        public void RemoveTargets_Returns_Self() {
+            var builder = new ConverterOptionsBuilder();
+
+            Assert.Same(builder, builder.RemoveTargets());
+        }
+
+        [Fact]
+        public void RemoveTargets_Removes_Targets() {
+            var builder = new ConverterOptionsBuilder();
+
+            builder.ElementConverterTargets.Clear();
+            builder.ElementConverterTargets.Add(ElementConverterTarget.Hyperlink);
+            builder.ElementConverterTargets.Add(ElementConverterTarget.Image);
+            builder.ElementConverterTargets.Add(ElementConverterTarget.InlineCode);
+            builder.RemoveTargets(ElementConverterTarget.Heading, ElementConverterTarget.Image, ElementConverterTarget.InlineCode);
+
+            Assert.Equal(ElementConverterTarget.Hyperlink, Assert.Single(builder.ElementConverterTargets));
+        }
+
+        // TODO convert below tests to be based on targets
 
         [Fact]
         public void Build_Always_Calls_AddHeadingConverters() {
@@ -167,17 +221,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             builder.Build(options, assembler);
 
             assembler.Received().AddElementRemovingConverter(options);
-        }
-
-        [Fact]
-        public void Build_Always_Calls_SetDefaultElementConverter() {
-            var options = new ConverterOptions();
-            var builder = new ConverterOptionsBuilder();
-            var assembler = Substitute.For<IConverterOptionsAssembler>();
-
-            builder.Build(options, assembler);
-
-            assembler.Received().SetDefaultElementConverter(options, UnknownElementHandlingMode.None);
         }
     }
 }

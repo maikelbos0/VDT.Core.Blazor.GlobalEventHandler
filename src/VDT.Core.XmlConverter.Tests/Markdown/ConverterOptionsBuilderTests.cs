@@ -6,6 +6,34 @@ using Xunit;
 namespace VDT.Core.XmlConverter.Tests.Markdown {
     public class ConverterOptionsBuilderTests {
         [Fact]
+        public void UnknownElementHandlingMode_Defaults_To_None() {
+            var builder = new ConverterOptionsBuilder();
+
+            Assert.Equal(UnknownElementHandlingMode.None, builder.UnknownElementHandlingMode);
+        }
+
+        [Fact]
+        public void ElementConverterTargets_Defaults_To_Basic_Markdown() {
+            var builder = new ConverterOptionsBuilder();
+
+            Assert.Equal(new HashSet<ElementConverterTarget>() {
+                ElementConverterTarget.Heading,
+                ElementConverterTarget.Paragraph,
+                ElementConverterTarget.Linebreak,
+                ElementConverterTarget.ListItem,
+                ElementConverterTarget.HorizontalRule,
+                ElementConverterTarget.Blockquote,
+                ElementConverterTarget.Pre,
+                ElementConverterTarget.Hyperlink,
+                ElementConverterTarget.Image,
+                ElementConverterTarget.Emphasis,
+                ElementConverterTarget.InlineCode,
+                ElementConverterTarget.RemoveTag,
+                ElementConverterTarget.RemoveElement
+            }, builder.ElementConverterTargets);
+        }
+
+        [Fact]
         public void Build_Always_Calls_SetNodeConverterForNonMarkdownNodeTypes() {
             var options = new ConverterOptions();
             var builder = new ConverterOptionsBuilder();
@@ -33,9 +61,11 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             var builder = new ConverterOptionsBuilder();
             var assembler = Substitute.For<IConverterOptionsAssembler>();
 
-            builder.Build(options, assembler);
+            builder
+                .UseUnknownElementHandlingMode(UnknownElementHandlingMode.RemoveTags)
+                .Build(options, assembler);
 
-            assembler.Received().SetDefaultElementConverter(options, UnknownElementHandlingMode.None);
+            assembler.Received().SetDefaultElementConverter(options, UnknownElementHandlingMode.RemoveTags);
         }
 
         [Fact]
@@ -51,10 +81,11 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             builder.AddTargets(ElementConverterTarget.Hyperlink, ElementConverterTarget.Image, ElementConverterTarget.InlineCode);
 
-            Assert.Equal(3, builder.ElementConverterTargets.Count);
-            Assert.Contains(ElementConverterTarget.Hyperlink, builder.ElementConverterTargets);
-            Assert.Contains(ElementConverterTarget.Image, builder.ElementConverterTargets);
-            Assert.Contains(ElementConverterTarget.InlineCode, builder.ElementConverterTargets);
+            Assert.Equal(new HashSet<ElementConverterTarget>() {
+                ElementConverterTarget.Hyperlink,
+                ElementConverterTarget.Image,
+                ElementConverterTarget.InlineCode,
+            }, builder.ElementConverterTargets);
         }
 
         [Fact]

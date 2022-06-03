@@ -149,14 +149,10 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             assembler.Received().AddPreConverters(options);
         }
 
-
-        // TODO convert below tests to be based on targets
-
-
         [Fact]
-        public void Build_Always_Calls_AddHyperlinkConverter() {
+        public void Build_ElementConverterTarget_Hyperlink_Calls_AddHyperlinkConverter() {
             var options = new ConverterOptions();
-            var builder = new ConverterOptionsBuilder();
+            var builder = CreateBuilder(ElementConverterTarget.Hyperlink);
             var assembler = Substitute.For<IConverterOptionsAssembler>();
 
             builder.Build(options, assembler);
@@ -165,9 +161,9 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void Build_Always_Calls_AddImageConverter() {
+        public void Build_ElementConverterTarget_Image_Calls_AddImageConverter() {
             var options = new ConverterOptions();
-            var builder = new ConverterOptionsBuilder();
+            var builder = CreateBuilder(ElementConverterTarget.Image);
             var assembler = Substitute.For<IConverterOptionsAssembler>();
 
             builder.Build(options, assembler);
@@ -176,9 +172,9 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void Build_Always_Calls_AddEmphasisConverters() {
+        public void Build_ElementConverterTarget_Emphasis_Calls_AddEmphasisConverters() {
             var options = new ConverterOptions();
-            var builder = new ConverterOptionsBuilder();
+            var builder = CreateBuilder(ElementConverterTarget.Emphasis);
             var assembler = Substitute.For<IConverterOptionsAssembler>();
 
             builder.Build(options, assembler);
@@ -187,9 +183,9 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void Build_Always_Calls_AddInlineCodeConverter() {
+        public void Build_ElementConverterTarget_InlineCode_Calls_AddInlineCodeConverter() {
             var options = new ConverterOptions();
-            var builder = new ConverterOptionsBuilder();
+            var builder = CreateBuilder(ElementConverterTarget.InlineCode);
             var assembler = Substitute.For<IConverterOptionsAssembler>();
 
             builder.Build(options, assembler);
@@ -198,9 +194,9 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void Build_Always_Calls_AddTagRemovingElementConverter() {
+        public void Build_ElementConverterTarget_RemoveTag_Calls_AddTagRemovingElementConverter() {
             var options = new ConverterOptions();
-            var builder = new ConverterOptionsBuilder();
+            var builder = CreateBuilder(ElementConverterTarget.RemoveTag);
             var assembler = Substitute.For<IConverterOptionsAssembler>();
 
             builder.Build(options, assembler);
@@ -209,9 +205,9 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void Build_Always_Calls_AddElementRemovingConverter() {
+        public void Build_ElementConverterTarget_RemoveElement_Calls_AddElementRemovingConverter() {
             var options = new ConverterOptions();
-            var builder = new ConverterOptionsBuilder();
+            var builder = CreateBuilder(ElementConverterTarget.RemoveElement);
             var assembler = Substitute.For<IConverterOptionsAssembler>();
 
             builder.Build(options, assembler);

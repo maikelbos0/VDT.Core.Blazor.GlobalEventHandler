@@ -1,5 +1,7 @@
 ﻿using NSubstitute;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using VDT.Core.XmlConverter.Markdown;
 using Xunit;
 
@@ -86,6 +88,22 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
                 ElementConverterTarget.Image,
                 ElementConverterTarget.InlineCode,
             }, builder.ElementConverterTargets);
+        }
+
+        [Fact]
+        public void AddAllTargets_Returns_Self() {
+            var builder = new ConverterOptionsBuilder();
+
+            Assert.Same(builder, builder.AddAllTargets());
+        }
+
+        [Fact]
+        public void AddAllTargets_Adds_All_Targets() {
+            var builder = CreateBuilder(ElementConverterTarget.Hyperlink, ElementConverterTarget.Emphasis);
+
+            builder.AddAllTargets();
+
+            Assert.Equal(new HashSet<ElementConverterTarget>(Enum.GetValues(typeof(ElementConverterTarget)).Cast<ElementConverterTarget>()), builder.ElementConverterTargets);
         }
 
         [Fact]

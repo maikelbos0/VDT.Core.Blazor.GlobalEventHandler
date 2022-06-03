@@ -79,6 +79,16 @@ namespace VDT.Core.XmlConverter.Markdown {
         }
 
         /// <summary>
+        /// Add all available targets for converting HTML elements to Markdown to the resulting <see cref="ConverterOptions"/>
+        /// </summary>
+        /// <returns>A reference to this instance after the operation has completed</returns>
+        public ConverterOptionsBuilder AddAllTargets() {
+            ElementConverterTargets.UnionWith(Enum.GetValues(typeof(ElementConverterTarget)).Cast<ElementConverterTarget>());
+
+            return this;
+        }
+
+        /// <summary>
         /// Remove targets for converting HTML elements to Markdown from the resulting <see cref="ConverterOptions"/>
         /// </summary>
         /// <param name="targets">Target HTML elements to remove</param>

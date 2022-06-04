@@ -20,8 +20,7 @@
         /// </summary>
         /// <param name="options">The options for converting XML</param>
         /// <returns>A reference to this instance after the operation has completed</returns>
-        public static ConverterOptions AddExtendedMarkdown(this ConverterOptions options) {
-            options.ElementConverters.Add(new InlineElementConverter("~~", "~~", "del"));
+        public static ConverterOptions AddExtendedMarkdown(this ConverterOptions options) {            
             options.ElementConverters.Add(new InlineElementConverter("==", "==", "mark"));
             options.ElementConverters.Add(new InlineElementConverter("~", "~", "sub"));
             options.ElementConverters.Add(new InlineElementConverter("^", "^", "sup"));

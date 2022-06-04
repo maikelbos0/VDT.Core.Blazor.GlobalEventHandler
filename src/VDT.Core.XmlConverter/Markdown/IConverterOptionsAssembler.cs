@@ -26,6 +26,8 @@
 
         public void AddInlineCodeConverter(ConverterOptions options);
 
+        public void AddStrikethroughConverter(ConverterOptions options);
+
         public void AddTagRemovingElementConverter(ConverterOptions options);
 
         public void AddElementRemovingConverter(ConverterOptions options);

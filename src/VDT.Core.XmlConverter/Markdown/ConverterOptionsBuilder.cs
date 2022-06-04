@@ -19,6 +19,7 @@ namespace VDT.Core.XmlConverter.Markdown {
             { ElementConverterTarget.Image, (assembler, _, options) =>  assembler.AddImageConverter(options) },
             { ElementConverterTarget.Emphasis, (assembler, _, options) =>  assembler.AddEmphasisConverters(options) },
             { ElementConverterTarget.InlineCode, (assembler, _, options) =>  assembler.AddInlineCodeConverter(options) },
+            { ElementConverterTarget.Strikethrough, (assembler, _, options) =>  assembler.AddStrikethroughConverter(options) },
             // TODO make configurable
             { ElementConverterTarget.RemoveTag, (assembler, _, options) =>  assembler.AddTagRemovingElementConverter(options) },
             // TODO make configurable

@@ -80,7 +80,6 @@ Unquote
         // TODO integrate in assembler/builder
 
         [Theory]
-        [InlineData("<del>Strikethrough</del>", "~~Strikethrough~~")]
         [InlineData("<mark>Highlighted</mark>", "==Highlighted==")]
         [InlineData("<sub>Subscript</sub>", "~Subscript~")]
         [InlineData("<sup>Superscript</sup>", "^Superscript^")]

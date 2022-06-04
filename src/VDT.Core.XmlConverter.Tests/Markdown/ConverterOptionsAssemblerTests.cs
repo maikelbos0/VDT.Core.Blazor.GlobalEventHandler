@@ -223,6 +223,16 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
+        public void AddStrikethroughConverter_Adds_ElementConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddStrikethroughConverter(options);
+
+            Assert.Single(options.ElementConverters, converter => IsInlineElementConverter(converter, "~~", "~~", "del"));
+        }
+
+        [Fact]
         public void AddTagRemovingElementConverter_Adds_TagRemovingElementConverter() {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();

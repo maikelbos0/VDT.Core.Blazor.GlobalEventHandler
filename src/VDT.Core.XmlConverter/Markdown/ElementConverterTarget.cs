@@ -59,6 +59,11 @@
         InlineCode,
 
         /// <summary>
+        /// Strikethrough tag &lt;del&gt;
+        /// </summary>
+        Strikethrough,
+
+        /// <summary>
         /// Remove non-semantic tags surrounding content
         /// </summary>
         RemoveTag,

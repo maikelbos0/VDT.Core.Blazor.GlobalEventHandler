@@ -72,6 +72,10 @@ namespace VDT.Core.XmlConverter.Markdown {
             options.ElementConverters.Add(new InlineElementConverter("`", "`", "code", "kbd", "samp", "var"));
         }
 
+        public void AddStrikethroughConverter(ConverterOptions options) {
+            options.ElementConverters.Add(new InlineElementConverter("~~", "~~", "del"));
+        }
+
         public void AddTagRemovingElementConverter(ConverterOptions options) {
             options.ElementConverters.Add(new TagRemovingElementConverter("html", "body", "ul", "ol", "menu", "div", "span"));
         }

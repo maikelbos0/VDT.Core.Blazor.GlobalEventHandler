@@ -22,6 +22,7 @@ namespace VDT.Core.XmlConverter.Markdown {
             { ElementConverterTarget.Strikethrough, (assembler, _, options) => assembler.AddStrikethroughConverter(options) },
             { ElementConverterTarget.Highlight, (assembler, _, options) => assembler.AddHighlightConverter(options) },
             { ElementConverterTarget.Subscript, (assembler, _, options) => assembler.AddSubscriptConverter(options) },
+            { ElementConverterTarget.Superscript, (assembler, _, options) => assembler.AddSuperscriptConverter(options) },
             // TODO make configurable
             { ElementConverterTarget.RemoveTag, (assembler, _, options) => assembler.AddTagRemovingElementConverter(options) },
             // TODO make configurable

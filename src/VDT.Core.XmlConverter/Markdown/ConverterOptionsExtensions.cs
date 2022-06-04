@@ -14,16 +14,5 @@
                 .UseUnknownElementHandlingMode(unknownElementHandlingMode)
                 .Build(options, new ConverterOptionsAssembler());
         }
-
-        /// <summary>
-        /// Add converters for all markup supported by extended Markdown
-        /// </summary>
-        /// <param name="options">The options for converting XML</param>
-        /// <returns>A reference to this instance after the operation has completed</returns>
-        public static ConverterOptions AddExtendedMarkdown(this ConverterOptions options) {
-            options.ElementConverters.Add(new InlineElementConverter("^", "^", "sup"));
-
-            return options;
-        }
     }
 }

@@ -84,6 +84,10 @@ namespace VDT.Core.XmlConverter.Markdown {
             options.ElementConverters.Add(new InlineElementConverter("~", "~", "sub"));
         }
 
+        public void AddSuperscriptConverter(ConverterOptions options) {
+            options.ElementConverters.Add(new InlineElementConverter("^", "^", "sup"));
+        }
+
         public void AddTagRemovingElementConverter(ConverterOptions options) {
             options.ElementConverters.Add(new TagRemovingElementConverter("html", "body", "ul", "ol", "menu", "div", "span"));
         }

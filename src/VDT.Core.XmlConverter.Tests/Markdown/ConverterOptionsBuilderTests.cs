@@ -276,6 +276,17 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
+        public void Build_ElementConverterTarget_Superscript_Calls_AddSuperscriptConverter() {
+            var options = new ConverterOptions();
+            var builder = CreateBuilder(ElementConverterTarget.Superscript);
+            var assembler = Substitute.For<IConverterOptionsAssembler>();
+
+            builder.Build(options, assembler);
+
+            assembler.Received().AddSuperscriptConverter(options);
+        }
+
+        [Fact]
         public void Build_ElementConverterTarget_RemoveTag_Calls_AddTagRemovingElementConverter() {
             var options = new ConverterOptions();
             var builder = CreateBuilder(ElementConverterTarget.RemoveTag);

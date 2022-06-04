@@ -32,6 +32,8 @@
 
         public void AddSubscriptConverter(ConverterOptions options);
 
+        public void AddSuperscriptConverter(ConverterOptions options);
+
         public void AddTagRemovingElementConverter(ConverterOptions options);
 
         public void AddElementRemovingConverter(ConverterOptions options);

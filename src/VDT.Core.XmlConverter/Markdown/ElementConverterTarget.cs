@@ -74,6 +74,11 @@
         Subscript,
 
         /// <summary>
+        /// Superscript tag &lt;sup&gt;
+        /// </summary>
+        Superscript,
+
+        /// <summary>
         /// Remove non-semantic tags surrounding content
         /// </summary>
         RemoveTag,

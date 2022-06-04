@@ -80,7 +80,6 @@ Unquote
         // TODO integrate in assembler/builder
 
         [Theory]
-        [InlineData("<sub>Subscript</sub>", "~Subscript~")]
         [InlineData("<sup>Superscript</sup>", "^Superscript^")]
         public void AddExtendedMarkdown__Convert_Inline_Markup(string xml, string expectedMarkdown) {
             var options = new ConverterOptions().UseMarkdown().AddExtendedMarkdown();

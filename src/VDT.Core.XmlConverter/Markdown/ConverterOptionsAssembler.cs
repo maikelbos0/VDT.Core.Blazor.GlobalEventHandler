@@ -80,6 +80,10 @@ namespace VDT.Core.XmlConverter.Markdown {
             options.ElementConverters.Add(new InlineElementConverter("==", "==", "mark"));
         }
 
+        public void AddSubscriptConverter(ConverterOptions options) {
+            options.ElementConverters.Add(new InlineElementConverter("~", "~", "sub"));
+        }
+
         public void AddTagRemovingElementConverter(ConverterOptions options) {
             options.ElementConverters.Add(new TagRemovingElementConverter("html", "body", "ul", "ol", "menu", "div", "span"));
         }

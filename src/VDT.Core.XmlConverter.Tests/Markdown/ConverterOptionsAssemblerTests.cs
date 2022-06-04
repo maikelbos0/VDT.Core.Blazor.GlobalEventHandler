@@ -243,6 +243,16 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
+        public void AddSubscriptConverter_Adds_ElementConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddSubscriptConverter(options);
+
+            Assert.Single(options.ElementConverters, converter => IsInlineElementConverter(converter, "~", "~", "sub"));
+        }
+
+        [Fact]
         public void AddTagRemovingElementConverter_Adds_TagRemovingElementConverter() {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();

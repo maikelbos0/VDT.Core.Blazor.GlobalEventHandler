@@ -265,6 +265,17 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
+        public void Build_ElementConverterTarget_Subscript_Calls_AddSubscriptConverter() {
+            var options = new ConverterOptions();
+            var builder = CreateBuilder(ElementConverterTarget.Subscript);
+            var assembler = Substitute.For<IConverterOptionsAssembler>();
+
+            builder.Build(options, assembler);
+
+            assembler.Received().AddSubscriptConverter(options);
+        }
+
+        [Fact]
         public void Build_ElementConverterTarget_RemoveTag_Calls_AddTagRemovingElementConverter() {
             var options = new ConverterOptions();
             var builder = CreateBuilder(ElementConverterTarget.RemoveTag);

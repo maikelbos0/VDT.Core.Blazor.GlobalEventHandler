@@ -69,6 +69,11 @@
         Highlight,
 
         /// <summary>
+        /// Subscript tag &lt;sub&gt;
+        /// </summary>
+        Subscript,
+
+        /// <summary>
         /// Remove non-semantic tags surrounding content
         /// </summary>
         RemoveTag,

@@ -76,6 +76,10 @@ namespace VDT.Core.XmlConverter.Markdown {
             options.ElementConverters.Add(new InlineElementConverter("~~", "~~", "del"));
         }
 
+        public void AddHighlightConverter(ConverterOptions options) {
+            options.ElementConverters.Add(new InlineElementConverter("==", "==", "mark"));
+        }
+
         public void AddTagRemovingElementConverter(ConverterOptions options) {
             options.ElementConverters.Add(new TagRemovingElementConverter("html", "body", "ul", "ol", "menu", "div", "span"));
         }

@@ -233,6 +233,16 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
+        public void AddHighlightConverter_Adds_ElementConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddHighlightConverter(options);
+
+            Assert.Single(options.ElementConverters, converter => IsInlineElementConverter(converter, "==", "==", "mark"));
+        }
+
+        [Fact]
         public void AddTagRemovingElementConverter_Adds_TagRemovingElementConverter() {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();

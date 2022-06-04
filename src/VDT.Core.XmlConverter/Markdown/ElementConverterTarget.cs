@@ -64,6 +64,11 @@
         Strikethrough,
 
         /// <summary>
+        /// Highlight tag &lt;mark&gt;
+        /// </summary>
+        Highlight,
+
+        /// <summary>
         /// Remove non-semantic tags surrounding content
         /// </summary>
         RemoveTag,

@@ -28,6 +28,8 @@
 
         public void AddStrikethroughConverter(ConverterOptions options);
 
+        public void AddHighlightConverter(ConverterOptions options);
+
         public void AddTagRemovingElementConverter(ConverterOptions options);
 
         public void AddElementRemovingConverter(ConverterOptions options);

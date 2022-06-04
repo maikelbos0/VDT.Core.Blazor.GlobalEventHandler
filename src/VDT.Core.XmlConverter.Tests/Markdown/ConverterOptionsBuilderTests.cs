@@ -243,7 +243,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void Build_ElementConverterTarget_Strikethrough_Calls_AddInlineCodeConverter() {
+        public void Build_ElementConverterTarget_Strikethrough_Calls_AddStrikethroughConverter() {
             var options = new ConverterOptions();
             var builder = CreateBuilder(ElementConverterTarget.Strikethrough);
             var assembler = Substitute.For<IConverterOptionsAssembler>();
@@ -251,6 +251,17 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             builder.Build(options, assembler);
 
             assembler.Received().AddStrikethroughConverter(options);
+        }
+
+        [Fact]
+        public void Build_ElementConverterTarget_Highlight_Calls_AddHighlightConverter() {
+            var options = new ConverterOptions();
+            var builder = CreateBuilder(ElementConverterTarget.Highlight);
+            var assembler = Substitute.For<IConverterOptionsAssembler>();
+
+            builder.Build(options, assembler);
+
+            assembler.Received().AddHighlightConverter(options);
         }
 
         [Fact]

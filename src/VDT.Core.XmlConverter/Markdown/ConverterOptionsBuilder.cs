@@ -8,22 +8,23 @@ namespace VDT.Core.XmlConverter.Markdown {
     /// </summary>
     public class ConverterOptionsBuilder {
         private static Dictionary<ElementConverterTarget, Action<IConverterOptionsAssembler, ConverterOptionsBuilder, ConverterOptions>> targetAssemblerActionMapping = new Dictionary<ElementConverterTarget, Action<IConverterOptionsAssembler, ConverterOptionsBuilder, ConverterOptions>>() {
-            { ElementConverterTarget.Heading, (assembler, _, options) =>  assembler.AddHeadingConverters(options) },
-            { ElementConverterTarget.Paragraph, (assembler, _, options) =>  assembler.AddParagraphConverter(options) },
-            { ElementConverterTarget.Linebreak, (assembler, _, options) =>  assembler.AddLinebreakConverter(options) },
-            { ElementConverterTarget.ListItem, (assembler, _, options) =>  assembler.AddListItemConverters(options) },
-            { ElementConverterTarget.HorizontalRule, (assembler, _, options) =>  assembler.AddHorizontalRuleConverter(options) },
-            { ElementConverterTarget.Blockquote, (assembler, _, options) =>  assembler.AddBlockquoteConverter(options) },
-            { ElementConverterTarget.Pre, (assembler, _, options) =>  assembler.AddPreConverters(options) },
-            { ElementConverterTarget.Hyperlink, (assembler, _, options) =>  assembler.AddHyperlinkConverter(options) },
-            { ElementConverterTarget.Image, (assembler, _, options) =>  assembler.AddImageConverter(options) },
-            { ElementConverterTarget.Emphasis, (assembler, _, options) =>  assembler.AddEmphasisConverters(options) },
-            { ElementConverterTarget.InlineCode, (assembler, _, options) =>  assembler.AddInlineCodeConverter(options) },
-            { ElementConverterTarget.Strikethrough, (assembler, _, options) =>  assembler.AddStrikethroughConverter(options) },
+            { ElementConverterTarget.Heading, (assembler, _, options) => assembler.AddHeadingConverters(options) },
+            { ElementConverterTarget.Paragraph, (assembler, _, options) => assembler.AddParagraphConverter(options) },
+            { ElementConverterTarget.Linebreak, (assembler, _, options) => assembler.AddLinebreakConverter(options) },
+            { ElementConverterTarget.ListItem, (assembler, _, options) => assembler.AddListItemConverters(options) },
+            { ElementConverterTarget.HorizontalRule, (assembler, _, options) => assembler.AddHorizontalRuleConverter(options) },
+            { ElementConverterTarget.Blockquote, (assembler, _, options) => assembler.AddBlockquoteConverter(options) },
+            { ElementConverterTarget.Pre, (assembler, _, options) => assembler.AddPreConverters(options) },
+            { ElementConverterTarget.Hyperlink, (assembler, _, options) => assembler.AddHyperlinkConverter(options) },
+            { ElementConverterTarget.Image, (assembler, _, options) => assembler.AddImageConverter(options) },
+            { ElementConverterTarget.Emphasis, (assembler, _, options) => assembler.AddEmphasisConverters(options) },
+            { ElementConverterTarget.InlineCode, (assembler, _, options) => assembler.AddInlineCodeConverter(options) },
+            { ElementConverterTarget.Strikethrough, (assembler, _, options) => assembler.AddStrikethroughConverter(options) },
+            { ElementConverterTarget.Highlight, (assembler, _, options) => assembler.AddHighlightConverter(options) },
             // TODO make configurable
-            { ElementConverterTarget.RemoveTag, (assembler, _, options) =>  assembler.AddTagRemovingElementConverter(options) },
+            { ElementConverterTarget.RemoveTag, (assembler, _, options) => assembler.AddTagRemovingElementConverter(options) },
             // TODO make configurable
-            { ElementConverterTarget.RemoveElement, (assembler, _, options) =>  assembler.AddElementRemovingConverter(options) }
+            { ElementConverterTarget.RemoveElement, (assembler, _, options) => assembler.AddElementRemovingConverter(options) }
         };
 
         /// <summary>

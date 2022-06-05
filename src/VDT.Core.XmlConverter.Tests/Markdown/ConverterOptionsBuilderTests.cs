@@ -72,17 +72,17 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void AddTargets_Returns_Self() {
+        public void AddElementConverters_Returns_Self() {
             var builder = new ConverterOptionsBuilder();
 
-            Assert.Same(builder, builder.AddTargets());
+            Assert.Same(builder, builder.AddElementConverters());
         }
 
         [Fact]
-        public void AddTargets_Adds_Targets() {
+        public void AddElementConverters_Adds_Targets() {
             var builder = CreateBuilder(ElementConverterTarget.Hyperlink);
 
-            builder.AddTargets(ElementConverterTarget.Hyperlink, ElementConverterTarget.Image, ElementConverterTarget.InlineCode);
+            builder.AddElementConverters(ElementConverterTarget.Hyperlink, ElementConverterTarget.Image, ElementConverterTarget.InlineCode);
 
             Assert.Equal(new HashSet<ElementConverterTarget>() {
                 ElementConverterTarget.Hyperlink,
@@ -92,32 +92,32 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void AddAllTargets_Returns_Self() {
+        public void AddAllElementConverters_Returns_Self() {
             var builder = new ConverterOptionsBuilder();
 
-            Assert.Same(builder, builder.AddAllTargets());
+            Assert.Same(builder, builder.AddAllElementConverters());
         }
 
         [Fact]
-        public void AddAllTargets_Adds_All_Targets() {
+        public void AddAllElementConverters_Adds_All_Targets() {
             var builder = CreateBuilder(ElementConverterTarget.Hyperlink, ElementConverterTarget.Emphasis);
 
-            builder.AddAllTargets();
+            builder.AddAllElementConverters();
 
             Assert.Equal(new HashSet<ElementConverterTarget>(Enum.GetValues(typeof(ElementConverterTarget)).Cast<ElementConverterTarget>()), builder.ElementConverterTargets);
         }
 
         [Fact]
-        public void RemoveTargets_Returns_Self() {
+        public void RemoveElementConverters_Returns_Self() {
             var builder = new ConverterOptionsBuilder();
 
-            Assert.Same(builder, builder.RemoveTargets());
+            Assert.Same(builder, builder.RemoveElementConverters());
         }
 
         [Fact]
-        public void RemoveTargets_Removes_Targets() {
+        public void RemoveElementConverters_Removes_Targets() {
             var builder = CreateBuilder(ElementConverterTarget.Hyperlink, ElementConverterTarget.Image, ElementConverterTarget.InlineCode);
-            builder.RemoveTargets(ElementConverterTarget.Heading, ElementConverterTarget.Image, ElementConverterTarget.InlineCode);
+            builder.RemoveElementConverters(ElementConverterTarget.Heading, ElementConverterTarget.Image, ElementConverterTarget.InlineCode);
 
             Assert.Equal(ElementConverterTarget.Hyperlink, Assert.Single(builder.ElementConverterTargets));
         }

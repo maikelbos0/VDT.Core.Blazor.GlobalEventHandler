@@ -67,46 +67,46 @@ namespace VDT.Core.XmlConverter.Markdown {
         }
 
         /// <summary>
-        /// Add targets for converting HTML elements to Markdown to the resulting <see cref="ConverterOptions"/>
+        /// Add converters for target HTML elements to Markdown to the resulting <see cref="ConverterOptions"/>
         /// </summary>
-        /// <param name="targets">Target HTML elements to add</param>
+        /// <param name="targets">Target HTML elements to add converters for</param>
         /// <returns>A reference to this instance after the operation has completed</returns>
-        public ConverterOptionsBuilder AddTargets(params ElementConverterTarget[] targets) => AddTargets(targets.AsEnumerable());
+        public ConverterOptionsBuilder AddElementConverters(params ElementConverterTarget[] targets) => AddElementConverters(targets.AsEnumerable());
 
         /// <summary>
-        /// Add targets for converting HTML elements to Markdown to the resulting <see cref="ConverterOptions"/>
+        /// Add converters for target HTML elements to Markdown to the resulting <see cref="ConverterOptions"/>
         /// </summary>
-        /// <param name="targets">Target HTML elements to add</param>
+        /// <param name="targets">Target HTML elements to add converters for</param>
         /// <returns>A reference to this instance after the operation has completed</returns>
-        public ConverterOptionsBuilder AddTargets(IEnumerable<ElementConverterTarget> targets) {
+        public ConverterOptionsBuilder AddElementConverters(IEnumerable<ElementConverterTarget> targets) {
             ElementConverterTargets.UnionWith(targets);
 
             return this;
         }
 
         /// <summary>
-        /// Add all available targets for converting HTML elements to Markdown to the resulting <see cref="ConverterOptions"/>
+        /// Add converters for all available target HTML elements to Markdown to the resulting <see cref="ConverterOptions"/>
         /// </summary>
         /// <returns>A reference to this instance after the operation has completed</returns>
-        public ConverterOptionsBuilder AddAllTargets() {
+        public ConverterOptionsBuilder AddAllElementConverters() {
             ElementConverterTargets.UnionWith(Enum.GetValues(typeof(ElementConverterTarget)).Cast<ElementConverterTarget>());
 
             return this;
         }
 
         /// <summary>
-        /// Remove targets for converting HTML elements to Markdown from the resulting <see cref="ConverterOptions"/>
+        /// Remove converters for target HTML elements to Markdown from the resulting <see cref="ConverterOptions"/>
         /// </summary>
-        /// <param name="targets">Target HTML elements to remove</param>
+        /// <param name="targets">Target HTML elements to remove converters for</param>
         /// <returns>A reference to this instance after the operation has completed</returns>
-        public ConverterOptionsBuilder RemoveTargets(params ElementConverterTarget[] targets) => RemoveTargets(targets.AsEnumerable());
+        public ConverterOptionsBuilder RemoveElementConverters(params ElementConverterTarget[] targets) => RemoveElementConverters(targets.AsEnumerable());
 
         /// <summary>
-        /// Remove targets for converting HTML elements to Markdown from the resulting <see cref="ConverterOptions"/>
+        /// Remove converters for target HTML elements to Markdown from the resulting <see cref="ConverterOptions"/>
         /// </summary>
-        /// <param name="targets">Target HTML elements to remove</param>
+        /// <param name="targets">Target HTML elements to remove converters for</param>
         /// <returns>A reference to this instance after the operation has completed</returns>
-        public ConverterOptionsBuilder RemoveTargets(IEnumerable<ElementConverterTarget> targets) {
+        public ConverterOptionsBuilder RemoveElementConverters(IEnumerable<ElementConverterTarget> targets) {
             ElementConverterTargets.ExceptWith(targets);
 
             return this;

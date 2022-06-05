@@ -18,7 +18,7 @@
             var builder = new ConverterOptionsBuilder();
 
             if (useExtendedSyntax) {
-                builder.AddAllTargets();
+                builder.AddAllElementConverters();
             }
 
             if (unknownElementHandlingMode != null) {

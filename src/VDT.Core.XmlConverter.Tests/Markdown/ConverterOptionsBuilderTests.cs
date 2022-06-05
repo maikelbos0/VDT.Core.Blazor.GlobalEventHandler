@@ -28,6 +28,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
                 ElementConverterTarget.Pre,
                 ElementConverterTarget.Hyperlink,
                 ElementConverterTarget.Image,
+                ElementConverterTarget.Important,
                 ElementConverterTarget.Emphasis,
                 ElementConverterTarget.InlineCode,
                 ElementConverterTarget.RemoveTag,
@@ -221,14 +222,25 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void Build_ElementConverterTarget_Emphasis_Calls_AddEmphasisConverters() {
+        public void Build_ElementConverterTarget_Emphasis_Calls_AddEmphasisConverter() {
             var options = new ConverterOptions();
             var builder = CreateBuilder(ElementConverterTarget.Emphasis);
             var assembler = Substitute.For<IConverterOptionsAssembler>();
 
             builder.Build(options, assembler);
 
-            assembler.Received().AddEmphasisConverters(options);
+            assembler.Received().AddEmphasisConverter(options);
+        }
+
+        [Fact]
+        public void Build_ElementConverterTarget_Important_Calls_AddImportantConverter() {
+            var options = new ConverterOptions();
+            var builder = CreateBuilder(ElementConverterTarget.Important);
+            var assembler = Substitute.For<IConverterOptionsAssembler>();
+
+            builder.Build(options, assembler);
+
+            assembler.Received().AddImportantConverter(options);
         }
 
         [Fact]

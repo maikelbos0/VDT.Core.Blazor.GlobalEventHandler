@@ -200,16 +200,24 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Single(options.ElementConverters, converter => converter is ImageConverter);
         }
 
-        [Theory]
-        [InlineData("**", "**", "strong", "b")]
-        [InlineData("*", "*", "em", "i")]
-        public void AddEmphasisConverters_Adds_ElementConverter(string expectedStartOutput, string expectedEndOutput, params string[] expectedValidForElementNames) {
+        [Fact]
+        public void AddImportantConverter_Adds_ElementConverter() {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();
 
-            assembler.AddEmphasisConverters(options);
+            assembler.AddImportantConverter(options);
 
-            Assert.Single(options.ElementConverters, converter => IsInlineElementConverter(converter, expectedStartOutput, expectedEndOutput, expectedValidForElementNames));
+            Assert.Single(options.ElementConverters, converter => IsInlineElementConverter(converter, "**", "**", "strong", "b"));
+        }
+
+        [Fact]
+        public void AddEmphasisConverter_Adds_ElementConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddEmphasisConverter(options);
+
+            Assert.Single(options.ElementConverters, converter => IsInlineElementConverter(converter, "*", "*", "em", "i"));
         }
 
         [Fact]

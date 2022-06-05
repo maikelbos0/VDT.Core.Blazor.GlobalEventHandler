@@ -63,8 +63,11 @@ namespace VDT.Core.XmlConverter.Markdown {
             options.ElementConverters.Add(new ImageConverter());
         }
 
-        public void AddEmphasisConverters(ConverterOptions options) {
+        public void AddImportantConverter(ConverterOptions options) {
             options.ElementConverters.Add(new InlineElementConverter("**", "**", "strong", "b"));
+        }
+
+        public void AddEmphasisConverter(ConverterOptions options) {
             options.ElementConverters.Add(new InlineElementConverter("*", "*", "em", "i"));
         }
 

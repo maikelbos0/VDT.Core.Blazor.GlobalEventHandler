@@ -49,7 +49,12 @@
         Image,
 
         /// <summary>
-        /// Important tags &lt;strong&gt; and &lt;b&gt;; emphasis tags &lt;em&gt; and &lt;i&gt;
+        /// Important tags &lt;strong&gt; and &lt;b&gt;
+        /// </summary>
+        Important,
+
+        /// <summary>
+        /// Emphasis tags &lt;em&gt; and &lt;i&gt;
         /// </summary>
         Emphasis,
 

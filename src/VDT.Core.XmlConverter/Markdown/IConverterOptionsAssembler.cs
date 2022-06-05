@@ -22,7 +22,9 @@
 
         public void AddImageConverter(ConverterOptions options);
 
-        public void AddEmphasisConverters(ConverterOptions options);
+        public void AddImportantConverter(ConverterOptions options);
+
+        public void AddEmphasisConverter(ConverterOptions options);
 
         public void AddInlineCodeConverter(ConverterOptions options);
 

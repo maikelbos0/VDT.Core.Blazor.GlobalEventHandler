@@ -10,11 +10,10 @@
         /// <param name="useExtendedSyntax"><see langword="true"/> to add support for extended Markdown syntax; otherwise <see langword="false"/></param>
         /// <param name="unknownElementHandlingMode">Specifies the way to handle elements that can't be converted to Markdown</param>
         /// <returns>A reference to this instance after the operation has completed</returns>
-        public static ConverterOptions UseMarkdown(
-            this ConverterOptions options,
-            bool useExtendedSyntax = false,
-            UnknownElementHandlingMode? unknownElementHandlingMode = null
-        ) {
+        public static ConverterOptions UseMarkdown(this ConverterOptions options, bool useExtendedSyntax = false, UnknownElementHandlingMode? unknownElementHandlingMode = null)
+            => CreateMarkdownBuilder(useExtendedSyntax, unknownElementHandlingMode).Build(options, new ConverterOptionsAssembler());
+
+        internal static ConverterOptionsBuilder CreateMarkdownBuilder(bool useExtendedSyntax, UnknownElementHandlingMode? unknownElementHandlingMode) {
             var builder = new ConverterOptionsBuilder();
 
             if (useExtendedSyntax) {
@@ -25,7 +24,7 @@
                 builder.UseUnknownElementHandlingMode(unknownElementHandlingMode.Value);
             }
 
-            return builder.Build(options, new ConverterOptionsAssembler());
+            return builder;
         }
     }
 }

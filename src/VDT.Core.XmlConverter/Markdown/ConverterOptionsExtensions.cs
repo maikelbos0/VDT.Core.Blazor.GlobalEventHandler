@@ -7,13 +7,13 @@
         /// Add converters for converting HTML markup to Markdown
         /// </summary>
         /// <param name="options">The options for converting XML</param>
+        /// <param name="useExtendedSyntax"><see langword="true"/> to add support for extended Markdown syntax; otherwise <see langword="false"/></param>
         /// <param name="unknownElementHandlingMode">Specifies the way to handle elements that can't be converted to Markdown</param>
-        /// <param name="useExtendedSyntax">Add support for extended Markdown syntax</param>
         /// <returns>A reference to this instance after the operation has completed</returns>
         public static ConverterOptions UseMarkdown(
-            this ConverterOptions options, 
-            UnknownElementHandlingMode? unknownElementHandlingMode = null, 
-            bool useExtendedSyntax = false
+            this ConverterOptions options,
+            bool useExtendedSyntax = false,
+            UnknownElementHandlingMode? unknownElementHandlingMode = null
         ) {
             var builder = new ConverterOptionsBuilder();
 

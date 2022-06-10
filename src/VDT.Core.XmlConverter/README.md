@@ -174,12 +174,17 @@ Above example will result in the following XML:
 <p>This paragraph converts <em>italic</em> and <strong>bold</strong> spans to more appropriate tags.</p>
 ```
 
-## Markdown extensions
+## Converting HTML to Markdown 
 
-The extension methods in the `VDT.Core.XmlConverter.Markdown` namespace extend the `ConverterOptions` class to automatically provide you with a set of
-converters that convert any HTML that is also valid XML into a Markdown formatted document.
+Methods to convert HTML to Markdown can be found in the `VDT.Core.XmlConverter.Markdown` namespace. It only supports converting HTML that is also valid XML,
+so if your documents are not well-formed XML an additional conversion is required first.
 
-`ConverterOptionsExtensions.UseBasicMarkdown` adds support for converting the following elements to Markdown:
+### Basic conversions
+
+The extension method `ConverterOptionsExtensions.UseMarkdown` for the `ConverterOptions` class automatically adds a set of converters to convert HTML into a
+Markdown formatted document.
+
+`ConverterOptionsExtensions.UseMarkdown` adds support for converting the following elements to Markdown by default:
 
 - `h1` through `h6`: headings 1 through 6
 - `p`: paragraph
@@ -198,12 +203,19 @@ By default for the following elements only the content is rendered: `html`, `bod
 
 By default the following elements are removed entirely: `script`, `style`, `head`, `frame`, `meta`, `iframe` and `frameset`.
 
+The optional parameter `useExtendedSyntax` can be used to add supported HTML to extended Markdown syntax converters:
+
+- `del`: strikethrough
+- `mark`: highlight
+- `sub`: subscript
+- `super`: superscript
+
 Finally, the optional parameter `unknownElementHandlingMode` can be used to specify how to handle elements that can't be converted:
 - `UnknownElementHandlingMode.None`: leave the elements as-is
 - `UnknownElementHandlingMode.RemoveTags`: remove only the tags but render the child content of the elements
 - `UnknownElementHandlingMode.RemoveElements`: remove the entire elements including child content
 
-### Example
+#### Example
 
 ```
 var xml = @"

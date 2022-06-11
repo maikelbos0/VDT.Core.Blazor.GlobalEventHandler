@@ -177,7 +177,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             assembler.AddPreConverters(options);
 
-            Assert.Single(options.ElementConverters, converter => converter is PreConverter);
+            Assert.Single(options.ElementConverters, converter => converter is FencedPreConverter);
         }
 
         [Fact]

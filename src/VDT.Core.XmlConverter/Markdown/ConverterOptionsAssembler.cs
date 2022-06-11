@@ -52,7 +52,7 @@ namespace VDT.Core.XmlConverter.Markdown {
             options.ElementConverters.Insert(0, new PreContentConverter());
 
             // TODO allow switch between indented and fenced code block
-            options.ElementConverters.Add(new PreConverter());
+            options.ElementConverters.Add(new FencedPreConverter());
         }
 
         public void AddHyperlinkConverter(ConverterOptions options) {

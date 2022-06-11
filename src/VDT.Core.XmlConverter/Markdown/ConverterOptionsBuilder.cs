@@ -7,7 +7,7 @@ namespace VDT.Core.XmlConverter.Markdown {
     /// Builder for adding converter options to convert HTML markup to Markdown format
     /// </summary>
     public class ConverterOptionsBuilder {
-        private static Dictionary<ElementConverterTarget, Action<IConverterOptionsAssembler, ConverterOptionsBuilder, ConverterOptions>> targetAssemblerActionMapping = new Dictionary<ElementConverterTarget, Action<IConverterOptionsAssembler, ConverterOptionsBuilder, ConverterOptions>>() {
+        private static readonly Dictionary<ElementConverterTarget, Action<IConverterOptionsAssembler, ConverterOptionsBuilder, ConverterOptions>> targetAssemblerActionMapping = new Dictionary<ElementConverterTarget, Action<IConverterOptionsAssembler, ConverterOptionsBuilder, ConverterOptions>>() {
             { ElementConverterTarget.Heading, (assembler, _, options) => assembler.AddHeadingConverters(options) },
             { ElementConverterTarget.Paragraph, (assembler, _, options) => assembler.AddParagraphConverter(options) },
             { ElementConverterTarget.Linebreak, (assembler, _, options) => assembler.AddLinebreakConverter(options) },

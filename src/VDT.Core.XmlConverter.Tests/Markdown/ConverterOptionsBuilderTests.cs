@@ -192,11 +192,12 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         public void Build_ElementConverterTarget_Pre_Calls_AddPreConverters() {
             var options = new ConverterOptions();
             var builder = CreateBuilder(ElementConverterTarget.Pre);
+            // TODO set preconversionmode to indented - non default
             var assembler = Substitute.For<IConverterOptionsAssembler>();
 
             builder.Build(options, assembler);
 
-            assembler.Received().AddPreConverters(options);
+            assembler.Received().AddPreConverters(options, builder.PreConversionMode);
         }
 
         [Fact]

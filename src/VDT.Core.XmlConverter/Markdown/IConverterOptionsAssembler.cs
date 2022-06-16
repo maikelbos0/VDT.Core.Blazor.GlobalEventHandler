@@ -16,7 +16,7 @@
 
         public void AddBlockquoteConverter(ConverterOptions options);
 
-        public void AddPreConverters(ConverterOptions options);
+        public void AddPreConverters(ConverterOptions options, PreConversionMode preConversionMode);
 
         public void AddHyperlinkConverter(ConverterOptions options);
 

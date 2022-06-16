@@ -14,7 +14,7 @@ namespace VDT.Core.XmlConverter.Markdown {
             { ElementConverterTarget.ListItem, (assembler, _, options) => assembler.AddListItemConverters(options) },
             { ElementConverterTarget.HorizontalRule, (assembler, _, options) => assembler.AddHorizontalRuleConverter(options) },
             { ElementConverterTarget.Blockquote, (assembler, _, options) => assembler.AddBlockquoteConverter(options) },
-            { ElementConverterTarget.Pre, (assembler, _, options) => assembler.AddPreConverters(options) },
+            { ElementConverterTarget.Pre, (assembler, builder, options) => assembler.AddPreConverters(options, builder.PreConversionMode) },
             { ElementConverterTarget.Hyperlink, (assembler, _, options) => assembler.AddHyperlinkConverter(options) },
             { ElementConverterTarget.Image, (assembler, _, options) => assembler.AddImageConverter(options) },
             { ElementConverterTarget.Important, (assembler, _, options) => assembler.AddImportantConverter(options) },
@@ -31,9 +31,14 @@ namespace VDT.Core.XmlConverter.Markdown {
         };
 
         /// <summary>
-        /// Specifies the way to handle elements that can't be converted to Markdown
+        /// Specifies the method by which preformatted text get converted to Markdown code blocks; defaults to <see cref="PreConversionMode.Fenced"/>
         /// </summary>
-        public UnknownElementHandlingMode UnknownElementHandlingMode { get; set; }
+        public PreConversionMode PreConversionMode { get; set; } = PreConversionMode.Fenced;
+
+        /// <summary>
+        /// Specifies the way to handle elements that can't be converted to Markdown; defaults to <see cref="UnknownElementHandlingMode.None"/>
+        /// </summary>
+        public UnknownElementHandlingMode UnknownElementHandlingMode { get; set; } = UnknownElementHandlingMode.None;
 
         /// <summary>
         /// Targets for converting HTML elements to Markdown to add to the resulting <see cref="ConverterOptions"/>
@@ -65,6 +70,8 @@ namespace VDT.Core.XmlConverter.Markdown {
 
             return this;
         }
+
+        // TODO add builder method for preconversionmode
 
         /// <summary>
         /// Add converters for target HTML elements to Markdown to the resulting <see cref="ConverterOptions"/>

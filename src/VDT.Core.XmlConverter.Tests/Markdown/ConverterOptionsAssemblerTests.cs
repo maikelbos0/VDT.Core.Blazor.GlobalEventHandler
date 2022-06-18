@@ -170,16 +170,24 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.IsType<PreContentConverter>(options.ElementConverters.FirstOrDefault());
         }
 
-        // TODO test mode
-
         [Fact]
-        public void AddPreConverters_Adds_PreConverter() {
+        public void AddPreConverters_Adds_FencedPreConverter() {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();
 
             assembler.AddPreConverters(options, PreConversionMode.Fenced);
 
             Assert.Single(options.ElementConverters, converter => converter is FencedPreConverter);
+        }
+
+        [Fact]
+        public void AddPreConverters_Adds_IndentedPreConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddPreConverters(options, PreConversionMode.Indented);
+
+            Assert.Single(options.ElementConverters, converter => converter is IndentedPreConverter);
         }
 
         [Fact]

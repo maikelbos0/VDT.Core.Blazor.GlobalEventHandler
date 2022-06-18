@@ -72,6 +72,38 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
+        public void UseUnknownElementHandlingMode_Returns_Self() {
+            var builder = new ConverterOptionsBuilder();
+
+            Assert.Same(builder, builder.UseUnknownElementHandlingMode(UnknownElementHandlingMode.RemoveTags));
+        }
+
+        [Fact]
+        public void UseUnknownElementHandlingMode_Sets_UnknownElementHandlingMode() {
+            var builder = new ConverterOptionsBuilder();
+
+            builder.UseUnknownElementHandlingMode(UnknownElementHandlingMode.RemoveTags);
+
+            Assert.Equal(UnknownElementHandlingMode.RemoveTags, builder.UnknownElementHandlingMode);
+        }
+
+        [Fact]
+        public void UsePreConversionMode_Sets_PreConversionMode() {
+            var builder = new ConverterOptionsBuilder();
+
+            builder.UsePreConversionMode(PreConversionMode.Indented);
+
+            Assert.Equal(PreConversionMode.Indented, builder.PreConversionMode);
+        }
+
+        [Fact]
+        public void UsePreConversionMode_Returns_Self() {
+            var builder = new ConverterOptionsBuilder();
+
+            Assert.Same(builder, builder.UsePreConversionMode(PreConversionMode.Indented));
+        }
+
+        [Fact]
         public void AddElementConverters_Returns_Self() {
             var builder = new ConverterOptionsBuilder();
 

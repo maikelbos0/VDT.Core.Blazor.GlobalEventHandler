@@ -31,7 +31,7 @@ namespace VDT.Core.XmlConverter.Markdown {
         };
 
         /// <summary>
-        /// Specifies the method by which preformatted text get converted to Markdown code blocks; defaults to <see cref="PreConversionMode.Fenced"/>
+        /// Specifies the way preformatted text get converted to Markdown code blocks; defaults to <see cref="PreConversionMode.Fenced"/>
         /// </summary>
         public PreConversionMode PreConversionMode { get; set; } = PreConversionMode.Fenced;
 
@@ -61,6 +61,17 @@ namespace VDT.Core.XmlConverter.Markdown {
         };
 
         /// <summary>
+        /// Specify the way preformatted text get converted to Markdown code blocks
+        /// </summary>
+        /// <param name="preConversionMode">Specifies the way preformatted text get converted to Markdown code blocks</param>
+        /// <returns>A reference to this instance after the operation has completed</returns>
+        public ConverterOptionsBuilder UsePreConversionMode(PreConversionMode preConversionMode) {
+            PreConversionMode = preConversionMode;
+
+            return this;
+        }
+
+        /// <summary>
         /// Specify the way to handle elements that can't be converted to Markdown
         /// </summary>
         /// <param name="unknownElementHandlingMode">Specifies the way to handle elements that can't be converted to Markdown</param>
@@ -70,8 +81,6 @@ namespace VDT.Core.XmlConverter.Markdown {
 
             return this;
         }
-
-        // TODO add builder method for preconversionmode
 
         /// <summary>
         /// Add converters for target HTML elements to Markdown to the resulting <see cref="ConverterOptions"/>

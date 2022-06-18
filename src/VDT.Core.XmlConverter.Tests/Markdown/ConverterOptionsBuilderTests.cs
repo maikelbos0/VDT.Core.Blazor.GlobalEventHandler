@@ -64,9 +64,8 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             var builder = new ConverterOptionsBuilder();
             var assembler = Substitute.For<IConverterOptionsAssembler>();
 
-            builder
-                .UseUnknownElementHandlingMode(UnknownElementHandlingMode.RemoveTags)
-                .Build(options, assembler);
+            builder.UnknownElementHandlingMode = UnknownElementHandlingMode.RemoveTags;
+            builder.Build(options, assembler);
 
             assembler.Received().SetDefaultElementConverter(options, UnknownElementHandlingMode.RemoveTags);
         }
@@ -224,9 +223,10 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         public void Build_ElementConverterTarget_Pre_Calls_AddPreConverters() {
             var options = new ConverterOptions();
             var builder = CreateBuilder(ElementConverterTarget.Pre);
-            // TODO set preconversionmode to indented - non default
+
             var assembler = Substitute.For<IConverterOptionsAssembler>();
 
+            builder.PreConversionMode = PreConversionMode.Indented;
             builder.Build(options, assembler);
 
             assembler.Received().AddPreConverters(options, builder.PreConversionMode);

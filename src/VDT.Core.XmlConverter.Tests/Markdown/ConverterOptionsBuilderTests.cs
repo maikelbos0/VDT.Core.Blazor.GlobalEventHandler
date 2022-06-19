@@ -103,6 +103,55 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
+        public void UseCharacterEscapeMode_Returns_Self() {
+            var builder = new ConverterOptionsBuilder();
+
+            Assert.Same(builder, builder.UseCharacterEscapeMode(CharacterEscapeMode.Full));
+        }
+
+        [Fact]
+        public void UseCharacterEscapeMode_Sets_CharacterEscapeMode() {
+            var builder = new ConverterOptionsBuilder();
+
+            builder.UseCharacterEscapeMode(CharacterEscapeMode.Full);
+
+            Assert.Equal(CharacterEscapeMode.Full, builder.CharacterEscapeMode);
+        }
+
+        [Fact]
+        public void AddCustomCharacterEscape_Returns_Self() {
+            var builder = new ConverterOptionsBuilder();
+
+            Assert.Same(builder, builder.AddCustomCharacterEscape('-', "&ndash;"));
+        }
+
+        [Fact]
+        public void AddCustomCharacterEscape_Adds_CustomCharacterEscape() {
+            var builder = new ConverterOptionsBuilder();
+
+            builder.AddCustomCharacterEscape('-', "&ndash;");
+
+            Assert.Equal("&ndash;", builder.CustomCharacterEscapes['-']);
+        }
+
+        [Fact]
+        public void UseCustomCharacterEscapes_Returns_Self() {
+            var builder = new ConverterOptionsBuilder();
+
+            Assert.Same(builder, builder.UseCustomCharacterEscapes(new Dictionary<char, string>()));
+        }
+
+        [Fact]
+        public void UseCustomCharacterEscapes_Sets_CustomCharacterEscapes() {
+            var builder = new ConverterOptionsBuilder();
+            var customCharacterEscapes = new Dictionary<char, string>() { { '-', "&dash;" } };
+
+            builder.UseCustomCharacterEscapes(customCharacterEscapes);
+
+            Assert.Same(customCharacterEscapes, builder.CustomCharacterEscapes);
+        }
+
+        [Fact]
         public void AddElementConverters_Returns_Self() {
             var builder = new ConverterOptionsBuilder();
 

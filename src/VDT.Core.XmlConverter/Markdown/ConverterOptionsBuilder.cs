@@ -41,6 +41,16 @@ namespace VDT.Core.XmlConverter.Markdown {
         public UnknownElementHandlingMode UnknownElementHandlingMode { get; set; } = UnknownElementHandlingMode.None;
 
         /// <summary>
+        /// Specifies the way character escapes in Markdown text are handled; defaults to <see cref="CharacterEscapeMode.ConverterBased"/>
+        /// </summary>
+        public CharacterEscapeMode CharacterEscapeMode { get; set; } = CharacterEscapeMode.ConverterBased;
+
+        /// <summary>
+        /// Custom character escapes for converting to Markdown text; these will overwrite any default escape sequences in case collisions are found
+        /// </summary>
+        public Dictionary<char, string> CustomCharacterEscapes { get; set; } = new Dictionary<char, string>();
+
+        /// <summary>
         /// Targets for converting HTML elements to Markdown to add to the resulting <see cref="ConverterOptions"/>
         /// </summary>
         public HashSet<ElementConverterTarget> ElementConverterTargets { get; set; } = new HashSet<ElementConverterTarget>() {
@@ -78,6 +88,40 @@ namespace VDT.Core.XmlConverter.Markdown {
         /// <returns>A reference to this instance after the operation has completed</returns>
         public ConverterOptionsBuilder UseUnknownElementHandlingMode(UnknownElementHandlingMode unknownElementHandlingMode) {
             UnknownElementHandlingMode = unknownElementHandlingMode;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Specify the way character escapes in Markdown text are handled
+        /// </summary>
+        /// <param name="characterEscapeMode">Specifies the way character escapes in Markdown text are handled</param>
+        /// <returns>A reference to this instance after the operation has completed</returns>
+        public ConverterOptionsBuilder UseCharacterEscapeMode(CharacterEscapeMode characterEscapeMode) {
+            CharacterEscapeMode = characterEscapeMode;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Add a custom character escape for converting to Markdown text; these will overwrite any default escape sequences in case collisions are found
+        /// </summary>
+        /// <param name="character">Character to escape</param>
+        /// <param name="escapeSequence">Value to replace the character with if found</param>
+        /// <returns>A reference to this instance after the operation has completed</returns>
+        public ConverterOptionsBuilder AddCustomCharacterEscape(char character, string escapeSequence) {
+            CustomCharacterEscapes[character] = escapeSequence;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Specify custom character escapes for converting to Markdown text; these will overwrite any default escape sequences in case collisions are found
+        /// </summary>
+        /// <param name="characterEscapes">Custom character escapes for converting to Markdown text</param>
+        /// <returns>A reference to this instance after the operation has completed</returns>
+        public ConverterOptionsBuilder UseCustomCharacterEscapes(Dictionary<char, string> characterEscapes) {
+            CustomCharacterEscapes = characterEscapes;
 
             return this;
         }

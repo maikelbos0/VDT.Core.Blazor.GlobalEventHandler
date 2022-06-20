@@ -3,8 +3,26 @@ using System.Collections.Generic;
 
 namespace VDT.Core.XmlConverter.Markdown {
     internal class ConverterOptionsAssembler : IConverterOptionsAssembler {
+        private static Dictionary<char, string> htmlCharacterEscapes = new Dictionary<char, string>() {
+            { '<', "&lt;" },
+            { '>', "&gt;" },
+            { '&', "&amp;" }
+        };
+
         public void SetTextConverter(ConverterOptions options, CharacterEscapeMode characterEscapeMode, HashSet<ElementConverterTarget> elementConverterTargets, Dictionary<char, string> customCharacterEscapes) {
-            options.TextConverter = new TextConverter(new Dictionary<char, string>());
+            var characterEscapes = new Dictionary<char, string>();
+
+            if (characterEscapeMode != CharacterEscapeMode.CustomOnly) {
+                foreach (var escape in htmlCharacterEscapes) {
+                    characterEscapes[escape.Key] = escape.Value;
+                }
+            }
+
+            foreach (var escape in customCharacterEscapes) {
+                characterEscapes[escape.Key] = escape.Value;
+            }
+
+            options.TextConverter = new TextConverter(characterEscapes);
         }
 
         public void SetNodeConverterForNonMarkdownNodeTypes(ConverterOptions options) {

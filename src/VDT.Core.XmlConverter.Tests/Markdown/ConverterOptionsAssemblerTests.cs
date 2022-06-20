@@ -5,6 +5,7 @@ using Xunit;
 
 namespace VDT.Core.XmlConverter.Tests.Markdown {
     public class ConverterOptionsAssemblerTests {
+        // TODO remove this test?
         [Fact]
         public void SetTextConverter_Sets_TextConverter() {
             var options = new ConverterOptions();
@@ -16,6 +17,43 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         // TODO expand tests and complete functionality for character escaping
+
+        [Fact]
+        public void SetTextConverter_Sets_TextConverter_CharacterEscapes_For_CharacterEscapeMode_Custom() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+            var customCharacterEscapes = new Dictionary<char, string>() {
+                { '?', "\\?" }
+            };
+
+            assembler.SetTextConverter(options, CharacterEscapeMode.Custom, new HashSet<ElementConverterTarget>(), customCharacterEscapes);
+
+            var textConverter = Assert.IsType<TextConverter>(options.TextConverter);
+
+            Assert.Equal(new Dictionary<char, string>() {
+                { '<', "&lt;" },
+                { '>', "&gt;" },
+                { '&', "&amp;" },
+                { '?', "\\?" }
+            }, textConverter.CharacterEscapes);
+        }
+
+        [Fact]
+        public void SetTextConverter_Sets_TextConverter_CharacterEscapes_For_CharacterEscapeMode_CustomOnly() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+            var customCharacterEscapes = new Dictionary<char, string>() {
+                { '?', "\\?" }
+            };
+
+            assembler.SetTextConverter(options, CharacterEscapeMode.CustomOnly, new HashSet<ElementConverterTarget>(), customCharacterEscapes);
+
+            var textConverter = Assert.IsType<TextConverter>(options.TextConverter);
+
+            Assert.Equal(new Dictionary<char, string>() {
+                { '?', "\\?" }
+            }, textConverter.CharacterEscapes);
+        }
 
         [Fact]
         public void SetNodeConverterForNonMarkdownNodeTypes_Sets_CDataConverter() {

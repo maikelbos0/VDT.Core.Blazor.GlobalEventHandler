@@ -53,9 +53,10 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             var builder = new ConverterOptionsBuilder();
             var assembler = Substitute.For<IConverterOptionsAssembler>();
 
+            builder.CharacterEscapeMode = CharacterEscapeMode.Full;
             builder.Build(options, assembler);
 
-            assembler.Received().SetTextConverter(options);
+            assembler.Received().SetTextConverter(options, builder.CharacterEscapeMode, builder.ElementConverterTargets, builder.CustomCharacterEscapes);
         }
 
         [Fact]

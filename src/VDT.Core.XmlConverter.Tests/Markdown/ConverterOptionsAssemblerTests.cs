@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using VDT.Core.XmlConverter.Markdown;
 using Xunit;
 
@@ -9,10 +10,12 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();
 
-            assembler.SetTextConverter(options);
+            assembler.SetTextConverter(options, CharacterEscapeMode.ElementConverterBased, new HashSet<ElementConverterTarget>(), new Dictionary<char, string>());
 
             Assert.IsType<TextConverter>(options.TextConverter);
         }
+
+        // TODO expand tests and complete functionality for character escaping
 
         [Fact]
         public void SetNodeConverterForNonMarkdownNodeTypes_Sets_CDataConverter() {

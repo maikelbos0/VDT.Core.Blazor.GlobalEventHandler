@@ -1,6 +1,8 @@
-﻿namespace VDT.Core.XmlConverter.Markdown {
+﻿using System.Collections.Generic;
+
+namespace VDT.Core.XmlConverter.Markdown {
     internal interface IConverterOptionsAssembler {
-        public void SetTextConverter(ConverterOptions options);
+        public void SetTextConverter(ConverterOptions options, CharacterEscapeMode characterEscapeMode, HashSet<ElementConverterTarget> elementConverterTargets, Dictionary<char, string> customCharacterEscapes);
 
         public void SetNodeConverterForNonMarkdownNodeTypes(ConverterOptions options);
 

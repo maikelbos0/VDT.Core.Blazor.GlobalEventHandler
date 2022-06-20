@@ -185,7 +185,7 @@ namespace VDT.Core.XmlConverter.Markdown {
                 assemblerAction(assembler, this, options);
             }
 
-            assembler.SetTextConverter(options);
+            assembler.SetTextConverter(options, CharacterEscapeMode, ElementConverterTargets, CustomCharacterEscapes);
             assembler.SetNodeConverterForNonMarkdownNodeTypes(options);
             assembler.SetDefaultElementConverter(options, UnknownElementHandlingMode);
 

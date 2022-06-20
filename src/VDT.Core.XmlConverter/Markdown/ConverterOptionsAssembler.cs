@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace VDT.Core.XmlConverter.Markdown {
     internal class ConverterOptionsAssembler : IConverterOptionsAssembler {
-        public void SetTextConverter(ConverterOptions options) {
+        public void SetTextConverter(ConverterOptions options, CharacterEscapeMode characterEscapeMode, HashSet<ElementConverterTarget> elementConverterTargets, Dictionary<char, string> customCharacterEscapes) {
             options.TextConverter = new TextConverter(new Dictionary<char, string>());
         }
 

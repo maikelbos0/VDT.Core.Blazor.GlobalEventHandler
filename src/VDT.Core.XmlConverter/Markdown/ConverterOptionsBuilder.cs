@@ -41,9 +41,9 @@ namespace VDT.Core.XmlConverter.Markdown {
         public UnknownElementHandlingMode UnknownElementHandlingMode { get; set; } = UnknownElementHandlingMode.None;
 
         /// <summary>
-        /// Specifies the way character escapes in Markdown text are handled; defaults to <see cref="CharacterEscapeMode.ConverterBased"/>
+        /// Specifies the way character escapes in Markdown text are handled; defaults to <see cref="CharacterEscapeMode.ElementConverterBased"/>
         /// </summary>
-        public CharacterEscapeMode CharacterEscapeMode { get; set; } = CharacterEscapeMode.ConverterBased;
+        public CharacterEscapeMode CharacterEscapeMode { get; set; } = CharacterEscapeMode.ElementConverterBased;
 
         /// <summary>
         /// Custom character escapes for converting to Markdown text; these will overwrite any default escape sequences in case collisions are found

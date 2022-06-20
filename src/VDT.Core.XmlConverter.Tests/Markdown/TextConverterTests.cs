@@ -14,7 +14,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         public void Convert_Trims_As_Needed(bool isFirstChild, int trailingNewLineCount, string expectedValue) {
             using var writer = new StringWriter();
 
-            var converter = new TextConverter();
+            var converter = new TextConverter(new Dictionary<char, string>());
             var nodeData = NodeDataHelper.Create(
                 XmlNodeType.Text,
                 value: "\t Foo \t",
@@ -33,7 +33,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         public void Convert_Normalizes_Whitespace() {
             using var writer = new StringWriter();
 
-            var converter = new TextConverter();
+            var converter = new TextConverter(new Dictionary<char, string>());
             var nodeData = NodeDataHelper.Create(
                 XmlNodeType.Text,
                 value: "Foo \t \r\n \n\r bar \n\t\r baz"
@@ -50,7 +50,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         public void Convert_Pre(string value, string expectedText) {
             using var writer = new StringWriter();
 
-            var converter = new TextConverter();
+            var converter = new TextConverter(new Dictionary<char, string>());
             var nodeData = NodeDataHelper.Create(
                 XmlNodeType.Text,
                 value: value,
@@ -62,38 +62,23 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Equal(expectedText, writer.ToString());
         }
 
-        [Theory]
-        [InlineData("Foo \\ bar", "Foo \\\\ bar")]
-        [InlineData("Foo ` bar", "Foo \\` bar")]
-        [InlineData("Foo * bar", "Foo \\* bar")]
-        [InlineData("Foo _ bar", "Foo \\_ bar")]
-        [InlineData("Foo { bar", "Foo \\{ bar")]
-        [InlineData("Foo } bar", "Foo \\} bar")]
-        [InlineData("Foo [ bar", "Foo \\[ bar")]
-        [InlineData("Foo ] bar", "Foo \\] bar")]
-        [InlineData("Foo ( bar", "Foo \\( bar")]
-        [InlineData("Foo ) bar", "Foo \\) bar")]
-        [InlineData("Foo # bar", "Foo \\# bar")]
-        [InlineData("Foo + bar", "Foo \\+ bar")]
-        [InlineData("Foo - bar", "Foo \\- bar")]
-        [InlineData("Foo . bar", "Foo \\. bar")]
-        [InlineData("Foo ! bar", "Foo \\! bar")]
-        [InlineData("Foo | bar", "Foo \\| bar")]
-        [InlineData("Foo < bar", "Foo &lt; bar")]
-        [InlineData("Foo > bar", "Foo &gt; bar")]
-        [InlineData("Foo & bar", "Foo &amp; bar")]
-        public void Convert_Escapes_Characters(string value, string expectedText) {
+        [Fact]
+        public void Convert_Escapes_Characters() {
             using var writer = new StringWriter();
 
-            var converter = new TextConverter();
+            var characterEscapes = new Dictionary<char, string>() {
+                { '<', "&lt;" },
+                { '>', "&gt;" }
+            };
+            var converter = new TextConverter(characterEscapes);
             var nodeData = NodeDataHelper.Create(
                 XmlNodeType.Text,
-                value: value
+                value: "This is an <escape> character test"
             );
 
             converter.Convert(writer, nodeData);
 
-            Assert.Equal(expectedText, writer.ToString());
+            Assert.Equal("This is an &lt;escape&gt; character test", writer.ToString());
         }
     }
 }

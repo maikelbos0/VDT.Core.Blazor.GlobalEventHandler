@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace VDT.Core.XmlConverter.Markdown {
     internal class ConverterOptionsAssembler : IConverterOptionsAssembler {
         public void SetTextConverter(ConverterOptions options) {
-            // TODO add escape characters for ~, =, ^ for extended as needed
-            options.TextConverter = new TextConverter();
+            options.TextConverter = new TextConverter(new Dictionary<char, string>());
         }
 
         public void SetNodeConverterForNonMarkdownNodeTypes(ConverterOptions options) {

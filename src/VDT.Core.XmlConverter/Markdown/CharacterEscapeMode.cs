@@ -9,10 +9,10 @@
         Full,
 
         /// <summary>
-        /// Escape only characters used in the element converters added according to <see cref="ConverterOptionsBuilder.ElementConverterTargets"/> and characters provided in 
-        /// <see cref="ConverterOptionsBuilder.CustomCharacterEscapes"/>
+        /// Escape only characters that need escaping by default, characters used in the element converters added according to <see cref="ConverterOptionsBuilder.ElementConverterTargets"/>
+        /// and characters provided in <see cref="ConverterOptionsBuilder.CustomCharacterEscapes"/>
         /// </summary>
-        ConverterBased,
+        ElementConverterBased,
 
         /// <summary>
         /// Escape only characters provided in <see cref="ConverterOptionsBuilder.CustomCharacterEscapes"/>

@@ -14,27 +14,19 @@ namespace VDT.Core.XmlConverter.Markdown {
 
         private static Regex newLineFinder = new Regex("^(\r\n?|\n)", RegexOptions.Compiled);
         private static Regex whitespaceNormalizer = new Regex("\\s+", RegexOptions.Compiled);
-        private static Dictionary<char, string> markdownEscapeCharacters = new Dictionary<char, string>() {
-            { '\\', "\\\\" },
-            { '`', "\\`" },
-            { '*', "\\*" },
-            { '_', "\\_" },
-            { '{', "\\{" },
-            { '}', "\\}" },
-            { '[', "\\[" },
-            { ']', "\\]" },
-            { '(', "\\(" },
-            { ')', "\\)" },
-            { '#', "\\#" },
-            { '+', "\\+" },
-            { '-', "\\-" },
-            { '.', "\\." },
-            { '!', "\\!" },
-            { '|', "\\|" },
-            { '<', "&lt;" },
-            { '>', "&gt;" },
-            { '&', "&amp;" }
-        };
+
+        /// <summary>
+        /// Characters that will be transformed into their escape sequences if they appear in Markdown text
+        /// </summary>
+        public Dictionary<char, string> CharacterEscapes { get; }
+
+        /// <summary>
+        /// Constructs an instance of a Markdown text converter
+        /// </summary>
+        /// <param name="characterEscapes">Characters that will be transformed into their escape sequences if they appear in Markdown text</param>
+        public TextConverter(Dictionary<char, string> characterEscapes) {
+            CharacterEscapes = characterEscapes;
+        }
 
         /// <inheritdoc/>
         public void Convert(TextWriter writer, NodeData data) {
@@ -67,7 +59,7 @@ namespace VDT.Core.XmlConverter.Markdown {
             }
 
             foreach (var c in value) {
-                if (markdownEscapeCharacters.TryGetValue(c, out var str)) {
+                if (CharacterEscapes.TryGetValue(c, out var str)) {
                     valueBuilder.Append(str);
                 }
                 else {

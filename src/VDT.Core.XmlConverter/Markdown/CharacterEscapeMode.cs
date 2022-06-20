@@ -4,15 +4,20 @@
     /// </summary>
     public enum CharacterEscapeMode {
         /// <summary>
-        /// Escape all known characters and characters provided in <see cref="ConverterOptionsBuilder.CustomCharacterEscapes"/>
+        /// Escape html characters, all known Markdown special characters and those provided in <see cref="ConverterOptionsBuilder.CustomCharacterEscapes"/>
         /// </summary>
         Full,
 
         /// <summary>
-        /// Escape only characters that need escaping by default, characters used in the element converters added according to <see cref="ConverterOptionsBuilder.ElementConverterTargets"/>
-        /// and characters provided in <see cref="ConverterOptionsBuilder.CustomCharacterEscapes"/>
+        /// Escape html characters, characters used in the element converters added according to <see cref="ConverterOptionsBuilder.ElementConverterTargets"/>
+        /// and those provided in <see cref="ConverterOptionsBuilder.CustomCharacterEscapes"/>
         /// </summary>
         ElementConverterBased,
+
+        /// <summary>
+        /// Escape html characters and those provided in <see cref="ConverterOptionsBuilder.CustomCharacterEscapes"/>
+        /// </summary>
+        Custom,
 
         /// <summary>
         /// Escape only characters provided in <see cref="ConverterOptionsBuilder.CustomCharacterEscapes"/>

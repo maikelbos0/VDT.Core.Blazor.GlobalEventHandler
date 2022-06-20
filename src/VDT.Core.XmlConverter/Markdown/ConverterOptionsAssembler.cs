@@ -3,10 +3,31 @@ using System.Collections.Generic;
 
 namespace VDT.Core.XmlConverter.Markdown {
     internal class ConverterOptionsAssembler : IConverterOptionsAssembler {
-        private static Dictionary<char, string> htmlCharacterEscapes = new Dictionary<char, string>() {
+        private readonly static Dictionary<char, string> htmlCharacterEscapes = new Dictionary<char, string>() {
             { '<', "&lt;" },
             { '>', "&gt;" },
             { '&', "&amp;" }
+        };
+
+        private readonly static Dictionary<char, string> converterCharacterEscapes = new Dictionary<char, string>() {
+            { '\\', "\\\\" },
+            { '`', "\\`" },
+            { '*', "\\*" },
+            { '_', "\\_" },
+            { '{', "\\{" }, // used for header id
+            { '}', "\\}" }, // used for header id
+            { '[', "\\[" },
+            { ']', "\\]" },
+            { '(', "\\(" },
+            { ')', "\\)" },
+            { '#', "\\#" },
+            { '+', "\\+" },
+            { '-', "\\-" },
+            { '.', "\\." },
+            { '!', "\\!" },
+            { '~', "\\~" },
+            { '=', "\\=" },
+            { '^', "\\^" }
         };
 
         public void SetTextConverter(ConverterOptions options, CharacterEscapeMode characterEscapeMode, HashSet<ElementConverterTarget> elementConverterTargets, Dictionary<char, string> customCharacterEscapes) {
@@ -16,6 +37,24 @@ namespace VDT.Core.XmlConverter.Markdown {
                 foreach (var escape in htmlCharacterEscapes) {
                     characterEscapes[escape.Key] = escape.Value;
                 }
+            }
+
+            switch (characterEscapeMode) {
+                case CharacterEscapeMode.Full:
+                    foreach (var escape in converterCharacterEscapes) {
+                        characterEscapes[escape.Key] = escape.Value;
+                    }
+
+                    break;
+                case CharacterEscapeMode.ElementConverterBased:
+                    // TODO
+                    break;
+                case CharacterEscapeMode.Custom:
+                case CharacterEscapeMode.CustomOnly:
+                    // Do nothing
+                    break;
+                default:
+                    throw new NotImplementedException($"No implementation found for {nameof(CharacterEscapeMode)} '{characterEscapeMode}'");
             }
 
             foreach (var escape in customCharacterEscapes) {

@@ -19,10 +19,49 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         // TODO expand tests and complete functionality for character escaping
 
         [Fact]
+        public void SetTextConverter_Sets_TextConverter_CharacterEscapes_For_CharacterEscapeMode_Full() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+            var customCharacterEscapes = new Dictionary<char, string>() {
+                { '>', ">" },
+                { '?', "\\?" }
+            };
+
+            assembler.SetTextConverter(options, CharacterEscapeMode.Full, new HashSet<ElementConverterTarget>(), customCharacterEscapes);
+
+            var textConverter = Assert.IsType<TextConverter>(options.TextConverter);
+
+            Assert.Equal(new Dictionary<char, string>() {
+                { '\\', "\\\\" },
+                { '`', "\\`" },
+                { '_', "\\_" },
+                { '*', "\\*" },
+                { '-', "\\-" },
+                { '.', "\\." },
+                { '!', "\\!" },
+                { '+', "\\+" },
+                { '#', "\\#" },
+                { '(', "\\(" },
+                { ')', "\\)" },
+                { '[', "\\[" },
+                { ']', "\\]" },
+                { '{', "\\{" },
+                { '}', "\\}" },
+                { '~', "\\~" },
+                { '=', "\\=" },
+                { '^', "\\^" },
+                { '<', "&lt;" },
+                { '>', ">" },
+                { '&', "&amp;" },
+                { '?', "\\?" }
+            }, textConverter.CharacterEscapes);
+        }
+        [Fact]
         public void SetTextConverter_Sets_TextConverter_CharacterEscapes_For_CharacterEscapeMode_Custom() {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();
             var customCharacterEscapes = new Dictionary<char, string>() {
+                { '>', ">" },
                 { '?', "\\?" }
             };
 
@@ -32,7 +71,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             Assert.Equal(new Dictionary<char, string>() {
                 { '<', "&lt;" },
-                { '>', "&gt;" },
+                { '>', ">" },
                 { '&', "&amp;" },
                 { '?', "\\?" }
             }, textConverter.CharacterEscapes);

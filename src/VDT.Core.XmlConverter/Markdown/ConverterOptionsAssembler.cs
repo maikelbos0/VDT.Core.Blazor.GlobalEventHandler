@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace VDT.Core.XmlConverter.Markdown {
     internal class ConverterOptionsAssembler : IConverterOptionsAssembler {
@@ -30,6 +31,27 @@ namespace VDT.Core.XmlConverter.Markdown {
             { '^', "\\^" }
         };
 
+        private readonly static Dictionary<ElementConverterTarget, char[]> elementConverterCharacters = new Dictionary<ElementConverterTarget, char[]>() {
+            { ElementConverterTarget.Heading, new[] { '\\', '#' } },
+            { ElementConverterTarget.Paragraph, Array.Empty<char>() },
+            { ElementConverterTarget.Linebreak, Array.Empty<char>() },
+            { ElementConverterTarget.ListItem, new[] { '\\', '*', '+', '-', '.' } },
+            { ElementConverterTarget.HorizontalRule, new[] { '\\', '-' } },
+            { ElementConverterTarget.Blockquote, Array.Empty<char>() },
+            { ElementConverterTarget.Pre, new[] { '\\', '`' } },
+            { ElementConverterTarget.Hyperlink, new[] { '\\', '[', ']', '(', ')' } },
+            { ElementConverterTarget.Image, new[] { '\\', '[', ']', '(', ')', '!' } },
+            { ElementConverterTarget.Important, new[] { '\\', '*', '_' } },
+            { ElementConverterTarget.Emphasis, new[] { '\\', '*', '_' } },
+            { ElementConverterTarget.InlineCode, new[] { '\\', '`' } },
+            { ElementConverterTarget.Strikethrough, new[] { '\\', '~' } },
+            { ElementConverterTarget.Highlight, new[] { '\\', '=' } },
+            { ElementConverterTarget.Subscript, new[] { '\\', '~' } },
+            { ElementConverterTarget.Superscript, new[] { '\\', '^' } },
+            { ElementConverterTarget.RemoveTag, Array.Empty<char>() },
+            { ElementConverterTarget.RemoveElement, Array.Empty<char>() }
+        };
+        
         public void SetTextConverter(ConverterOptions options, CharacterEscapeMode characterEscapeMode, HashSet<ElementConverterTarget> elementConverterTargets, Dictionary<char, string> customCharacterEscapes) {
             var characterEscapes = new Dictionary<char, string>();
 
@@ -44,15 +66,19 @@ namespace VDT.Core.XmlConverter.Markdown {
                     foreach (var escape in converterCharacterEscapes) {
                         characterEscapes[escape.Key] = escape.Value;
                     }
+                    break;
 
-                    break;
                 case CharacterEscapeMode.ElementConverterBased:
-                    // TODO
+                    foreach (var character in elementConverterTargets.SelectMany(t => elementConverterCharacters[t])) {
+                        characterEscapes[character] = converterCharacterEscapes[character];
+                    }                    
                     break;
+
                 case CharacterEscapeMode.Custom:
                 case CharacterEscapeMode.CustomOnly:
                     // Do nothing
                     break;
+
                 default:
                     throw new NotImplementedException($"No implementation found for {nameof(CharacterEscapeMode)} '{characterEscapeMode}'");
             }

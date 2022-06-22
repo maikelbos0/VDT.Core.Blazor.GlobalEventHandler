@@ -5,7 +5,6 @@ using Xunit;
 
 namespace VDT.Core.XmlConverter.Tests.Markdown {
     public class ConverterOptionsAssemblerTests {
-        // TODO remove this test?
         [Fact]
         public void SetTextConverter_Sets_TextConverter() {
             var options = new ConverterOptions();
@@ -15,8 +14,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             Assert.IsType<TextConverter>(options.TextConverter);
         }
-
-        // TODO expand tests and complete functionality for character escaping
 
         [Fact]
         public void SetTextConverter_Sets_TextConverter_CharacterEscapes_For_CharacterEscapeMode_Full() {
@@ -56,6 +53,43 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
                 { '?', "\\?" }
             }, textConverter.CharacterEscapes);
         }
+
+        [Theory]
+        [InlineData(ElementConverterTarget.Heading, '\\', '#')]
+        [InlineData(ElementConverterTarget.Paragraph)]
+        [InlineData(ElementConverterTarget.Linebreak)]
+        [InlineData(ElementConverterTarget.ListItem, '\\', '*', '+', '-', '.')]
+        [InlineData(ElementConverterTarget.HorizontalRule, '\\', '-')]
+        [InlineData(ElementConverterTarget.Blockquote)]
+        [InlineData(ElementConverterTarget.Pre, '\\', '`')]
+        [InlineData(ElementConverterTarget.Hyperlink, '\\', '(', ')', '[', ']')]
+        [InlineData(ElementConverterTarget.Image, '\\', '!', '(', ')', '[', ']')]
+        [InlineData(ElementConverterTarget.Important, '\\', '*', '_')]
+        [InlineData(ElementConverterTarget.Emphasis, '\\', '*', '_')]
+        [InlineData(ElementConverterTarget.InlineCode, '\\', '`')]
+        [InlineData(ElementConverterTarget.Strikethrough, '\\', '~')]
+        [InlineData(ElementConverterTarget.Highlight, '\\', '=')]
+        [InlineData(ElementConverterTarget.Subscript, '\\', '~')]
+        [InlineData(ElementConverterTarget.Superscript, '\\', '^')]
+        [InlineData(ElementConverterTarget.RemoveTag)]
+        [InlineData(ElementConverterTarget.RemoveElement)]
+        public void SetTextConverter_Sets_TextConverter_CharacterEscapes_For_CharacterEscapeMode_ElementConverterBased(ElementConverterTarget elementConverterTarget, params char[] expectedCharacters) {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+            var customCharacterEscapes = new Dictionary<char, string>() {
+                { '>', ">" },
+                { '?', "\\?" }
+            };
+            var expectedEscapedCharacters = new HashSet<char>(expectedCharacters.Concat(new[] { '<', '>', '&', '?' }));
+
+            assembler.SetTextConverter(options, CharacterEscapeMode.ElementConverterBased, new HashSet<ElementConverterTarget>() { elementConverterTarget }, customCharacterEscapes);
+
+            var textConverter = Assert.IsType<TextConverter>(options.TextConverter);
+
+            Assert.Equal(expectedEscapedCharacters, textConverter.CharacterEscapes.Keys.ToHashSet());
+            Assert.Equal(">", textConverter.CharacterEscapes['>']);
+        }
+
         [Fact]
         public void SetTextConverter_Sets_TextConverter_CharacterEscapes_For_CharacterEscapeMode_Custom() {
             var options = new ConverterOptions();

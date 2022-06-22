@@ -12,8 +12,8 @@ namespace VDT.Core.XmlConverter.Markdown {
     public class TextConverter : INodeConverter {
         private const string preName = "pre";
 
-        private static Regex newLineFinder = new Regex("^(\r\n?|\n)", RegexOptions.Compiled);
-        private static Regex whitespaceNormalizer = new Regex("\\s+", RegexOptions.Compiled);
+        private static readonly Regex newLineFinder = new Regex("^(\r\n?|\n)", RegexOptions.Compiled);
+        private static readonly Regex whitespaceNormalizer = new Regex("\\s+", RegexOptions.Compiled);
 
         /// <summary>
         /// Characters that will be transformed into their escape sequences if they appear in Markdown text
@@ -38,7 +38,7 @@ namespace VDT.Core.XmlConverter.Markdown {
             }
         }
 
-        private void ConvertPreText(TextWriter writer, NodeData data) {
+        private static void ConvertPreText(TextWriter writer, NodeData data) {
             var tracker = data.GetContentTracker();
             var value = data.Value;
 

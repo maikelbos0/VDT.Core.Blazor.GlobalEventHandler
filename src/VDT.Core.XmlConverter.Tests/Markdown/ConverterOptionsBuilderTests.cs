@@ -403,7 +403,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             assembler.Received().AddElementRemovingConverter(options);
         }
 
-        private ConverterOptionsBuilder CreateBuilder(params ElementConverterTarget[] targets)
+        private static ConverterOptionsBuilder CreateBuilder(params ElementConverterTarget[] targets)
             => new ConverterOptionsBuilder() {
                 ElementConverterTargets = new HashSet<ElementConverterTarget>(targets)
             };

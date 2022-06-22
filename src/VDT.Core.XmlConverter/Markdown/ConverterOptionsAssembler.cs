@@ -189,8 +189,8 @@ namespace VDT.Core.XmlConverter.Markdown {
         public void SetDefaultElementConverter(ConverterOptions options, UnknownElementHandlingMode unknownElementHandlingMode) {
             options.DefaultElementConverter = unknownElementHandlingMode switch {
                 UnknownElementHandlingMode.None => new NoOpElementConverter(),
-                UnknownElementHandlingMode.RemoveTags => new UnknownElementConverter(true),
-                UnknownElementHandlingMode.RemoveElements => new UnknownElementConverter(false),
+                UnknownElementHandlingMode.RemoveTags => new TagRemovingElementConverter(),
+                UnknownElementHandlingMode.RemoveElements => new ElementRemovingConverter(),
                 _ => throw new NotImplementedException($"No implementation found for {nameof(UnknownElementHandlingMode)} '{unknownElementHandlingMode}'")
             };
         }

@@ -425,18 +425,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
                 && inlineElementConverter.EndOutput == expectedEndOutput
                 && inlineElementConverter.ValidForElementNames.SequenceEqual(expectedValidForElementNames);
 
-        [Theory]
-        [InlineData(UnknownElementHandlingMode.RemoveTags, true)]
-        [InlineData(UnknownElementHandlingMode.RemoveElements, false)]
-        public void SetDefaultElementConverter_Sets_DefaultElementConverter(UnknownElementHandlingMode unknownElementHandlingMode, bool expectedRenderContent) {
-            var options = new ConverterOptions();
-            var assembler = new ConverterOptionsAssembler();
-
-            assembler.SetDefaultElementConverter(options, unknownElementHandlingMode);
-
-            Assert.Equal(expectedRenderContent, Assert.IsType<UnknownElementConverter>(options.DefaultElementConverter).RenderContent);
-        }
-
         [Fact]
         public void SetDefaultElementConverter_Sets_DefaultElementConverter_NoOpElementConverter_For_UnknownElementHandlingMode_None() {
             var options = new ConverterOptions();
@@ -445,6 +433,26 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             assembler.SetDefaultElementConverter(options, UnknownElementHandlingMode.None);
 
             Assert.IsType<NoOpElementConverter>(options.DefaultElementConverter);
+        }
+
+        [Fact]
+        public void SetDefaultElementConverter_Sets_DefaultElementConverter_TagRemovingElementConverter_For_UnknownElementHandlingMode_RemoveTags() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.SetDefaultElementConverter(options, UnknownElementHandlingMode.RemoveTags);
+
+            Assert.IsType<TagRemovingElementConverter>(options.DefaultElementConverter);
+        }
+
+        [Fact]
+        public void SetDefaultElementConverter_Sets_DefaultElementConverter_ElementRemovingElementConverter_For_UnknownElementHandlingMode_RemoveElements() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.SetDefaultElementConverter(options, UnknownElementHandlingMode.RemoveElements);
+
+            Assert.IsType<ElementRemovingConverter>(options.DefaultElementConverter);
         }
     }
 }

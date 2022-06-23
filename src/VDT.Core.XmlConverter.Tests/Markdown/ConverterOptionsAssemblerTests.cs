@@ -399,9 +399,19 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();
 
-            assembler.AddTagRemovingElementConverter(options);
+            assembler.AddTagRemovingElementConverter(options, new HashSet<string>() { "html", "body", "ul", "ol", "menu", "div", "span" });
 
             Assert.Equal(new[] { "html", "body", "ul", "ol", "menu", "div", "span" }, Assert.IsType<TagRemovingElementConverter>(Assert.Single(options.ElementConverters)).ValidForElementNames);
+        }
+
+        [Fact]
+        public void AddTagRemovingElementConverter_Adds_Nothing_For_Empty_Hashset() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddTagRemovingElementConverter(options, new HashSet<string>());
+
+            Assert.Empty(options.ElementConverters);
         }
 
         [Fact]

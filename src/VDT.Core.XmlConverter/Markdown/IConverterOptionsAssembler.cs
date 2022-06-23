@@ -38,7 +38,7 @@ namespace VDT.Core.XmlConverter.Markdown {
 
         public void AddSuperscriptConverter(ConverterOptions options);
 
-        public void AddTagRemovingElementConverter(ConverterOptions options);
+        public void AddTagRemovingElementConverter(ConverterOptions options, HashSet<string> tagsToRemove);
 
         public void AddElementRemovingConverter(ConverterOptions options);
 

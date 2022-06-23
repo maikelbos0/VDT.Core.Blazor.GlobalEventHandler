@@ -177,8 +177,10 @@ namespace VDT.Core.XmlConverter.Markdown {
             options.ElementConverters.Add(new InlineElementConverter("^", "^", "sup"));
         }
 
-        public void AddTagRemovingElementConverter(ConverterOptions options) {
-            options.ElementConverters.Add(new TagRemovingElementConverter("html", "body", "ul", "ol", "menu", "div", "span"));
+        public void AddTagRemovingElementConverter(ConverterOptions options, HashSet<string> tagsToRemove) {
+            if (tagsToRemove.Any()) {
+                options.ElementConverters.Add(new TagRemovingElementConverter(tagsToRemove.ToArray()));
+            }
         }
 
         public void AddElementRemovingConverter(ConverterOptions options) {

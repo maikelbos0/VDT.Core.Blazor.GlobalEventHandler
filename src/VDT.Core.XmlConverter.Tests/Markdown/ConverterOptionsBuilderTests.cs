@@ -454,7 +454,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             builder.Build(options, assembler);
 
-            assembler.Received().AddTagRemovingElementConverter(options);
+            assembler.Received().AddTagRemovingElementConverter(options, builder.TagsToRemove);
         }
 
         [Fact]

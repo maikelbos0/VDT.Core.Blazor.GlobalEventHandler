@@ -136,6 +136,24 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
+        public void RemoveCustomCharacterEscape_Returns_Self() {
+            var builder = new ConverterOptionsBuilder();
+
+            Assert.Same(builder, builder.RemoveCustomCharacterEscape('-'));
+        }
+
+        [Fact]
+        public void RemoveCustomCharacterEscape_Removes_CustomCharacterEscape() {
+            var builder = new ConverterOptionsBuilder();
+
+            builder.CustomCharacterEscapes['-'] = "&ndash;";
+
+            builder.RemoveCustomCharacterEscape('-');
+
+            Assert.False(builder.CustomCharacterEscapes.ContainsKey('-'));
+        }
+
+        [Fact]
         public void UseCustomCharacterEscapes_Returns_Self() {
             var builder = new ConverterOptionsBuilder();
 

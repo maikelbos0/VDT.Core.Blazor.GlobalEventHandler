@@ -116,6 +116,17 @@ namespace VDT.Core.XmlConverter.Markdown {
         }
 
         /// <summary>
+        /// Remove a custom character escape for converting to Markdown text
+        /// </summary>
+        /// <param name="character">Character to escape</param>
+        /// <returns>A reference to this instance after the operation has completed</returns>
+        public ConverterOptionsBuilder RemoveCustomCharacterEscape(char character) {
+            CustomCharacterEscapes.Remove(character);
+
+            return this;
+        }
+
+        /// <summary>
         /// Specify custom character escapes for converting to Markdown text; these will overwrite any default escape sequences in case collisions are found
         /// </summary>
         /// <param name="characterEscapes">Custom character escapes for converting to Markdown text</param>

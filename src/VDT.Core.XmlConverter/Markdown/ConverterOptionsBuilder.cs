@@ -24,9 +24,9 @@ namespace VDT.Core.XmlConverter.Markdown {
             { ElementConverterTarget.Highlight, (assembler, _, options) => assembler.AddHighlightConverter(options) },
             { ElementConverterTarget.Subscript, (assembler, _, options) => assembler.AddSubscriptConverter(options) },
             { ElementConverterTarget.Superscript, (assembler, _, options) => assembler.AddSuperscriptConverter(options) },
-            // TODO make configurable
+            // TODO make configurable and remove as target
             { ElementConverterTarget.RemoveTag, (assembler, _, options) => assembler.AddTagRemovingElementConverter(options) },
-            // TODO make configurable
+            // TODO make configurable and remove as target
             { ElementConverterTarget.RemoveElement, (assembler, _, options) => assembler.AddElementRemovingConverter(options) }
         };
 
@@ -49,6 +49,20 @@ namespace VDT.Core.XmlConverter.Markdown {
         /// Custom character escapes for converting to Markdown text; these will overwrite any default escape sequences in case collisions are found
         /// </summary>
         public Dictionary<char, string> CustomCharacterEscapes { get; set; } = new Dictionary<char, string>();
+
+        /// <summary>
+        /// Elements for which the tags should be stripped and only content should be rendered; defaults &lt;html&gt;, &lt;body&gt;, &lt;ul&gt;, &lt;ol&gt;,
+        /// &lt;menu&gt;, &lt;div&gt; and &lt;span&gt;
+        /// </summary>
+        public HashSet<string> TagsToRemove { get; set; } = new HashSet<string>() {
+            "html",
+            "body",
+            "ul",
+            "ol",
+            "menu",
+            "div",
+            "span"
+        };
 
         /// <summary>
         /// Targets for converting HTML elements to Markdown to add to the resulting <see cref="ConverterOptions"/>
@@ -133,6 +147,42 @@ namespace VDT.Core.XmlConverter.Markdown {
         /// <returns>A reference to this instance after the operation has completed</returns>
         public ConverterOptionsBuilder UseCustomCharacterEscapes(Dictionary<char, string> characterEscapes) {
             CustomCharacterEscapes = characterEscapes;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Add elements for which the tags should be stripped and only content should be rendered
+        /// </summary>
+        /// <param name="elementNames">Names of elements to add</param>
+        /// <returns>A reference to this instance after the operation has completed</returns>
+        public ConverterOptionsBuilder AddTagsToRemove(params string[] elementNames) => AddTagsToRemove(elementNames.AsEnumerable());
+
+        /// <summary>
+        /// Add elements for which the tags should be stripped and only content should be rendered
+        /// </summary>
+        /// <param name="elementNames">Names of elements to add</param>
+        /// <returns>A reference to this instance after the operation has completed</returns>
+        public ConverterOptionsBuilder AddTagsToRemove(IEnumerable<string> elementNames) {
+            TagsToRemove.UnionWith(elementNames);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Remove elements for which the tags should be stripped and only content should be rendered
+        /// </summary>
+        /// <param name="elementNames">Names of elements to remove</param>
+        /// <returns>A reference to this instance after the operation has completed</returns>
+        public ConverterOptionsBuilder RemoveTagsToRemove(params string[] elementNames) => RemoveTagsToRemove(elementNames.AsEnumerable());
+
+        /// <summary>
+        /// Remove elements for which the tags should be stripped and only content should be rendered
+        /// </summary>
+        /// <param name="elementNames">Names of elements to remove</param>
+        /// <returns>A reference to this instance after the operation has completed</returns>
+        public ConverterOptionsBuilder RemoveTagsToRemove(IEnumerable<string> elementNames) {
+            TagsToRemove.ExceptWith(elementNames);
 
             return this;
         }

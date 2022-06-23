@@ -171,6 +171,53 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
+        public void AddTagsToRemove_Returns_Self() {
+            var builder = new ConverterOptionsBuilder();
+
+            Assert.Same(builder, builder.AddTagsToRemove());
+        }
+
+        [Fact]
+        public void AddTagsToRemove_Adds_ElementNames() {
+            var builder = new ConverterOptionsBuilder();
+
+            builder.AddTagsToRemove("form", "body");
+
+            Assert.Equal(new HashSet<string>() { 
+                "html",
+                "body",
+                "ul",
+                "ol",
+                "menu",
+                "div",
+                "span",
+                "form"
+            }, builder.TagsToRemove);
+        }
+
+        [Fact]
+        public void RemoveTagsToRemove_Returns_Self() {
+            var builder = new ConverterOptionsBuilder();
+
+            Assert.Same(builder, builder.RemoveTagsToRemove());
+        }
+
+        [Fact]
+        public void RemoveTagsToRemove_Removes_ElementNames() {
+            var builder = new ConverterOptionsBuilder();
+
+            builder.RemoveTagsToRemove("ul", "ol");
+
+            Assert.Equal(new HashSet<string>() {
+                "html",
+                "body",
+                "menu",
+                "div",
+                "span"
+            }, builder.TagsToRemove);
+        }
+
+        [Fact]
         public void AddElementConverters_Returns_Self() {
             var builder = new ConverterOptionsBuilder();
 

@@ -8,10 +8,39 @@ using Xunit;
 namespace VDT.Core.XmlConverter.Tests.Markdown {
     public class ConverterOptionsBuilderTests {
         [Fact]
+        public void PreConversionMode_Defaults_To_Fenced() {
+            var builder = new ConverterOptionsBuilder();
+
+            Assert.Equal(PreConversionMode.Fenced, builder.PreConversionMode);
+        }
+
+        [Fact]
         public void UnknownElementHandlingMode_Defaults_To_None() {
             var builder = new ConverterOptionsBuilder();
 
             Assert.Equal(UnknownElementHandlingMode.None, builder.UnknownElementHandlingMode);
+        }
+
+        [Fact]
+        public void CharacterEscapeMode_Defaults_To_ElementConverterBased() {
+            var builder = new ConverterOptionsBuilder();
+
+            Assert.Equal(CharacterEscapeMode.ElementConverterBased, builder.CharacterEscapeMode);
+        }
+
+        [Fact]
+        public void TagsToRemove_Defaults() {
+            var builder = new ConverterOptionsBuilder();
+
+            Assert.Equal(new HashSet<string>() {
+                "html",
+                "body",
+                "ul",
+                "ol",
+                "menu",
+                "div",
+                "span"
+            }, builder.TagsToRemove);
         }
 
         [Fact]

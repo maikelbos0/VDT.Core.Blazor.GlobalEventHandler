@@ -182,9 +182,8 @@ namespace VDT.Core.XmlConverter.Markdown {
             }
         }
 
-        public void AddElementRemovingConverter(ConverterOptions options) {
-            // TODO consider not removing some of these? Meta, frame, iframe, frameset?
-            options.ElementConverters.Add(new ElementRemovingConverter("script", "style", "head", "frame", "meta", "iframe", "frameset"));
+        public void AddElementRemovingConverter(ConverterOptions options, HashSet<string> elementsToRemove) {
+            options.ElementConverters.Add(new ElementRemovingConverter(elementsToRemove.ToArray()));
         }
 
         public void SetDefaultElementConverter(ConverterOptions options, UnknownElementHandlingMode unknownElementHandlingMode) {

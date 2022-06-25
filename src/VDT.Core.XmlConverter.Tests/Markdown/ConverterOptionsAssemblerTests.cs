@@ -418,7 +418,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();
 
-            assembler.AddElementRemovingConverter(options);
+            assembler.AddElementRemovingConverter(options, new HashSet<string>() { "script", "style", "head", "frame", "meta", "iframe", "frameset" });
 
             Assert.Equal(new[] { "script", "style", "head", "frame", "meta", "iframe", "frameset" }, Assert.IsType<ElementRemovingConverter>(Assert.Single(options.ElementConverters)).ValidForElementNames);
         }

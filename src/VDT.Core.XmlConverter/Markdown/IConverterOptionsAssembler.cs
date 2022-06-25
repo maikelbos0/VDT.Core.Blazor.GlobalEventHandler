@@ -40,7 +40,7 @@ namespace VDT.Core.XmlConverter.Markdown {
 
         public void AddTagRemovingElementConverter(ConverterOptions options, HashSet<string> tagsToRemove);
 
-        public void AddElementRemovingConverter(ConverterOptions options);
+        public void AddElementRemovingConverter(ConverterOptions options, HashSet<string> elementsToRemove);
 
         public void SetDefaultElementConverter(ConverterOptions options, UnknownElementHandlingMode unknownElementHandlingMode);
     }

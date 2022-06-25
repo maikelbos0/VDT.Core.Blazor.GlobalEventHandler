@@ -25,7 +25,7 @@ namespace VDT.Core.XmlConverter.Markdown {
             { ElementConverterTarget.Subscript, (assembler, _, options) => assembler.AddSubscriptConverter(options) },
             { ElementConverterTarget.Superscript, (assembler, _, options) => assembler.AddSuperscriptConverter(options) },
             // TODO make configurable and remove as target
-            { ElementConverterTarget.RemoveElement, (assembler, _, options) => assembler.AddElementRemovingConverter(options) }
+            { ElementConverterTarget.RemoveElement, (assembler, builder, options) => assembler.AddElementRemovingConverter(options, builder.ElementsToRemove) }
         };
 
         /// <summary>

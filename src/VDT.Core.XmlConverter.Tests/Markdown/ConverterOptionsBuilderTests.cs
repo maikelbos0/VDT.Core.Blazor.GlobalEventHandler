@@ -555,7 +555,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             builder.Build(options, assembler);
 
-            assembler.Received().AddElementRemovingConverter(options);
+            assembler.Received().AddElementRemovingConverter(options, builder.ElementsToRemove);
         }
 
         private static ConverterOptionsBuilder CreateBuilder(params ElementConverterTarget[] targets)

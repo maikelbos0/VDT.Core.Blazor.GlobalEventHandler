@@ -71,7 +71,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [InlineData(ElementConverterTarget.Highlight, '\\', '=')]
         [InlineData(ElementConverterTarget.Subscript, '\\', '~')]
         [InlineData(ElementConverterTarget.Superscript, '\\', '^')]
-        [InlineData(ElementConverterTarget.RemoveElement)]
         public void SetTextConverter_Sets_TextConverter_CharacterEscapes_For_CharacterEscapeMode_ElementConverterBased(ElementConverterTarget elementConverterTarget, params char[] expectedCharacters) {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();
@@ -421,6 +420,16 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             assembler.AddElementRemovingConverter(options, new HashSet<string>() { "script", "style", "head", "frame", "meta", "iframe", "frameset" });
 
             Assert.Equal(new[] { "script", "style", "head", "frame", "meta", "iframe", "frameset" }, Assert.IsType<ElementRemovingConverter>(Assert.Single(options.ElementConverters)).ValidForElementNames);
+        }
+
+        [Fact]
+        public void AddElementRemovingElementConverter_Adds_Nothing_For_Empty_Hashset() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddElementRemovingConverter(options, new HashSet<string>());
+
+            Assert.Empty(options.ElementConverters);
         }
 
         private static bool IsBlockElementConverter(IElementConverter converter, string expectedStartOutput, params string[] expectedValidForElementNames)

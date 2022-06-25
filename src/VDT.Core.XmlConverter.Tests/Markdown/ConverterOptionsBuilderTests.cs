@@ -74,8 +74,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
                 ElementConverterTarget.Image,
                 ElementConverterTarget.Important,
                 ElementConverterTarget.Emphasis,
-                ElementConverterTarget.InlineCode,
-                ElementConverterTarget.RemoveElement
+                ElementConverterTarget.InlineCode
             }, builder.ElementConverterTargets);
         }
 
@@ -123,6 +122,17 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             builder.Build(options, assembler);
 
             assembler.Received().AddTagRemovingElementConverter(options, builder.TagsToRemove);
+        }
+
+        [Fact]
+        public void Build_Always_Calls_AddElementRemovingElementConverter() {
+            var options = new ConverterOptions();
+            var builder = CreateBuilder();
+            var assembler = Substitute.For<IConverterOptionsAssembler>();
+
+            builder.Build(options, assembler);
+
+            assembler.Received().AddElementRemovingConverter(options, builder.ElementsToRemove);
         }
 
         [Fact]
@@ -545,17 +555,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             builder.Build(options, assembler);
 
             assembler.Received().AddSuperscriptConverter(options);
-        }
-
-        [Fact]
-        public void Build_ElementConverterTarget_RemoveElement_Calls_AddElementRemovingConverter() {
-            var options = new ConverterOptions();
-            var builder = CreateBuilder(ElementConverterTarget.RemoveElement);
-            var assembler = Substitute.For<IConverterOptionsAssembler>();
-
-            builder.Build(options, assembler);
-
-            assembler.Received().AddElementRemovingConverter(options, builder.ElementsToRemove);
         }
 
         private static ConverterOptionsBuilder CreateBuilder(params ElementConverterTarget[] targets)

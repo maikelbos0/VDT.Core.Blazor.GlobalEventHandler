@@ -23,9 +23,7 @@ namespace VDT.Core.XmlConverter.Markdown {
             { ElementConverterTarget.Strikethrough, (assembler, _, options) => assembler.AddStrikethroughConverter(options) },
             { ElementConverterTarget.Highlight, (assembler, _, options) => assembler.AddHighlightConverter(options) },
             { ElementConverterTarget.Subscript, (assembler, _, options) => assembler.AddSubscriptConverter(options) },
-            { ElementConverterTarget.Superscript, (assembler, _, options) => assembler.AddSuperscriptConverter(options) },
-            // TODO make configurable and remove as target
-            { ElementConverterTarget.RemoveElement, (assembler, builder, options) => assembler.AddElementRemovingConverter(options, builder.ElementsToRemove) }
+            { ElementConverterTarget.Superscript, (assembler, _, options) => assembler.AddSuperscriptConverter(options) }
         };
 
         /// <summary>
@@ -90,8 +88,7 @@ namespace VDT.Core.XmlConverter.Markdown {
             ElementConverterTarget.Image,
             ElementConverterTarget.Important,
             ElementConverterTarget.Emphasis,
-            ElementConverterTarget.InlineCode,
-            ElementConverterTarget.RemoveElement
+            ElementConverterTarget.InlineCode
         };
 
         /// <summary>
@@ -293,6 +290,7 @@ namespace VDT.Core.XmlConverter.Markdown {
             }
 
             assembler.AddTagRemovingElementConverter(options, TagsToRemove);
+            assembler.AddElementRemovingConverter(options, ElementsToRemove);
             assembler.SetTextConverter(options, CharacterEscapeMode, ElementConverterTargets, CustomCharacterEscapes);
             assembler.SetNodeConverterForNonMarkdownNodeTypes(options);
             assembler.SetDefaultElementConverter(options, UnknownElementHandlingMode);

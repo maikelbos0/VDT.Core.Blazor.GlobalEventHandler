@@ -81,11 +81,6 @@
         /// <summary>
         /// Superscript tag &lt;sup&gt;
         /// </summary>
-        Superscript,
-
-        /// <summary>
-        /// Remove elements that are should not be rendered in Markdown
-        /// </summary>
-        RemoveElement
+        Superscript
     }
 }

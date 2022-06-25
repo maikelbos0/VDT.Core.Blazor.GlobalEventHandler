@@ -47,8 +47,7 @@ namespace VDT.Core.XmlConverter.Markdown {
             { ElementConverterTarget.Strikethrough, new[] { '\\', '~' } },
             { ElementConverterTarget.Highlight, new[] { '\\', '=' } },
             { ElementConverterTarget.Subscript, new[] { '\\', '~' } },
-            { ElementConverterTarget.Superscript, new[] { '\\', '^' } },
-            { ElementConverterTarget.RemoveElement, Array.Empty<char>() }
+            { ElementConverterTarget.Superscript, new[] { '\\', '^' } }
         };
         
         public void SetTextConverter(ConverterOptions options, CharacterEscapeMode characterEscapeMode, HashSet<ElementConverterTarget> elementConverterTargets, Dictionary<char, string> customCharacterEscapes) {
@@ -183,7 +182,9 @@ namespace VDT.Core.XmlConverter.Markdown {
         }
 
         public void AddElementRemovingConverter(ConverterOptions options, HashSet<string> elementsToRemove) {
-            options.ElementConverters.Add(new ElementRemovingConverter(elementsToRemove.ToArray()));
+            if (elementsToRemove.Any()) {
+                options.ElementConverters.Add(new ElementRemovingConverter(elementsToRemove.ToArray()));
+            }
         }
 
         public void SetDefaultElementConverter(ConverterOptions options, UnknownElementHandlingMode unknownElementHandlingMode) {

@@ -44,6 +44,21 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
+        public void ElementsToRemove_Defaults() {
+            var builder = new ConverterOptionsBuilder();
+
+            Assert.Equal(new HashSet<string>() {
+                "head",
+                "script",
+                "style",
+                "frame",
+                "iframe",
+                "frameset",
+                "meta"
+            }, builder.ElementsToRemove);
+        }
+
+        [Fact]
         public void ElementConverterTargets_Defaults_To_Basic_Markdown() {
             var builder = new ConverterOptionsBuilder();
 
@@ -254,6 +269,53 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
                 "div",
                 "span"
             }, builder.TagsToRemove);
+        }
+
+        [Fact]
+        public void AddElementsToRemove_Returns_Self() {
+            var builder = new ConverterOptionsBuilder();
+
+            Assert.Same(builder, builder.AddElementsToRemove());
+        }
+
+        [Fact]
+        public void AddElementsToRemove_Adds_ElementNames() {
+            var builder = new ConverterOptionsBuilder();
+
+            builder.AddElementsToRemove("form", "head");
+
+            Assert.Equal(new HashSet<string>() { 
+                "head",
+                "script",
+                "style",
+                "meta",
+                "frame",
+                "iframe",
+                "frameset",
+                "form"
+            }, builder.ElementsToRemove);
+        }
+
+        [Fact]
+        public void RemoveElementsToRemove_Returns_Self() {
+            var builder = new ConverterOptionsBuilder();
+
+            Assert.Same(builder, builder.RemoveElementsToRemove());
+        }
+
+        [Fact]
+        public void RemoveElementsToRemove_Removes_ElementNames() {
+            var builder = new ConverterOptionsBuilder();
+
+            builder.RemoveElementsToRemove("meta", "frameset");
+
+            Assert.Equal(new HashSet<string>() {
+                "head",
+                "script",
+                "style",
+                "frame",
+                "iframe"
+            }, builder.ElementsToRemove);
         }
 
         [Fact]

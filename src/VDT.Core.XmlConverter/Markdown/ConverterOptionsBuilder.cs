@@ -49,7 +49,7 @@ namespace VDT.Core.XmlConverter.Markdown {
         public Dictionary<char, string> CustomCharacterEscapes { get; set; } = new Dictionary<char, string>();
 
         /// <summary>
-        /// Elements for which the tags should be stripped and only content should be rendered; defaults &lt;html&gt;, &lt;body&gt;, &lt;ul&gt;, &lt;ol&gt;,
+        /// Elements for which the tags should be stripped and only content should be rendered; defaults to &lt;html&gt;, &lt;body&gt;, &lt;ul&gt;, &lt;ol&gt;,
         /// &lt;menu&gt;, &lt;div&gt; and &lt;span&gt;
         /// </summary>
         public HashSet<string> TagsToRemove { get; set; } = new HashSet<string>() {
@@ -60,6 +60,19 @@ namespace VDT.Core.XmlConverter.Markdown {
             "menu",
             "div",
             "span"
+        };
+
+        /// <summary>
+        /// Elements that should not be rendered at all in Markdown; defaults to &lt;script&gt;, &lt;style&gt;, &lt;head&gt;, &lt;meta&gt;, &lt;frame&gt;, &lt;iframe&gt; and &lt;frameset&gt;
+        /// </summary>
+        public HashSet<string> ElementsToRemove { get; set; } = new HashSet<string>() {
+            "script",
+            "style",
+            "head",
+            "meta",
+            "frame",
+            "iframe",
+            "frameset"
         };
 
         /// <summary>
@@ -180,6 +193,42 @@ namespace VDT.Core.XmlConverter.Markdown {
         /// <returns>A reference to this instance after the operation has completed</returns>
         public ConverterOptionsBuilder RemoveTagsToRemove(IEnumerable<string> elementNames) {
             TagsToRemove.ExceptWith(elementNames);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Add elements for which the elements should be stripped and only content should be rendered
+        /// </summary>
+        /// <param name="elementNames">Names of elements to add</param>
+        /// <returns>A reference to this instance after the operation has completed</returns>
+        public ConverterOptionsBuilder AddElementsToRemove(params string[] elementNames) => AddElementsToRemove(elementNames.AsEnumerable());
+
+        /// <summary>
+        /// Add elements for which the elements should be stripped and only content should be rendered
+        /// </summary>
+        /// <param name="elementNames">Names of elements to add</param>
+        /// <returns>A reference to this instance after the operation has completed</returns>
+        public ConverterOptionsBuilder AddElementsToRemove(IEnumerable<string> elementNames) {
+            ElementsToRemove.UnionWith(elementNames);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Remove elements for which the elements should be stripped and only content should be rendered
+        /// </summary>
+        /// <param name="elementNames">Names of elements to remove</param>
+        /// <returns>A reference to this instance after the operation has completed</returns>
+        public ConverterOptionsBuilder RemoveElementsToRemove(params string[] elementNames) => RemoveElementsToRemove(elementNames.AsEnumerable());
+
+        /// <summary>
+        /// Remove elements for which the elements should be stripped and only content should be rendered
+        /// </summary>
+        /// <param name="elementNames">Names of elements to remove</param>
+        /// <returns>A reference to this instance after the operation has completed</returns>
+        public ConverterOptionsBuilder RemoveElementsToRemove(IEnumerable<string> elementNames) {
+            ElementsToRemove.ExceptWith(elementNames);
 
             return this;
         }

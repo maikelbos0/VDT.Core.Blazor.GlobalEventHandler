@@ -48,7 +48,6 @@ namespace VDT.Core.XmlConverter.Markdown {
             { ElementConverterTarget.Highlight, new[] { '\\', '=' } },
             { ElementConverterTarget.Subscript, new[] { '\\', '~' } },
             { ElementConverterTarget.Superscript, new[] { '\\', '^' } },
-            { ElementConverterTarget.RemoveTag, Array.Empty<char>() },
             { ElementConverterTarget.RemoveElement, Array.Empty<char>() }
         };
         

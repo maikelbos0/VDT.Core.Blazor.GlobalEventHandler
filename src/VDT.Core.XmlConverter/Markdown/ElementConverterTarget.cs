@@ -84,11 +84,6 @@
         Superscript,
 
         /// <summary>
-        /// Remove non-semantic tags surrounding content
-        /// </summary>
-        RemoveTag,
-
-        /// <summary>
         /// Remove elements that are should not be rendered in Markdown
         /// </summary>
         RemoveElement

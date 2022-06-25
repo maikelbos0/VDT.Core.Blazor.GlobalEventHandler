@@ -31,7 +31,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
                 ElementConverterTarget.Important,
                 ElementConverterTarget.Emphasis,
                 ElementConverterTarget.InlineCode,
-                ElementConverterTarget.RemoveTag,
                 ElementConverterTarget.RemoveElement
             }, builder.ElementConverterTargets);
         }
@@ -69,6 +68,17 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             builder.Build(options, assembler);
 
             assembler.Received().SetDefaultElementConverter(options, UnknownElementHandlingMode.RemoveTags);
+        }
+
+        [Fact]
+        public void Build_Always_Calls_AddTagRemovingElementConverter() {
+            var options = new ConverterOptions();
+            var builder = CreateBuilder();
+            var assembler = Substitute.For<IConverterOptionsAssembler>();
+
+            builder.Build(options, assembler);
+
+            assembler.Received().AddTagRemovingElementConverter(options, builder.TagsToRemove);
         }
 
         [Fact]
@@ -444,17 +454,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             builder.Build(options, assembler);
 
             assembler.Received().AddSuperscriptConverter(options);
-        }
-
-        [Fact]
-        public void Build_ElementConverterTarget_RemoveTag_Calls_AddTagRemovingElementConverter() {
-            var options = new ConverterOptions();
-            var builder = CreateBuilder(ElementConverterTarget.RemoveTag);
-            var assembler = Substitute.For<IConverterOptionsAssembler>();
-
-            builder.Build(options, assembler);
-
-            assembler.Received().AddTagRemovingElementConverter(options, builder.TagsToRemove);
         }
 
         [Fact]

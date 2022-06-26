@@ -18,8 +18,10 @@ namespace VDT.Core.XmlConverter.Markdown {
 
         /// <inheritdoc/>
         public override void RenderEnd(ElementData elementData, TextWriter writer) {
-            elementData.GetContentTracker().Prefixes.Pop();
-            base.RenderEnd(elementData, writer);
+            var tracker = elementData.GetContentTracker();
+            
+            tracker.Prefixes.Pop();
+            tracker.WriteLine(writer);
         }
     }
 }

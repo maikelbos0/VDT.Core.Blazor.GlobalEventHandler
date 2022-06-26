@@ -35,9 +35,10 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             var converter = new IndentedPreConverter();
             var prefixes = new Stack<string>();
             var elementData = ElementDataHelper.Create(
-                "li",
+                "pre",
                 additionalData: new Dictionary<string, object?>() {
-                    { nameof(ContentTracker.Prefixes), prefixes }
+                    { nameof(ContentTracker.Prefixes), prefixes },
+                    { nameof(ContentTracker.TrailingNewLineCount), 1 }
                 }
             );
 
@@ -46,7 +47,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             converter.RenderEnd(elementData, writer);
 
-            Assert.Equal("\r\n", writer.ToString());
+            Assert.Equal("> \r\n", writer.ToString());
             Assert.Equal("> ", Assert.Single(Assert.IsType<Stack<string>>(elementData.AdditionalData[nameof(ContentTracker.Prefixes)])));
         }
     }

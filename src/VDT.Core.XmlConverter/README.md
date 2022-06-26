@@ -176,7 +176,7 @@ Above example will result in the following XML:
 
 ## Converting HTML to Markdown 
 
-Methods to convert HTML to Markdown can be found in the `VDT.Core.XmlConverter.Markdown` namespace. It only supports converting HTML that is also valid XML,
+Methods to convert HTML to Markdown can be found in the `VDT.Core.XmlConverter.Markdown` namespace. Only converting HTML that is also valid XML is supported,
 so if your documents are not well-formed XML an additional conversion is required first.
 
 ### Basic conversions
@@ -244,5 +244,65 @@ This is an example document\. It will get converted to Markdown\.
 
 1\. Here is a list item
 1\. And another \*\*very important\*\* one
+
+```
+
+### Customized conversions
+
+If you need fine-grained control over how your HTML is converted to Markdown, use the `ConverterOptionsBuilder` class. It supports the following
+customizations:
+
+- `ElementConverterTargets` and its builder methods can be used to specify which HTML elements to convert
+- `TagsToRemove` and its builder methods can be used to specify for which elements only content is rendered
+- `ElementsToRemove` and its builder methods can be used to specify which elements should not be converted at all
+- `PreConversionMode` and its builder methods can be used to specify how to render &lt;pre&gt; elements
+- `UnknownElementHandlingMode` and its builder methods can be used to specify how to handle elements that can't be converted
+- `CharacterEscapeMode` and `CustomCharacterEscapes` and their builder methods can be used to specify which characters to escape
+
+#### Example
+
+```
+var xml = @"
+<h1>Header</h1>
+
+<p>This is an example document. It will get converted to Markdown.</p>
+
+<pre>
+function SomeCodeHere() {
+}
+</pre>
+
+<p>Here we have more text.</p>
+
+<ol>
+	<li>Here is a list item</li>
+	<li>And another <strong>very important</strong> one</li>
+</ol>
+";
+var options = new ConverterOptionsBuilder()
+    .RemoveElementConverters(ElementConverterTarget.Important)
+    .UsePreConversionMode(PreConversionMode.Indented)
+    .Build();
+var converter = new Converter(options);
+
+var markdown = converter.Convert(xml);
+```
+
+Above example will result in the following Markdown:
+
+```
+    
+# Header
+
+This is an example document\. It will get converted to Markdown\.
+
+	
+	function SomeCodeHere() {
+	}
+	
+Here we have more text\.
+
+1. Here is a list item
+1. And another <strong>very important</strong> one
 
 ```

@@ -74,7 +74,7 @@ namespace VDT.Core.XmlConverter.Markdown {
         };
 
         /// <summary>
-        /// Targets for converting HTML elements to Markdown to add to the resulting <see cref="ConverterOptions"/>
+        /// Targets for converting HTML elements to Markdown to add to the resulting <see cref="ConverterOptions"/>; defaults to only elements supported by basic Markdown
         /// </summary>
         public HashSet<ElementConverterTarget> ElementConverterTargets { get; set; } = new HashSet<ElementConverterTarget>() {
             ElementConverterTarget.Heading,

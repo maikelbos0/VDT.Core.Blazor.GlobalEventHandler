@@ -199,9 +199,9 @@ Markdown formatted document.
 - `hr`: horizontal rule
 - `br`: linebreak
 
-By default for the following elements only the content is rendered: `html`, `body`, `ul`, `ol`, `menu`, `div` and `span`.
+For the following elements only the content is rendered: `html`, `body`, `ul`, `ol`, `menu`, `div` and `span`.
 
-By default the following elements are removed entirely: `script`, `style`, `head`, `frame`, `meta`, `iframe` and `frameset`.
+The following elements are removed entirely: `script`, `style`, `head`, `frame`, `meta`, `iframe` and `frameset`.
 
 The optional parameter `useExtendedSyntax` can be used to add supported HTML to extended Markdown syntax converters:
 

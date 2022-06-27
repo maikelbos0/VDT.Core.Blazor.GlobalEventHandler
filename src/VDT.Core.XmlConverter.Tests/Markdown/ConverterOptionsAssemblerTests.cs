@@ -89,6 +89,22 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
+        public void SetTextConverter_Succeeds_For_CharacterEscapeMode_ElementConverterBased_With_Double_Character() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+            var targets = new HashSet<ElementConverterTarget>() { 
+                ElementConverterTarget.ListItem,
+                ElementConverterTarget.HorizontalRule
+            };
+
+            assembler.SetTextConverter(options, CharacterEscapeMode.ElementConverterBased, targets, new Dictionary<char, string>());
+
+            var textConverter = Assert.IsType<TextConverter>(options.TextConverter);
+
+            Assert.Equal(new HashSet<char>() { '<', '>', '&', '\\', '*', '+', '-', '.' }, textConverter.CharacterEscapes.Keys.ToHashSet());
+        }
+
+        [Fact]
         public void SetTextConverter_Sets_TextConverter_CharacterEscapes_For_CharacterEscapeMode_Custom() {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();

@@ -152,19 +152,19 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
+        public void UsePreConversionMode_Returns_Self() {
+            var builder = new ConverterOptionsBuilder();
+
+            Assert.Same(builder, builder.UsePreConversionMode(PreConversionMode.Indented));
+        }
+
+        [Fact]
         public void UsePreConversionMode_Sets_PreConversionMode() {
             var builder = new ConverterOptionsBuilder();
 
             builder.UsePreConversionMode(PreConversionMode.Indented);
 
             Assert.Equal(PreConversionMode.Indented, builder.PreConversionMode);
-        }
-
-        [Fact]
-        public void UsePreConversionMode_Returns_Self() {
-            var builder = new ConverterOptionsBuilder();
-
-            Assert.Same(builder, builder.UsePreConversionMode(PreConversionMode.Indented));
         }
 
         [Fact]
@@ -481,17 +481,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
-        public void Build_ElementConverterTarget_Emphasis_Calls_AddEmphasisConverter() {
-            var options = new ConverterOptions();
-            var builder = CreateBuilder(ElementConverterTarget.Emphasis);
-            var assembler = Substitute.For<IConverterOptionsAssembler>();
-
-            builder.Build(options, assembler);
-
-            assembler.Received().AddEmphasisConverter(options);
-        }
-
-        [Fact]
         public void Build_ElementConverterTarget_Important_Calls_AddImportantConverter() {
             var options = new ConverterOptions();
             var builder = CreateBuilder(ElementConverterTarget.Important);
@@ -500,6 +489,17 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             builder.Build(options, assembler);
 
             assembler.Received().AddImportantConverter(options);
+        }
+
+        [Fact]
+        public void Build_ElementConverterTarget_Emphasis_Calls_AddEmphasisConverter() {
+            var options = new ConverterOptions();
+            var builder = CreateBuilder(ElementConverterTarget.Emphasis);
+            var assembler = Substitute.For<IConverterOptionsAssembler>();
+
+            builder.Build(options, assembler);
+
+            assembler.Received().AddEmphasisConverter(options);
         }
 
         [Fact]

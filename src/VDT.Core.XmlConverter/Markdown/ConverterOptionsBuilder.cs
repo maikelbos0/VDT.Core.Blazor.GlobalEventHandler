@@ -195,14 +195,14 @@ namespace VDT.Core.XmlConverter.Markdown {
         }
 
         /// <summary>
-        /// Add elements for which the elements should be stripped and only content should be rendered
+        /// Add elements that should not be rendered
         /// </summary>
         /// <param name="elementNames">Names of elements to add</param>
         /// <returns>A reference to this instance after the operation has completed</returns>
         public ConverterOptionsBuilder AddElementsToRemove(params string[] elementNames) => AddElementsToRemove(elementNames.AsEnumerable());
 
         /// <summary>
-        /// Add elements for which the elements should be stripped and only content should be rendered
+        /// Add elements that should not be rendered
         /// </summary>
         /// <param name="elementNames">Names of elements to add</param>
         /// <returns>A reference to this instance after the operation has completed</returns>
@@ -213,14 +213,14 @@ namespace VDT.Core.XmlConverter.Markdown {
         }
 
         /// <summary>
-        /// Remove elements for which the elements should be stripped and only content should be rendered
+        /// Remove elements that should not be rendered
         /// </summary>
         /// <param name="elementNames">Names of elements to remove</param>
         /// <returns>A reference to this instance after the operation has completed</returns>
         public ConverterOptionsBuilder RemoveElementsToRemove(params string[] elementNames) => RemoveElementsToRemove(elementNames.AsEnumerable());
 
         /// <summary>
-        /// Remove elements for which the elements should be stripped and only content should be rendered
+        /// Remove elements that should not be rendered
         /// </summary>
         /// <param name="elementNames">Names of elements to remove</param>
         /// <returns>A reference to this instance after the operation has completed</returns>

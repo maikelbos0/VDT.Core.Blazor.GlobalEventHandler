@@ -2,22 +2,22 @@
 
 namespace VDT.Core.XmlConverter.Markdown {
     /// <summary>
-    /// Converter for rendering elements as block quotations in Markdown
+    /// Converter for rendering Markdown indented code blocks
     /// </summary>
-    public class BlockquoteConverter : BlockElementConverter {
+    public class IndentedPreConverter : BlockElementConverter {        
         /// <summary>
-        /// Construct an instance of a Markdown blockquote converter
+        /// Construct an instance of a Markdown indented pre converter
         /// </summary>
-        public BlockquoteConverter() : base("", "blockquote") { }
-                
+        public IndentedPreConverter() : base("", "pre") { }
+
         /// <inheritdoc/>
         public override void RenderStart(ElementData elementData, TextWriter writer) {
             base.RenderStart(elementData, writer);
-            elementData.GetContentTracker().Prefixes.Push("> ");
+            elementData.GetContentTracker().Prefixes.Push("\t");
         }
 
         /// <inheritdoc/>
-        override public void RenderEnd(ElementData elementData, TextWriter writer) {
+        public override void RenderEnd(ElementData elementData, TextWriter writer) {
             var tracker = elementData.GetContentTracker();
             
             tracker.Prefixes.Pop();

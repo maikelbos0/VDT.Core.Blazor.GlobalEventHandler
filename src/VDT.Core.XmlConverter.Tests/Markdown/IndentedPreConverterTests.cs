@@ -4,13 +4,13 @@ using VDT.Core.XmlConverter.Markdown;
 using Xunit;
 
 namespace VDT.Core.XmlConverter.Tests.Markdown {
-    public class BlockquoteConverterTests {
+    public class IndentedPreConverterTests {
         [Theory]
-        [InlineData("blockquote", true)]
-        [InlineData("BLOCKQUOTE", true)]
+        [InlineData("pre", true)]
+        [InlineData("PRE", true)]
         [InlineData("foo", false)]
         public void IsValidFor(string elementName, bool expectedIsValid) {
-            var converter = new BlockquoteConverter();
+            var converter = new IndentedPreConverter();
 
             Assert.Equal(expectedIsValid, converter.IsValidFor(ElementDataHelper.Create(elementName)));
         }
@@ -19,36 +19,36 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         public void RenderStart() {
             using var writer = new StringWriter();
 
-            var converter = new BlockquoteConverter();
-            var elementData = ElementDataHelper.Create("blockquote");
+            var converter = new IndentedPreConverter();
+            var elementData = ElementDataHelper.Create("pre");
 
             converter.RenderStart(elementData, writer);
 
             Assert.Equal("\r\n", writer.ToString());
-            Assert.Equal("> ", Assert.Single(Assert.IsType<Stack<string>>(elementData.AdditionalData[nameof(ContentTracker.Prefixes)])));
+            Assert.Equal("\t", Assert.Single(Assert.IsType<Stack<string>>(elementData.AdditionalData[nameof(ContentTracker.Prefixes)])));
         }
 
         [Fact]
         public void RenderEnd() {
             using var writer = new StringWriter();
 
-            var converter = new BlockquoteConverter();
+            var converter = new IndentedPreConverter();
             var prefixes = new Stack<string>();
             var elementData = ElementDataHelper.Create(
-                "blockquote",
+                "pre",
                 additionalData: new Dictionary<string, object?>() {
                     { nameof(ContentTracker.Prefixes), prefixes },
                     { nameof(ContentTracker.TrailingNewLineCount), 1 }
                 }
             );
-            
-            prefixes.Push("\t");
+
             prefixes.Push("> ");
+            prefixes.Push("\t");
 
             converter.RenderEnd(elementData, writer);
 
-            Assert.Equal("\t\r\n", writer.ToString());
-            Assert.Equal("\t", Assert.Single(Assert.IsType<Stack<string>>(elementData.AdditionalData[nameof(ContentTracker.Prefixes)])));
+            Assert.Equal("> \r\n", writer.ToString());
+            Assert.Equal("> ", Assert.Single(Assert.IsType<Stack<string>>(elementData.AdditionalData[nameof(ContentTracker.Prefixes)])));
         }
     }
 }

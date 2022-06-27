@@ -2,13 +2,13 @@
 
 namespace VDT.Core.XmlConverter.Markdown {
     /// <summary>
-    /// Converter for rendering code blocks as Markdown
+    /// Converter for rendering Markdown fenced code blocks
     /// </summary>
-    public class PreConverter : BlockElementConverter {
+    public class FencedPreConverter : BlockElementConverter {        
         /// <summary>
-        /// Construct an instance of a Markdown pre converter
+        /// Construct an instance of a Markdown fenced pre converter
         /// </summary>
-        public PreConverter() : base("```", "pre") { }
+        public FencedPreConverter() : base("```", "pre") { }
 
         /// <inheritdoc/>
         public override void RenderEnd(ElementData elementData, TextWriter writer) {

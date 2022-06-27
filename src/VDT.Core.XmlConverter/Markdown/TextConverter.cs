@@ -12,29 +12,21 @@ namespace VDT.Core.XmlConverter.Markdown {
     public class TextConverter : INodeConverter {
         private const string preName = "pre";
 
-        private static Regex newLineFinder = new Regex("^(\r\n?|\n)", RegexOptions.Compiled);
-        private static Regex whitespaceNormalizer = new Regex("\\s+", RegexOptions.Compiled);
-        private static Dictionary<char, string> markdownEscapeCharacters = new Dictionary<char, string>() {
-            { '\\', "\\\\" },
-            { '`', "\\`" },
-            { '*', "\\*" },
-            { '_', "\\_" },
-            { '{', "\\{" },
-            { '}', "\\}" },
-            { '[', "\\[" },
-            { ']', "\\]" },
-            { '(', "\\(" },
-            { ')', "\\)" },
-            { '#', "\\#" },
-            { '+', "\\+" },
-            { '-', "\\-" },
-            { '.', "\\." },
-            { '!', "\\!" },
-            { '|', "\\|" },
-            { '<', "&lt;" },
-            { '>', "&gt;" },
-            { '&', "&amp;" }
-        };
+        private static readonly Regex newLineFinder = new Regex("^(\r\n?|\n)", RegexOptions.Compiled);
+        private static readonly Regex whitespaceNormalizer = new Regex("\\s+", RegexOptions.Compiled);
+
+        /// <summary>
+        /// Characters that will be transformed into their escape sequences if they appear in Markdown text
+        /// </summary>
+        public Dictionary<char, string> CharacterEscapes { get; }
+
+        /// <summary>
+        /// Constructs an instance of a Markdown text converter
+        /// </summary>
+        /// <param name="characterEscapes">Characters that will be transformed into their escape sequences if they appear in Markdown text</param>
+        public TextConverter(Dictionary<char, string> characterEscapes) {
+            CharacterEscapes = characterEscapes;
+        }
 
         /// <inheritdoc/>
         public void Convert(TextWriter writer, NodeData data) {
@@ -46,7 +38,7 @@ namespace VDT.Core.XmlConverter.Markdown {
             }
         }
 
-        private void ConvertPreText(TextWriter writer, NodeData data) {
+        private static void ConvertPreText(TextWriter writer, NodeData data) {
             var tracker = data.GetContentTracker();
             var value = data.Value;
 
@@ -67,7 +59,7 @@ namespace VDT.Core.XmlConverter.Markdown {
             }
 
             foreach (var c in value) {
-                if (markdownEscapeCharacters.TryGetValue(c, out var str)) {
+                if (CharacterEscapes.TryGetValue(c, out var str)) {
                     valueBuilder.Append(str);
                 }
                 else {

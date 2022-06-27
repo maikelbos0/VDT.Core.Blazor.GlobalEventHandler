@@ -5,7 +5,10 @@ namespace VDT.Core.XmlConverter.Markdown {
     /// Converter for rendering elements as block Markdown requiring indentation when nesting
     /// </summary>
     public class BlockElementConverter : BaseElementConverter {
-        private readonly string startOutput;
+        /// <summary>
+        /// Value to render at the start of the element, before any possible child content is rendered
+        /// </summary>
+        public string StartOutput { get; }
 
         /// <summary>
         /// Constructs an instance of a Markdown block element converter
@@ -13,7 +16,7 @@ namespace VDT.Core.XmlConverter.Markdown {
         /// <param name="startOutput">Value to render at the start of the element, before any possible child content is rendered</param>
         /// <param name="validForElementNames">Element names for which this converter is valid; names are case-insensitive</param>
         public BlockElementConverter(string startOutput, params string[] validForElementNames) : base(validForElementNames) {
-            this.startOutput = startOutput;
+            StartOutput = startOutput;
         }
 
         /// <inheritdoc/>
@@ -24,7 +27,7 @@ namespace VDT.Core.XmlConverter.Markdown {
                 tracker.WriteLine(writer);
             }
 
-            tracker.Write(writer, startOutput);
+            tracker.Write(writer, StartOutput);
         }
 
         /// <inheritdoc/>

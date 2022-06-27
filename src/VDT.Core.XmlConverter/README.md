@@ -174,12 +174,17 @@ Above example will result in the following XML:
 <p>This paragraph converts <em>italic</em> and <strong>bold</strong> spans to more appropriate tags.</p>
 ```
 
-## Markdown extensions
+## Converting HTML to Markdown 
 
-The extension methods in the `VDT.Core.XmlConverter.Markdown` namespace extend the `ConverterOptions` class to automatically provide you with a set of
-converters that convert any HTML that is also valid XML into a Markdown formatted document.
+Methods to convert HTML to Markdown can be found in the `VDT.Core.XmlConverter.Markdown` namespace. Only converting HTML that is also valid XML is supported,
+so if your documents are not well-formed XML an additional conversion is required first.
 
-`ConverterOptionsExtensions.UseBasicMarkdown` adds support for converting the following elements to Markdown:
+### Basic conversions
+
+The extension method `ConverterOptionsExtensions.UseMarkdown` for the `ConverterOptions` class automatically adds a set of converters to convert HTML into a
+Markdown formatted document.
+
+`ConverterOptionsExtensions.UseMarkdown` adds support for converting the following elements to Markdown by default:
 
 - `h1` through `h6`: headings 1 through 6
 - `p`: paragraph
@@ -194,16 +199,23 @@ converters that convert any HTML that is also valid XML into a Markdown formatte
 - `hr`: horizontal rule
 - `br`: linebreak
 
-By default for the following elements only the content is rendered: `html`, `body`, `ul`, `ol`, `menu`, `div` and `span`.
+For the following elements only the content is rendered: `html`, `body`, `ul`, `ol`, `menu`, `div` and `span`.
 
-By default the following elements are removed entirely: `script`, `style`, `head`, `frame`, `meta`, `iframe` and `frameset`.
+The following elements are removed entirely: `script`, `style`, `head`, `frame`, `meta`, `iframe` and `frameset`.
+
+The optional parameter `useExtendedSyntax` can be used to add supported HTML to extended Markdown syntax converters:
+
+- `del`: strikethrough
+- `mark`: highlight
+- `sub`: subscript
+- `super`: superscript
 
 Finally, the optional parameter `unknownElementHandlingMode` can be used to specify how to handle elements that can't be converted:
 - `UnknownElementHandlingMode.None`: leave the elements as-is
 - `UnknownElementHandlingMode.RemoveTags`: remove only the tags but render the child content of the elements
 - `UnknownElementHandlingMode.RemoveElements`: remove the entire elements including child content
 
-### Example
+#### Example
 
 ```
 var xml = @"
@@ -232,5 +244,65 @@ This is an example document\. It will get converted to Markdown\.
 
 1\. Here is a list item
 1\. And another \*\*very important\*\* one
+
+```
+
+### Customized conversions
+
+If you need fine-grained control over how your HTML is converted to Markdown, use the `ConverterOptionsBuilder` class. It supports the following
+customizations:
+
+- `ElementConverterTargets` and its builder methods can be used to specify which HTML elements to convert
+- `TagsToRemove` and its builder methods can be used to specify for which elements only content is rendered
+- `ElementsToRemove` and its builder methods can be used to specify which elements should not be converted at all
+- `PreConversionMode` and its builder methods can be used to specify how to render &lt;pre&gt; elements
+- `UnknownElementHandlingMode` and its builder methods can be used to specify how to handle elements that can't be converted
+- `CharacterEscapeMode` and `CustomCharacterEscapes` and their builder methods can be used to specify which characters to escape
+
+#### Example
+
+```
+var xml = @"
+<h1>Header</h1>
+
+<p>This is an example document. It will get converted to Markdown.</p>
+
+<pre>
+function SomeCodeHere() {
+}
+</pre>
+
+<p>Here we have more text.</p>
+
+<ol>
+	<li>Here is a list item</li>
+	<li>And another <strong>very important</strong> one</li>
+</ol>
+";
+var options = new ConverterOptionsBuilder()
+    .RemoveElementConverters(ElementConverterTarget.Important)
+    .UsePreConversionMode(PreConversionMode.Indented)
+    .Build();
+var converter = new Converter(options);
+
+var markdown = converter.Convert(xml);
+```
+
+Above example will result in the following Markdown:
+
+```
+    
+# Header
+
+This is an example document\. It will get converted to Markdown\.
+
+	
+	function SomeCodeHere() {
+	}
+	
+Here we have more text\.
+
+1. Here is a list item
+1. And another <strong>very important</strong> one
 
 ```

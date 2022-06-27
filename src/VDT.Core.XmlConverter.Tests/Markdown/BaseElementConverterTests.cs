@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using VDT.Core.XmlConverter.Markdown;
+﻿using VDT.Core.XmlConverter.Markdown;
 using Xunit;
 
 namespace VDT.Core.XmlConverter.Tests.Markdown {

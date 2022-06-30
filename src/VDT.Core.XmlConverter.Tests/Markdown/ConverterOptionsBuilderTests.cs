@@ -557,6 +557,17 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             assembler.Received().AddSuperscriptConverter(options);
         }
 
+        [Fact]
+        public void Build_ElementConverterTarget_DefinitionList_Calls_AddDefinitionListConverter() {
+            var options = new ConverterOptions();
+            var builder = CreateBuilder(ElementConverterTarget.DefinitionList);
+            var assembler = Substitute.For<IConverterOptionsAssembler>();
+
+            builder.Build(options, assembler);
+
+            assembler.Received().AddDefinitionListConverter(options);
+        }
+
         private static ConverterOptionsBuilder CreateBuilder(params ElementConverterTarget[] targets)
             => new ConverterOptionsBuilder() {
                 ElementConverterTargets = new HashSet<ElementConverterTarget>(targets)

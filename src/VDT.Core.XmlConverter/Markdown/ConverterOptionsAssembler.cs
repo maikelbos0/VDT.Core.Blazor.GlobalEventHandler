@@ -189,6 +189,10 @@ namespace VDT.Core.XmlConverter.Markdown {
             }
         }
 
+        public void AddDefinitionListConverter(ConverterOptions options) {
+            // TODO
+        }
+
         public void SetDefaultElementConverter(ConverterOptions options, UnknownElementHandlingMode unknownElementHandlingMode) {
             options.DefaultElementConverter = unknownElementHandlingMode switch {
                 UnknownElementHandlingMode.None => new NoOpElementConverter(),

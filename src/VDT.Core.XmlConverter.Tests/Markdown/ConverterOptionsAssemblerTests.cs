@@ -47,6 +47,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
                 { '~', "\\~" },
                 { '=', "\\=" },
                 { '^', "\\^" },
+                { ':', "\\:" },
                 { '<', "&lt;" },
                 { '>', ">" },
                 { '&', "&amp;" },
@@ -71,6 +72,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [InlineData(ElementConverterTarget.Highlight, '\\', '=')]
         [InlineData(ElementConverterTarget.Subscript, '\\', '~')]
         [InlineData(ElementConverterTarget.Superscript, '\\', '^')]
+        [InlineData(ElementConverterTarget.DefinitionList, '\\', ':')]
         public void SetTextConverter_Sets_TextConverter_CharacterEscapes_For_CharacterEscapeMode_ElementConverterBased(ElementConverterTarget elementConverterTarget, params char[] expectedCharacters) {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();

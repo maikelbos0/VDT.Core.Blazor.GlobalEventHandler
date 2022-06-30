@@ -28,7 +28,8 @@ namespace VDT.Core.XmlConverter.Markdown {
             { '!', "\\!" },
             { '~', "\\~" },
             { '=', "\\=" },
-            { '^', "\\^" }
+            { '^', "\\^" },
+            { ':', "\\:" }
         };
 
         private readonly static Dictionary<ElementConverterTarget, char[]> elementConverterCharacters = new Dictionary<ElementConverterTarget, char[]>() {
@@ -47,7 +48,8 @@ namespace VDT.Core.XmlConverter.Markdown {
             { ElementConverterTarget.Strikethrough, new[] { '\\', '~' } },
             { ElementConverterTarget.Highlight, new[] { '\\', '=' } },
             { ElementConverterTarget.Subscript, new[] { '\\', '~' } },
-            { ElementConverterTarget.Superscript, new[] { '\\', '^' } }
+            { ElementConverterTarget.Superscript, new[] { '\\', '^' } },
+            { ElementConverterTarget.DefinitionList, new[] { '\\', ':' } }
         };
         
         public void SetTextConverter(ConverterOptions options, CharacterEscapeMode characterEscapeMode, HashSet<ElementConverterTarget> elementConverterTargets, Dictionary<char, string> customCharacterEscapes) {

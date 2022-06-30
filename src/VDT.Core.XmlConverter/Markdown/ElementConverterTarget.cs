@@ -81,6 +81,11 @@
         /// <summary>
         /// Superscript tag &lt;sup&gt;
         /// </summary>
-        Superscript
+        Superscript,
+
+        /// <summary>
+        /// Definition list tag &lt;dl&gt; with terms &lt;dt&gt; and definitions &lt;dd&gt;
+        /// </summary>
+        DefinitionList
     }
 }

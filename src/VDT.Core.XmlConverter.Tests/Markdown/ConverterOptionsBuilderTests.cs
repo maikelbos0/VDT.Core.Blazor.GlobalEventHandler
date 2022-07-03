@@ -565,7 +565,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             builder.Build(options, assembler);
 
-            assembler.Received().AddDefinitionListConverter(options);
+            assembler.Received().AddDefinitionListConverters(options);
         }
 
         private static ConverterOptionsBuilder CreateBuilder(params ElementConverterTarget[] targets)

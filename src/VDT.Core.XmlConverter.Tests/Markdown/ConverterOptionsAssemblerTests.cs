@@ -411,6 +411,26 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
+        public void AddDefinitionListConverters_Adds_DefinitionDescriptionConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddDefinitionListConverters(options);
+
+            Assert.Single(options.ElementConverters, converter => converter is DefinitionDescriptionConverter);
+        }
+
+        [Fact]
+        public void AddDefinitionListConverters_Adds_ElementConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddDefinitionListConverters(options);
+
+            Assert.Single(options.ElementConverters, converter => IsBlockElementConverter(converter, "", "dt"));
+        }
+
+        [Fact]
         public void AddTagRemovingElementConverter_Adds_TagRemovingElementConverter() {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();

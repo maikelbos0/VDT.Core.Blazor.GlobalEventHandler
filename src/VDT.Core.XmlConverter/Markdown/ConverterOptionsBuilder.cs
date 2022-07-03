@@ -24,7 +24,7 @@ namespace VDT.Core.XmlConverter.Markdown {
             { ElementConverterTarget.Highlight, (assembler, _, options) => assembler.AddHighlightConverter(options) },
             { ElementConverterTarget.Subscript, (assembler, _, options) => assembler.AddSubscriptConverter(options) },
             { ElementConverterTarget.Superscript, (assembler, _, options) => assembler.AddSuperscriptConverter(options) },
-            { ElementConverterTarget.DefinitionList, (assembler, _, options) => assembler.AddDefinitionListConverter(options) }
+            { ElementConverterTarget.DefinitionList, (assembler, _, options) => assembler.AddDefinitionListConverters(options) }
         };
 
         /// <summary>

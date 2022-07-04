@@ -24,7 +24,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
 
             var converter = new ParagraphConverter();
             var elementData = ElementDataHelper.Create(
-                "bar",
+                "p",
                 additionalData: new Dictionary<string, object?> {
                     { nameof(ContentTracker.TrailingNewLineCount), trailingNewLineCount }
                 }
@@ -35,15 +35,24 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Equal(expectedOutput, writer.ToString());
         }
 
-        [Fact]
-        public void RenderEnd() {
+        [Theory]
+        [InlineData(0, "\r\n\r\n")]
+        [InlineData(1, "\r\n")]
+        [InlineData(2, "")]
+        public void RenderEnd(int trailingNewLineCount, string expectedOutput) {
             using var writer = new StringWriter();
 
             var converter = new ParagraphConverter();
+            var elementData = ElementDataHelper.Create(
+                "p",
+                additionalData: new Dictionary<string, object?> {
+                    { nameof(ContentTracker.TrailingNewLineCount), trailingNewLineCount }
+                }
+            );
 
-            converter.RenderEnd(ElementDataHelper.Create("p"), writer);
+            converter.RenderEnd(elementData, writer);
 
-            Assert.Equal("\r\n\r\n", writer.ToString());
+            Assert.Equal(expectedOutput, writer.ToString());
         }
     }
 }

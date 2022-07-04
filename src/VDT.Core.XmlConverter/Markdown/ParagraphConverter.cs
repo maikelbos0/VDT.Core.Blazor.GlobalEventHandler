@@ -23,8 +23,9 @@ namespace VDT.Core.XmlConverter.Markdown {
         public override void RenderEnd(ElementData elementData, TextWriter writer) {
             var tracker = elementData.GetContentTracker();
 
-            tracker.WriteLine(writer);
-            tracker.WriteLine(writer);
+            while (tracker.TrailingNewLineCount < 2) {
+                tracker.WriteLine(writer);
+            }
         }
     }
 }

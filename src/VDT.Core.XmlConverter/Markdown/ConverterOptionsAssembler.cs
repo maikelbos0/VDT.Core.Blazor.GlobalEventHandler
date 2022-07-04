@@ -120,6 +120,7 @@ namespace VDT.Core.XmlConverter.Markdown {
         public void AddListItemConverters(ConverterOptions options) {
             options.ElementConverters.Add(new OrderedListItemConverter());
             options.ElementConverters.Add(new UnorderedListItemConverter());
+            options.ElementConverters.Add(new ListConverter("ul", "ol", "menu"));
         }
 
         public void AddHorizontalRuleConverter(ConverterOptions options) {

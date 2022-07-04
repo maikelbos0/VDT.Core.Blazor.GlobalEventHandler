@@ -94,7 +94,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         public void SetTextConverter_Succeeds_For_CharacterEscapeMode_ElementConverterBased_With_Double_Character() {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();
-            var targets = new HashSet<ElementConverterTarget>() { 
+            var targets = new HashSet<ElementConverterTarget>() {
                 ElementConverterTarget.ListItem,
                 ElementConverterTarget.HorizontalRule
             };
@@ -268,6 +268,16 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             assembler.AddListItemConverters(options);
 
             Assert.Single(options.ElementConverters, converter => converter is UnorderedListItemConverter);
+        }
+
+        [Fact]
+        public void AddListItemConverters_Adds_ListConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddListItemConverters(options);
+
+            Assert.Single(options.ElementConverters, converter => converter is ListConverter listConverter && listConverter.ValidForElementNames.SequenceEqual(new[] { "ul", "ol", "menu" }));
         }
 
         [Fact]

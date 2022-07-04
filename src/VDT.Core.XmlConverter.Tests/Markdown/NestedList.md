@@ -3,6 +3,7 @@
 1. This number has bullets: 
 	- Bullet
 	- Foo
+	
 1. 
 	### A header here\!
 1. For some reason there's text before the header\. 

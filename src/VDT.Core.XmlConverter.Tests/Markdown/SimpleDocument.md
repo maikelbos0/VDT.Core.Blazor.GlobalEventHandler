@@ -8,3 +8,5 @@ This is line 2\.
 
 - A point
 - Another point
+
+## This is another header\.

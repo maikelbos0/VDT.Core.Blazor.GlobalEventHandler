@@ -48,15 +48,11 @@ namespace VDT.Core.XmlConverter.Markdown {
         public Dictionary<char, string> CustomCharacterEscapes { get; set; } = new Dictionary<char, string>();
 
         /// <summary>
-        /// Elements for which the tags should be stripped and only content should be rendered; defaults to &lt;html&gt;, &lt;body&gt;, &lt;ul&gt;, &lt;ol&gt;,
-        /// &lt;menu&gt;, &lt;div&gt; and &lt;span&gt;
+        /// Elements for which the tags should be stripped and only content should be rendered; defaults to &lt;html&gt;, &lt;body&gt;, &lt;div&gt; and &lt;span&gt;
         /// </summary>
         public HashSet<string> TagsToRemove { get; set; } = new HashSet<string>() {
             "html",
             "body",
-            "ul",
-            "ol",
-            "menu",
             "div",
             "span"
         };

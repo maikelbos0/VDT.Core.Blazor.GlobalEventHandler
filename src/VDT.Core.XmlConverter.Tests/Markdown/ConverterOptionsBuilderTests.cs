@@ -35,9 +35,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Equal(new HashSet<string>() {
                 "html",
                 "body",
-                "ul",
-                "ol",
-                "menu",
                 "div",
                 "span"
             }, builder.TagsToRemove);
@@ -250,9 +247,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Equal(new HashSet<string>() { 
                 "html",
                 "body",
-                "ul",
-                "ol",
-                "menu",
                 "div",
                 "span",
                 "form"
@@ -270,13 +264,11 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         public void RemoveTagsToRemove_Removes_ElementNames() {
             var builder = new ConverterOptionsBuilder();
 
-            builder.RemoveTagsToRemove("ul", "ol");
+            builder.RemoveTagsToRemove("div", "ol");
 
             Assert.Equal(new HashSet<string>() {
                 "html",
                 "body",
-                "menu",
-                "div",
                 "span"
             }, builder.TagsToRemove);
         }

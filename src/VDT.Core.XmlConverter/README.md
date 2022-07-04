@@ -199,7 +199,7 @@ Markdown formatted document.
 - `hr`: horizontal rule
 - `br`: linebreak
 
-For the following elements only the content is rendered: `html`, `body`, `ul`, `ol`, `menu`, `div` and `span`.
+For the following elements only the content is rendered: `html`, `body`, `div` and `span`.
 
 The following elements are removed entirely: `script`, `style`, `head`, `frame`, `meta`, `iframe` and `frameset`.
 

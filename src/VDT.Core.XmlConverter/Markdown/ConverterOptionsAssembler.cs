@@ -180,7 +180,7 @@ namespace VDT.Core.XmlConverter.Markdown {
 
         public void AddDefinitionListConverters(ConverterOptions options) {
             options.ElementConverters.Add(new BlockElementConverter("", "dt"));
-            options.ElementConverters.Add(new DefinitionDescriptionConverter());
+            options.ElementConverters.Add(new BlockElementConverter(": ", "dd"));
             options.ElementConverters.Add(new ListConverter("dl"));
         }
 

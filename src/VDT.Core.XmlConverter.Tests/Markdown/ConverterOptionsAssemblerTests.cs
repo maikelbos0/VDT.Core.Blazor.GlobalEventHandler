@@ -420,16 +420,24 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Single(options.ElementConverters, converter => IsInlineElementConverter(converter, "^", "^", "sup"));
         }
 
-        [Theory]
-        [InlineData("", "dt")]
-        [InlineData(": ", "dd")]
-        public void AddDefinitionListConverters_Adds_ElementConverter(string expectedStartOutput, string expectedValidForElementName) {
+        [Fact]
+        public void AddDefinitionListConverters_Adds_ElementConverter() {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();
 
             assembler.AddDefinitionListConverters(options);
 
-            Assert.Single(options.ElementConverters, converter => IsBlockElementConverter(converter, expectedStartOutput, expectedValidForElementName));
+            Assert.Single(options.ElementConverters, converter => IsBlockElementConverter(converter, ": ", "dd"));
+        }
+
+        [Fact]
+        public void AddDefinitionListConverters_Adds_DefinitionTermConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddDefinitionListConverters(options);
+
+            Assert.Single(options.ElementConverters, converter => converter is DefinitionTermConverter);
         }
 
         [Fact]

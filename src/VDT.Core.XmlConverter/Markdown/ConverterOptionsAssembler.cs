@@ -178,6 +178,12 @@ namespace VDT.Core.XmlConverter.Markdown {
             options.ElementConverters.Add(new InlineElementConverter("^", "^", "sup"));
         }
 
+        public void AddDefinitionListConverters(ConverterOptions options) {
+            options.ElementConverters.Add(new BlockElementConverter("", "dt"));
+            options.ElementConverters.Add(new DefinitionDescriptionConverter());
+            options.ElementConverters.Add(new ListConverter("dl"));
+        }
+
         public void AddTagRemovingElementConverter(ConverterOptions options, HashSet<string> tagsToRemove) {
             if (tagsToRemove.Any()) {
                 options.ElementConverters.Add(new TagRemovingElementConverter(tagsToRemove.ToArray()));
@@ -188,11 +194,6 @@ namespace VDT.Core.XmlConverter.Markdown {
             if (elementsToRemove.Any()) {
                 options.ElementConverters.Add(new ElementRemovingConverter(elementsToRemove.ToArray()));
             }
-        }
-
-        public void AddDefinitionListConverters(ConverterOptions options) {            
-            options.ElementConverters.Add(new BlockElementConverter("", "dt"));
-            options.ElementConverters.Add(new DefinitionDescriptionConverter());
         }
 
         public void SetDefaultElementConverter(ConverterOptions options, UnknownElementHandlingMode unknownElementHandlingMode) {

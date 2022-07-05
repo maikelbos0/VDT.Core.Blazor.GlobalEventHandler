@@ -441,6 +441,16 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
+        public void AddDefinitionListConverters_Adds_ListConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddDefinitionListConverters(options);
+
+            Assert.Single(options.ElementConverters, converter => converter is ListConverter listConverter && listConverter.ValidForElementNames.SequenceEqual(new[] { "dl" }));
+        }
+
+        [Fact]
         public void AddTagRemovingElementConverter_Adds_TagRemovingElementConverter() {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();

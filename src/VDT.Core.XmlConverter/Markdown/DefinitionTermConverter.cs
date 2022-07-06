@@ -6,7 +6,7 @@ namespace VDT.Core.XmlConverter.Markdown {
     /// </summary>
     public class DefinitionTermConverter : BaseElementConverter {
         /// <summary>
-        /// Construct an instance of a Markdown definition description converter
+        /// Construct an instance of a Markdown definition term converter
         /// </summary>
         public DefinitionTermConverter() : base("dt") { }
 

@@ -26,6 +26,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Update="Markdown\ExtendedBlock.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Markdown\ExtendedBlock.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Markdown\ExtendedInline.html">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>

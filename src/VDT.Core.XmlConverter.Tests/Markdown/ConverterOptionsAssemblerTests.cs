@@ -47,6 +47,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
                 { '~', "\\~" },
                 { '=', "\\=" },
                 { '^', "\\^" },
+                { ':', "\\:" },
                 { '<', "&lt;" },
                 { '>', ">" },
                 { '&', "&amp;" },
@@ -71,6 +72,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         [InlineData(ElementConverterTarget.Highlight, '\\', '=')]
         [InlineData(ElementConverterTarget.Subscript, '\\', '~')]
         [InlineData(ElementConverterTarget.Superscript, '\\', '^')]
+        [InlineData(ElementConverterTarget.DefinitionList, '\\', ':')]
         public void SetTextConverter_Sets_TextConverter_CharacterEscapes_For_CharacterEscapeMode_ElementConverterBased(ElementConverterTarget elementConverterTarget, params char[] expectedCharacters) {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();
@@ -92,7 +94,7 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         public void SetTextConverter_Succeeds_For_CharacterEscapeMode_ElementConverterBased_With_Double_Character() {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();
-            var targets = new HashSet<ElementConverterTarget>() { 
+            var targets = new HashSet<ElementConverterTarget>() {
                 ElementConverterTarget.ListItem,
                 ElementConverterTarget.HorizontalRule
             };
@@ -269,6 +271,16 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         }
 
         [Fact]
+        public void AddListItemConverters_Adds_ListConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddListItemConverters(options);
+
+            Assert.Single(options.ElementConverters, converter => converter is ListConverter listConverter && listConverter.ValidForElementNames.SequenceEqual(new[] { "ul", "ol", "menu" }));
+        }
+
+        [Fact]
         public void AddHorizontalRuleConverter_Adds_BlockElementConverter() {
             var options = new ConverterOptions();
             var assembler = new ConverterOptionsAssembler();
@@ -406,6 +418,36 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             assembler.AddSuperscriptConverter(options);
 
             Assert.Single(options.ElementConverters, converter => IsInlineElementConverter(converter, "^", "^", "sup"));
+        }
+
+        [Fact]
+        public void AddDefinitionListConverters_Adds_ElementConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddDefinitionListConverters(options);
+
+            Assert.Single(options.ElementConverters, converter => IsBlockElementConverter(converter, ": ", "dd"));
+        }
+
+        [Fact]
+        public void AddDefinitionListConverters_Adds_DefinitionTermConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddDefinitionListConverters(options);
+
+            Assert.Single(options.ElementConverters, converter => converter is DefinitionTermConverter);
+        }
+
+        [Fact]
+        public void AddDefinitionListConverters_Adds_ListConverter() {
+            var options = new ConverterOptions();
+            var assembler = new ConverterOptionsAssembler();
+
+            assembler.AddDefinitionListConverters(options);
+
+            Assert.Single(options.ElementConverters, converter => converter is ListConverter listConverter && listConverter.ValidForElementNames.SequenceEqual(new[] { "dl" }));
         }
 
         [Fact]

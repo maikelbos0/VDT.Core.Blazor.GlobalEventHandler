@@ -8,12 +8,10 @@
 
 	<PropertyGroup>
 		<PackageId>VDT.Core.XmlConverter</PackageId>
-		<Version>2.0.0</Version>
+		<Version>2.1.0</Version>
 		<Title>VDT.Core.XmlConverter</Title>
 		<Description>Converter for changing XML documents to other formats such as Markdown</Description>
-		<PackageReleaseNotes>- Added support for superscript, subscript, strikethrough and highlighting in Markdown
-- Added support for indented code blocks in Markdown
-- Added builder pattern for precise control over conversion to Markdown
+		<PackageReleaseNotes>- Added support for definition lists in Markdown
 - Improved Markdown results</PackageReleaseNotes>
 		<Authors>Maikel Bos</Authors>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>

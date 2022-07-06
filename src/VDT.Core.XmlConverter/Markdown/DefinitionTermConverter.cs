@@ -2,20 +2,22 @@
 
 namespace VDT.Core.XmlConverter.Markdown {
     /// <summary>
-    /// Converter for rendering paragraphs as Markdown
+    /// Converter for rendering elements as definition terms inside a definition list in Markdown
     /// </summary>
-    public class ParagraphConverter : BaseElementConverter {
+    public class DefinitionTermConverter : BaseElementConverter {
         /// <summary>
-        /// Construct an instance of a Markdown paragraph converter
+        /// Construct an instance of a Markdown definition term converter
         /// </summary>
-        public ParagraphConverter() : base("", "p") { }
+        public DefinitionTermConverter() : base("dt") { }
 
         /// <inheritdoc/>
         public override void RenderStart(ElementData elementData, TextWriter writer) {
             var tracker = elementData.GetContentTracker();
 
-            while (tracker.TrailingNewLineCount < 2) {
-                tracker.WriteLine(writer);
+            if (!elementData.IsFirstChild) {
+                while (tracker.TrailingNewLineCount < 2) {
+                    tracker.WriteLine(writer);
+                }
             }
         }
 
@@ -23,7 +25,7 @@ namespace VDT.Core.XmlConverter.Markdown {
         public override void RenderEnd(ElementData elementData, TextWriter writer) {
             var tracker = elementData.GetContentTracker();
 
-            while (tracker.TrailingNewLineCount < 2) {
+            if (!tracker.HasTrailingNewLine) {
                 tracker.WriteLine(writer);
             }
         }

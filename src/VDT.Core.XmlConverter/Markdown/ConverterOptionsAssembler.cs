@@ -28,7 +28,8 @@ namespace VDT.Core.XmlConverter.Markdown {
             { '!', "\\!" },
             { '~', "\\~" },
             { '=', "\\=" },
-            { '^', "\\^" }
+            { '^', "\\^" },
+            { ':', "\\:" }
         };
 
         private readonly static Dictionary<ElementConverterTarget, char[]> elementConverterCharacters = new Dictionary<ElementConverterTarget, char[]>() {
@@ -47,7 +48,8 @@ namespace VDT.Core.XmlConverter.Markdown {
             { ElementConverterTarget.Strikethrough, new[] { '\\', '~' } },
             { ElementConverterTarget.Highlight, new[] { '\\', '=' } },
             { ElementConverterTarget.Subscript, new[] { '\\', '~' } },
-            { ElementConverterTarget.Superscript, new[] { '\\', '^' } }
+            { ElementConverterTarget.Superscript, new[] { '\\', '^' } },
+            { ElementConverterTarget.DefinitionList, new[] { '\\', ':' } }
         };
         
         public void SetTextConverter(ConverterOptions options, CharacterEscapeMode characterEscapeMode, HashSet<ElementConverterTarget> elementConverterTargets, Dictionary<char, string> customCharacterEscapes) {
@@ -118,6 +120,7 @@ namespace VDT.Core.XmlConverter.Markdown {
         public void AddListItemConverters(ConverterOptions options) {
             options.ElementConverters.Add(new OrderedListItemConverter());
             options.ElementConverters.Add(new UnorderedListItemConverter());
+            options.ElementConverters.Add(new ListConverter("ul", "ol", "menu"));
         }
 
         public void AddHorizontalRuleConverter(ConverterOptions options) {
@@ -173,6 +176,12 @@ namespace VDT.Core.XmlConverter.Markdown {
 
         public void AddSuperscriptConverter(ConverterOptions options) {
             options.ElementConverters.Add(new InlineElementConverter("^", "^", "sup"));
+        }
+
+        public void AddDefinitionListConverters(ConverterOptions options) {
+            options.ElementConverters.Add(new BlockElementConverter(": ", "dd"));
+            options.ElementConverters.Add(new DefinitionTermConverter());
+            options.ElementConverters.Add(new ListConverter("dl"));
         }
 
         public void AddTagRemovingElementConverter(ConverterOptions options, HashSet<string> tagsToRemove) {

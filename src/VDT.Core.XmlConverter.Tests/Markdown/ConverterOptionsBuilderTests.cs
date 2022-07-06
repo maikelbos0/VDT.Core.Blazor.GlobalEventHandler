@@ -35,9 +35,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Equal(new HashSet<string>() {
                 "html",
                 "body",
-                "ul",
-                "ol",
-                "menu",
                 "div",
                 "span"
             }, builder.TagsToRemove);
@@ -250,9 +247,6 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             Assert.Equal(new HashSet<string>() { 
                 "html",
                 "body",
-                "ul",
-                "ol",
-                "menu",
                 "div",
                 "span",
                 "form"
@@ -270,13 +264,11 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
         public void RemoveTagsToRemove_Removes_ElementNames() {
             var builder = new ConverterOptionsBuilder();
 
-            builder.RemoveTagsToRemove("ul", "ol");
+            builder.RemoveTagsToRemove("div", "ol");
 
             Assert.Equal(new HashSet<string>() {
                 "html",
                 "body",
-                "menu",
-                "div",
                 "span"
             }, builder.TagsToRemove);
         }
@@ -555,6 +547,17 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             builder.Build(options, assembler);
 
             assembler.Received().AddSuperscriptConverter(options);
+        }
+
+        [Fact]
+        public void Build_ElementConverterTarget_DefinitionList_Calls_AddDefinitionListConverter() {
+            var options = new ConverterOptions();
+            var builder = CreateBuilder(ElementConverterTarget.DefinitionList);
+            var assembler = Substitute.For<IConverterOptionsAssembler>();
+
+            builder.Build(options, assembler);
+
+            assembler.Received().AddDefinitionListConverters(options);
         }
 
         private static ConverterOptionsBuilder CreateBuilder(params ElementConverterTarget[] targets)

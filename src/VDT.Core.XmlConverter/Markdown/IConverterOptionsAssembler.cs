@@ -43,5 +43,7 @@ namespace VDT.Core.XmlConverter.Markdown {
         public void AddElementRemovingConverter(ConverterOptions options, HashSet<string> elementsToRemove);
 
         public void SetDefaultElementConverter(ConverterOptions options, UnknownElementHandlingMode unknownElementHandlingMode);
+
+        public void AddDefinitionListConverters(ConverterOptions options);
     }
 }

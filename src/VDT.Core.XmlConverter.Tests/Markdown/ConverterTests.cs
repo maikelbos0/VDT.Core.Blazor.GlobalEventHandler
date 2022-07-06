@@ -51,6 +51,16 @@ namespace VDT.Core.XmlConverter.Tests.Markdown {
             );
         }
 
+        [Fact]
+        [Trait("Category", "Integration")]
+        public void Convert_Extended_Block () {
+            OutputAndAssert(
+                new ConverterOptions().UseMarkdown(true),
+                "ExtendedBlock.html",
+                "ExtendedBlock.md"
+            );
+        }
+
         private void OutputAndAssert(ConverterOptions options, string htmlFile, string expectedMarkdownFile) {
             var converter = new Converter(options);
 

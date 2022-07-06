@@ -209,6 +209,7 @@ The optional parameter `useExtendedSyntax` can be used to add supported HTML to 
 - `mark`: highlight
 - `sub`: subscript
 - `super`: superscript
+- `dt` and `dd` inside `dl`: definition list; supports nesting
 
 Finally, the optional parameter `unknownElementHandlingMode` can be used to specify how to handle elements that can't be converted:
 - `UnknownElementHandlingMode.None`: leave the elements as-is

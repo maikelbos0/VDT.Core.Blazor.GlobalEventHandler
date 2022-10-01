@@ -1,4 +1,7 @@
-﻿namespace VDT.Core.RecurringDates {
+﻿using System;
+using System.Collections.Generic;
+
+namespace VDT.Core.RecurringDates {
     public class Recurrence {
         private int interval = 1;
 
@@ -17,14 +20,14 @@
 
         public IRecurrenceOptions Options { get; set; } = new NoRecurrenceOptions();
 
-        public DateTime StartDate { get; set; } = DateTime.MinValue;
+        public DateTime Start { get; set; } = DateTime.MinValue;
 
-        public DateTime EndDate { get; set; } = DateTime.MaxValue;
+        public DateTime End { get; set; } = DateTime.MaxValue;
 
         // TODO?
         //public int? NumberOfRepetitions { get; set; }
 
-        public IEnumerable<DateTime> GetRange() {
+        public IEnumerable<DateTime> GetDates(DateTime? from = null, DateTime? to = null) {
             throw new NotImplementedException();
         }
     }

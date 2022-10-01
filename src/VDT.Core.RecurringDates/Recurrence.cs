@@ -10,7 +10,7 @@ namespace VDT.Core.RecurringDates {
                 return interval;
             }
             set {
-                if (interval < 1) {
+                if (value < 1) {
                     throw new ArgumentOutOfRangeException(nameof(value), $"Expected {nameof(value)} to be at least 1 but found {value}.");
                 }
 

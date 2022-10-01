@@ -27,9 +27,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.DependencyInjectio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.DependencyInjection.Tests.Targets.References", "VDT.Core.DependencyInjection.Tests.Targets.References\VDT.Core.DependencyInjection.Tests.Targets.References.csproj", "{4D16A4B1-59F1-43F2-823C-4E4A05231D73}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDT.Core.XmlConverter", "VDT.Core.XmlConverter\VDT.Core.XmlConverter.csproj", "{EB8A8213-85FF-4411-9F09-59B5D959710A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.XmlConverter", "VDT.Core.XmlConverter\VDT.Core.XmlConverter.csproj", "{EB8A8213-85FF-4411-9F09-59B5D959710A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDT.Core.XmlConverter.Tests", "VDT.Core.XmlConverter.Tests\VDT.Core.XmlConverter.Tests.csproj", "{9C107B03-9EA4-4601-9A2D-6528F6946257}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.XmlConverter.Tests", "VDT.Core.XmlConverter.Tests\VDT.Core.XmlConverter.Tests.csproj", "{9C107B03-9EA4-4601-9A2D-6528F6946257}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDT.Core.RecurringDates", "VDT.Core.RecurringDates\VDT.Core.RecurringDates.csproj", "{8C251269-1F06-4631-9226-693B2E95E0BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDT.Core.RecurringDates.Tests", "VDT.Core.RecurringDates.Tests\VDT.Core.RecurringDates.Tests.csproj", "{119FCFF5-FFF2-4681-B53C-BBB9287AD8F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +97,14 @@ Global
 		{9C107B03-9EA4-4601-9A2D-6528F6946257}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C107B03-9EA4-4601-9A2D-6528F6946257}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C107B03-9EA4-4601-9A2D-6528F6946257}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C251269-1F06-4631-9226-693B2E95E0BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C251269-1F06-4631-9226-693B2E95E0BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C251269-1F06-4631-9226-693B2E95E0BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C251269-1F06-4631-9226-693B2E95E0BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{119FCFF5-FFF2-4681-B53C-BBB9287AD8F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{119FCFF5-FFF2-4681-B53C-BBB9287AD8F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{119FCFF5-FFF2-4681-B53C-BBB9287AD8F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{119FCFF5-FFF2-4681-B53C-BBB9287AD8F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

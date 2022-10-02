@@ -4,32 +4,33 @@ using Xunit;
 namespace VDT.Core.RecurringDates.Tests {
     public class DailyRecurrencePatternTests {
         [Theory]
-        [InlineData(1, "2022-10-01", "2022-10-02")]
-        [InlineData(2, "2022-10-01", "2022-10-03")]
-        [InlineData(7, "2022-10-01", "2022-10-08")]
-        public void GetNext_Interval(int interval, DateTime current, DateTime expected) {
-            var recurrence = new Recurrence() {
-                Interval = interval
-            };
-            var pattern = new DailyRecurrencePattern();
-
-            Assert.Equal(expected, pattern.GetNext(recurrence, current));
-        }
-
-        [Theory]
-        [InlineData(true, "2022-09-30", "2022-10-01")]
-        [InlineData(true, "2022-10-01", "2022-10-02")]
-        [InlineData(false, "2022-09-30", "2022-10-03")]
-        [InlineData(false, "2022-10-01", "2022-10-03")]
-        public void GetNext_Weekends(bool includingWeekends, DateTime current, DateTime expected) {
-            var recurrence = new Recurrence() {
-                Interval = 1
-            };
-            var pattern = new DailyRecurrencePattern() {
+        [InlineData(true, 1, "2020-01-01", "2022-10-01", "2022-10-01")]
+        [InlineData(true, 3, "2020-01-01", "2022-10-01", "2022-10-02")]
+        [InlineData(true, 6, "2020-01-01", "2022-10-01", "2022-10-05")]
+        [InlineData(false, 1, "2020-01-01", "2022-10-01", "2022-10-03")]
+        [InlineData(false, 3, "2020-01-01", "2022-10-01", "2022-10-05")]
+        public void GetFirst(bool includingWeekends, int interval, DateTime start, DateTime from, DateTime expected) {
+            IRecurrencePattern pattern = new DailyRecurrencePattern() {
                 IncludingWeekends = includingWeekends
             };
 
-            Assert.Equal(expected, pattern.GetNext(recurrence, current));
+            Assert.Equal(expected, pattern.GetFirst(interval, start, from));
+        }
+
+        [Theory]
+        [InlineData(true, 1, "2022-10-01", "2022-10-02")]
+        [InlineData(true, 2, "2022-10-01", "2022-10-03")]
+        [InlineData(true, 7, "2022-10-01", "2022-10-08")]
+        [InlineData(false, 1, "2022-09-30", "2022-10-03")]
+        [InlineData(false, 1, "2022-10-01", "2022-10-03")]
+        [InlineData(false, 3, "2022-09-28", "2022-10-04")]
+        [InlineData(false, 3, "2022-09-29", "2022-10-05")]
+        public void GetNext_Interval(bool includingWeekends, int interval, DateTime current, DateTime expected) {
+            IRecurrencePattern pattern = new DailyRecurrencePattern() {
+                IncludingWeekends = includingWeekends
+            };
+
+            Assert.Equal(expected, pattern.GetNext(interval, current));
         }
     }
 }

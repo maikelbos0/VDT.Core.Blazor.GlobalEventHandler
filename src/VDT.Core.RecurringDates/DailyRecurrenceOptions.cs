@@ -5,7 +5,18 @@ namespace VDT.Core.RecurringDates {
         public bool IncludingWeekends { get; set; } = true;
 
         public DateTime? GetNext(Recurrence recurrence, DateTime current) {
-            return current.AddDays(1).Date;
+            var next = current.AddDays(1).Date;
+
+            if (!IncludingWeekends) {
+                if (next.DayOfWeek == DayOfWeek.Saturday) {
+                    next = next.AddDays(2);
+                }
+                else if (next.DayOfWeek == DayOfWeek.Sunday) {
+                    next = next.AddDays(1);
+                }
+            }
+
+            return next;
         }
     }
 }

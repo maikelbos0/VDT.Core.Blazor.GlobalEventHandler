@@ -24,9 +24,6 @@ namespace VDT.Core.RecurringDates {
 
         public DateTime End { get; set; } = DateTime.MaxValue;
 
-        // TODO?
-        //public int? NumberOfRepetitions { get; set; }
-
         public IEnumerable<DateTime> GetDates(DateTime? from = null, DateTime? to = null) {
             throw new NotImplementedException();
         }

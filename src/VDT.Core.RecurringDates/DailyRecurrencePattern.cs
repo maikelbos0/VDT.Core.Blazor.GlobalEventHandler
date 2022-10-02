@@ -4,19 +4,32 @@ namespace VDT.Core.RecurringDates {
     public class DailyRecurrencePattern : IRecurrencePattern {
         public bool IncludingWeekends { get; set; } = true;
 
-        public DateTime? GetNext(Recurrence recurrence, DateTime current) {
-            var next = current.AddDays(recurrence.Interval).Date;
+        DateTime? IRecurrencePattern.GetFirst(int interval, DateTime start, DateTime from) {
+            var first = from;
 
+            if (interval > 1) {
+                var iterations = (from - start).Days / interval + 1;
+
+                first = start.AddDays(iterations * interval);
+            }
+
+            return CorrectForWeekends(first);
+        }
+
+        DateTime? IRecurrencePattern.GetNext(int interval, DateTime current)
+            => CorrectForWeekends(current.AddDays(interval));
+
+        private DateTime CorrectForWeekends(DateTime date) {
             if (!IncludingWeekends) {
-                if (next.DayOfWeek == DayOfWeek.Saturday) {
-                    next = next.AddDays(2);
+                if (date.DayOfWeek == DayOfWeek.Saturday) {
+                    date = date.AddDays(2);
                 }
-                else if (next.DayOfWeek == DayOfWeek.Sunday) {
-                    next = next.AddDays(1);
+                else if (date.DayOfWeek == DayOfWeek.Sunday) {
+                    date = date.AddDays(1);
                 }
             }
 
-            return next;
+            return date;
         }
     }
 }

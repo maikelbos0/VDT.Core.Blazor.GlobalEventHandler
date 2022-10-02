@@ -2,6 +2,8 @@
 
 namespace VDT.Core.RecurringDates {
     public class NoRecurrencePattern : IRecurrencePattern {
-        public DateTime? GetNext(Recurrence recurrence, DateTime current) => null;
+        DateTime? IRecurrencePattern.GetFirst(int interval, DateTime start, DateTime from) => null;
+
+        DateTime? IRecurrencePattern.GetNext(int interval, DateTime current) => null;
     }
 }

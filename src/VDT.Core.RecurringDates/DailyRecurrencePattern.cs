@@ -13,19 +13,16 @@ namespace VDT.Core.RecurringDates {
                 first = start.AddDays(iterations * interval);
             }
 
-            return CorrectForWeekends(first);
+            return CorrectForWeekends(interval, first);
         }
 
         DateTime? IRecurrencePattern.GetNext(int interval, DateTime current)
-            => CorrectForWeekends(current.AddDays(interval));
+            => CorrectForWeekends(interval, current.AddDays(interval));
 
-        private DateTime CorrectForWeekends(DateTime date) {
+        private DateTime CorrectForWeekends(int interval, DateTime date) {
             if (!IncludingWeekends) {
-                if (date.DayOfWeek == DayOfWeek.Saturday) {
-                    date = date.AddDays(2);
-                }
-                else if (date.DayOfWeek == DayOfWeek.Sunday) {
-                    date = date.AddDays(1);
+                while (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday) {
+                    date = date.AddDays(interval);
                 }
             }
 

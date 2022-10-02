@@ -2,10 +2,10 @@
 
 namespace VDT.Core.RecurringDates {
     public static class RecurrenceExtensions {
-        public static Recurrence Days(this Recurrence recurrence, Action<DailyRecurrenceOptions>? optionsBuilder = null) {
-            var options = new DailyRecurrenceOptions();
-            optionsBuilder?.Invoke(options);
-            recurrence.Options = options;
+        public static Recurrence Days(this Recurrence recurrence, Action<DailyRecurrencePattern>? patternBuilder = null) {
+            var pattern = new DailyRecurrencePattern();
+            patternBuilder?.Invoke(pattern);
+            recurrence.Pattern = pattern;
             return recurrence;
         }
 

@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace VDT.Core.RecurringDates {
-    public class DailyRecurrenceOptions : IRecurrenceOptions {
+    public class DailyRecurrencePattern : IRecurrencePattern {
         public bool IncludingWeekends { get; set; } = true;
 
         public DateTime? GetNext(Recurrence recurrence, DateTime current) {

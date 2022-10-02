@@ -18,7 +18,7 @@ namespace VDT.Core.RecurringDates {
             }
         }
 
-        public IRecurrenceOptions Options { get; set; } = new NoRecurrenceOptions();
+        public IRecurrencePattern Pattern { get; set; } = new NoRecurrencePattern();
 
         public DateTime Start { get; set; } = DateTime.MinValue;
 

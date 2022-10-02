@@ -2,7 +2,7 @@
 using Xunit;
 
 namespace VDT.Core.RecurringDates.Tests {
-    public class DailyRecurrenceOptionsTests {
+    public class DailyRecurrencePatternTests {
         [Theory]
         [InlineData(1, "2022-10-01", "2022-10-02")]
         [InlineData(2, "2022-10-01", "2022-10-03")]
@@ -11,9 +11,9 @@ namespace VDT.Core.RecurringDates.Tests {
             var recurrence = new Recurrence() {
                 Interval = interval
             };
-            var options = new DailyRecurrenceOptions();
+            var pattern = new DailyRecurrencePattern();
 
-            Assert.Equal(expected, options.GetNext(recurrence, current));
+            Assert.Equal(expected, pattern.GetNext(recurrence, current));
         }
 
         [Theory]
@@ -25,11 +25,11 @@ namespace VDT.Core.RecurringDates.Tests {
             var recurrence = new Recurrence() {
                 Interval = 1
             };
-            var options = new DailyRecurrenceOptions() {
+            var pattern = new DailyRecurrencePattern() {
                 IncludingWeekends = includingWeekends
             };
 
-            Assert.Equal(expected, options.GetNext(recurrence, current));
+            Assert.Equal(expected, pattern.GetNext(recurrence, current));
         }
     }
 }

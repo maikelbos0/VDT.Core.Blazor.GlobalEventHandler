@@ -9,7 +9,7 @@ namespace VDT.Core.RecurringDates.Tests {
 
             recurrence.Days(options => options.IncludingWeekends = false);
 
-            Assert.False(Assert.IsType<DailyRecurrenceOptions>(recurrence.Options).IncludingWeekends);
+            Assert.False(Assert.IsType<DailyRecurrencePattern>(recurrence.Pattern).IncludingWeekends);
         }
 
         [Fact]

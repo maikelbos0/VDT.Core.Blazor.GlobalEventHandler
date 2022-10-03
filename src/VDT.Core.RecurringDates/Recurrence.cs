@@ -25,7 +25,13 @@ namespace VDT.Core.RecurringDates {
         public DateTime End { get; set; } = DateTime.MaxValue;
 
         public IEnumerable<DateTime> GetDates(DateTime? from = null, DateTime? to = null) {
-            throw new NotImplementedException();
+            var current = Pattern.GetFirst(Interval, Start, from ?? Start);
+
+            while (current != null && current <= End && (to == null || current <= to)) {
+                yield return current.Value;
+
+                current = Pattern.GetNext(Interval, current.Value);
+            }
         }
     }
 }

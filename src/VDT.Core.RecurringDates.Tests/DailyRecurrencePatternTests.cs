@@ -9,6 +9,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(true, 6, "2020-01-01", "2022-10-01", "2022-10-05")]
         [InlineData(false, 1, "2020-01-01", "2022-10-01", "2022-10-03")]
         [InlineData(false, 3, "2020-01-01", "2022-10-01", "2022-10-05")]
+        [InlineData(true, 1, "2022-10-01", "2022-01-01", "2022-10-01")]
         public void GetFirst(bool includingWeekends, int interval, DateTime start, DateTime from, DateTime expected) {
             IRecurrencePattern pattern = new DailyRecurrencePattern() {
                 IncludingWeekends = includingWeekends

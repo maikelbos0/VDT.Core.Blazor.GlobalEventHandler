@@ -7,7 +7,10 @@ namespace VDT.Core.RecurringDates {
         DateTime? IRecurrencePattern.GetFirst(int interval, DateTime start, DateTime from) {
             var first = from;
 
-            if (interval > 1) {
+            if (start > from) {
+                first = start;
+            }
+            else if (interval > 1) {
                 var iterations = (from - start).Days / interval + 1;
 
                 first = start.AddDays(iterations * interval);

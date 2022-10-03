@@ -27,7 +27,7 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Fact]
-        public void GetDates_Single_Date() {
+        public void GetDates_Range_Single_Date() {
             var recurrence = new Recurrence() {
                 Interval = 1,
                 Start = new DateTime(2022, 1, 1),
@@ -71,6 +71,57 @@ namespace VDT.Core.RecurringDates.Tests {
                 new DateTime(2022, 1, 2),
                 new DateTime(2022, 1, 4),
                 new DateTime(2022, 1, 6)
+            }, dates);
+        }
+
+        [Fact]
+        public void GetDates_Count_Start() {
+            var recurrence = new Recurrence() {
+                Interval = 1,
+                Start = new DateTime(2022, 1, 1),
+                Pattern = new DailyRecurrencePattern()
+            };
+
+            var dates = recurrence.GetDates(3, new DateTime(2021, 12, 1));
+
+            Assert.Equal(new[] {
+                new DateTime(2022, 1, 1),
+                new DateTime(2022, 1, 2),
+                new DateTime(2022, 1, 3)
+            }, dates);
+        }
+
+        [Fact]
+        public void GetDates_Count_From() {
+            var recurrence = new Recurrence() {
+                Interval = 1,
+                Pattern = new DailyRecurrencePattern()
+            };
+
+            var dates = recurrence.GetDates(3, new DateTime(2022, 1, 1));
+
+            Assert.Equal(new[] {
+                new DateTime(2022, 1, 1),
+                new DateTime(2022, 1, 2),
+                new DateTime(2022, 1, 3)
+            }, dates);
+        }
+
+        [Fact]
+        public void GetDates_Count_End() {
+            var recurrence = new Recurrence() {
+                Interval = 1,
+                Start = new DateTime(2022, 1, 1),
+                End = new DateTime(2022, 1, 3),
+                Pattern = new DailyRecurrencePattern()
+            };
+
+            var dates = recurrence.GetDates(10);
+
+            Assert.Equal(new[] {
+                new DateTime(2022, 1, 1),
+                new DateTime(2022, 1, 2),
+                new DateTime(2022, 1, 3)
             }, dates);
         }
     }

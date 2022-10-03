@@ -33,5 +33,15 @@ namespace VDT.Core.RecurringDates {
                 current = Pattern.GetNext(Interval, current.Value);
             }
         }
+
+        public IEnumerable<DateTime> GetDates(int count, DateTime? from = null) {
+            var current = Pattern.GetFirst(Interval, Start, from ?? Start);
+
+            while (current != null && current <= End && count-- > 0) {
+                yield return current.Value;
+
+                current = Pattern.GetNext(Interval, current.Value);
+            }
+        }
     }
 }

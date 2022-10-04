@@ -33,5 +33,29 @@ namespace VDT.Core.RecurringDates.Tests {
 
             Assert.Equal(expected, pattern.GetNext(interval, current));
         }
+
+        [Theory]
+        [InlineData(7)]
+        [InlineData(14)]
+        [InlineData(21)]
+        public void GetFirst_Excludingweekends_Only_Weekends(int interval) {
+            IRecurrencePattern pattern = new DailyRecurrencePattern() {
+                IncludingWeekends = false                
+            };
+
+            Assert.Null(pattern.GetFirst(interval, new DateTime(2022, 10, 8), new DateTime(2022, 10, 10)));
+        }
+
+        [Theory]
+        [InlineData(7)]
+        [InlineData(14)]
+        [InlineData(21)]
+        public void GetNext_Excludingweekends_Only_Weekends(int interval) {
+            IRecurrencePattern pattern = new DailyRecurrencePattern() {
+                IncludingWeekends = false
+            };
+
+            Assert.Null(pattern.GetNext(interval, new DateTime(2022, 10, 8)));
+        }
     }
 }

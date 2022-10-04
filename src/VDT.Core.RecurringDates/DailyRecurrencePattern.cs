@@ -22,8 +22,12 @@ namespace VDT.Core.RecurringDates {
         DateTime? IRecurrencePattern.GetNext(int interval, DateTime current)
             => CorrectForWeekends(interval, current.AddDays(interval));
 
-        private DateTime CorrectForWeekends(int interval, DateTime date) {
-            if (!IncludingWeekends) {
+        private DateTime? CorrectForWeekends(int interval, DateTime date) {
+            if (!IncludingWeekends && (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)) {
+                if (interval % 7 == 0) {
+                    return null;
+                }
+
                 while (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday) {
                     date = date.AddDays(interval);
                 }

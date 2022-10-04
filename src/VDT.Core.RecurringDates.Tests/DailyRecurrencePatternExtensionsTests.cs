@@ -8,7 +8,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 IncludingWeekends = false
             };
 
-            pattern.IncludeWeekends();
+            Assert.Same(pattern, pattern.IncludeWeekends());
 
             Assert.True(pattern.IncludingWeekends);
         }
@@ -19,7 +19,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 IncludingWeekends = true
             };
 
-            pattern.ExcludeWeekends();
+            Assert.Same(pattern, pattern.ExcludeWeekends());
 
             Assert.False(pattern.IncludingWeekends);
         }

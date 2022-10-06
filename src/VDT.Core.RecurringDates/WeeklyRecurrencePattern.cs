@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace VDT.Core.RecurringDates {
     public class WeeklyRecurrencePattern : IRecurrencePattern {
+        public RecurrencePatternPeriodHandling PeriodHandling { get; set; } = RecurrencePatternPeriodHandling.Ongoing;
+        public DayOfWeek FirstDayOfWeek { get; set; } = Thread.CurrentThread.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
         public HashSet<DayOfWeek> Days { get; set; } = new HashSet<DayOfWeek>();
 
         DateTime? IRecurrencePattern.GetFirst(int interval, DateTime start, DateTime from) {

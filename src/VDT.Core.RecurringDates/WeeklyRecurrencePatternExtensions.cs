@@ -4,6 +4,19 @@ using System.Linq;
 
 namespace VDT.Core.RecurringDates {
     public static class WeeklyRecurrencePatternExtensions {
+        public static WeeklyRecurrencePattern UseCalendarWeeks(this WeeklyRecurrencePattern pattern, DayOfWeek? firstDayOfWeek = null) {
+            pattern.PeriodHandling = RecurrencePatternPeriodHandling.Calendar;
+            if (firstDayOfWeek != null) {
+                pattern.FirstDayOfWeek = firstDayOfWeek.Value;
+            }
+            return pattern;
+        }
+
+        public static WeeklyRecurrencePattern UseOngoingWeeks(this WeeklyRecurrencePattern pattern) {
+            pattern.PeriodHandling = RecurrencePatternPeriodHandling.Ongoing;
+            return pattern;
+        }
+
         public static WeeklyRecurrencePattern IncludeDays(this WeeklyRecurrencePattern pattern, params DayOfWeek[] days)
             => pattern.IncludeDays(days.AsEnumerable());
         

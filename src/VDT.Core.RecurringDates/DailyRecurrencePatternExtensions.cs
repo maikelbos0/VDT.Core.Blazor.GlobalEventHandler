@@ -1,12 +1,17 @@
 ﻿namespace VDT.Core.RecurringDates {
     public static class DailyRecurrencePatternExtensions {
         public static DailyRecurrencePattern IncludeWeekends(this DailyRecurrencePattern pattern) {
-            pattern.IncludingWeekends = true;
+            pattern.WeekendHandling = RecurrencePatternWeekendHandling.Include;
             return pattern;
         }
 
-        public static DailyRecurrencePattern ExcludeWeekends(this DailyRecurrencePattern pattern) {
-            pattern.IncludingWeekends = false;
+        public static DailyRecurrencePattern SkipWeekends(this DailyRecurrencePattern pattern) {
+            pattern.WeekendHandling = RecurrencePatternWeekendHandling.Skip;
+            return pattern;
+        }
+
+        public static DailyRecurrencePattern AdjustWeekendsToMonday(this DailyRecurrencePattern pattern) {
+            pattern.WeekendHandling = RecurrencePatternWeekendHandling.AdjustToMonday;
             return pattern;
         }
     }

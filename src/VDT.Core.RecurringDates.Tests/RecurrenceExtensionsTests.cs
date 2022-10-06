@@ -7,9 +7,9 @@ namespace VDT.Core.RecurringDates.Tests {
         public void Days() {
             var recurrence = new Recurrence();
 
-            recurrence.Days(options => options.IncludingWeekends = false);
+            recurrence.Days(options => options.WeekendHandling = RecurrencePatternWeekendHandling.Skip);
 
-            Assert.False(Assert.IsType<DailyRecurrencePattern>(recurrence.Pattern).IncludingWeekends);
+            Assert.Equal(RecurrencePatternWeekendHandling.Skip, Assert.IsType<DailyRecurrencePattern>(recurrence.Pattern).WeekendHandling);
         }
 
         [Fact]

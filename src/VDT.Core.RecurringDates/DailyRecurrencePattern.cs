@@ -2,7 +2,7 @@
 
 namespace VDT.Core.RecurringDates {
     public class DailyRecurrencePattern : IRecurrencePattern {
-        public bool IncludingWeekends { get; set; } = true;
+        public RecurrencePatternWeekendHandling WeekendHandling { get; set; } = RecurrencePatternWeekendHandling.Include;
 
         DateTime? IRecurrencePattern.GetFirst(int interval, DateTime start, DateTime from) {
             var first = from;
@@ -16,24 +16,42 @@ namespace VDT.Core.RecurringDates {
                 first = start.AddDays(iterations * interval);
             }
 
-            return CorrectForWeekends(interval, first);
+            return HandleWeekends(interval, first);
         }
 
         DateTime? IRecurrencePattern.GetNext(int interval, DateTime current)
-            => CorrectForWeekends(interval, current.AddDays(interval));
+            => HandleWeekends(interval, current.AddDays(interval));
 
-        private DateTime? CorrectForWeekends(int interval, DateTime date) {
-            if (!IncludingWeekends && (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)) {
-                if (interval % 7 == 0) {
-                    return null;
-                }
-
-                while (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday) {
-                    date = date.AddDays(interval);
-                }
+        private DateTime? HandleWeekends(int interval, DateTime date) {
+            if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday) {
+                return WeekendHandling switch {
+                    RecurrencePatternWeekendHandling.Include => date,
+                    RecurrencePatternWeekendHandling.Skip => SkipWeekend(interval, date),
+                    RecurrencePatternWeekendHandling.AdjustToMonday => AdjustWeekendToMonday(date),
+                    _ => throw new NotImplementedException($"No implementation found for {nameof(RecurrencePatternWeekendHandling)} '{WeekendHandling}'")
+                };
             }
 
             return date;
         }
+
+        private static DateTime? SkipWeekend(int interval, DateTime date) {
+            if (interval % 7 == 0) {
+                return null;
+            }
+
+            while (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday) {
+                date = date.AddDays(interval);
+            }
+
+            return date;
+        }
+
+        private static DateTime AdjustWeekendToMonday(DateTime date)
+            => date.DayOfWeek switch {
+                DayOfWeek.Saturday => date.AddDays(2),
+                DayOfWeek.Sunday => date.AddDays(1),
+                _ => date
+            };
     }
 }

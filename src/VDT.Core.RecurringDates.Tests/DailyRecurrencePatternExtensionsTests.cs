@@ -5,23 +5,34 @@ namespace VDT.Core.RecurringDates.Tests {
         [Fact]
         public void IncludeWeekends() {
             var pattern = new DailyRecurrencePattern() {
-                IncludingWeekends = false
+                WeekendHandling = RecurrencePatternWeekendHandling.Include
             };
 
             Assert.Same(pattern, pattern.IncludeWeekends());
 
-            Assert.True(pattern.IncludingWeekends);
+            Assert.Equal(RecurrencePatternWeekendHandling.Include, pattern.WeekendHandling);
         }
 
         [Fact]
-        public void ExcludeWeekends() {
+        public void SkipWeekends() {
             var pattern = new DailyRecurrencePattern() {
-                IncludingWeekends = true
+                WeekendHandling = RecurrencePatternWeekendHandling.Skip
             };
 
-            Assert.Same(pattern, pattern.ExcludeWeekends());
+            Assert.Same(pattern, pattern.SkipWeekends());
 
-            Assert.False(pattern.IncludingWeekends);
+            Assert.Equal(RecurrencePatternWeekendHandling.Skip, pattern.WeekendHandling);
+        }
+
+        [Fact]
+        public void AdjustWeekendsToMonday() {
+            var pattern = new DailyRecurrencePattern() {
+                WeekendHandling = RecurrencePatternWeekendHandling.AdjustToMonday
+            };
+
+            Assert.Same(pattern, pattern.AdjustWeekendsToMonday());
+
+            Assert.Equal(RecurrencePatternWeekendHandling.AdjustToMonday, pattern.WeekendHandling);
         }
     }
 }

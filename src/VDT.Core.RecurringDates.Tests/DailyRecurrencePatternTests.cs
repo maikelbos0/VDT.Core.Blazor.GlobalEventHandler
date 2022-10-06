@@ -4,31 +4,39 @@ using Xunit;
 namespace VDT.Core.RecurringDates.Tests {
     public class DailyRecurrencePatternTests {
         [Theory]
-        [InlineData(true, 1, "2020-01-01", "2022-10-01", "2022-10-01")]
-        [InlineData(true, 3, "2020-01-01", "2022-10-01", "2022-10-02")]
-        [InlineData(true, 6, "2020-01-01", "2022-10-01", "2022-10-05")]
-        [InlineData(false, 1, "2020-01-01", "2022-10-01", "2022-10-03")]
-        [InlineData(false, 3, "2020-01-01", "2022-10-01", "2022-10-05")]
-        [InlineData(true, 1, "2022-10-01", "2022-01-01", "2022-10-01")]
-        public void GetFirst(bool includingWeekends, int interval, DateTime start, DateTime from, DateTime expected) {
+        [InlineData(RecurrencePatternWeekendHandling.Include, 1, "2020-01-01", "2022-10-01", "2022-10-01")]
+        [InlineData(RecurrencePatternWeekendHandling.Include, 3, "2020-01-01", "2022-10-01", "2022-10-02")]
+        [InlineData(RecurrencePatternWeekendHandling.Include, 6, "2020-01-01", "2022-10-01", "2022-10-05")]
+        [InlineData(RecurrencePatternWeekendHandling.Skip, 1, "2020-01-01", "2022-10-01", "2022-10-03")]
+        [InlineData(RecurrencePatternWeekendHandling.Skip, 3, "2020-01-01", "2022-10-01", "2022-10-05")]
+        [InlineData(RecurrencePatternWeekendHandling.Include, 1, "2022-10-01", "2022-01-01", "2022-10-01")]
+        [InlineData(RecurrencePatternWeekendHandling.AdjustToMonday, 1, "2022-09-30", "2022-01-01", "2022-09-30")]
+        [InlineData(RecurrencePatternWeekendHandling.AdjustToMonday, 1, "2022-10-02", "2022-01-01", "2022-10-03")]
+        [InlineData(RecurrencePatternWeekendHandling.AdjustToMonday, 1, "2022-01-01", "2022-10-01", "2022-10-03")]
+        [InlineData(RecurrencePatternWeekendHandling.AdjustToMonday, 1, "2022-10-03", "2022-01-01", "2022-10-03")]
+        public void GetFirst(RecurrencePatternWeekendHandling weekendHandling, int interval, DateTime start, DateTime from, DateTime expected) {
             IRecurrencePattern pattern = new DailyRecurrencePattern() {
-                IncludingWeekends = includingWeekends
+                WeekendHandling = weekendHandling
             };
 
             Assert.Equal(expected, pattern.GetFirst(interval, start, from));
         }
 
         [Theory]
-        [InlineData(true, 1, "2022-10-01", "2022-10-02")]
-        [InlineData(true, 2, "2022-10-01", "2022-10-03")]
-        [InlineData(true, 7, "2022-10-01", "2022-10-08")]
-        [InlineData(false, 1, "2022-09-30", "2022-10-03")]
-        [InlineData(false, 1, "2022-10-01", "2022-10-03")]
-        [InlineData(false, 3, "2022-09-28", "2022-10-04")]
-        [InlineData(false, 3, "2022-09-29", "2022-10-05")]
-        public void GetNext_Interval(bool includingWeekends, int interval, DateTime current, DateTime expected) {
+        [InlineData(RecurrencePatternWeekendHandling.Include, 1, "2022-10-01", "2022-10-02")]
+        [InlineData(RecurrencePatternWeekendHandling.Include, 2, "2022-10-01", "2022-10-03")]
+        [InlineData(RecurrencePatternWeekendHandling.Include, 7, "2022-10-01", "2022-10-08")]
+        [InlineData(RecurrencePatternWeekendHandling.Skip, 1, "2022-09-30", "2022-10-03")]
+        [InlineData(RecurrencePatternWeekendHandling.Skip, 1, "2022-10-01", "2022-10-03")]
+        [InlineData(RecurrencePatternWeekendHandling.Skip, 3, "2022-09-28", "2022-10-04")]
+        [InlineData(RecurrencePatternWeekendHandling.Skip, 3, "2022-09-29", "2022-10-05")]
+        [InlineData(RecurrencePatternWeekendHandling.AdjustToMonday, 3, "2022-09-27", "2022-09-30")]
+        [InlineData(RecurrencePatternWeekendHandling.AdjustToMonday, 3, "2022-09-28", "2022-10-03")]
+        [InlineData(RecurrencePatternWeekendHandling.AdjustToMonday, 3, "2022-09-29", "2022-10-03")]
+        [InlineData(RecurrencePatternWeekendHandling.AdjustToMonday, 3, "2022-09-30", "2022-10-03")]
+        public void GetNext_Interval(RecurrencePatternWeekendHandling weekendHandling, int interval, DateTime current, DateTime expected) {
             IRecurrencePattern pattern = new DailyRecurrencePattern() {
-                IncludingWeekends = includingWeekends
+                WeekendHandling = weekendHandling
             };
 
             Assert.Equal(expected, pattern.GetNext(interval, current));
@@ -38,9 +46,9 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(7)]
         [InlineData(14)]
         [InlineData(21)]
-        public void GetFirst_Excludingweekends_Only_Weekends(int interval) {
+        public void GetFirst_SkipWeekends_Only_Weekends(int interval) {
             IRecurrencePattern pattern = new DailyRecurrencePattern() {
-                IncludingWeekends = false                
+                WeekendHandling = RecurrencePatternWeekendHandling.Skip
             };
 
             Assert.Null(pattern.GetFirst(interval, new DateTime(2022, 10, 8), new DateTime(2022, 10, 10)));
@@ -50,9 +58,9 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(7)]
         [InlineData(14)]
         [InlineData(21)]
-        public void GetNext_Excludingweekends_Only_Weekends(int interval) {
+        public void GetNext_SkipWeekends_Only_Weekends(int interval) {
             IRecurrencePattern pattern = new DailyRecurrencePattern() {
-                IncludingWeekends = false
+                WeekendHandling = RecurrencePatternWeekendHandling.Skip
             };
 
             Assert.Null(pattern.GetNext(interval, new DateTime(2022, 10, 8)));

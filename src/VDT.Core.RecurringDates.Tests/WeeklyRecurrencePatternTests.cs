@@ -8,6 +8,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(RecurrencePatternPeriodHandling.Ongoing, DayOfWeek.Sunday, "2022-10-04", 0)]
         [InlineData(RecurrencePatternPeriodHandling.Calendar, DayOfWeek.Sunday, "2022-10-04", -2)]
         [InlineData(RecurrencePatternPeriodHandling.Calendar, DayOfWeek.Monday, "2022-10-04", -1)]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, DayOfWeek.Thursday, "2022-09-28", -6)]
         public void GetWeekStartCorrection(RecurrencePatternPeriodHandling periodHandling, DayOfWeek firstDayOfWeek, DateTime date, int expectedCorrection) {
             var pattern = new WeeklyRecurrencePattern() {
                 PeriodHandling = periodHandling,

@@ -20,7 +20,7 @@ namespace VDT.Core.RecurringDates {
 
         internal int GetWeekStartCorrection(DateTime date)
             => PeriodHandling switch {
-                RecurrencePatternPeriodHandling.Calendar => FirstDayOfWeek - date.DayOfWeek,
+                RecurrencePatternPeriodHandling.Calendar => (FirstDayOfWeek - date.DayOfWeek - 7) % -7,
                 RecurrencePatternPeriodHandling.Ongoing => 0,
                 _ => throw new NotImplementedException($"No implementation found for {nameof(RecurrencePatternPeriodHandling)} '{PeriodHandling}'")
             };

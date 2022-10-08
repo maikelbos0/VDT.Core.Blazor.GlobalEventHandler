@@ -11,7 +11,7 @@ namespace VDT.Core.RecurringDates {
                 first = start;
             }
             else if (interval > 1) {
-                var iterations = (from - start).Days / interval + 1;
+                var iterations = ((from - start).Days + interval - 1) / interval;
 
                 first = start.AddDays(iterations * interval);
             }

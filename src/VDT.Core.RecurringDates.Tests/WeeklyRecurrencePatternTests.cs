@@ -4,6 +4,19 @@ using Xunit;
 
 namespace VDT.Core.RecurringDates.Tests {
     public class WeeklyRecurrencePatternTests {
+        [Theory]
+        [InlineData(RecurrencePatternPeriodHandling.Ongoing, DayOfWeek.Sunday, "2022-10-04", 0)]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, DayOfWeek.Sunday, "2022-10-04", -2)]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, DayOfWeek.Monday, "2022-10-04", -1)]
+        public void GetWeekStartCorrection(RecurrencePatternPeriodHandling periodHandling, DayOfWeek firstDayOfWeek, DateTime date, int expectedCorrection) {
+            var pattern = new WeeklyRecurrencePattern() {
+                PeriodHandling = periodHandling,
+                FirstDayOfWeek = firstDayOfWeek
+            };
+
+            Assert.Equal(expectedCorrection, pattern.GetWeekStartCorrection(date));
+        }
+
         [Fact]
         public void GetDayMap_Single_Day() {
             var pattern = new WeeklyRecurrencePattern() {

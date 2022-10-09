@@ -10,44 +10,42 @@ namespace VDT.Core.RecurringDates {
         public HashSet<DayOfWeek> Days { get; set; } = new HashSet<DayOfWeek>();
         // TODO add using start day of week as day?
 
-        // TODO clean up
         DateTime? IRecurrencePattern.GetFirst(int interval, DateTime start, DateTime from) {
             if (!Days.Any()) {
                 return null;
             }
 
-            var firstDayOfWeek = PeriodHandling switch {
-                RecurrencePatternPeriodHandling.Calendar => FirstDayOfWeek,
-                RecurrencePatternPeriodHandling.Ongoing => start.DayOfWeek,
-                _ => throw new NotImplementedException($"No implementation found for {nameof(RecurrencePatternPeriodHandling)} '{PeriodHandling}'")
-            };
-
-            var startDays = (start - DateTime.MinValue).Days;
-            var startDaysCorrected = startDays + GetWeekStartCorrection(start);
-            var first = from;
+            var firstDayOfWeek = GetFirstDayOfWeek(start);
+            var startDaysCorrected = (start - DateTime.MinValue).Days + (firstDayOfWeek - start.DayOfWeek - 7) % -7;
+            var minimum = from;
 
             if (start > from) {
-                first = start;
+                minimum = start;
             }
 
-            var firstDays = (first - DateTime.MinValue).Days;
-            var firstDaysCorrected = firstDays + GetWeekStartCorrection(first);
-
-            var iterations = (firstDaysCorrected - startDaysCorrected - 1) / (interval * 7);
-
-            var days = startDaysCorrected + iterations * interval * 7;
-
-            var candidates = Days.Select(d => (d + 7 - firstDayOfWeek) % 7);
-
-            if (!candidates.Any(c => c + days >= firstDays)) {
-                days += interval * 7;
+            var minimumDays = (minimum - DateTime.MinValue).Days;
+            var minimumDaysCorrected = minimumDays + (firstDayOfWeek - minimum.DayOfWeek - 7) % -7;
+            var iterations = (minimumDaysCorrected - startDaysCorrected - 1) / (interval * 7);
+            var firstBaseDays = startDaysCorrected + iterations * interval * 7;            
+            var candidateDays = Days.Select(day => (day + 7 - firstDayOfWeek) % 7);
+            
+            if (!candidateDays.Any(day => day + firstBaseDays >= minimumDays)) {
+                firstBaseDays += interval * 7;
             }
 
-            return DateTime.MinValue.AddDays(days + candidates.Where(c => c + days >= firstDays).Min(c => c));
+            return DateTime.MinValue.AddDays(firstBaseDays + candidateDays.Where(day => day + firstBaseDays >= minimumDays).Min());
         }
 
         DateTime? IRecurrencePattern.GetNext(int interval, DateTime current) {
             throw new NotImplementedException();
+        }
+
+        private DayOfWeek GetFirstDayOfWeek(DateTime start) {
+            return PeriodHandling switch {
+                RecurrencePatternPeriodHandling.Calendar => FirstDayOfWeek,
+                RecurrencePatternPeriodHandling.Ongoing => start.DayOfWeek,
+                _ => throw new NotImplementedException($"No implementation found for {nameof(RecurrencePatternPeriodHandling)} '{PeriodHandling}'")
+            };
         }
 
         internal int GetWeekStartCorrection(DateTime date)

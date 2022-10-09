@@ -11,7 +11,7 @@ namespace VDT.Core.RecurringDates {
         // TODO add using start day of week as day?
 
         // TODO clean up
-        public DateTime? GetFirst(int interval, DateTime start, DateTime from, Action<string> write) {
+        DateTime? IRecurrencePattern.GetFirst(int interval, DateTime start, DateTime from) {
             if (!Days.Any()) {
                 return null;
             }
@@ -33,38 +33,17 @@ namespace VDT.Core.RecurringDates {
             var firstDays = (first - DateTime.MinValue).Days;
             var firstDaysCorrected = firstDays + GetWeekStartCorrection(first);
 
-            // iterations mistake?
             var iterations = (firstDaysCorrected - startDaysCorrected - 1) / (interval * 7);
-
-            write($"startDays: {DateTime.MinValue.AddDays(startDays):yyyy-MM-dd} / {startDays}");
-            write($"startDaysCorrected: {DateTime.MinValue.AddDays(startDaysCorrected):yyyy-MM-dd} / {startDaysCorrected}");
-            write($"firstDays: {DateTime.MinValue.AddDays(firstDays):yyyy-MM-dd} / {firstDays}");
-            write($"firstDaysCorrected: {DateTime.MinValue.AddDays(firstDaysCorrected):yyyy-MM-dd} / {firstDaysCorrected}");
-            write($"iterations: {iterations}");
 
             var days = startDaysCorrected + iterations * interval * 7;
 
-            write($"days: {DateTime.MinValue.AddDays(days)}");
+            var candidates = Days.Select(d => (d + 7 - firstDayOfWeek) % 7);
 
-            var candidates = Days.Select(d => new {
-                Days = (d + 7 - firstDayOfWeek) % 7,
-                DayOfWeek = d
-            });
-
-            foreach (var c in candidates) {
-                write($"{c.DayOfWeek}: {c.Days}");
-            }
-
-            if (!candidates.Any(c => c.Days + days >= firstDays)) {
-                write("correct");
+            if (!candidates.Any(c => c + days >= firstDays)) {
                 days += interval * 7;
             }
 
-            return DateTime.MinValue.AddDays(days + candidates.Where(c => c.Days + days >= firstDays).Min(c => c.Days));
-        }
-
-        DateTime? IRecurrencePattern.GetFirst(int interval, DateTime start, DateTime from) {
-            throw new NotImplementedException();
+            return DateTime.MinValue.AddDays(days + candidates.Where(c => c + days >= firstDays).Min(c => c));
         }
 
         DateTime? IRecurrencePattern.GetNext(int interval, DateTime current) {

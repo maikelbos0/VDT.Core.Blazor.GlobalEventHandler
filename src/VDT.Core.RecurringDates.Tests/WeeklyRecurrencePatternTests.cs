@@ -2,16 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace VDT.Core.RecurringDates.Tests {
     public class WeeklyRecurrencePatternTests {
-        private readonly ITestOutputHelper output;
-
-        public WeeklyRecurrencePatternTests(ITestOutputHelper output) {
-            this.output = output;
-        }
-
         [Theory]
         [InlineData(RecurrencePatternPeriodHandling.Calendar, DayOfWeek.Monday, 2, "2022-10-03", "2022-10-10", "2022-10-18", DayOfWeek.Tuesday, DayOfWeek.Saturday)]
         [InlineData(RecurrencePatternPeriodHandling.Calendar, DayOfWeek.Monday, 2, "2022-10-04", "2022-10-10", "2022-10-18", DayOfWeek.Tuesday, DayOfWeek.Saturday)]
@@ -28,13 +21,13 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(RecurrencePatternPeriodHandling.Ongoing, DayOfWeek.Sunday, 2, "2022-09-28", "2022-10-15", "2022-10-15", DayOfWeek.Tuesday, DayOfWeek.Saturday)]
         [InlineData(RecurrencePatternPeriodHandling.Ongoing, DayOfWeek.Sunday, 2, "2022-09-28", "2022-10-16", "2022-10-18", DayOfWeek.Tuesday, DayOfWeek.Saturday)]
         public void GetFirst(RecurrencePatternPeriodHandling periodHandling, DayOfWeek firstDayOfWeek, int interval, DateTime start, DateTime from, DateTime expected, params DayOfWeek[] days) {
-            var pattern = new WeeklyRecurrencePattern() {
+            IRecurrencePattern pattern = new WeeklyRecurrencePattern() {
                 PeriodHandling = periodHandling,
                 FirstDayOfWeek = firstDayOfWeek,
                 Days = days.ToHashSet()
             };
 
-            Assert.Equal(expected, pattern.GetFirst(interval, start, from, x => output.WriteLine(x)));
+            Assert.Equal(expected, pattern.GetFirst(interval, start, from));
         }
 
         [Theory]

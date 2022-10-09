@@ -17,19 +17,19 @@ namespace VDT.Core.RecurringDates {
             return pattern;
         }
 
-        public static WeeklyRecurrencePattern IncludeDays(this WeeklyRecurrencePattern pattern, params DayOfWeek[] days)
-            => pattern.IncludeDays(days.AsEnumerable());
+        public static WeeklyRecurrencePattern IncludeDaysOfWeek(this WeeklyRecurrencePattern pattern, params DayOfWeek[] days)
+            => pattern.IncludeDaysOfWeek(days.AsEnumerable());
         
-        public static WeeklyRecurrencePattern IncludeDays(this WeeklyRecurrencePattern pattern, IEnumerable<DayOfWeek> days) {
-            pattern.Days.UnionWith(days);
+        public static WeeklyRecurrencePattern IncludeDaysOfWeek(this WeeklyRecurrencePattern pattern, IEnumerable<DayOfWeek> days) {
+            pattern.DaysOfWeek.UnionWith(days);
             return pattern;
         }
 
-        public static WeeklyRecurrencePattern ExcludeDays(this WeeklyRecurrencePattern pattern, params DayOfWeek[] days)
-            => pattern.ExcludeDays(days.AsEnumerable());
+        public static WeeklyRecurrencePattern ExcludeDaysOfWeek(this WeeklyRecurrencePattern pattern, params DayOfWeek[] days)
+            => pattern.ExcludeDaysOfWeek(days.AsEnumerable());
 
-        public static WeeklyRecurrencePattern ExcludeDays(this WeeklyRecurrencePattern pattern, IEnumerable<DayOfWeek> days) {
-            pattern.Days.ExceptWith(days);
+        public static WeeklyRecurrencePattern ExcludeDaysOfWeek(this WeeklyRecurrencePattern pattern, IEnumerable<DayOfWeek> days) {
+            pattern.DaysOfWeek.ExceptWith(days);
             return pattern;
         }
     }

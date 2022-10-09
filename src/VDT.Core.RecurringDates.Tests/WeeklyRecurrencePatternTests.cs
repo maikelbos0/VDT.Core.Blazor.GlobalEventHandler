@@ -20,11 +20,11 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(RecurrencePatternPeriodHandling.Ongoing, DayOfWeek.Sunday, 2, "2022-09-28", "2022-10-12", "2022-10-15", DayOfWeek.Tuesday, DayOfWeek.Saturday)]
         [InlineData(RecurrencePatternPeriodHandling.Ongoing, DayOfWeek.Sunday, 2, "2022-09-28", "2022-10-15", "2022-10-15", DayOfWeek.Tuesday, DayOfWeek.Saturday)]
         [InlineData(RecurrencePatternPeriodHandling.Ongoing, DayOfWeek.Sunday, 2, "2022-09-28", "2022-10-16", "2022-10-18", DayOfWeek.Tuesday, DayOfWeek.Saturday)]
-        public void GetFirst(RecurrencePatternPeriodHandling periodHandling, DayOfWeek firstDayOfWeek, int interval, DateTime start, DateTime from, DateTime expected, params DayOfWeek[] days) {
+        public void GetFirst(RecurrencePatternPeriodHandling periodHandling, DayOfWeek firstDayOfWeek, int interval, DateTime start, DateTime from, DateTime expected, params DayOfWeek[] daysOfWeek) {
             IRecurrencePattern pattern = new WeeklyRecurrencePattern() {
                 PeriodHandling = periodHandling,
                 FirstDayOfWeek = firstDayOfWeek,
-                Days = days.ToHashSet()
+                DaysOfWeek = daysOfWeek.ToHashSet()
             };
 
             Assert.Equal(expected, pattern.GetFirst(interval, start, from));
@@ -33,12 +33,12 @@ namespace VDT.Core.RecurringDates.Tests {
         [Fact]
         public void GetDayMap_Single_Day() {
             var pattern = new WeeklyRecurrencePattern() {
-                Days = new HashSet<DayOfWeek>() {
+                DaysOfWeek = new HashSet<DayOfWeek>() {
                     DayOfWeek.Wednesday
                 }
             };
 
-            var map = pattern.GetDayMap();
+            var map = pattern.GetDayOfWeekMap();
 
             Assert.Equal(7, map[DayOfWeek.Wednesday]);
         }
@@ -46,7 +46,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [Fact]
         public void GetDayMap_All_Days() {
             var pattern = new WeeklyRecurrencePattern() {
-                Days = new HashSet<DayOfWeek>() { 
+                DaysOfWeek = new HashSet<DayOfWeek>() { 
                     DayOfWeek.Monday,
                     DayOfWeek.Tuesday,
                     DayOfWeek.Wednesday,
@@ -57,7 +57,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 }
             };
 
-            var map = pattern.GetDayMap();
+            var map = pattern.GetDayOfWeekMap();
 
             Assert.Equal(1, map[DayOfWeek.Monday]);
             Assert.Equal(1, map[DayOfWeek.Tuesday]);
@@ -71,14 +71,14 @@ namespace VDT.Core.RecurringDates.Tests {
         [Fact]
         public void GetDayMap_Some_Days() {
             var pattern = new WeeklyRecurrencePattern() {
-                Days = new HashSet<DayOfWeek>() { 
+                DaysOfWeek = new HashSet<DayOfWeek>() { 
                     DayOfWeek.Monday,
                     DayOfWeek.Thursday,
                     DayOfWeek.Saturday,
                 }
             };
 
-            var map = pattern.GetDayMap();
+            var map = pattern.GetDayOfWeekMap();
 
             Assert.Equal(3, map[DayOfWeek.Monday]);
             Assert.Equal(2, map[DayOfWeek.Thursday]);

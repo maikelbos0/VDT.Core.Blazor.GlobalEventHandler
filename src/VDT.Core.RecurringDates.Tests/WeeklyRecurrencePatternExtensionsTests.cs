@@ -41,41 +41,41 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Fact]
-        public void IncludeDays() {
+        public void IncludeDaysOfWeek() {
             var pattern = new WeeklyRecurrencePattern() {
-                Days = new HashSet<DayOfWeek>() {
+                DaysOfWeek = new HashSet<DayOfWeek>() {
                     DayOfWeek.Tuesday,
                     DayOfWeek.Wednesday,
                     DayOfWeek.Thursday
                 }
             };
 
-            Assert.Same(pattern, pattern.IncludeDays(DayOfWeek.Tuesday, DayOfWeek.Friday));
+            Assert.Same(pattern, pattern.IncludeDaysOfWeek(DayOfWeek.Tuesday, DayOfWeek.Friday));
 
             Assert.Equal(new[] {
                 DayOfWeek.Tuesday,
                 DayOfWeek.Wednesday,
                 DayOfWeek.Thursday,
                 DayOfWeek.Friday
-            }, pattern.Days);
+            }, pattern.DaysOfWeek);
         }
 
         [Fact]
-        public void ExcludeDays() {
+        public void ExcludeDaysOfWeek() {
             var pattern = new WeeklyRecurrencePattern() {
-                Days = new HashSet<DayOfWeek>() {
+                DaysOfWeek = new HashSet<DayOfWeek>() {
                     DayOfWeek.Tuesday,
                     DayOfWeek.Wednesday,
                     DayOfWeek.Thursday
                 }
             };
 
-            Assert.Same(pattern, pattern.ExcludeDays(DayOfWeek.Tuesday, DayOfWeek.Friday));
+            Assert.Same(pattern, pattern.ExcludeDaysOfWeek(DayOfWeek.Tuesday, DayOfWeek.Friday));
 
             Assert.Equal(new[] {
                 DayOfWeek.Wednesday,
                 DayOfWeek.Thursday
-            }, pattern.Days);
+            }, pattern.DaysOfWeek);
         }
     }
 }

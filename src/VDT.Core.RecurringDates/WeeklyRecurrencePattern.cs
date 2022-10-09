@@ -7,11 +7,11 @@ namespace VDT.Core.RecurringDates {
     public class WeeklyRecurrencePattern : IRecurrencePattern {
         public RecurrencePatternPeriodHandling PeriodHandling { get; set; } = RecurrencePatternPeriodHandling.Ongoing;
         public DayOfWeek FirstDayOfWeek { get; set; } = Thread.CurrentThread.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
-        public HashSet<DayOfWeek> Days { get; set; } = new HashSet<DayOfWeek>();
+        public HashSet<DayOfWeek> DaysOfWeek { get; set; } = new HashSet<DayOfWeek>();
         // TODO add using start day of week as day?
 
         DateTime? IRecurrencePattern.GetFirst(int interval, DateTime start, DateTime from) {
-            if (!Days.Any()) {
+            if (!DaysOfWeek.Any()) {
                 return null;
             }
 
@@ -27,13 +27,13 @@ namespace VDT.Core.RecurringDates {
             var minimumDaysCorrected = minimumDays + (firstDayOfWeek - minimum.DayOfWeek - 7) % -7;
             var iterations = (minimumDaysCorrected - startDaysCorrected - 1) / (interval * 7);
             var firstBaseDays = startDaysCorrected + iterations * interval * 7;            
-            var candidateDays = Days.Select(day => (day + 7 - firstDayOfWeek) % 7);
+            var candidateDaysOfWeek = DaysOfWeek.Select(day => (day + 7 - firstDayOfWeek) % 7);
             
-            if (!candidateDays.Any(day => day + firstBaseDays >= minimumDays)) {
+            if (!candidateDaysOfWeek.Any(dayOfWeek => dayOfWeek + firstBaseDays >= minimumDays)) {
                 firstBaseDays += interval * 7;
             }
 
-            return DateTime.MinValue.AddDays(firstBaseDays + candidateDays.Where(day => day + firstBaseDays >= minimumDays).Min());
+            return DateTime.MinValue.AddDays(firstBaseDays + candidateDaysOfWeek.Where(dayOfWeek => dayOfWeek + firstBaseDays >= minimumDays).Min());
         }
 
         DateTime? IRecurrencePattern.GetNext(int interval, DateTime current) {
@@ -48,17 +48,17 @@ namespace VDT.Core.RecurringDates {
             };
         }
 
-        internal Dictionary<DayOfWeek, int> GetDayMap() {
-            var days = Days.OrderBy(day => day).ToList();
-            var dayMap = new Dictionary<DayOfWeek, int>();
+        internal Dictionary<DayOfWeek, int> GetDayOfWeekMap() {
+            var daysOfWeek = DaysOfWeek.OrderBy(day => day).ToList();
+            var dayOfWeekMap = new Dictionary<DayOfWeek, int>();
 
-            for (var i = 0; i < days.Count - 1; i++) {
-                dayMap[days[i]] = days[i + 1] - days[i];
+            for (var i = 0; i < daysOfWeek.Count - 1; i++) {
+                dayOfWeekMap[daysOfWeek[i]] = daysOfWeek[i + 1] - daysOfWeek[i];
             }
 
-            dayMap[days[days.Count - 1]] = 7 + days[0] - days[days.Count - 1];
+            dayOfWeekMap[daysOfWeek[daysOfWeek.Count - 1]] = 7 + daysOfWeek[0] - daysOfWeek[daysOfWeek.Count - 1];
 
-            return dayMap;
+            return dayOfWeekMap;
         }
     }
 }

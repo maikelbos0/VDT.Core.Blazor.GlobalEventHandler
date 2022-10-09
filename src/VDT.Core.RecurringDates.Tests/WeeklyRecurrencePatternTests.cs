@@ -30,20 +30,6 @@ namespace VDT.Core.RecurringDates.Tests {
             Assert.Equal(expected, pattern.GetFirst(interval, start, from));
         }
 
-        [Theory]
-        [InlineData(RecurrencePatternPeriodHandling.Ongoing, DayOfWeek.Sunday, "2022-10-04", 0)]
-        [InlineData(RecurrencePatternPeriodHandling.Calendar, DayOfWeek.Sunday, "2022-10-04", -2)]
-        [InlineData(RecurrencePatternPeriodHandling.Calendar, DayOfWeek.Monday, "2022-10-04", -1)]
-        [InlineData(RecurrencePatternPeriodHandling.Calendar, DayOfWeek.Thursday, "2022-09-28", -6)]
-        public void GetWeekStartCorrection(RecurrencePatternPeriodHandling periodHandling, DayOfWeek firstDayOfWeek, DateTime date, int expectedCorrection) {
-            var pattern = new WeeklyRecurrencePattern() {
-                PeriodHandling = periodHandling,
-                FirstDayOfWeek = firstDayOfWeek
-            };
-
-            Assert.Equal(expectedCorrection, pattern.GetWeekStartCorrection(date));
-        }
-
         [Fact]
         public void GetDayMap_Single_Day() {
             var pattern = new WeeklyRecurrencePattern() {

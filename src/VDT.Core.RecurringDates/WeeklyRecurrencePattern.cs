@@ -7,7 +7,7 @@ namespace VDT.Core.RecurringDates {
     public class WeeklyRecurrencePattern : IRecurrencePattern {
         public RecurrencePatternPeriodHandling PeriodHandling { get; set; } = RecurrencePatternPeriodHandling.Ongoing;
         public DayOfWeek FirstDayOfWeek { get; set; } = Thread.CurrentThread.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
-        public HashSet<DayOfWeek> DaysOfWeek { get; set; } = new HashSet<DayOfWeek>();
+        public SortedSet<DayOfWeek> DaysOfWeek { get; set; } = new SortedSet<DayOfWeek>();
         // TODO add using start day of week as day?
 
         DateTime? IRecurrencePattern.GetFirst(int interval, DateTime start, DateTime from) {
@@ -59,6 +59,16 @@ namespace VDT.Core.RecurringDates {
             dayOfWeekMap[daysOfWeek[daysOfWeek.Count - 1]] = 7 + daysOfWeek[0] - daysOfWeek[daysOfWeek.Count - 1];
 
             return dayOfWeekMap;
+        }
+
+        internal DayOfWeek GetLastApplicableDayOfWeek(DateTime start) {
+            var firstDayOfWeek = GetFirstDayOfWeek(start);
+
+            if (DaysOfWeek.Contains(firstDayOfWeek)) {
+                return firstDayOfWeek;
+            }
+
+            return DaysOfWeek.Cast<DayOfWeek?>().LastOrDefault(dayOfWeek => dayOfWeek!.Value < firstDayOfWeek) ?? DaysOfWeek.Last();
         }
     }
 }

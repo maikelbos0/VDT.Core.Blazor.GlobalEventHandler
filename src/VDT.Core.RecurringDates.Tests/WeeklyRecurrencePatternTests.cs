@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace VDT.Core.RecurringDates.Tests {
@@ -24,7 +23,7 @@ namespace VDT.Core.RecurringDates.Tests {
             IRecurrencePattern pattern = new WeeklyRecurrencePattern() {
                 PeriodHandling = periodHandling,
                 FirstDayOfWeek = firstDayOfWeek,
-                DaysOfWeek = daysOfWeek.ToHashSet()
+                DaysOfWeek = new SortedSet<DayOfWeek>(daysOfWeek)
             };
 
             Assert.Equal(expected, pattern.GetFirst(interval, start, from));
@@ -33,7 +32,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [Fact]
         public void GetDayMap_Single_Day() {
             var pattern = new WeeklyRecurrencePattern() {
-                DaysOfWeek = new HashSet<DayOfWeek>() {
+                DaysOfWeek = new SortedSet<DayOfWeek>() {
                     DayOfWeek.Wednesday
                 }
             };
@@ -46,7 +45,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [Fact]
         public void GetDayMap_All_Days() {
             var pattern = new WeeklyRecurrencePattern() {
-                DaysOfWeek = new HashSet<DayOfWeek>() { 
+                DaysOfWeek = new SortedSet<DayOfWeek>() {
                     DayOfWeek.Monday,
                     DayOfWeek.Tuesday,
                     DayOfWeek.Wednesday,
@@ -71,7 +70,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [Fact]
         public void GetDayMap_Some_Days() {
             var pattern = new WeeklyRecurrencePattern() {
-                DaysOfWeek = new HashSet<DayOfWeek>() { 
+                DaysOfWeek = new SortedSet<DayOfWeek>() {
                     DayOfWeek.Monday,
                     DayOfWeek.Thursday,
                     DayOfWeek.Saturday,
@@ -83,6 +82,24 @@ namespace VDT.Core.RecurringDates.Tests {
             Assert.Equal(3, map[DayOfWeek.Monday]);
             Assert.Equal(2, map[DayOfWeek.Thursday]);
             Assert.Equal(2, map[DayOfWeek.Saturday]);
+        }
+
+        [Theory]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, DayOfWeek.Monday, "2022-10-01", DayOfWeek.Monday, DayOfWeek.Monday)]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, DayOfWeek.Monday, "2022-10-01", DayOfWeek.Tuesday, DayOfWeek.Tuesday)]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, DayOfWeek.Saturday, "2022-10-01", DayOfWeek.Friday, DayOfWeek.Sunday, DayOfWeek.Tuesday, DayOfWeek.Friday)]
+        [InlineData(RecurrencePatternPeriodHandling.Ongoing, DayOfWeek.Monday, "2022-10-01", DayOfWeek.Friday, DayOfWeek.Tuesday, DayOfWeek.Friday)]
+        [InlineData(RecurrencePatternPeriodHandling.Ongoing, DayOfWeek.Monday, "2022-10-01", DayOfWeek.Tuesday, DayOfWeek.Sunday, DayOfWeek.Tuesday)]
+        [InlineData(RecurrencePatternPeriodHandling.Ongoing, DayOfWeek.Monday, "2022-10-01", DayOfWeek.Friday, DayOfWeek.Sunday, DayOfWeek.Monday, DayOfWeek.Friday)]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, DayOfWeek.Wednesday, "2022-10-01", DayOfWeek.Monday, DayOfWeek.Monday, DayOfWeek.Thursday, DayOfWeek.Saturday)]
+        public void GetLastApplicableDayOfWeek(RecurrencePatternPeriodHandling periodHandling, DayOfWeek firstDayOfWeek, DateTime start, DayOfWeek expectedDayOfWeek, params DayOfWeek[] daysOfWeek) {
+            var pattern = new WeeklyRecurrencePattern() {
+                PeriodHandling = periodHandling,
+                FirstDayOfWeek = firstDayOfWeek,
+                DaysOfWeek = new SortedSet<DayOfWeek>(daysOfWeek)
+            };
+
+            Assert.Equal(expectedDayOfWeek, pattern.GetLastApplicableDayOfWeek(start));
         }
     }
 }

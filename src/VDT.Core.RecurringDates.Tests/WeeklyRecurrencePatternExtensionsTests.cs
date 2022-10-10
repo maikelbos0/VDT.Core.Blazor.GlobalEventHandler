@@ -43,7 +43,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [Fact]
         public void IncludeDaysOfWeek() {
             var pattern = new WeeklyRecurrencePattern() {
-                DaysOfWeek = new HashSet<DayOfWeek>() {
+                DaysOfWeek = new SortedSet<DayOfWeek>() {
                     DayOfWeek.Tuesday,
                     DayOfWeek.Wednesday,
                     DayOfWeek.Thursday
@@ -63,7 +63,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [Fact]
         public void ExcludeDaysOfWeek() {
             var pattern = new WeeklyRecurrencePattern() {
-                DaysOfWeek = new HashSet<DayOfWeek>() {
+                DaysOfWeek = new SortedSet<DayOfWeek>() {
                     DayOfWeek.Tuesday,
                     DayOfWeek.Wednesday,
                     DayOfWeek.Thursday

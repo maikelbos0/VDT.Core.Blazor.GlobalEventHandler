@@ -37,7 +37,13 @@ namespace VDT.Core.RecurringDates {
         }
 
         DateTime? IRecurrencePattern.GetNext(int interval, DateTime start, DateTime current) {
-            throw new NotImplementedException();
+            if (!DaysOfWeek.Any()) {
+                return null;
+            }
+
+            var dayOfWeekMap = GetDayOfWeekMap(interval, start);
+
+            return current.AddDays(dayOfWeekMap[current.DayOfWeek]);
         }
 
         internal Dictionary<DayOfWeek, int> GetDayOfWeekMap(int interval, DateTime start) {

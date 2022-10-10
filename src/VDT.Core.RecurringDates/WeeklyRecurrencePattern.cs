@@ -47,9 +47,8 @@ namespace VDT.Core.RecurringDates {
                 _ => throw new NotImplementedException($"No implementation found for {nameof(RecurrencePatternPeriodHandling)} '{PeriodHandling}'")
             };
         }
-
-        internal Dictionary<DayOfWeek, int> GetDayOfWeekMap() {
-            var daysOfWeek = DaysOfWeek.OrderBy(day => day).ToList();
+        internal Dictionary<DayOfWeek, int> GetDayOfWeekMap(int interval, DateTime start) {
+            var daysOfWeek = DaysOfWeek.ToList();
             var dayOfWeekMap = new Dictionary<DayOfWeek, int>();
 
             for (var i = 0; i < daysOfWeek.Count - 1; i++) {
@@ -57,6 +56,10 @@ namespace VDT.Core.RecurringDates {
             }
 
             dayOfWeekMap[daysOfWeek[daysOfWeek.Count - 1]] = 7 + daysOfWeek[0] - daysOfWeek[daysOfWeek.Count - 1];
+
+            if (interval > 1) {
+                dayOfWeekMap[GetLastApplicableDayOfWeek(start)] += (interval - 1) * 7;
+            }
 
             return dayOfWeekMap;
         }

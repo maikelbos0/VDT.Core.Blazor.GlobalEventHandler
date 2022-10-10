@@ -37,7 +37,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 }
             };
 
-            var map = pattern.GetDayOfWeekMap();
+            var map = pattern.GetDayOfWeekMap(1, new DateTime(2022, 10, 1));
 
             Assert.Equal(7, map[DayOfWeek.Wednesday]);
         }
@@ -56,7 +56,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 }
             };
 
-            var map = pattern.GetDayOfWeekMap();
+            var map = pattern.GetDayOfWeekMap(1, new DateTime(2022, 10, 1));
 
             Assert.Equal(1, map[DayOfWeek.Monday]);
             Assert.Equal(1, map[DayOfWeek.Tuesday]);
@@ -77,9 +77,28 @@ namespace VDT.Core.RecurringDates.Tests {
                 }
             };
 
-            var map = pattern.GetDayOfWeekMap();
+            var map = pattern.GetDayOfWeekMap(1, new DateTime(2022, 10, 1));
 
             Assert.Equal(3, map[DayOfWeek.Monday]);
+            Assert.Equal(2, map[DayOfWeek.Thursday]);
+            Assert.Equal(2, map[DayOfWeek.Saturday]);
+        }
+
+        [Fact]
+        public void GetDayMap_Interval() {
+            var pattern = new WeeklyRecurrencePattern() {
+                PeriodHandling = RecurrencePatternPeriodHandling.Calendar,
+                FirstDayOfWeek = DayOfWeek.Wednesday,
+                DaysOfWeek = new SortedSet<DayOfWeek>() {
+                    DayOfWeek.Monday,
+                    DayOfWeek.Thursday,
+                    DayOfWeek.Saturday,
+                }
+            };
+
+            var map = pattern.GetDayOfWeekMap(3, new DateTime(2022, 10, 1));
+
+            Assert.Equal(17, map[DayOfWeek.Monday]);
             Assert.Equal(2, map[DayOfWeek.Thursday]);
             Assert.Equal(2, map[DayOfWeek.Saturday]);
         }

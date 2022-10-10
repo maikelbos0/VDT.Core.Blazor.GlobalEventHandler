@@ -41,7 +41,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 WeekendHandling = weekendHandling
             };
 
-            Assert.Equal(expected, pattern.GetNext(interval, current));
+            Assert.Equal(expected, pattern.GetNext(interval, DateTime.MinValue, current));
         }
 
         [Theory]
@@ -65,7 +65,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 WeekendHandling = RecurrencePatternWeekendHandling.Skip
             };
 
-            Assert.Null(pattern.GetNext(interval, new DateTime(2022, 10, 8)));
+            Assert.Null(pattern.GetNext(interval, DateTime.MinValue, new DateTime(2022, 10, 8)));
         }
     }
 }

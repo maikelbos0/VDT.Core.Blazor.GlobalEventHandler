@@ -30,7 +30,7 @@ namespace VDT.Core.RecurringDates {
             while (current != null && current <= End && (to == null || current <= to)) {
                 yield return current.Value;
 
-                current = Pattern.GetNext(Interval, current.Value);
+                current = Pattern.GetNext(Interval, Start, current.Value);
             }
         }
 
@@ -40,7 +40,7 @@ namespace VDT.Core.RecurringDates {
             while (current != null && current <= End && count-- > 0) {
                 yield return current.Value;
 
-                current = Pattern.GetNext(Interval, current.Value);
+                current = Pattern.GetNext(Interval, Start, current.Value);
             }
         }
     }

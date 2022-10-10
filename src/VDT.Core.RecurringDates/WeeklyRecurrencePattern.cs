@@ -36,17 +36,10 @@ namespace VDT.Core.RecurringDates {
             return DateTime.MinValue.AddDays(firstBaseDays + candidateDaysOfWeek.Where(dayOfWeek => dayOfWeek + firstBaseDays >= minimumDays).Min());
         }
 
-        DateTime? IRecurrencePattern.GetNext(int interval, DateTime current) {
+        DateTime? IRecurrencePattern.GetNext(int interval, DateTime start, DateTime current) {
             throw new NotImplementedException();
         }
 
-        private DayOfWeek GetFirstDayOfWeek(DateTime start) {
-            return PeriodHandling switch {
-                RecurrencePatternPeriodHandling.Calendar => FirstDayOfWeek,
-                RecurrencePatternPeriodHandling.Ongoing => start.DayOfWeek,
-                _ => throw new NotImplementedException($"No implementation found for {nameof(RecurrencePatternPeriodHandling)} '{PeriodHandling}'")
-            };
-        }
         internal Dictionary<DayOfWeek, int> GetDayOfWeekMap(int interval, DateTime start) {
             var daysOfWeek = DaysOfWeek.ToList();
             var dayOfWeekMap = new Dictionary<DayOfWeek, int>();
@@ -72,6 +65,14 @@ namespace VDT.Core.RecurringDates {
             }
 
             return DaysOfWeek.Cast<DayOfWeek?>().LastOrDefault(dayOfWeek => dayOfWeek!.Value < firstDayOfWeek) ?? DaysOfWeek.Last();
+        }
+
+        private DayOfWeek GetFirstDayOfWeek(DateTime start) {
+            return PeriodHandling switch {
+                RecurrencePatternPeriodHandling.Calendar => FirstDayOfWeek,
+                RecurrencePatternPeriodHandling.Ongoing => start.DayOfWeek,
+                _ => throw new NotImplementedException($"No implementation found for {nameof(RecurrencePatternPeriodHandling)} '{PeriodHandling}'")
+            };
         }
     }
 }

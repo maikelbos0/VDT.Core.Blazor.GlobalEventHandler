@@ -19,7 +19,7 @@ namespace VDT.Core.RecurringDates {
             return HandleWeekends(interval, first);
         }
 
-        DateTime? IRecurrencePattern.GetNext(int interval, DateTime current)
+        DateTime? IRecurrencePattern.GetNext(int interval, DateTime start, DateTime current)
             => HandleWeekends(interval, current.AddDays(interval));
 
         private DateTime? HandleWeekends(int interval, DateTime date) {

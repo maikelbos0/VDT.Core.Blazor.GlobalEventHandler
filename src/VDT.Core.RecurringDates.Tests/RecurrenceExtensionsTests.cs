@@ -3,14 +3,6 @@ using Xunit;
 
 namespace VDT.Core.RecurringDates.Tests {
     public class RecurrenceExtensionsTests {
-        [Fact]
-        public void Days() {
-            var recurrence = new Recurrence();
-
-            recurrence.Days(options => options.WeekendHandling = RecurrencePatternWeekendHandling.Skip);
-
-            Assert.Equal(RecurrencePatternWeekendHandling.Skip, Assert.IsType<DailyRecurrencePattern>(recurrence.Pattern).WeekendHandling);
-        }
 
         [Fact]
         public void StartsOn() {
@@ -28,6 +20,23 @@ namespace VDT.Core.RecurringDates.Tests {
             recurrence.EndsOn(new DateTime(2022, 12, 31));
 
             Assert.Equal(new DateTime(2022, 12, 31), recurrence.End);
+        }
+        [Fact]
+        public void Days() {
+            var recurrence = new Recurrence();
+
+            recurrence.Days(pattern => pattern.WeekendHandling = RecurrencePatternWeekendHandling.Skip);
+
+            Assert.Equal(RecurrencePatternWeekendHandling.Skip, Assert.IsType<DailyRecurrencePattern>(recurrence.Pattern).WeekendHandling);
+        }
+
+        [Fact]
+        public void Weeks() {
+            var recurrence = new Recurrence();
+
+            recurrence.Weeks(pattern => pattern.PeriodHandling = RecurrencePatternPeriodHandling.Calendar);
+
+            Assert.Equal(RecurrencePatternPeriodHandling.Calendar, Assert.IsType<WeeklyRecurrencePattern>(recurrence.Pattern).PeriodHandling);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace VDT.Core.RecurringDates {
             this.recurrence = recurrence;
         }
 
-        DateTime? IRecurrencePattern.GetFirst(DateTime from) {
+        public DateTime? GetFirst(DateTime from) {
             var first = from;
 
             if (recurrence.Start > from) {
@@ -25,7 +25,7 @@ namespace VDT.Core.RecurringDates {
             return HandleWeekends(first);
         }
 
-        DateTime? IRecurrencePattern.GetNext(DateTime current)
+        public DateTime? GetNext(DateTime current)
             => HandleWeekends(current.AddDays(recurrence.Interval));
 
         private DateTime? HandleWeekends(DateTime date) {

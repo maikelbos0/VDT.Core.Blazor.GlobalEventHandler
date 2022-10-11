@@ -2,8 +2,8 @@
 
 namespace VDT.Core.RecurringDates {
     public interface IRecurrencePattern {
-        internal DateTime? GetFirst(DateTime from);
+        public DateTime? GetFirst(DateTime from);
 
-        internal DateTime? GetNext(DateTime current);
+        public DateTime? GetNext(DateTime current);
     }
 }

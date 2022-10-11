@@ -19,7 +19,7 @@ namespace VDT.Core.RecurringDates {
             this.recurrence = recurrence;
         }
 
-        DateTime? IRecurrencePattern.GetFirst(DateTime from) {
+        public DateTime? GetFirst(DateTime from) {
             if (!DaysOfWeek.Any()) {
                 return null;
             }
@@ -45,7 +45,7 @@ namespace VDT.Core.RecurringDates {
             return DateTime.MinValue.AddDays(firstBaseDays + candidateDaysOfWeek.Where(dayOfWeek => dayOfWeek + firstBaseDays >= minimumDays).Min());
         }
 
-        DateTime? IRecurrencePattern.GetNext(DateTime current) {
+        public DateTime? GetNext(DateTime current) {
             if (!DaysOfWeek.Any()) {
                 return null;
             }

@@ -3,11 +3,13 @@
 namespace VDT.Core.RecurringDates {
     public static class RecurrenceExtensions {
         public static Recurrence Days(this Recurrence recurrence, Action<DailyRecurrencePattern>? patternBuilder = null) {
-            var pattern = new DailyRecurrencePattern();
+            var pattern = new DailyRecurrencePattern(recurrence);
             patternBuilder?.Invoke(pattern);
             recurrence.Pattern = pattern;
             return recurrence;
         }
+
+        // TODO add weekly
 
         public static Recurrence StartsOn(this Recurrence recurrence, DateTime startDate) {
             recurrence.Start = startDate;

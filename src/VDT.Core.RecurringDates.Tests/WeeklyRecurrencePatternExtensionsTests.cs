@@ -7,7 +7,7 @@ namespace VDT.Core.RecurringDates.Tests {
     public class WeeklyRecurrencePatternExtensionsTests {
         [Fact]
         public void UseCalendarWeek() {
-            var pattern = new WeeklyRecurrencePattern() {
+            var pattern = new WeeklyRecurrencePattern(new Recurrence()) {
                 PeriodHandling = RecurrencePatternPeriodHandling.Ongoing
             };
 
@@ -19,7 +19,7 @@ namespace VDT.Core.RecurringDates.Tests {
 
         [Fact]
         public void UseCalendarWeek_FirstDayOfWeek() {
-            var pattern = new WeeklyRecurrencePattern() {
+            var pattern = new WeeklyRecurrencePattern(new Recurrence()) {
                 PeriodHandling = RecurrencePatternPeriodHandling.Ongoing
             };
 
@@ -31,7 +31,7 @@ namespace VDT.Core.RecurringDates.Tests {
 
         [Fact]
         public void UseOngoingWeek() {
-            var pattern = new WeeklyRecurrencePattern() {
+            var pattern = new WeeklyRecurrencePattern(new Recurrence()) {
                 PeriodHandling = RecurrencePatternPeriodHandling.Calendar
             };
 
@@ -42,7 +42,7 @@ namespace VDT.Core.RecurringDates.Tests {
 
         [Fact]
         public void IncludeDaysOfWeek() {
-            var pattern = new WeeklyRecurrencePattern() {
+            var pattern = new WeeklyRecurrencePattern(new Recurrence()) {
                 DaysOfWeek = new SortedSet<DayOfWeek>() {
                     DayOfWeek.Tuesday,
                     DayOfWeek.Wednesday,
@@ -62,7 +62,7 @@ namespace VDT.Core.RecurringDates.Tests {
 
         [Fact]
         public void ExcludeDaysOfWeek() {
-            var pattern = new WeeklyRecurrencePattern() {
+            var pattern = new WeeklyRecurrencePattern(new Recurrence()) {
                 DaysOfWeek = new SortedSet<DayOfWeek>() {
                     DayOfWeek.Tuesday,
                     DayOfWeek.Wednesday,

@@ -17,11 +17,14 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(RecurrencePatternWeekendHandling.AdjustToMonday, 1, "2022-01-01", "2022-10-01", "2022-10-03")]
         [InlineData(RecurrencePatternWeekendHandling.AdjustToMonday, 1, "2022-10-03", "2022-01-01", "2022-10-03")]
         public void GetFirst(RecurrencePatternWeekendHandling weekendHandling, int interval, DateTime start, DateTime from, DateTime expected) {
-            IRecurrencePattern pattern = new DailyRecurrencePattern() {
+            IRecurrencePattern pattern = new DailyRecurrencePattern(new Recurrence() {
+                Interval = interval,
+                Start = start
+            }) {
                 WeekendHandling = weekendHandling
             };
 
-            Assert.Equal(expected, pattern.GetFirst(interval, start, from));
+            Assert.Equal(expected, pattern.GetFirst(from));
         }
 
         [Theory]
@@ -37,11 +40,13 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(RecurrencePatternWeekendHandling.AdjustToMonday, 3, "2022-09-29", "2022-10-03")]
         [InlineData(RecurrencePatternWeekendHandling.AdjustToMonday, 3, "2022-09-30", "2022-10-03")]
         public void GetNext(RecurrencePatternWeekendHandling weekendHandling, int interval, DateTime current, DateTime expected) {
-            IRecurrencePattern pattern = new DailyRecurrencePattern() {
+            IRecurrencePattern pattern = new DailyRecurrencePattern(new Recurrence() {
+                Interval = interval
+            }) {
                 WeekendHandling = weekendHandling
             };
 
-            Assert.Equal(expected, pattern.GetNext(interval, DateTime.MinValue, current));
+            Assert.Equal(expected, pattern.GetNext(current));
         }
 
         [Theory]
@@ -49,11 +54,14 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(14)]
         [InlineData(21)]
         public void GetFirst_SkipWeekends_Only_Weekends(int interval) {
-            IRecurrencePattern pattern = new DailyRecurrencePattern() {
+            IRecurrencePattern pattern = new DailyRecurrencePattern(new Recurrence() {
+                Interval = interval,
+                Start = new DateTime(2022, 10, 8)
+            }) {
                 WeekendHandling = RecurrencePatternWeekendHandling.Skip
             };
 
-            Assert.Null(pattern.GetFirst(interval, new DateTime(2022, 10, 8), new DateTime(2022, 10, 10)));
+            Assert.Null(pattern.GetFirst(new DateTime(2022, 10, 10)));
         }
 
         [Theory]
@@ -61,11 +69,14 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(14)]
         [InlineData(21)]
         public void GetNext_SkipWeekends_Only_Weekends(int interval) {
-            IRecurrencePattern pattern = new DailyRecurrencePattern() {
+            IRecurrencePattern pattern = new DailyRecurrencePattern(new Recurrence() {
+                Interval = interval,
+                Start = new DateTime(2022, 10, 8)
+            }) {
                 WeekendHandling = RecurrencePatternWeekendHandling.Skip
             };
 
-            Assert.Null(pattern.GetNext(interval, DateTime.MinValue, new DateTime(2022, 10, 8)));
+            Assert.Null(pattern.GetNext(new DateTime(2022, 10, 8)));
         }
     }
 }

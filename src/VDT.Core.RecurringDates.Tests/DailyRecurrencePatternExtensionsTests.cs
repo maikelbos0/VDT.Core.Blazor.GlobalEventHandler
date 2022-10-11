@@ -4,7 +4,7 @@ namespace VDT.Core.RecurringDates.Tests {
     public class DailyRecurrencePatternExtensionsTests {
         [Fact]
         public void IncludeWeekends() {
-            var pattern = new DailyRecurrencePattern() {
+            var pattern = new DailyRecurrencePattern(new Recurrence()) {
                 WeekendHandling = RecurrencePatternWeekendHandling.Include
             };
 
@@ -15,7 +15,7 @@ namespace VDT.Core.RecurringDates.Tests {
 
         [Fact]
         public void SkipWeekends() {
-            var pattern = new DailyRecurrencePattern() {
+            var pattern = new DailyRecurrencePattern(new Recurrence()) {
                 WeekendHandling = RecurrencePatternWeekendHandling.Skip
             };
 
@@ -26,7 +26,7 @@ namespace VDT.Core.RecurringDates.Tests {
 
         [Fact]
         public void AdjustWeekendsToMonday() {
-            var pattern = new DailyRecurrencePattern() {
+            var pattern = new DailyRecurrencePattern(new Recurrence()) {
                 WeekendHandling = RecurrencePatternWeekendHandling.AdjustToMonday
             };
 

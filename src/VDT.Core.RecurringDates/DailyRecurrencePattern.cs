@@ -2,31 +2,37 @@
 
 namespace VDT.Core.RecurringDates {
     public class DailyRecurrencePattern : IRecurrencePattern {
+        private readonly Recurrence recurrence;
+
         public RecurrencePatternWeekendHandling WeekendHandling { get; set; } = RecurrencePatternWeekendHandling.Include;
 
-        DateTime? IRecurrencePattern.GetFirst(int interval, DateTime start, DateTime from) {
-            var first = from;
-
-            if (start > from) {
-                first = start;
-            }
-            else if (interval > 1) {
-                var iterations = ((from - start).Days + interval - 1) / interval;
-
-                first = start.AddDays(iterations * interval);
-            }
-
-            return HandleWeekends(interval, first);
+        public DailyRecurrencePattern(Recurrence recurrence) {
+            this.recurrence = recurrence;
         }
 
-        DateTime? IRecurrencePattern.GetNext(int interval, DateTime start, DateTime current)
-            => HandleWeekends(interval, current.AddDays(interval));
+        DateTime? IRecurrencePattern.GetFirst(DateTime from) {
+            var first = from;
 
-        private DateTime? HandleWeekends(int interval, DateTime date) {
+            if (recurrence.Start > from) {
+                first = recurrence.Start;
+            }
+            else if (recurrence.Interval > 1) {
+                var iterations = ((from - recurrence.Start).Days + recurrence.Interval - 1) / recurrence.Interval;
+
+                first = recurrence.Start.AddDays(iterations * recurrence.Interval);
+            }
+
+            return HandleWeekends(first);
+        }
+
+        DateTime? IRecurrencePattern.GetNext(DateTime current)
+            => HandleWeekends(current.AddDays(recurrence.Interval));
+
+        private DateTime? HandleWeekends(DateTime date) {
             if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday) {
                 return WeekendHandling switch {
                     RecurrencePatternWeekendHandling.Include => date,
-                    RecurrencePatternWeekendHandling.Skip => SkipWeekend(interval, date),
+                    RecurrencePatternWeekendHandling.Skip => SkipWeekend(date),
                     RecurrencePatternWeekendHandling.AdjustToMonday => AdjustWeekendToMonday(date),
                     _ => throw new NotImplementedException($"No implementation found for {nameof(RecurrencePatternWeekendHandling)} '{WeekendHandling}'")
                 };
@@ -35,13 +41,13 @@ namespace VDT.Core.RecurringDates {
             return date;
         }
 
-        private static DateTime? SkipWeekend(int interval, DateTime date) {
-            if (interval % 7 == 0) {
+        private DateTime? SkipWeekend(DateTime date) {
+            if (recurrence.Interval % 7 == 0) {
                 return null;
             }
 
             while (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday) {
-                date = date.AddDays(interval);
+                date = date.AddDays(recurrence.Interval);
             }
 
             return date;

@@ -54,6 +54,52 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Fact]
+        public void GetNextDayLookup_Single_Interval_Single_Day() {
+            var pattern = new WeeklyRecurrencePattern(new Recurrence() {
+                Interval = 1
+            }) {
+                PeriodHandling = RecurrencePatternPeriodHandling.Calendar,
+                FirstDayOfWeek = DayOfWeek.Monday,
+                DaysOfWeek = new SortedSet<DayOfWeek>() { DayOfWeek.Monday }
+            };
+
+            var lookup = pattern.GetNextDayLookup();
+
+            Assert.Equal(new[] { 7, 6, 5, 4, 3, 2, 1 }, lookup);
+        }
+
+
+        [Fact]
+        public void GetNextDayLookup_Single_Interval_Multiple_Days() {
+            var pattern = new WeeklyRecurrencePattern(new Recurrence() {
+                Interval = 1
+            }) {
+                PeriodHandling = RecurrencePatternPeriodHandling.Calendar,
+                FirstDayOfWeek = DayOfWeek.Monday,
+                DaysOfWeek = new SortedSet<DayOfWeek>() { DayOfWeek.Wednesday, DayOfWeek.Friday, DayOfWeek.Saturday }
+            };
+
+            var lookup = pattern.GetNextDayLookup();
+
+            Assert.Equal(new[] { 2, 1, 2, 1, 1, 4, 3 }, lookup);
+        }
+
+        [Fact]
+        public void GetNextDayLookup_Double_Interval_Multiple_Days() {
+            var pattern = new WeeklyRecurrencePattern(new Recurrence() {
+                Interval = 2
+            }) {
+                PeriodHandling = RecurrencePatternPeriodHandling.Calendar,
+                FirstDayOfWeek = DayOfWeek.Thursday,
+                DaysOfWeek = new SortedSet<DayOfWeek>() { DayOfWeek.Wednesday, DayOfWeek.Friday, DayOfWeek.Saturday }
+            };
+
+            var lookup = pattern.GetNextDayLookup();
+
+            Assert.Equal(new[] { 1, 1, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 2 }, lookup);
+        }
+
+        [Fact]
         public void GetFirst_No_DaysOfWeek() {
             IRecurrencePattern pattern = new WeeklyRecurrencePattern(new Recurrence() {
                 Interval = 1,

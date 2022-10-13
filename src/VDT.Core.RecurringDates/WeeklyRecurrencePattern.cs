@@ -12,7 +12,7 @@ namespace VDT.Core.RecurringDates {
         public DayOfWeek FirstDayOfWeek { get; set; } = Thread.CurrentThread.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
 
         public SortedSet<DayOfWeek> DaysOfWeek { get; set; } = new SortedSet<DayOfWeek>();
-
+        
         // TODO add using start day of week as day?
 
         public WeeklyRecurrencePattern(Recurrence recurrence) {
@@ -53,6 +53,18 @@ namespace VDT.Core.RecurringDates {
             var dayOfWeekMap = GetDayOfWeekMap();
 
             return current.AddDays(dayOfWeekMap[current.DayOfWeek]);
+        }
+
+        internal List<int> GetNextDayLookup() {
+            var firstDayOfWeek = (int)GetFirstDayOfWeek();
+            var range = 7 * recurrence.Interval;
+            var daysInRange = DaysOfWeek.Select(d => ((int)d - firstDayOfWeek - 1 + range) % range + 1).OrderBy(day => day).ToList();
+
+            daysInRange.Add(daysInRange.Min() + range);
+
+            return Enumerable.Range(0, range)
+                .Select(day => daysInRange.First(dayOfWeek => dayOfWeek > day) - day)
+                .ToList();
         }
 
         internal Dictionary<DayOfWeek, int> GetDayOfWeekMap() {

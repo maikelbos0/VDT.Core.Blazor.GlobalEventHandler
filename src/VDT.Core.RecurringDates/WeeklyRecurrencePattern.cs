@@ -57,11 +57,16 @@ namespace VDT.Core.RecurringDates {
             return current.AddDays(dayOfWeekMap[current.DayOfWeek]);
         }
 
-        internal int GetNextDay(int day) {
+        internal int GetNextDay(int day, bool allowCurrent) {
             var firstDayOfWeek = (int)GetFirstDayOfWeek();
             var daysInRange = DaysOfWeek.Select(d => ((int)d - firstDayOfWeek + 7) % 7).ToList();
 
-            return daysInRange.Where(dayOfWeek => dayOfWeek > day).DefaultIfEmpty(daysInRange.Min() + 7 * recurrence.Interval).Min() - day;
+            if (allowCurrent) {
+                return daysInRange.Where(dayOfWeek => dayOfWeek >= day).DefaultIfEmpty(daysInRange.Min() + 7 * recurrence.Interval).Min() - day;
+            }
+            else {
+                return daysInRange.Where(dayOfWeek => dayOfWeek > day).DefaultIfEmpty(daysInRange.Min() + 7 * recurrence.Interval).Min() - day;
+            }
         }
 
         internal Dictionary<DayOfWeek, int> GetDayOfWeekMap() {

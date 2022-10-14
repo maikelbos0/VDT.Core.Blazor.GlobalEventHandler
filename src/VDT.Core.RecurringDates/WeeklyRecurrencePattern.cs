@@ -71,10 +71,9 @@ namespace VDT.Core.RecurringDates {
 
         internal int GetNextDay(int day) {
             var firstDayOfWeek = (int)GetFirstDayOfWeek();
-            var range = 7 * recurrence.Interval;
-            var daysInRange = DaysOfWeek.Select(d => ((int)d - firstDayOfWeek - 1 + range) % range + 1).ToList();
+            var daysInRange = DaysOfWeek.Select(d => ((int)d - firstDayOfWeek + 7) % 7).ToList();
 
-            return daysInRange.Where(dayOfWeek => dayOfWeek > day).DefaultIfEmpty(daysInRange.Min() + range).Min() - day;
+            return daysInRange.Where(dayOfWeek => dayOfWeek > day).DefaultIfEmpty(daysInRange.Min() + 7 * recurrence.Interval).Min() - day;
         }
 
         internal Dictionary<DayOfWeek, int> GetDayOfWeekMap() {

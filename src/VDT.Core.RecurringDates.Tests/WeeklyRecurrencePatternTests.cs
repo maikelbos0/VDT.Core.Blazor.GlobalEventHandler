@@ -142,17 +142,17 @@ namespace VDT.Core.RecurringDates.Tests {
         [Theory]
         [InlineData(0, 1)]
         [InlineData(1, 1)]
-        [InlineData(2, 11)]
-        [InlineData(3, 10)]
-        [InlineData(4, 9)]
-        [InlineData(5, 8)]
-        [InlineData(6, 7)]
-        [InlineData(7, 6)]
-        [InlineData(8, 5)]
-        [InlineData(9, 4)]
-        [InlineData(10, 3)]
-        [InlineData(11, 2)]
-        [InlineData(12, 1)]
+        [InlineData(2, 4)]
+        [InlineData(3, 3)]
+        [InlineData(4, 2)]
+        [InlineData(5, 1)]
+        [InlineData(6, 9)]
+        [InlineData(7, 8)]
+        [InlineData(8, 7)]
+        [InlineData(9, 6)]
+        [InlineData(10, 5)]
+        [InlineData(11, 4)]
+        [InlineData(12, 3)]
         [InlineData(13, 2)]
         public void GetNextDay_Double_Interval_Multiple_Days(int day, int expectedNextDay) {
             var pattern = new WeeklyRecurrencePattern(new Recurrence() {
@@ -161,6 +161,34 @@ namespace VDT.Core.RecurringDates.Tests {
                 PeriodHandling = RecurrencePatternPeriodHandling.Calendar,
                 FirstDayOfWeek = DayOfWeek.Thursday,
                 DaysOfWeek = new SortedSet<DayOfWeek>() { DayOfWeek.Wednesday, DayOfWeek.Friday, DayOfWeek.Saturday }
+            };
+
+            Assert.Equal(expectedNextDay, pattern.GetNextDay(day));
+        }
+
+        [Theory]
+        [InlineData(0, 3)]
+        [InlineData(1, 2)]
+        [InlineData(2, 1)]
+        [InlineData(3, 3)]
+        [InlineData(4, 2)]
+        [InlineData(5, 1)]
+        [InlineData(6, 11)]
+        [InlineData(7, 10)]
+        [InlineData(8, 9)]
+        [InlineData(9, 8)]
+        [InlineData(10, 7)]
+        [InlineData(11, 6)]
+        [InlineData(12, 5)]
+        [InlineData(13, 4)]
+        public void GetNextDay_Double_Interval_Multiple_Days_Ongoing(int day, int expectedNextDay) {
+            var pattern = new WeeklyRecurrencePattern(new Recurrence() {
+                Start = new DateTime(2022, 9, 28),
+                Interval = 2
+            }) {
+                PeriodHandling = RecurrencePatternPeriodHandling.Ongoing,
+                FirstDayOfWeek = DayOfWeek.Thursday,
+                DaysOfWeek = new SortedSet<DayOfWeek>() { DayOfWeek.Tuesday, DayOfWeek.Saturday }
             };
 
             Assert.Equal(expectedNextDay, pattern.GetNextDay(day));

@@ -26,25 +26,14 @@ namespace VDT.Core.RecurringDates {
                 return null;
             }
 
+            if (from < recurrence.Start) {
+                from = recurrence.Start;
+            }
+
             var firstDayOfWeek = GetFirstDayOfWeek();
-            var startDaysCorrected = (recurrence.Start - DateTime.MinValue).Days + (firstDayOfWeek - recurrence.Start.DayOfWeek - 7) % -7;
-            var minimum = from;
+            var day = ((from - recurrence.Start).Days - (firstDayOfWeek - recurrence.Start.DayOfWeek - 7) % -7) % (7 * recurrence.Interval);
 
-            if (recurrence.Start > from) {
-                minimum = recurrence.Start;
-            }
-
-            var minimumDays = (minimum - DateTime.MinValue).Days;
-            var minimumDaysCorrected = minimumDays + (firstDayOfWeek - minimum.DayOfWeek - 7) % -7;
-            var iterations = (minimumDaysCorrected - startDaysCorrected - 1) / (recurrence.Interval * 7);
-            var firstBaseDays = startDaysCorrected + iterations * recurrence.Interval * 7;            
-            var candidateDaysOfWeek = DaysOfWeek.Select(day => (day + 7 - firstDayOfWeek) % 7);
-            
-            if (!candidateDaysOfWeek.Any(dayOfWeek => dayOfWeek + firstBaseDays >= minimumDays)) {
-                firstBaseDays += recurrence.Interval * 7;
-            }
-
-            return DateTime.MinValue.AddDays(firstBaseDays + candidateDaysOfWeek.Where(dayOfWeek => dayOfWeek + firstBaseDays >= minimumDays).Min());
+            return from.AddDays(GetNextDay(day, true));
         }
 
         public DateTime? GetNext(DateTime current) {

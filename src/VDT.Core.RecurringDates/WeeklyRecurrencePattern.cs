@@ -41,9 +41,10 @@ namespace VDT.Core.RecurringDates {
                 return null;
             }
 
-            var dayOfWeekMap = GetDayOfWeekMap();
+            var firstDayOfWeek = GetFirstDayOfWeek();
+            var day = ((current - recurrence.Start).Days - (firstDayOfWeek - recurrence.Start.DayOfWeek - 7) % -7) % (7 * recurrence.Interval);
 
-            return current.AddDays(dayOfWeekMap[current.DayOfWeek]);
+            return current.AddDays(GetNextDay(day, false));
         }
 
         internal int GetNextDay(int day, bool allowCurrent) {

@@ -53,6 +53,55 @@ namespace VDT.Core.RecurringDates.Tests {
             Assert.Equal(expected, pattern.GetNext(current));
         }
 
+        [Fact]
+        public void GetFirst_No_DaysOfWeek() {
+            IRecurrencePattern pattern = new WeeklyRecurrencePattern(new Recurrence() {
+                Interval = 1,
+                Start = new DateTime(2022, 10, 8)
+            });
+
+            Assert.Null(pattern.GetFirst(new DateTime(2022, 10, 10)));
+        }
+
+        [Fact]
+        public void GetNext_No_DaysOfWeek() {
+            IRecurrencePattern pattern = new WeeklyRecurrencePattern(new Recurrence() {
+                Interval = 1,
+                Start = new DateTime(2022, 10, 8)
+            });
+
+            Assert.Null(pattern.GetNext(new DateTime(2022, 10, 8)));
+        }
+
+        [Theory]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, DayOfWeek.Monday, 1, "2022-09-26", "2022-09-27", 1)]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, DayOfWeek.Monday, 1, "2022-09-26", "2022-10-01", 5)]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, DayOfWeek.Monday, 2, "2022-09-26", "2022-10-01", 5)]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, DayOfWeek.Wednesday, 2, "2022-09-30", "2022-10-04", 6)]
+        [InlineData(RecurrencePatternPeriodHandling.Ongoing, DayOfWeek.Monday, 2, "2022-09-26", "2022-10-01", 5)]
+        [InlineData(RecurrencePatternPeriodHandling.Ongoing, DayOfWeek.Friday, 2, "2022-09-26", "2022-10-01", 5)]
+        [InlineData(RecurrencePatternPeriodHandling.Ongoing, DayOfWeek.Friday, 2, "2022-09-28", "2022-10-01", 3)]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, DayOfWeek.Monday, 2, "2022-10-03", "2022-10-10", 7)]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, DayOfWeek.Monday, 2, "2022-10-04", "2022-10-10", 7)]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, DayOfWeek.Monday, 2, "2022-10-05", "2022-10-10", 7)]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, DayOfWeek.Monday, 2, "2022-10-05", "2022-10-18", 1)]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, DayOfWeek.Monday, 2, "2022-10-05", "2022-10-19", 2)]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, DayOfWeek.Monday, 1, "2022-09-26", "2022-10-05", 2)]
+        [InlineData(RecurrencePatternPeriodHandling.Ongoing, DayOfWeek.Sunday, 2, "2022-09-28", "2022-10-12", 0)]
+        [InlineData(RecurrencePatternPeriodHandling.Ongoing, DayOfWeek.Sunday, 2, "2022-09-28", "2022-10-15", 3)]
+        [InlineData(RecurrencePatternPeriodHandling.Ongoing, DayOfWeek.Sunday, 2, "2022-09-28", "2022-10-16", 4)]
+        public void GetCurrentDayInPattern(RecurrencePatternPeriodHandling periodHandling, DayOfWeek firstDayOfWeek, int interval, DateTime start, DateTime current, int expected) {
+            var pattern = new WeeklyRecurrencePattern(new Recurrence() {
+                Interval = interval,
+                Start = start
+            }) {
+                PeriodHandling = periodHandling,
+                FirstDayOfWeek = firstDayOfWeek
+            };
+
+            Assert.Equal(expected, pattern.GetCurrentDayInPattern(current));
+        }
+
         [Theory]
         [InlineData(0, false, 7)]
         [InlineData(1, false, 6)]
@@ -68,7 +117,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(4, true, 3)]
         [InlineData(5, true, 2)]
         [InlineData(6, true, 1)]
-        public void GetNextDay_Single_Interval_Single_Day(int day, bool allowCurrent, int expectedNextDay) {
+        public void GetNextDayInPattern_Single_Interval_Single_Day(int day, bool allowCurrent, int expectedNextDay) {
             var pattern = new WeeklyRecurrencePattern(new Recurrence() {
                 Interval = 1
             }) {
@@ -77,7 +126,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 DaysOfWeek = new SortedSet<DayOfWeek>() { DayOfWeek.Monday }
             };
 
-            Assert.Equal(expectedNextDay, pattern.GetNextDay(day, allowCurrent));
+            Assert.Equal(expectedNextDay, pattern.GetNextDayInPattern(day, allowCurrent));
         }
 
         [Theory]
@@ -95,7 +144,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(4, true, 0)]
         [InlineData(5, true, 0)]
         [InlineData(6, true, 3)]
-        public void GetNextDay_Single_Interval_Multiple_Days(int day, bool allowCurrent, int expectedNextDay) {
+        public void GetNextDayInPattern_Single_Interval_Multiple_Days(int day, bool allowCurrent, int expectedNextDay) {
             var pattern = new WeeklyRecurrencePattern(new Recurrence() {
                 Interval = 1
             }) {
@@ -104,7 +153,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 DaysOfWeek = new SortedSet<DayOfWeek>() { DayOfWeek.Wednesday, DayOfWeek.Friday, DayOfWeek.Saturday }
             };
 
-            Assert.Equal(expectedNextDay, pattern.GetNextDay(day, allowCurrent));
+            Assert.Equal(expectedNextDay, pattern.GetNextDayInPattern(day, allowCurrent));
         }
 
         [Theory]
@@ -136,7 +185,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(11, true, 4)]
         [InlineData(12, true, 3)]
         [InlineData(13, true, 2)]
-        public void GetNextDay_Double_Interval_Multiple_Days(int day, bool allowCurrent, int expectedNextDay) {
+        public void GetNextDayInPattern_Double_Interval_Multiple_Days(int day, bool allowCurrent, int expectedNextDay) {
             var pattern = new WeeklyRecurrencePattern(new Recurrence() {
                 Interval = 2
             }) {
@@ -145,7 +194,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 DaysOfWeek = new SortedSet<DayOfWeek>() { DayOfWeek.Wednesday, DayOfWeek.Friday, DayOfWeek.Saturday }
             };
 
-            Assert.Equal(expectedNextDay, pattern.GetNextDay(day, allowCurrent));
+            Assert.Equal(expectedNextDay, pattern.GetNextDayInPattern(day, allowCurrent));
         }
 
         [Theory]
@@ -177,7 +226,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(11, true, 6)]
         [InlineData(12, true, 5)]
         [InlineData(13, true, 4)]
-        public void GetNextDay_Double_Interval_Multiple_Days_Ongoing(int day, bool allowCurrent, int expectedNextDay) {
+        public void GetNextDayInPattern_Double_Interval_Multiple_Days_Ongoing(int day, bool allowCurrent, int expectedNextDay) {
             var pattern = new WeeklyRecurrencePattern(new Recurrence() {
                 Start = new DateTime(2022, 9, 28),
                 Interval = 2
@@ -187,27 +236,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 DaysOfWeek = new SortedSet<DayOfWeek>() { DayOfWeek.Tuesday, DayOfWeek.Saturday }
             };
 
-            Assert.Equal(expectedNextDay, pattern.GetNextDay(day, allowCurrent));
-        }
-
-        [Fact]
-        public void GetFirst_No_DaysOfWeek() {
-            IRecurrencePattern pattern = new WeeklyRecurrencePattern(new Recurrence() {
-                Interval = 1,
-                Start = new DateTime(2022, 10, 8)
-            });
-
-            Assert.Null(pattern.GetFirst(new DateTime(2022, 10, 10)));
-        }
-
-        [Fact]
-        public void GetNext_No_DaysOfWeek() {
-            IRecurrencePattern pattern = new WeeklyRecurrencePattern(new Recurrence() {
-                Interval = 1,
-                Start = new DateTime(2022, 10, 8)
-            });
-
-            Assert.Null(pattern.GetNext(new DateTime(2022, 10, 8)));
+            Assert.Equal(expectedNextDay, pattern.GetNextDayInPattern(day, allowCurrent));
         }
     }
 }

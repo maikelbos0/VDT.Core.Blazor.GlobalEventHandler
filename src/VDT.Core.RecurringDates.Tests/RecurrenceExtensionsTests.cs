@@ -38,5 +38,14 @@ namespace VDT.Core.RecurringDates.Tests {
 
             Assert.Equal(RecurrencePatternPeriodHandling.Calendar, Assert.IsType<WeeklyRecurrencePattern>(recurrence.Pattern).PeriodHandling);
         }
+
+        [Fact]
+        public void Months() {
+            var recurrence = new Recurrence();
+
+            recurrence.Months(pattern => pattern.PeriodHandling = RecurrencePatternPeriodHandling.Calendar);
+
+            Assert.Equal(RecurrencePatternPeriodHandling.Calendar, Assert.IsType<MonthlyRecurrencePattern>(recurrence.Pattern).PeriodHandling);
+        }
     }
 }

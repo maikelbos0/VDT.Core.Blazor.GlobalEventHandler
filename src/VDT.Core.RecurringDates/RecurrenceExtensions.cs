@@ -25,5 +25,12 @@ namespace VDT.Core.RecurringDates {
             recurrence.Pattern = pattern;
             return recurrence;
         }
+
+        public static Recurrence Months(this Recurrence recurrence, Action<MonthlyRecurrencePattern>? patternBuilder = null) {
+            var pattern = new MonthlyRecurrencePattern(recurrence);
+            patternBuilder?.Invoke(pattern);
+            recurrence.Pattern = pattern;
+            return recurrence;
+        }
     }
 }

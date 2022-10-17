@@ -45,13 +45,19 @@ namespace VDT.Core.RecurringDates {
 
         internal int GetCurrentDayInPattern(DateTime current) {
             var firstDayOfWeek = GetFirstDayOfWeek();
-
-            return ((current - recurrence.Start).Days - (firstDayOfWeek - recurrence.Start.DayOfWeek - 7) % -7) % (7 * recurrence.Interval);
+            var totalDays = (current - recurrence.Start).Days;
+            var weekDayCorrection = recurrence.Start.DayOfWeek - firstDayOfWeek;
+            
+            if (weekDayCorrection < 0) {
+                weekDayCorrection += 7;
+            }
+            
+            return (totalDays + weekDayCorrection) % (7 * recurrence.Interval);
         }
 
         internal int GetNextDayInPattern(int day, bool allowCurrent) {
             var firstDayOfWeek = (int)GetFirstDayOfWeek();
-            var daysInRange = DaysOfWeek.Select(d => ((int)d - firstDayOfWeek + 7) % 7).ToList();
+            var daysInRange = DaysOfWeek.Select(d => ((int)d - firstDayOfWeek + 7) % 7);
 
             if (allowCurrent) {
                 return daysInRange.Where(dayOfWeek => dayOfWeek >= day).DefaultIfEmpty(daysInRange.Min() + 7 * recurrence.Interval).Min() - day;

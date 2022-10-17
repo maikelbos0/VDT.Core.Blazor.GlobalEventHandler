@@ -13,8 +13,6 @@ namespace VDT.Core.RecurringDates {
 
         public SortedSet<DayOfWeek> DaysOfWeek { get; set; } = new SortedSet<DayOfWeek>();
 
-        // TODO add using start day of week as day?
-
         public WeeklyRecurrencePattern(Recurrence recurrence) {
             this.recurrence = recurrence;
         }
@@ -44,9 +42,9 @@ namespace VDT.Core.RecurringDates {
         }
 
         internal int GetCurrentDayInPattern(DateTime current) {
-            var firstDayOfWeek = GetFirstDayOfWeek();
+            var firstDayOfWeek = (int)GetFirstDayOfWeek();
             var totalDays = (current - recurrence.Start).Days;
-            var weekDayCorrection = recurrence.Start.DayOfWeek - firstDayOfWeek;
+            var weekDayCorrection = (int)recurrence.Start.DayOfWeek - firstDayOfWeek;
             
             if (weekDayCorrection < 0) {
                 weekDayCorrection += 7;
@@ -57,7 +55,7 @@ namespace VDT.Core.RecurringDates {
 
         internal int GetNextDayInPattern(int day, bool allowCurrent) {
             var firstDayOfWeek = (int)GetFirstDayOfWeek();
-            var daysInRange = DaysOfWeek.Select(d => ((int)d - firstDayOfWeek + 7) % 7);
+            var daysInRange = DaysOfWeek.Select(d => ((int)d - firstDayOfWeek + 7) % 7).ToList();
 
             if (allowCurrent) {
                 return daysInRange.Where(dayOfWeek => dayOfWeek >= day).DefaultIfEmpty(daysInRange.Min() + 7 * recurrence.Interval).Min() - day;

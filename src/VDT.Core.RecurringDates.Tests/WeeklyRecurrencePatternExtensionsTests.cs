@@ -6,7 +6,7 @@ using Xunit;
 namespace VDT.Core.RecurringDates.Tests {
     public class WeeklyRecurrencePatternExtensionsTests {
         [Fact]
-        public void UseCalendarWeek() {
+        public void UseCalendarWeeks() {
             var pattern = new WeeklyRecurrencePattern(new Recurrence()) {
                 PeriodHandling = RecurrencePatternPeriodHandling.Ongoing
             };
@@ -18,7 +18,7 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Fact]
-        public void UseCalendarWeek_FirstDayOfWeek() {
+        public void UseCalendarWeeks_FirstDayOfWeek() {
             var pattern = new WeeklyRecurrencePattern(new Recurrence()) {
                 PeriodHandling = RecurrencePatternPeriodHandling.Ongoing
             };
@@ -30,7 +30,7 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Fact]
-        public void UseOngoingWeek() {
+        public void UseOngoingWeeks() {
             var pattern = new WeeklyRecurrencePattern(new Recurrence()) {
                 PeriodHandling = RecurrencePatternPeriodHandling.Calendar
             };

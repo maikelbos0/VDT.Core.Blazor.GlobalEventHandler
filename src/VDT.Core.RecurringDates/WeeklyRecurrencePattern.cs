@@ -11,6 +11,7 @@ namespace VDT.Core.RecurringDates {
 
         public DayOfWeek FirstDayOfWeek { get; set; } = Thread.CurrentThread.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
 
+        // TODO does it even still make sense that this is a sorted set?
         public SortedSet<DayOfWeek> DaysOfWeek { get; set; } = new SortedSet<DayOfWeek>();
 
         public WeeklyRecurrencePattern(Recurrence recurrence) {

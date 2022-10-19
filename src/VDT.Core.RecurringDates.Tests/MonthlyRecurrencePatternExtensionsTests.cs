@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System;
 using Xunit;
 
 namespace VDT.Core.RecurringDates.Tests {
@@ -24,6 +23,28 @@ namespace VDT.Core.RecurringDates.Tests {
             Assert.Same(pattern, pattern.UseOngoingMonths());
 
             Assert.Equal(RecurrencePatternPeriodHandling.Ongoing, pattern.PeriodHandling);
+        }
+
+        [Fact]
+        public void IncludeDaysOfMonth() {
+            var pattern = new MonthlyRecurrencePattern(new Recurrence()) {
+                DaysOfMonth = new SortedSet<int>() { 5, 9, 17 }
+            };
+
+            Assert.Same(pattern, pattern.IncludeDaysOfMonth(9, 19));
+
+            Assert.Equal(new[] { 5, 9, 17, 19 }, pattern.DaysOfMonth);
+        }
+
+        [Fact]
+        public void ExcludeDaysOfMonth() {
+            var pattern = new MonthlyRecurrencePattern(new Recurrence()) {
+                DaysOfMonth = new SortedSet<int>() { 5, 9, 17 }
+            };
+
+            Assert.Same(pattern, pattern.ExcludeDaysOfMonth(9, 19));
+
+            Assert.Equal(new[] { 5, 17 }, pattern.DaysOfMonth);
         }
     }
 }

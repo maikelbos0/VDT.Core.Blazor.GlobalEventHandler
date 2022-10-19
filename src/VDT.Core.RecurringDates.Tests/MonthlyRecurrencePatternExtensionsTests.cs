@@ -1,7 +1,9 @@
-﻿using Xunit;
+﻿using System.Collections.Generic;
+using System;
+using Xunit;
 
 namespace VDT.Core.RecurringDates.Tests {
-    public class MonthlyRecurrencePatternExtensions {
+    public class MonthlyRecurrencePatternExtensionsTests {
         [Fact]
         public void UseCalendarMonths() {
             var pattern = new MonthlyRecurrencePattern(new Recurrence()) {

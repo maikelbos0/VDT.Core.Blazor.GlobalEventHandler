@@ -26,7 +26,7 @@ namespace VDT.Core.RecurringDates.Tests {
             }) {
                 PeriodHandling = periodHandling,
                 FirstDayOfWeek = firstDayOfWeek,
-                DaysOfWeek = new SortedSet<DayOfWeek>(daysOfWeek)
+                DaysOfWeek = new HashSet<DayOfWeek>(daysOfWeek)
             };
 
             Assert.Equal(expected, pattern.GetFirst(from));
@@ -47,7 +47,7 @@ namespace VDT.Core.RecurringDates.Tests {
             }) {
                 PeriodHandling = periodHandling,
                 FirstDayOfWeek = firstDayOfWeek,
-                DaysOfWeek = new SortedSet<DayOfWeek>(daysOfWeek)
+                DaysOfWeek = new HashSet<DayOfWeek>(daysOfWeek)
             };
 
             Assert.Equal(expected, pattern.GetNext(current));
@@ -123,7 +123,7 @@ namespace VDT.Core.RecurringDates.Tests {
             }) {
                 PeriodHandling = RecurrencePatternPeriodHandling.Calendar,
                 FirstDayOfWeek = DayOfWeek.Monday,
-                DaysOfWeek = new SortedSet<DayOfWeek>() { DayOfWeek.Monday }
+                DaysOfWeek = new HashSet<DayOfWeek>() { DayOfWeek.Monday }
             };
 
             Assert.Equal(expectedNextDay, pattern.GetNextDayInPattern(day, allowCurrent));
@@ -150,7 +150,7 @@ namespace VDT.Core.RecurringDates.Tests {
             }) {
                 PeriodHandling = RecurrencePatternPeriodHandling.Calendar,
                 FirstDayOfWeek = DayOfWeek.Monday,
-                DaysOfWeek = new SortedSet<DayOfWeek>() { DayOfWeek.Wednesday, DayOfWeek.Friday, DayOfWeek.Saturday }
+                DaysOfWeek = new HashSet<DayOfWeek>() { DayOfWeek.Wednesday, DayOfWeek.Friday, DayOfWeek.Saturday }
             };
 
             Assert.Equal(expectedNextDay, pattern.GetNextDayInPattern(day, allowCurrent));
@@ -191,7 +191,7 @@ namespace VDT.Core.RecurringDates.Tests {
             }) {
                 PeriodHandling = RecurrencePatternPeriodHandling.Calendar,
                 FirstDayOfWeek = DayOfWeek.Thursday,
-                DaysOfWeek = new SortedSet<DayOfWeek>() { DayOfWeek.Wednesday, DayOfWeek.Friday, DayOfWeek.Saturday }
+                DaysOfWeek = new HashSet<DayOfWeek>() { DayOfWeek.Wednesday, DayOfWeek.Friday, DayOfWeek.Saturday }
             };
 
             Assert.Equal(expectedNextDay, pattern.GetNextDayInPattern(day, allowCurrent));
@@ -233,7 +233,7 @@ namespace VDT.Core.RecurringDates.Tests {
             }) {
                 PeriodHandling = RecurrencePatternPeriodHandling.Ongoing,
                 FirstDayOfWeek = DayOfWeek.Thursday,
-                DaysOfWeek = new SortedSet<DayOfWeek>() { DayOfWeek.Tuesday, DayOfWeek.Saturday }
+                DaysOfWeek = new HashSet<DayOfWeek>() { DayOfWeek.Tuesday, DayOfWeek.Saturday }
             };
 
             Assert.Equal(expectedNextDay, pattern.GetNextDayInPattern(day, allowCurrent));

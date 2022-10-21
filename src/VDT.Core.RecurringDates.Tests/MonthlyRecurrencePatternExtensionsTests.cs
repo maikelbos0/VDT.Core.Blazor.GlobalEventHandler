@@ -29,7 +29,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [Fact]
         public void IncludeDaysOfMonth() {
             var pattern = new MonthlyRecurrencePattern(new Recurrence()) {
-                DaysOfMonth = new SortedSet<int>() { 5, 9, 17 }
+                DaysOfMonth = new HashSet<int>() { 5, 9, 17 }
             };
 
             Assert.Same(pattern, pattern.IncludeDaysOfMonth(9, 19));
@@ -40,7 +40,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [Fact]
         public void ExcludeDaysOfMonth() {
             var pattern = new MonthlyRecurrencePattern(new Recurrence()) {
-                DaysOfMonth = new SortedSet<int>() { 5, 9, 17 }
+                DaysOfMonth = new HashSet<int>() { 5, 9, 17 }
             };
 
             Assert.Same(pattern, pattern.ExcludeDaysOfMonth(9, 19));
@@ -51,7 +51,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [Fact]
         public void IncludeDayOfWeek() {
             var pattern = new MonthlyRecurrencePattern(new Recurrence()) {
-                DaysOfWeek = new SortedSet<(WeekOfMonth, DayOfWeek)>() {
+                DaysOfWeek = new HashSet<(WeekOfMonth, DayOfWeek)>() {
                     (WeekOfMonth.First, DayOfWeek.Tuesday),
                     (WeekOfMonth.Third, DayOfWeek.Friday),
                     (WeekOfMonth.First, DayOfWeek.Monday)
@@ -61,17 +61,17 @@ namespace VDT.Core.RecurringDates.Tests {
             Assert.Same(pattern, pattern.IncludeDayOfWeek(WeekOfMonth.Third, DayOfWeek.Thursday));
 
             Assert.Equal(new[] {
-                (WeekOfMonth.First, DayOfWeek.Monday),
                 (WeekOfMonth.First, DayOfWeek.Tuesday),
-                (WeekOfMonth.Third, DayOfWeek.Thursday),
-                (WeekOfMonth.Third, DayOfWeek.Friday)
+                (WeekOfMonth.Third, DayOfWeek.Friday),
+                (WeekOfMonth.First, DayOfWeek.Monday),
+                (WeekOfMonth.Third, DayOfWeek.Thursday)
             }, pattern.DaysOfWeek);
         }
 
         [Fact]
         public void IncludeDaysOfWeek() {
             var pattern = new MonthlyRecurrencePattern(new Recurrence()) {
-                DaysOfWeek = new SortedSet<(WeekOfMonth, DayOfWeek)>() {
+                DaysOfWeek = new HashSet<(WeekOfMonth, DayOfWeek)>() {
                     (WeekOfMonth.First, DayOfWeek.Tuesday),
                     (WeekOfMonth.Third, DayOfWeek.Friday),
                     (WeekOfMonth.First, DayOfWeek.Monday)
@@ -81,17 +81,17 @@ namespace VDT.Core.RecurringDates.Tests {
             Assert.Same(pattern, pattern.IncludeDaysOfWeek((WeekOfMonth.Third, DayOfWeek.Friday), (WeekOfMonth.Third, DayOfWeek.Thursday)));
 
             Assert.Equal(new[] {
-                (WeekOfMonth.First, DayOfWeek.Monday),
                 (WeekOfMonth.First, DayOfWeek.Tuesday),
-                (WeekOfMonth.Third, DayOfWeek.Thursday),
-                (WeekOfMonth.Third, DayOfWeek.Friday)
+                (WeekOfMonth.Third, DayOfWeek.Friday),
+                (WeekOfMonth.First, DayOfWeek.Monday),
+                (WeekOfMonth.Third, DayOfWeek.Thursday)
             }, pattern.DaysOfWeek);
         }
 
         [Fact]
         public void ExcludeDayOfWeek() {
             var pattern = new MonthlyRecurrencePattern(new Recurrence()) {
-                DaysOfWeek = new SortedSet<(WeekOfMonth, DayOfWeek)>() {
+                DaysOfWeek = new HashSet<(WeekOfMonth, DayOfWeek)>() {
                     (WeekOfMonth.First, DayOfWeek.Tuesday),
                     (WeekOfMonth.Third, DayOfWeek.Friday),
                     (WeekOfMonth.First, DayOfWeek.Monday)
@@ -101,15 +101,15 @@ namespace VDT.Core.RecurringDates.Tests {
             Assert.Same(pattern, pattern.ExcludeDayOfWeek(WeekOfMonth.Third, DayOfWeek.Friday));
 
             Assert.Equal(new[] {
-                (WeekOfMonth.First, DayOfWeek.Monday),
-                (WeekOfMonth.First, DayOfWeek.Tuesday)
+                (WeekOfMonth.First, DayOfWeek.Tuesday),
+                (WeekOfMonth.First, DayOfWeek.Monday)
             }, pattern.DaysOfWeek);
         }
 
         [Fact]
         public void ExcludeDaysOfWeek() {
             var pattern = new MonthlyRecurrencePattern(new Recurrence()) {
-                DaysOfWeek = new SortedSet<(WeekOfMonth, DayOfWeek)>() {
+                DaysOfWeek = new HashSet<(WeekOfMonth, DayOfWeek)>() {
                     (WeekOfMonth.First, DayOfWeek.Tuesday),
                     (WeekOfMonth.Third, DayOfWeek.Friday),
                     (WeekOfMonth.First, DayOfWeek.Monday)
@@ -119,8 +119,8 @@ namespace VDT.Core.RecurringDates.Tests {
             Assert.Same(pattern, pattern.ExcludeDaysOfWeek((WeekOfMonth.Third, DayOfWeek.Friday), (WeekOfMonth.Third, DayOfWeek.Thursday)));
 
             Assert.Equal(new[] {
-                (WeekOfMonth.First, DayOfWeek.Monday),
-                (WeekOfMonth.First, DayOfWeek.Tuesday)
+                (WeekOfMonth.First, DayOfWeek.Tuesday),
+                (WeekOfMonth.First, DayOfWeek.Monday)
             }, pattern.DaysOfWeek);
         }
     }

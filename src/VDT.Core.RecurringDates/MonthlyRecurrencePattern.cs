@@ -7,11 +7,9 @@ namespace VDT.Core.RecurringDates {
 
         public RecurrencePatternPeriodHandling PeriodHandling { get; set; } = RecurrencePatternPeriodHandling.Ongoing;
 
-        // TODO does it even make sense that these are sorted sets?
-        public SortedSet<int> DaysOfMonth { get; set; } = new SortedSet<int>();
+        public HashSet<int> DaysOfMonth { get; set; } = new HashSet<int>();
 
-        // TODO does it even make sense that these are sorted sets?
-        public SortedSet<(WeekOfMonth, DayOfWeek)> DaysOfWeek { get; set; } = new SortedSet<(WeekOfMonth, DayOfWeek)>();
+        public HashSet<(WeekOfMonth, DayOfWeek)> DaysOfWeek { get; set; } = new HashSet<(WeekOfMonth, DayOfWeek)>();
 
         public MonthlyRecurrencePattern(Recurrence recurrence) {
             this.recurrence = recurrence;

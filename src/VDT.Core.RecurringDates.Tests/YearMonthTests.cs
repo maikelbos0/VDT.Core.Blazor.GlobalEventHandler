@@ -18,18 +18,6 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Theory]
-        [InlineData(0, 0, 0)]
-        [InlineData(0, 1, 1)]
-        [InlineData(1, 11, 11)]
-        [InlineData(1, 23, 11)]
-        [InlineData(2, 24, 0)]
-        public void Get_Month(uint year, uint month, uint expectedMonth) {
-            var yearMonth = new YearMonth(year, month);
-
-            Assert.Equal(expectedMonth, yearMonth.Month);
-        }
-
-        [Theory]
         [InlineData(0, 0, 1)]
         [InlineData(3, 6, 4)]
         [InlineData(3, 11, 4)]
@@ -40,6 +28,18 @@ namespace VDT.Core.RecurringDates.Tests {
 
             Assert.Equal(newYear, yearMonth.Year);
             Assert.Equal(month, yearMonth.Month);
+        }
+
+        [Theory]
+        [InlineData(0, 0, 0)]
+        [InlineData(0, 1, 1)]
+        [InlineData(1, 11, 11)]
+        [InlineData(1, 23, 11)]
+        [InlineData(2, 24, 0)]
+        public void Get_Month(uint year, uint month, uint expectedMonth) {
+            var yearMonth = new YearMonth(year, month);
+
+            Assert.Equal(expectedMonth, yearMonth.Month);
         }
 
         [Theory]

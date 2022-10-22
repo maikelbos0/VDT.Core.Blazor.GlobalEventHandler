@@ -1,17 +1,18 @@
 ﻿namespace VDT.Core.RecurringDates {
     internal class YearMonth {
+        private uint totalMonths;
+
         public YearMonth(uint year, uint month) {
-            Value = year * 12 + month;
+            totalMonths = year * 12 + month;
         }
 
-        internal uint Value { get; set; }
         internal uint Year {
-            get => Value / 12;
-            set => Value = Value % 12 + value * 12;
+            get => totalMonths / 12;
+            set => totalMonths = totalMonths % 12 + value * 12;
         }
         internal uint Month {
-            get => Value % 12;
-            set => Value += value - Value % 12;
+            get => totalMonths % 12;
+            set => totalMonths += value - totalMonths % 12;
         }
 
         public void Deconstruct(out uint year, out uint month) {

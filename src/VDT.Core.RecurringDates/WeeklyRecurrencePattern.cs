@@ -65,12 +65,11 @@ namespace VDT.Core.RecurringDates {
             }
         }
 
-        private DayOfWeek GetFirstDayOfWeek() {
-            return PeriodHandling switch {
+        private DayOfWeek GetFirstDayOfWeek()
+            => PeriodHandling switch {
                 RecurrencePatternPeriodHandling.Calendar => FirstDayOfWeek,
                 RecurrencePatternPeriodHandling.Ongoing => recurrence.Start.DayOfWeek,
                 _ => throw new NotImplementedException($"No implementation found for {nameof(RecurrencePatternPeriodHandling)} '{PeriodHandling}'")
             };
-        }
     }
 }

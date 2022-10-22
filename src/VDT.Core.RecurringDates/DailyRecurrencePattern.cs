@@ -6,9 +6,8 @@ namespace VDT.Core.RecurringDates {
 
         public RecurrencePatternWeekendHandling WeekendHandling { get; set; } = RecurrencePatternWeekendHandling.Include;
 
-        public DailyRecurrencePattern(Recurrence recurrence) {
-            this.recurrence = recurrence;
-        }
+        public DailyRecurrencePattern(Recurrence recurrence)
+            => this.recurrence = recurrence;
 
         public DateTime? GetFirst(DateTime from) {
             var first = from;

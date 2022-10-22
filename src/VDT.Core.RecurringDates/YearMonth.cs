@@ -13,5 +13,10 @@
             get => Value % 12;
             set => Value += value - Value % 12;
         }
+
+        public void Deconstruct(out uint year, out uint month) {
+            year = Year;
+            month = Month;
+        }
     }
 }

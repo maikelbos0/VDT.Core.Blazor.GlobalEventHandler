@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using System;
+using Xunit;
 using Xunit.Sdk;
 
 namespace VDT.Core.RecurringDates.Tests {
@@ -53,6 +54,16 @@ namespace VDT.Core.RecurringDates.Tests {
 
             Assert.Equal(expectedYear, yearMonth.Year);
             Assert.Equal(expectedMonth, yearMonth.Month);
+        }
+
+        [Fact]
+        public void Deconstruct() {
+            var yearMonth = new YearMonth(5, 11);
+
+            var (year, month) = yearMonth;
+
+            Assert.Equal(year, yearMonth.Year);
+            Assert.Equal(month, yearMonth.Month);
         }
     }
 }

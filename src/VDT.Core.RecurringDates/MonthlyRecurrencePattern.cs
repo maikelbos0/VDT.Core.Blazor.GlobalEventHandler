@@ -32,10 +32,7 @@ namespace VDT.Core.RecurringDates {
                         return (GetDifferenceInMonths(current, recurrence.Start) % recurrence.Interval, current.Day - recurrence.Start.Day + 0);
                     }
                     else {
-                        var yearMonth = new YearMonth(current.Year, current.Month - 1);
-                        var previousMonthDays = DateTime.DaysInMonth(yearMonth.Year, yearMonth.Month);
-
-                        return ((GetDifferenceInMonths(current, recurrence.Start) - 1) % recurrence.Interval, current.Day - recurrence.Start.Day + previousMonthDays);
+                        return ((GetDifferenceInMonths(current, recurrence.Start) - 1) % recurrence.Interval, current.Day - recurrence.Start.Day + current.AddMonths(-1).DaysInMonth());
                     }
                 default:
                     throw new NotImplementedException($"No implementation found for {nameof(RecurrencePatternPeriodHandling)} '{PeriodHandling}'");

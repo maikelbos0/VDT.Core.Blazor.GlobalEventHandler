@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace VDT.Core.RecurringDates.Tests {
@@ -24,6 +25,24 @@ namespace VDT.Core.RecurringDates.Tests {
             };
 
             var (month, day) = pattern.GetCurrentDayInPattern(current);
+
+            Assert.Equal(expectedMonth, month);
+            Assert.Equal(expectedDay, day);
+        }
+
+        [Theory]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, 1, "2022-01-01", 0, 0, false, 0, 5, 5)]
+        // TODO more tests
+        public void GetNextDayInPattern_Only_DaysOfMonth(RecurrencePatternPeriodHandling periodHandling, int interval, DateTime start, int currentMonth, int currentDay, bool allowCurrent, int expectedMonth, int expectedDay, params int[] daysOfMonth) {
+            var pattern = new MonthlyRecurrencePattern(new Recurrence() {
+                Interval = interval,
+                Start = start
+            }) {
+                PeriodHandling = periodHandling,
+                DaysOfMonth = new HashSet<int>(daysOfMonth)
+            };
+
+            var (month, day) = pattern.GetNextDayInPattern(currentMonth, currentDay, allowCurrent);
 
             Assert.Equal(expectedMonth, month);
             Assert.Equal(expectedDay, day);

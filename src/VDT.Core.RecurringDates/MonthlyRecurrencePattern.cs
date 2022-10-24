@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace VDT.Core.RecurringDates {
     public class MonthlyRecurrencePattern : IRecurrencePattern {
@@ -23,6 +24,27 @@ namespace VDT.Core.RecurringDates {
             throw new NotImplementedException();
         }
 
+        internal (int Month, int Day) GetNextDayInPattern(int currentMonth, int currentDay, bool allowCurrent) {
+            var firstDayOfMonth = GetFirstDayOfMonth();
+
+            // TODO: FIX, take into account max number of days on base of month
+            // TODO: FIX, started with DaysOfMonth for now
+            var daysInRange = DaysOfMonth.Select(d => d - firstDayOfMonth)
+                .Select(d => (Month: d < 0 ? 1 : 0, Day: d))
+                .OrderBy(dayOfMonth => dayOfMonth.Month)
+                .ThenBy(dayOfMonth => dayOfMonth.Day)
+                .ToList();
+
+            daysInRange.Add((Month: daysInRange[0].Month + recurrence.Interval, Day: daysInRange[0].Day));
+
+            if (allowCurrent) {
+                return daysInRange.Where(dayOfMonth => dayOfMonth.Month > currentMonth || (dayOfMonth.Month == currentMonth && dayOfMonth.Day >= currentDay)).First();
+            }
+            else {
+                return daysInRange.Where(dayOfMonth => dayOfMonth.Month > currentMonth || (dayOfMonth.Month == currentMonth && dayOfMonth.Day > currentDay)).First();
+            }
+        }
+
         internal (int Month, int Day) GetCurrentDayInPattern(DateTime current)
             => PeriodHandling switch {
                 RecurrencePatternPeriodHandling.Calendar
@@ -33,6 +55,13 @@ namespace VDT.Core.RecurringDates {
                     => ((current.TotalMonths() - recurrence.Start.TotalMonths()) % recurrence.Interval, current.Day - recurrence.Start.Day),
                 _
                     => throw new NotImplementedException($"No implementation found for {nameof(RecurrencePatternPeriodHandling)} '{PeriodHandling}'")
+            };
+
+        private int GetFirstDayOfMonth()
+            => PeriodHandling switch {
+                RecurrencePatternPeriodHandling.Calendar => 0,
+                RecurrencePatternPeriodHandling.Ongoing => recurrence.Start.Day - 1,
+                _ => throw new NotImplementedException($"No implementation found for {nameof(RecurrencePatternPeriodHandling)} '{PeriodHandling}'")
             };
     }
 }

@@ -26,9 +26,9 @@ namespace VDT.Core.RecurringDates {
                 from = recurrence.Start;
             }
 
-            var day = GetCurrentDayInPattern(from);
+            var day = GetCurrentDay(from);
 
-            return from.AddDays(GetNextDayInPattern(day, true));
+            return from.AddDays(GetDaysUntilNextDay(day, true));
         }
 
         public DateTime? GetNext(DateTime current) {
@@ -36,12 +36,12 @@ namespace VDT.Core.RecurringDates {
                 return null;
             }
 
-            var day = GetCurrentDayInPattern(current);
+            var day = GetCurrentDay(current);
 
-            return current.AddDays(GetNextDayInPattern(day, false));
+            return current.AddDays(GetDaysUntilNextDay(day, false));
         }
 
-        internal int GetCurrentDayInPattern(DateTime current) {
+        internal int GetCurrentDay(DateTime current) {
             var firstDayOfWeek = (int)GetFirstDayOfWeek();
             var totalDays = (current - recurrence.Start).Days;
             var weekDayCorrection = (int)recurrence.Start.DayOfWeek - firstDayOfWeek;
@@ -53,7 +53,7 @@ namespace VDT.Core.RecurringDates {
             return (totalDays + weekDayCorrection) % (7 * recurrence.Interval);
         }
 
-        internal int GetNextDayInPattern(int day, bool allowCurrent) {
+        internal int GetDaysUntilNextDay(int day, bool allowCurrent) {
             var firstDayOfWeek = (int)GetFirstDayOfWeek();
             var daysInRange = DaysOfWeek.Select(d => ((int)d - firstDayOfWeek + 7) % 7).ToList();
 

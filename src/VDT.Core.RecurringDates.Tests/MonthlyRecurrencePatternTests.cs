@@ -16,7 +16,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(RecurrencePatternPeriodHandling.Ongoing, 3, "2022-01-15", "2022-02-16", 1, 1)]
         [InlineData(RecurrencePatternPeriodHandling.Ongoing, 3, "2022-01-15", "2022-03-14", 1, 27)]
         [InlineData(RecurrencePatternPeriodHandling.Ongoing, 3, "2022-01-15", "2022-02-14", 0, 30)]
-        public void GetCurrentDayInPattern(RecurrencePatternPeriodHandling periodHandling, int interval, DateTime start, DateTime current, int expectedMonth, int expectedDay) {
+        public void GetCurrentDay(RecurrencePatternPeriodHandling periodHandling, int interval, DateTime start, DateTime current, int expectedMonth, int expectedDay) {
             var pattern = new MonthlyRecurrencePattern(new Recurrence() {
                 Interval = interval,
                 Start = start
@@ -24,16 +24,19 @@ namespace VDT.Core.RecurringDates.Tests {
                 PeriodHandling = periodHandling
             };
 
-            var (month, day) = pattern.GetCurrentDayInPattern(current);
+            var (month, day) = pattern.GetCurrentDay(current);
 
             Assert.Equal(expectedMonth, month);
             Assert.Equal(expectedDay, day);
         }
 
         [Theory]
-        [InlineData(RecurrencePatternPeriodHandling.Calendar, 1, "2022-01-01", 0, 0, false, 0, 5, 5)]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, 1, "2022-01-01", 0, 0, false, 0, 5, 5, 25)]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, 1, "2022-01-01", 0, 5, false, 0, 20, 5, 25)]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, 1, "2022-01-01", 0, 5, true, 0, 0, 5, 25)]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, 3, "2022-01-01", 1, 0, false, 2, 5, 5, 25)]
         // TODO more tests
-        public void GetNextDayInPattern_Only_DaysOfMonth(RecurrencePatternPeriodHandling periodHandling, int interval, DateTime start, int currentMonth, int currentDay, bool allowCurrent, int expectedMonth, int expectedDay, params int[] daysOfMonth) {
+        public void GetTimeUntilNextDay_Only_DaysOfMonth(RecurrencePatternPeriodHandling periodHandling, int interval, DateTime start, int currentMonth, int currentDay, bool allowCurrent, int expectedMonth, int expectedDay, params int[] daysOfMonth) {
             var pattern = new MonthlyRecurrencePattern(new Recurrence() {
                 Interval = interval,
                 Start = start
@@ -42,10 +45,10 @@ namespace VDT.Core.RecurringDates.Tests {
                 DaysOfMonth = new HashSet<int>(daysOfMonth)
             };
 
-            var (month, day) = pattern.GetNextDayInPattern(currentMonth, currentDay, allowCurrent);
+            var (months, days) = pattern.GetTimeUntilNextDay(currentMonth, currentDay, allowCurrent);
 
-            Assert.Equal(expectedMonth, month);
-            Assert.Equal(expectedDay, day);
+            Assert.Equal(expectedMonth, months);
+            Assert.Equal(expectedDay, days);
         }
     }
 }

@@ -24,28 +24,7 @@ namespace VDT.Core.RecurringDates {
             throw new NotImplementedException();
         }
 
-        internal (int Month, int Day) GetNextDayInPattern(int currentMonth, int currentDay, bool allowCurrent) {
-            var firstDayOfMonth = GetFirstDayOfMonth();
-
-            // TODO: FIX, take into account max number of days on base of month
-            // TODO: FIX, started with DaysOfMonth for now
-            var daysInRange = DaysOfMonth.Select(d => d - firstDayOfMonth)
-                .Select(d => (Month: d < 0 ? 1 : 0, Day: d))
-                .OrderBy(dayOfMonth => dayOfMonth.Month)
-                .ThenBy(dayOfMonth => dayOfMonth.Day)
-                .ToList();
-
-            daysInRange.Add((Month: daysInRange[0].Month + recurrence.Interval, Day: daysInRange[0].Day));
-
-            if (allowCurrent) {
-                return daysInRange.Where(dayOfMonth => dayOfMonth.Month > currentMonth || (dayOfMonth.Month == currentMonth && dayOfMonth.Day >= currentDay)).First();
-            }
-            else {
-                return daysInRange.Where(dayOfMonth => dayOfMonth.Month > currentMonth || (dayOfMonth.Month == currentMonth && dayOfMonth.Day > currentDay)).First();
-            }
-        }
-
-        internal (int Month, int Day) GetCurrentDayInPattern(DateTime current)
+        internal (int Month, int Day) GetCurrentDay(DateTime current)
             => PeriodHandling switch {
                 RecurrencePatternPeriodHandling.Calendar
                     => ((current.TotalMonths() - recurrence.Start.TotalMonths()) % recurrence.Interval, current.Day - 1),
@@ -56,6 +35,30 @@ namespace VDT.Core.RecurringDates {
                 _
                     => throw new NotImplementedException($"No implementation found for {nameof(RecurrencePatternPeriodHandling)} '{PeriodHandling}'")
             };
+
+        internal (int Months, int Days) GetTimeUntilNextDay(int month, int day, bool allowCurrent) {
+            var firstDayOfMonth = GetFirstDayOfMonth();
+
+            // TODO: FIX, take into account max number of days on base of month
+            // TODO: FIX, add DaysOfWeek, started with DaysOfMonth for now
+            var daysInRange = DaysOfMonth.Select(d => d - firstDayOfMonth)
+                .Select(d => new { Month = d < 0 ? 1 : 0, Day = d })
+                .OrderBy(dayOfMonth => dayOfMonth.Month)
+                .ThenBy(dayOfMonth => dayOfMonth.Day)
+                .ToList();
+            var time = new { Month = 0, Day = 0 };
+
+            daysInRange.Add(new { Month = daysInRange[0].Month + recurrence.Interval, Day = daysInRange[0].Day });
+
+            if (allowCurrent) {
+                time = daysInRange.Where(dayOfMonth => dayOfMonth.Month > month || (dayOfMonth.Month == month && dayOfMonth.Day >= day)).First();
+            }
+            else {
+                time = daysInRange.Where(dayOfMonth => dayOfMonth.Month > month || (dayOfMonth.Month == month && dayOfMonth.Day > day)).First();
+            }
+
+            return (time.Month - month, time.Day - day);
+        }
 
         private int GetFirstDayOfMonth()
             => PeriodHandling switch {

@@ -31,12 +31,12 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Theory]
-        [InlineData(RecurrencePatternPeriodHandling.Calendar, 1, "2022-01-01", 0, 0, false, 0, 5, 5, 25)]
-        [InlineData(RecurrencePatternPeriodHandling.Calendar, 1, "2022-01-01", 0, 5, false, 0, 20, 5, 25)]
-        [InlineData(RecurrencePatternPeriodHandling.Calendar, 1, "2022-01-01", 0, 5, true, 0, 0, 5, 25)]
-        [InlineData(RecurrencePatternPeriodHandling.Calendar, 3, "2022-01-01", 1, 0, false, 2, 5, 5, 25)]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, 1, "2022-01-03", "2022-01-01", false, 0, 5, 5, 25)]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, 1, "2022-01-03", "2022-01-06", false, 0, 20, 5, 25)]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, 1, "2022-01-03", "2022-01-06", true, 0, 0, 5, 25)]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, 3, "2022-01-03", "2022-02-01", false, 2, 5, 5, 25)]
         // TODO more tests
-        public void GetTimeUntilNextDay_Only_DaysOfMonth(RecurrencePatternPeriodHandling periodHandling, int interval, DateTime start, int currentMonth, int currentDay, bool allowCurrent, int expectedMonth, int expectedDay, params int[] daysOfMonth) {
+        public void GetTimeUntilNextDay_Only_DaysOfMonth(RecurrencePatternPeriodHandling periodHandling, int interval, DateTime start, DateTime current, bool allowCurrent, int expectedMonth, int expectedDay, params int[] daysOfMonth) {
             var pattern = new MonthlyRecurrencePattern(new Recurrence() {
                 Interval = interval,
                 Start = start
@@ -45,7 +45,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 DaysOfMonth = new HashSet<int>(daysOfMonth)
             };
 
-            var (months, days) = pattern.GetTimeUntilNextDay(currentMonth, currentDay, allowCurrent);
+            var (months, days) = pattern.GetTimeUntilNextDay(current, allowCurrent);
 
             Assert.Equal(expectedMonth, months);
             Assert.Equal(expectedDay, days);

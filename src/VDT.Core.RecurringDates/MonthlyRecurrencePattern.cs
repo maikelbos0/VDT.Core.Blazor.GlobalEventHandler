@@ -24,20 +24,9 @@ namespace VDT.Core.RecurringDates {
             throw new NotImplementedException();
         }
 
-        internal (int Month, int Day) GetCurrentDay(DateTime current)
-            => PeriodHandling switch {
-                RecurrencePatternPeriodHandling.Calendar
-                    => ((current.TotalMonths() - recurrence.Start.TotalMonths()) % recurrence.Interval, current.Day - 1),
-                RecurrencePatternPeriodHandling.Ongoing when (current.Day < recurrence.Start.Day)
-                    => ((current.TotalMonths() - recurrence.Start.TotalMonths() - 1) % recurrence.Interval, current.Day - recurrence.Start.Day + current.AddMonths(-1).DaysInMonth()),
-                RecurrencePatternPeriodHandling.Ongoing
-                    => ((current.TotalMonths() - recurrence.Start.TotalMonths()) % recurrence.Interval, current.Day - recurrence.Start.Day),
-                _
-                    => throw new NotImplementedException($"No implementation found for {nameof(RecurrencePatternPeriodHandling)} '{PeriodHandling}'")
-            };
-
-        internal (int Months, int Days) GetTimeUntilNextDay(int month, int day, bool allowCurrent) {
+        internal (int Months, int Days) GetTimeUntilNextDay(DateTime current, bool allowCurrent) {
             var firstDayOfMonth = GetFirstDayOfMonth();
+            var (month, day) = GetCurrentDay(current);
 
             // TODO: FIX, take into account max number of days on base of month
             // TODO: FIX, add DaysOfWeek, started with DaysOfMonth for now
@@ -59,6 +48,18 @@ namespace VDT.Core.RecurringDates {
 
             return (time.Month - month, time.Day - day);
         }
+
+        internal (int Month, int Day) GetCurrentDay(DateTime current)
+            => PeriodHandling switch {
+                RecurrencePatternPeriodHandling.Calendar
+                    => ((current.TotalMonths() - recurrence.Start.TotalMonths()) % recurrence.Interval, current.Day - 1),
+                RecurrencePatternPeriodHandling.Ongoing when (current.Day < recurrence.Start.Day)
+                    => ((current.TotalMonths() - recurrence.Start.TotalMonths() - 1) % recurrence.Interval, current.Day - recurrence.Start.Day + current.AddMonths(-1).DaysInMonth()),
+                RecurrencePatternPeriodHandling.Ongoing
+                    => ((current.TotalMonths() - recurrence.Start.TotalMonths()) % recurrence.Interval, current.Day - recurrence.Start.Day),
+                _
+                    => throw new NotImplementedException($"No implementation found for {nameof(RecurrencePatternPeriodHandling)} '{PeriodHandling}'")
+            };
 
         private int GetFirstDayOfMonth()
             => PeriodHandling switch {

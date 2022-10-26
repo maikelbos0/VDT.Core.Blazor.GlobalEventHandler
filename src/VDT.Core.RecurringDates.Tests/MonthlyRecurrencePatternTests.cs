@@ -35,6 +35,14 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(RecurrencePatternPeriodHandling.Calendar, 1, "2022-01-03", "2022-01-06", false, 0, 20, 5, 25)]
         [InlineData(RecurrencePatternPeriodHandling.Calendar, 1, "2022-01-03", "2022-01-06", true, 0, 0, 5, 25)]
         [InlineData(RecurrencePatternPeriodHandling.Calendar, 3, "2022-01-03", "2022-02-01", false, 2, 5, 5, 25)]
+
+        [InlineData(RecurrencePatternPeriodHandling.Ongoing, 1, "2022-01-03", "2022-01-05", false, 0, 1, 5, 25)]
+        [InlineData(RecurrencePatternPeriodHandling.Ongoing, 1, "2022-01-03", "2022-01-06", false, 0, 20, 5, 25)]
+        [InlineData(RecurrencePatternPeriodHandling.Ongoing, 1, "2022-01-03", "2022-01-06", true, 0, 0, 5, 25)]
+        [InlineData(RecurrencePatternPeriodHandling.Ongoing, 3, "2022-01-03", "2022-02-03", false, 2, 3, 5, 25)]
+
+        // TODO FIX overflow test case
+        [InlineData(RecurrencePatternPeriodHandling.Ongoing, 3, "2022-01-10", "2022-02-03", false, -1, -1, 5, 25)]
         // TODO more tests
         public void GetTimeUntilNextDay_Only_DaysOfMonth(RecurrencePatternPeriodHandling periodHandling, int interval, DateTime start, DateTime current, bool allowCurrent, int expectedMonth, int expectedDay, params int[] daysOfMonth) {
             var pattern = new MonthlyRecurrencePattern(new Recurrence() {

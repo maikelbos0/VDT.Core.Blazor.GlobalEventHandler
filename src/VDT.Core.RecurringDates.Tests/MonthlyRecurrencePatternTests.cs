@@ -35,6 +35,10 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(RecurrencePatternPeriodHandling.Calendar, 1, "2022-01-03", "2022-01-06", false, 0, 20, 5, 25)]
         [InlineData(RecurrencePatternPeriodHandling.Calendar, 1, "2022-01-03", "2022-01-06", true, 0, 0, 5, 25)]
         [InlineData(RecurrencePatternPeriodHandling.Calendar, 3, "2022-01-03", "2022-02-01", false, 2, 5, 5, 25)]
+        
+        // TODO fix month overflow test cases
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, 1, "2022-02-01", "2022-02-01", false, 1, 30, 30)]
+        [InlineData(RecurrencePatternPeriodHandling.Calendar, 3, "2022-01-01", "2022-01-01", false, 6, 30, 30)]
 
         [InlineData(RecurrencePatternPeriodHandling.Ongoing, 1, "2022-01-03", "2022-01-05", false, 0, 1, 5, 25)]
         [InlineData(RecurrencePatternPeriodHandling.Ongoing, 1, "2022-01-03", "2022-01-06", false, 0, 20, 5, 25)]

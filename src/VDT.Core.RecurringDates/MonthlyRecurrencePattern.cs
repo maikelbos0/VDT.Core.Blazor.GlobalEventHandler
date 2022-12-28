@@ -22,31 +22,31 @@ namespace VDT.Core.RecurringDates {
             throw new NotImplementedException();
         }
 
-        internal (int Months, int Days) GetTimeUntilNextDay(DateTime current, bool allowCurrent) {
-            var (month, day) = GetCurrentDay(current);
+        internal DateSpan GetDateSpanUntilNextDay(DateTime current, bool allowCurrent) {
+            var currentDateSpan = GetCurrentDay(current);
 
             // TODO: FIX, take into account max number of days on base of month
             // TODO: FIX, add DaysOfWeek, started with DaysOfMonth for now
-            var daysInRange = DaysOfMonth
-                .Select(d => new { Month = d < 0 ? 1 : 0, Day = d })
-                .OrderBy(dayOfMonth => dayOfMonth.Month)
-                .ThenBy(dayOfMonth => dayOfMonth.Day)
+            var dateSpansInRange = DaysOfMonth
+                .Select(day => new DateSpan(day < 0 ? 1 : 0, day))
+                .OrderBy(dayOfMonth => dayOfMonth)
                 .ToList();
-            var time = new { Month = 0, Day = 0 };
+            DateSpan nextDateSpan;
 
-            daysInRange.Add(new { Month = daysInRange[0].Month + recurrence.Interval, daysInRange[0].Day });
+            dateSpansInRange.Add(dateSpansInRange[0] + new DateSpan(recurrence.Interval, 0));
 
             if (allowCurrent) {
-                time = daysInRange.Where(dayOfMonth => dayOfMonth.Month > month || (dayOfMonth.Month == month && dayOfMonth.Day >= day)).First();
+                nextDateSpan = dateSpansInRange.Where(dateSpan => dateSpan >= currentDateSpan).First();
             }
             else {
-                time = daysInRange.Where(dayOfMonth => dayOfMonth.Month > month || (dayOfMonth.Month == month && dayOfMonth.Day > day)).First();
+                nextDateSpan = dateSpansInRange.Where(dateSpan => dateSpan > currentDateSpan).First();
             }
 
-            return (time.Month - month, time.Day - day);
+            return nextDateSpan - currentDateSpan;
         }
 
-        internal (int Month, int Day) GetCurrentDay(DateTime current)
-            => ((current.TotalMonths() - recurrence.Start.TotalMonths()) % recurrence.Interval, current.Day - 1);
+        internal DateSpan GetCurrentDay(DateTime current)
+            => new DateSpan((current.TotalMonths() - recurrence.Start.TotalMonths()) % recurrence.Interval, current.Day - 1);
+
     }
 }

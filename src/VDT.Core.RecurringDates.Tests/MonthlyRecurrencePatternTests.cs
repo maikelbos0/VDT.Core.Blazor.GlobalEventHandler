@@ -18,10 +18,9 @@ namespace VDT.Core.RecurringDates.Tests {
             }) {
             };
 
-            var (month, day) = pattern.GetCurrentDay(current);
+            var result = pattern.GetCurrentDay(current);
 
-            Assert.Equal(expectedMonth, month);
-            Assert.Equal(expectedDay, day);
+            Assert.Equal(new DateSpan(expectedMonth, expectedDay), result);
         }
 
         [Theory]
@@ -29,13 +28,13 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(1, "2022-01-03", "2022-01-06", false, 0, 20, 5, 25)]
         [InlineData(1, "2022-01-03", "2022-01-06", true, 0, 0, 5, 25)]
         [InlineData(3, "2022-01-03", "2022-02-01", false, 2, 5, 5, 25)]
-        
+
         // TODO fix month overflow test cases
         [InlineData(1, "2022-02-01", "2022-02-01", false, 1, 30, 30)]
         [InlineData(3, "2022-01-01", "2022-01-01", false, 6, 30, 30)]
 
         // TODO more tests
-        public void GetTimeUntilNextDay_Only_DaysOfMonth(int interval, DateTime start, DateTime current, bool allowCurrent, int expectedMonth, int expectedDay, params int[] daysOfMonth) {
+        public void GetDateSpanUntilNextDay_Only_DaysOfMonth(int interval, DateTime start, DateTime current, bool allowCurrent, int expectedMonth, int expectedDay, params int[] daysOfMonth) {
             var pattern = new MonthlyRecurrencePattern(new Recurrence() {
                 Interval = interval,
                 Start = start
@@ -43,10 +42,9 @@ namespace VDT.Core.RecurringDates.Tests {
                 DaysOfMonth = new HashSet<int>(daysOfMonth)
             };
 
-            var (months, days) = pattern.GetTimeUntilNextDay(current, allowCurrent);
+            var result = pattern.GetDateSpanUntilNextDay(current, allowCurrent);
 
-            Assert.Equal(expectedMonth, months);
-            Assert.Equal(expectedDay, days);
+            Assert.Equal(new DateSpan(expectedMonth, expectedDay), result);
         }
     }
 }

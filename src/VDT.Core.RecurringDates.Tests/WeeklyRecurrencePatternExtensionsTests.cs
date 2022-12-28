@@ -1,43 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using Xunit;
 
 namespace VDT.Core.RecurringDates.Tests {
     public class WeeklyRecurrencePatternExtensionsTests {
         [Fact]
-        public void UseCalendarWeeks() {
-            var pattern = new WeeklyRecurrencePattern(new Recurrence()) {
-                PeriodHandling = RecurrencePatternPeriodHandling.Ongoing
-            };
+        public void UseFirstDayOfWeek() {
+            var pattern = new WeeklyRecurrencePattern(new Recurrence());
 
-            Assert.Same(pattern, pattern.UseCalendarWeeks());
+            Assert.Same(pattern, pattern.UseFirstDayOfWeek(DayOfWeek.Tuesday));
 
-            Assert.Equal(RecurrencePatternPeriodHandling.Calendar, pattern.PeriodHandling);
-            Assert.Equal(Thread.CurrentThread.CurrentCulture.DateTimeFormat.FirstDayOfWeek, pattern.FirstDayOfWeek);
-        }
-
-        [Fact]
-        public void UseCalendarWeeks_FirstDayOfWeek() {
-            var pattern = new WeeklyRecurrencePattern(new Recurrence()) {
-                PeriodHandling = RecurrencePatternPeriodHandling.Ongoing
-            };
-
-            Assert.Same(pattern, pattern.UseCalendarWeeks(DayOfWeek.Tuesday));
-
-            Assert.Equal(RecurrencePatternPeriodHandling.Calendar, pattern.PeriodHandling);
             Assert.Equal(DayOfWeek.Tuesday, pattern.FirstDayOfWeek);
-        }
-
-        [Fact]
-        public void UseOngoingWeeks() {
-            var pattern = new WeeklyRecurrencePattern(new Recurrence()) {
-                PeriodHandling = RecurrencePatternPeriodHandling.Calendar
-            };
-
-            Assert.Same(pattern, pattern.UseOngoingWeeks());
-
-            Assert.Equal(RecurrencePatternPeriodHandling.Ongoing, pattern.PeriodHandling);
         }
 
         [Fact]

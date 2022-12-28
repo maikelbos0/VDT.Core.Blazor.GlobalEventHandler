@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace VDT.Core.RecurringDates.Tests {
@@ -34,18 +35,18 @@ namespace VDT.Core.RecurringDates.Tests {
         public void Weeks() {
             var recurrence = new Recurrence();
 
-            recurrence.Weeks(pattern => pattern.PeriodHandling = RecurrencePatternPeriodHandling.Calendar);
+            recurrence.Weeks(pattern => pattern.FirstDayOfWeek = DayOfWeek.Wednesday);
 
-            Assert.Equal(RecurrencePatternPeriodHandling.Calendar, Assert.IsType<WeeklyRecurrencePattern>(recurrence.Pattern).PeriodHandling);
+            Assert.Equal(DayOfWeek.Wednesday, Assert.IsType<WeeklyRecurrencePattern>(recurrence.Pattern).FirstDayOfWeek);
         }
 
         [Fact]
         public void Months() {
             var recurrence = new Recurrence();
 
-            recurrence.Months(pattern => pattern.PeriodHandling = RecurrencePatternPeriodHandling.Calendar);
+            recurrence.Months(pattern => pattern.DaysOfMonth.Add(3));
 
-            Assert.Equal(RecurrencePatternPeriodHandling.Calendar, Assert.IsType<MonthlyRecurrencePattern>(recurrence.Pattern).PeriodHandling);
+            Assert.Equal(new HashSet<int>() { 3 }, Assert.IsType<MonthlyRecurrencePattern>(recurrence.Pattern).DaysOfMonth);
         }
     }
 }

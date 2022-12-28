@@ -4,16 +4,8 @@ using System.Linq;
 
 namespace VDT.Core.RecurringDates {
     public static class WeeklyRecurrencePatternExtensions {
-        public static WeeklyRecurrencePattern UseCalendarWeeks(this WeeklyRecurrencePattern pattern, DayOfWeek? firstDayOfWeek = null) {
-            pattern.PeriodHandling = RecurrencePatternPeriodHandling.Calendar;
-            if (firstDayOfWeek != null) {
-                pattern.FirstDayOfWeek = firstDayOfWeek.Value;
-            }
-            return pattern;
-        }
-
-        public static WeeklyRecurrencePattern UseOngoingWeeks(this WeeklyRecurrencePattern pattern) {
-            pattern.PeriodHandling = RecurrencePatternPeriodHandling.Ongoing;
+        public static WeeklyRecurrencePattern UseFirstDayOfWeek(this WeeklyRecurrencePattern pattern, DayOfWeek firstDayOfWeek) {
+            pattern.FirstDayOfWeek = firstDayOfWeek;
             return pattern;
         }
 

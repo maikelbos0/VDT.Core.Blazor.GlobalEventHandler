@@ -7,8 +7,6 @@ namespace VDT.Core.RecurringDates {
     public class WeeklyRecurrencePattern : IRecurrencePattern {
         private readonly Recurrence recurrence;
 
-        public RecurrencePatternPeriodHandling PeriodHandling { get; set; } = RecurrencePatternPeriodHandling.Ongoing;
-
         public DayOfWeek FirstDayOfWeek { get; set; } = Thread.CurrentThread.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
 
         public HashSet<DayOfWeek> DaysOfWeek { get; set; } = new HashSet<DayOfWeek>();
@@ -42,7 +40,7 @@ namespace VDT.Core.RecurringDates {
         }
 
         internal int GetCurrentDay(DateTime current) {
-            var firstDayOfWeek = (int)GetFirstDayOfWeek();
+            var firstDayOfWeek = (int)FirstDayOfWeek;
             var totalDays = (current - recurrence.Start).Days;
             var weekDayCorrection = (int)recurrence.Start.DayOfWeek - firstDayOfWeek;
             
@@ -54,7 +52,7 @@ namespace VDT.Core.RecurringDates {
         }
 
         internal int GetDaysUntilNextDay(int day, bool allowCurrent) {
-            var firstDayOfWeek = (int)GetFirstDayOfWeek();
+            var firstDayOfWeek = (int)FirstDayOfWeek;
             var daysInRange = DaysOfWeek.Select(d => ((int)d - firstDayOfWeek + 7) % 7).ToList();
 
             if (allowCurrent) {
@@ -64,12 +62,5 @@ namespace VDT.Core.RecurringDates {
                 return daysInRange.Where(dayOfWeek => dayOfWeek > day).DefaultIfEmpty(daysInRange.Min() + 7 * recurrence.Interval).Min() - day;
             }
         }
-
-        private DayOfWeek GetFirstDayOfWeek()
-            => PeriodHandling switch {
-                RecurrencePatternPeriodHandling.Calendar => FirstDayOfWeek,
-                RecurrencePatternPeriodHandling.Ongoing => recurrence.Start.DayOfWeek,
-                _ => throw new NotImplementedException($"No implementation found for {nameof(RecurrencePatternPeriodHandling)} '{PeriodHandling}'")
-            };
     }
 }

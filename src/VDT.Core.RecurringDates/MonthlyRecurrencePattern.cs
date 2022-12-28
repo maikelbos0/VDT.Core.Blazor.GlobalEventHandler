@@ -8,7 +8,7 @@ namespace VDT.Core.RecurringDates {
 
         public HashSet<int> DaysOfMonth { get; set; } = new HashSet<int>();
 
-        public HashSet<(WeekOfMonth, DayOfWeek)> DaysOfWeek { get; set; } = new HashSet<(WeekOfMonth, DayOfWeek)>();
+        public HashSet<(DayOfWeekInMonth, DayOfWeek)> DaysOfWeek { get; set; } = new HashSet<(DayOfWeekInMonth, DayOfWeek)>();
 
         public MonthlyRecurrencePattern(Recurrence recurrence) {
             this.recurrence = recurrence;
@@ -47,6 +47,5 @@ namespace VDT.Core.RecurringDates {
 
         internal DateSpan GetCurrentDay(DateTime current)
             => new DateSpan((current.TotalMonths() - recurrence.Start.TotalMonths()) % recurrence.Interval, current.Day - 1);
-
     }
 }

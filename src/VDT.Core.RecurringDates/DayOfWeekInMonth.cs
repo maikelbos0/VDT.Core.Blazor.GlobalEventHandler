@@ -1,5 +1,5 @@
 ﻿namespace VDT.Core.RecurringDates {
-    public enum WeekOfMonth {
+    public enum DayOfWeekInMonth {
         First,
         Second,
         Third,

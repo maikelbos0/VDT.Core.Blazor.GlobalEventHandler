@@ -20,24 +20,24 @@ namespace VDT.Core.RecurringDates {
             return pattern;
         }
 
-        public static MonthlyRecurrencePattern IncludeDayOfWeek(this MonthlyRecurrencePattern pattern, WeekOfMonth weekOfMonth, DayOfWeek dayOfWeek)
+        public static MonthlyRecurrencePattern IncludeDayOfWeek(this MonthlyRecurrencePattern pattern, DayOfWeekInMonth weekOfMonth, DayOfWeek dayOfWeek)
             => pattern.IncludeDaysOfWeek((weekOfMonth, dayOfWeek));
 
-        public static MonthlyRecurrencePattern IncludeDaysOfWeek(this MonthlyRecurrencePattern pattern, params (WeekOfMonth, DayOfWeek)[] days)
+        public static MonthlyRecurrencePattern IncludeDaysOfWeek(this MonthlyRecurrencePattern pattern, params (DayOfWeekInMonth, DayOfWeek)[] days)
             => pattern.IncludeDaysOfWeek(days.AsEnumerable());
 
-        public static MonthlyRecurrencePattern IncludeDaysOfWeek(this MonthlyRecurrencePattern pattern, IEnumerable<(WeekOfMonth, DayOfWeek)> days) {
+        public static MonthlyRecurrencePattern IncludeDaysOfWeek(this MonthlyRecurrencePattern pattern, IEnumerable<(DayOfWeekInMonth, DayOfWeek)> days) {
             pattern.DaysOfWeek.UnionWith(days);
             return pattern;
         }
 
-        public static MonthlyRecurrencePattern ExcludeDayOfWeek(this MonthlyRecurrencePattern pattern, WeekOfMonth weekOfMonth, DayOfWeek dayOfWeek)
+        public static MonthlyRecurrencePattern ExcludeDayOfWeek(this MonthlyRecurrencePattern pattern, DayOfWeekInMonth weekOfMonth, DayOfWeek dayOfWeek)
             => pattern.ExcludeDaysOfWeek((weekOfMonth, dayOfWeek));
 
-        public static MonthlyRecurrencePattern ExcludeDaysOfWeek(this MonthlyRecurrencePattern pattern, params (WeekOfMonth, DayOfWeek)[] days)
+        public static MonthlyRecurrencePattern ExcludeDaysOfWeek(this MonthlyRecurrencePattern pattern, params (DayOfWeekInMonth, DayOfWeek)[] days)
             => pattern.ExcludeDaysOfWeek(days.AsEnumerable());
 
-        public static MonthlyRecurrencePattern ExcludeDaysOfWeek(this MonthlyRecurrencePattern pattern, IEnumerable<(WeekOfMonth, DayOfWeek)> days) {
+        public static MonthlyRecurrencePattern ExcludeDaysOfWeek(this MonthlyRecurrencePattern pattern, IEnumerable<(DayOfWeekInMonth, DayOfWeek)> days) {
             pattern.DaysOfWeek.ExceptWith(days);
             return pattern;
         }

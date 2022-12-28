@@ -9,6 +9,16 @@ namespace VDT.Core.RecurringDates {
         public DailyRecurrencePattern(Recurrence recurrence)
             => this.recurrence = recurrence;
 
+        internal bool IsValid(DateTime date)
+            => date.DayOfWeek switch {
+                DayOfWeek.Monday => FitsInterval(date) || (WeekendHandling == RecurrencePatternWeekendHandling.AdjustToMonday && (FitsInterval(date.AddDays(-1)) || FitsInterval(date.AddDays(-2)))),
+                DayOfWeek.Saturday => WeekendHandling == RecurrencePatternWeekendHandling.Include && FitsInterval(date),
+                DayOfWeek.Sunday => WeekendHandling == RecurrencePatternWeekendHandling.Include && FitsInterval(date),
+                _ => FitsInterval(date)
+            };
+
+        private bool FitsInterval(DateTime date) => recurrence.Interval == 1 || (date.Date - recurrence.Start.Date).Days % recurrence.Interval == 0;
+
         public DateTime? GetFirst(DateTime from) {
             var first = from;
 

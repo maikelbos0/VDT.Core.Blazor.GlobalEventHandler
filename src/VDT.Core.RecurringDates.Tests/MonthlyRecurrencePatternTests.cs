@@ -21,6 +21,26 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Theory]
+        [InlineData(2022, 1, 4, 12, 20, 28)]
+        [InlineData(2022, 2, 1, 9, 17, 25)]
+        [InlineData(2022, 4, 5, 13, 21, 22)]
+        [InlineData(2022, 5, 3, 11, 19, 27)]
+        public void GetDaysOfMonth_WeekDayOfMonth(int year, int month, params int[] expectedDays) {
+            var pattern = new MonthlyRecurrencePattern(new Recurrence()) {
+                DaysOfWeek = new HashSet<(DayOfWeekInMonth, DayOfWeek)>() {
+                    (DayOfWeekInMonth.First, DayOfWeek.Tuesday),
+                    (DayOfWeekInMonth.Second, DayOfWeek.Wednesday),
+                    (DayOfWeekInMonth.Third, DayOfWeek.Thursday),
+                    (DayOfWeekInMonth.Fourth, DayOfWeek.Friday)
+                }
+            };
+
+            var result = pattern.GetDaysOfMonth(new DateTime(year, month, 1));
+
+            Assert.Equal(expectedDays.ToHashSet(), result);
+        }
+
+        [Theory]
         [InlineData(2022, 1, 25, 26)]
         [InlineData(2022, 2, 22, 23)]
         [InlineData(2022, 3, 29, 30)]
@@ -28,10 +48,6 @@ namespace VDT.Core.RecurringDates.Tests {
         public void GetDaysOfMonth_LastWeekDayOfMonth(int year, int month, params int[] expectedDays) {
             var pattern = new MonthlyRecurrencePattern(new Recurrence()) {
                 DaysOfWeek = new HashSet<(DayOfWeekInMonth, DayOfWeek)>() { 
-                    (DayOfWeekInMonth.First, DayOfWeek.Monday),
-                    (DayOfWeekInMonth.Second, DayOfWeek.Monday),
-                    (DayOfWeekInMonth.Third, DayOfWeek.Monday),
-                    (DayOfWeekInMonth.Fourth, DayOfWeek.Monday),
                     (DayOfWeekInMonth.Last, DayOfWeek.Tuesday),
                     (DayOfWeekInMonth.Last, DayOfWeek.Wednesday)
                 }

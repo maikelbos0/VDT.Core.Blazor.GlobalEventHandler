@@ -5,6 +5,21 @@ using Xunit;
 namespace VDT.Core.RecurringDates.Tests {
     public class MonthlyRecurrencePatternTests {
         [Theory]
+        [InlineData(2022, 1, 1, 28, 29, 30, 31)]
+        [InlineData(2022, 4, 1, 28, 29, 30)]
+        [InlineData(2020, 2, 1, 28, 29)]
+        [InlineData(2022, 2, 1, 28)]
+        public void GetDaysOfMonth_DaysOfMonth(int year, int month, params int[] expectedDays) {
+            var pattern = new MonthlyRecurrencePattern(new Recurrence()) {
+                DaysOfMonth = new HashSet<int>() { 1, 28, 29, 30, 31 }
+            };
+
+            var result = pattern.GetDaysOfMonth(new DateTime(year, month, 1));
+
+            Assert.Equal(expectedDays, result);
+        }
+
+        [Theory]
         [InlineData(1, "2022-01-01", "2022-01-01", 0, 0)]
         [InlineData(1, "2022-01-01", "2022-02-02", 0, 1)]
         [InlineData(3, "2022-01-01", "2022-02-15", 1, 14)]

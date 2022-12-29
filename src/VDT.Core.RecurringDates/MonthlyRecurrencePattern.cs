@@ -14,6 +14,16 @@ namespace VDT.Core.RecurringDates {
             this.recurrence = recurrence;
         }
 
+        internal HashSet<int> GetDaysOfMonth(DateTime date) {
+            // TODO any corrections to last days of month could be done here, such as move to next month or move back to last day of month
+            var daysInMonth = date.DaysInMonth();
+            var daysOfMonth = new HashSet<int>();
+
+            daysOfMonth.UnionWith(DaysOfMonth.Where(dayOfMonth => dayOfMonth <= daysInMonth));
+
+            return daysOfMonth;
+        }
+
         public DateTime? GetFirst(DateTime from) {
             throw new NotImplementedException();
         }

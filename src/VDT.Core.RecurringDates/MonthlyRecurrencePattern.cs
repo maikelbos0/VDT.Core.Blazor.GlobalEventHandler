@@ -18,8 +18,12 @@ namespace VDT.Core.RecurringDates {
             // TODO any corrections to last days of month could be done here, such as move to next month or move back to last day of month
             var daysInMonth = date.DaysInMonth();
             var daysOfMonth = new HashSet<int>();
+            var lastDayOfMonth = new DateTime(date.Year, date.Month, date.DaysInMonth());
 
             daysOfMonth.UnionWith(DaysOfMonth.Where(dayOfMonth => dayOfMonth <= daysInMonth));
+            daysOfMonth.UnionWith(DaysOfWeek
+                .Where(dayOfWeek => dayOfWeek.Item1 == DayOfWeekInMonth.Last)
+                .Select(dayOfWeek => lastDayOfMonth.AddDays((dayOfWeek.Item2 - lastDayOfMonth.DayOfWeek - 7) % 7).Day));
 
             return daysOfMonth;
         }

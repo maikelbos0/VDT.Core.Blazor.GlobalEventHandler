@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace VDT.Core.RecurringDates.Tests {
@@ -16,7 +17,29 @@ namespace VDT.Core.RecurringDates.Tests {
 
             var result = pattern.GetDaysOfMonth(new DateTime(year, month, 1));
 
-            Assert.Equal(expectedDays, result);
+            Assert.Equal(expectedDays.ToHashSet(), result);
+        }
+
+        [Theory]
+        [InlineData(2022, 1, 25, 26)]
+        [InlineData(2022, 2, 22, 23)]
+        [InlineData(2022, 3, 29, 30)]
+        [InlineData(2022, 5, 25, 31)]
+        public void GetDaysOfMonth_LastWeekDayOfMonth(int year, int month, params int[] expectedDays) {
+            var pattern = new MonthlyRecurrencePattern(new Recurrence()) {
+                DaysOfWeek = new HashSet<(DayOfWeekInMonth, DayOfWeek)>() { 
+                    (DayOfWeekInMonth.First, DayOfWeek.Monday),
+                    (DayOfWeekInMonth.Second, DayOfWeek.Monday),
+                    (DayOfWeekInMonth.Third, DayOfWeek.Monday),
+                    (DayOfWeekInMonth.Fourth, DayOfWeek.Monday),
+                    (DayOfWeekInMonth.Last, DayOfWeek.Tuesday),
+                    (DayOfWeekInMonth.Last, DayOfWeek.Wednesday)
+                }
+            };
+
+            var result = pattern.GetDaysOfMonth(new DateTime(year, month, 1));
+
+            Assert.Equal(expectedDays.ToHashSet(), result);
         }
 
         [Theory]

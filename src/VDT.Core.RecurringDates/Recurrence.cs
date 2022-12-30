@@ -1,19 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace VDT.Core.RecurringDates {
     public class Recurrence {
+        private readonly List<RecurrencePattern> patterns = new();
+
         public DateTime Start { get; }
 
         public DateTime End { get; }
 
-        // TODO allow multiple patterns
-        public RecurrencePattern Pattern { get; }
+        public IReadOnlyList<RecurrencePattern> Patterns => new ReadOnlyCollection<RecurrencePattern>(patterns);
 
-        public Recurrence(DateTime start, DateTime end, RecurrencePattern pattern) {
+        public Recurrence(DateTime start, DateTime end, params RecurrencePattern[] patterns) : this(start, end, patterns.AsEnumerable()) { }
+
+        public Recurrence(DateTime start, DateTime end, IEnumerable<RecurrencePattern> patterns) {
             Start = start;
             End = end;
-            Pattern = pattern;
+            this.patterns.AddRange(patterns);
         }
 
         public IEnumerable<DateTime> GetDates(DateTime? from = null, DateTime? to = null) {
@@ -21,7 +26,7 @@ namespace VDT.Core.RecurringDates {
             var end = (to.HasValue && to.Value < End ? to.Value : End).Date;
 
             while (current <= end) {
-                if (Pattern.IsValid(current)) {
+                if (patterns.Any(pattern => pattern.IsValid(current))) {
                     yield return current;
                 }
 
@@ -32,8 +37,9 @@ namespace VDT.Core.RecurringDates {
         public IEnumerable<DateTime> GetDates(int count, DateTime? from = null) {
             var current = (from.HasValue && from.Value > Start ? from.Value : Start).Date;
 
-            while (current <= End && count-- > 0) {
-                if (Pattern.IsValid(current)) {
+            while (current <= End && count > 0) {
+                if (patterns.Any(pattern => pattern.IsValid(current))) {
+                    count--;
                     yield return current;
                 }
 

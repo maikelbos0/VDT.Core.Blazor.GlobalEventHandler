@@ -22,6 +22,24 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Fact]
+        public void GetDates_Range_Double_Pattern() {
+            var recurrence = new Recurrence(
+                new DateTime(2022, 1, 1), 
+                new DateTime(2022, 1, 4), 
+                new DailyRecurrencePattern(2, new DateTime(2022, 1, 1)),
+                new DailyRecurrencePattern(3, new DateTime(2022, 1, 1))
+            );
+
+            var dates = recurrence.GetDates();
+
+            Assert.Equal(new[] {
+                new DateTime(2022, 1, 1),
+                new DateTime(2022, 1, 3),
+                new DateTime(2022, 1, 4)
+            }, dates);
+        }
+
+        [Fact]
         public void GetDates_Range_To() {
             var recurrence = new Recurrence(DateTime.MinValue, new DateTime(2022, 1, 31), new DailyRecurrencePattern(2, DateTime.MinValue));
 
@@ -83,6 +101,25 @@ namespace VDT.Core.RecurringDates.Tests {
                 new DateTime(2022, 1, 1),
                 new DateTime(2022, 1, 2),
                 new DateTime(2022, 1, 3)
+            }, dates);
+        }
+
+        [Fact]
+        public void GetDates_Count_Double_Pattern() {
+            var recurrence = new Recurrence(
+                new DateTime(2022, 1, 1),
+                DateTime.MaxValue,
+                new DailyRecurrencePattern(2, new DateTime(2022, 1, 1)),
+                new DailyRecurrencePattern(3, new DateTime(2022, 1, 1))
+            );
+
+            var dates = recurrence.GetDates(4);
+
+            Assert.Equal(new[] {
+                new DateTime(2022, 1, 1),
+                new DateTime(2022, 1, 3),
+                new DateTime(2022, 1, 4),
+                new DateTime(2022, 1, 5)
             }, dates);
         }
     }

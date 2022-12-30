@@ -14,7 +14,7 @@ namespace VDT.Core.RecurringDates {
             this.recurrence = recurrence;
         }
 
-        internal bool IsValid(DateTime date) => FitsInterval(date) && GetDaysOfMonth(date).Contains(date.Day);
+        public bool IsValid(DateTime date) => FitsInterval(date) && GetDaysOfMonth(date).Contains(date.Day);
 
         private bool FitsInterval(DateTime date) => recurrence.Interval == 1 || (date.TotalMonths() - recurrence.Start.TotalMonths()) % recurrence.Interval == 0;
 

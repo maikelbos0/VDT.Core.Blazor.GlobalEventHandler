@@ -29,7 +29,7 @@ namespace VDT.Core.RecurringDates.Tests {
             }) {
                 WeekendHandling = weekendHandling
             };
-
+            
             Assert.Equal(expectedIsValid, pattern.IsValid(date));
         }
 

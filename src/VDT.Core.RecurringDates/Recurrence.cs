@@ -5,6 +5,7 @@ namespace VDT.Core.RecurringDates {
     public class Recurrence {
         private int interval = 1;
 
+        // TODO move interval to patterns to allow multiple patterns in a sensible way
         public int Interval {
             get {
                 return interval;
@@ -22,25 +23,31 @@ namespace VDT.Core.RecurringDates {
 
         public DateTime End { get; set; } = DateTime.MaxValue;
 
+        // TODO allow multiple patterns
         public IRecurrencePattern Pattern { get; set; } = new NoRecurrencePattern();
 
         public IEnumerable<DateTime> GetDates(DateTime? from = null, DateTime? to = null) {
-            var current = Pattern.GetFirst(from ?? Start);
+            var current = (from.HasValue && from.Value > Start ? from.Value : Start).Date;
+            var end = (to.HasValue && to.Value < End ? to.Value : End).Date;
 
-            while (current != null && current <= End && (to == null || current <= to)) {
-                yield return current.Value;
+            while (current <= end) {
+                if (Pattern.IsValid(current)) {
+                    yield return current;
+                }
 
-                current = Pattern.GetNext(current.Value);
+                current = current.AddDays(1);
             }
         }
 
         public IEnumerable<DateTime> GetDates(int count, DateTime? from = null) {
-            var current = Pattern.GetFirst(from ?? Start);
+            var current = (from.HasValue && from.Value > Start ? from.Value : Start).Date;
 
-            while (current != null && current <= End && count-- > 0) {
-                yield return current.Value;
+            while (current <= End && count-- > 0) {
+                if (Pattern.IsValid(current)) {
+                    yield return current;
+                }
 
-                current = Pattern.GetNext(current.Value);
+                current = current.AddDays(1);
             }
         }
     }

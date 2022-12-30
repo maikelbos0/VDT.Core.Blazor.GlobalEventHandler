@@ -12,10 +12,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(DayOfWeek.Monday, 2, "2022-12-01", "2022-12-09", false, DayOfWeek.Thursday, DayOfWeek.Friday)]
         [InlineData(DayOfWeek.Monday, 2, "2022-12-01", "2022-12-16", true, DayOfWeek.Thursday, DayOfWeek.Friday)]
         public void IsValid(DayOfWeek firstDayOfWeek, int interval, DateTime start, DateTime date, bool expectedIsValid, params DayOfWeek[] daysOfWeek) {
-            var pattern = new WeeklyRecurrencePattern(new Recurrence() {
-                Interval = interval,
-                Start = start
-            }) {
+            var pattern = new WeeklyRecurrencePattern(interval, start) {
                 FirstDayOfWeek = firstDayOfWeek,
                 DaysOfWeek = new HashSet<DayOfWeek>(daysOfWeek)
             };

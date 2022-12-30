@@ -3,20 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace VDT.Core.RecurringDates {
-    public class MonthlyRecurrencePattern : IRecurrencePattern {
-        private readonly Recurrence recurrence;
-
+    public class MonthlyRecurrencePattern : RecurrencePattern, IRecurrencePattern {
         public HashSet<int> DaysOfMonth { get; set; } = new HashSet<int>();
 
         public HashSet<(DayOfWeekInMonth, DayOfWeek)> DaysOfWeek { get; set; } = new HashSet<(DayOfWeekInMonth, DayOfWeek)>();
 
-        public MonthlyRecurrencePattern(Recurrence recurrence) {
-            this.recurrence = recurrence;
-        }
+        public MonthlyRecurrencePattern(int interval, DateTime start) : base(interval, start) { }
 
-        public bool IsValid(DateTime date) => FitsInterval(date) && GetDaysOfMonth(date).Contains(date.Day);
+        public override bool IsValid(DateTime date) => FitsInterval(date) && GetDaysOfMonth(date).Contains(date.Day);
 
-        private bool FitsInterval(DateTime date) => recurrence.Interval == 1 || (date.TotalMonths() - recurrence.Start.TotalMonths()) % recurrence.Interval == 0;
+        private bool FitsInterval(DateTime date) => Interval == 1 || (date.TotalMonths() - Start.TotalMonths()) % Interval == 0;
 
         internal HashSet<int> GetDaysOfMonth(DateTime date) {
             // TODO any corrections to last days of month could be done here, such as move to next month or move back to last day of month

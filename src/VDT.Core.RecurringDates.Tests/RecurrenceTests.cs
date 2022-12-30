@@ -34,7 +34,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 End = new DateTime(2022, 1, 1)
             };
 
-            recurrence.Pattern = new DailyRecurrencePattern(recurrence);
+            recurrence.Pattern = new DailyRecurrencePattern(recurrence.Interval, recurrence.Start);
 
             var dates = recurrence.GetDates();
 
@@ -48,7 +48,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 End = new DateTime(2022, 1, 31)
             };
 
-            recurrence.Pattern = new DailyRecurrencePattern(recurrence);
+            recurrence.Pattern = new DailyRecurrencePattern(recurrence.Interval, recurrence.Start);
 
             var dates = recurrence.GetDates(new DateTime(2022, 1, 1), new DateTime(2022, 1, 7));
 
@@ -66,7 +66,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 End = new DateTime(2022, 1, 7)
             };
 
-            recurrence.Pattern = new DailyRecurrencePattern(recurrence);
+            recurrence.Pattern = new DailyRecurrencePattern(recurrence.Interval, recurrence.Start);
 
             var dates = recurrence.GetDates(new DateTime(2022, 1, 1), new DateTime(2022, 1, 31));
 
@@ -84,7 +84,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 Start = new DateTime(2022, 1, 1)
             };
 
-            recurrence.Pattern = new DailyRecurrencePattern(recurrence);
+            recurrence.Pattern = new DailyRecurrencePattern(recurrence.Interval, recurrence.Start);
 
             var dates = recurrence.GetDates(3, new DateTime(2021, 12, 1));
 
@@ -101,7 +101,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 Interval = 1
             };
 
-            recurrence.Pattern = new DailyRecurrencePattern(recurrence);
+            recurrence.Pattern = new DailyRecurrencePattern(recurrence.Interval, recurrence.Start);
 
             var dates = recurrence.GetDates(3, new DateTime(2022, 1, 1));
 
@@ -120,7 +120,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 End = new DateTime(2022, 1, 3)
             };
 
-            recurrence.Pattern = new DailyRecurrencePattern(recurrence);
+            recurrence.Pattern = new DailyRecurrencePattern(recurrence.Interval, recurrence.Start);
 
             var dates = recurrence.GetDates(10);
 

@@ -13,21 +13,21 @@ namespace VDT.Core.RecurringDates {
         }
 
         public static Recurrence Days(this Recurrence recurrence, Action<DailyRecurrencePattern>? patternBuilder = null) {
-            var pattern = new DailyRecurrencePattern(recurrence);
+            var pattern = new DailyRecurrencePattern(recurrence.Interval, recurrence.Start);
             patternBuilder?.Invoke(pattern);
             recurrence.Pattern = pattern;
             return recurrence;
         }
 
         public static Recurrence Weeks(this Recurrence recurrence, Action<WeeklyRecurrencePattern>? patternBuilder = null) {
-            var pattern = new WeeklyRecurrencePattern(recurrence);
+            var pattern = new WeeklyRecurrencePattern(recurrence.Interval, recurrence.Start);
             patternBuilder?.Invoke(pattern);
             recurrence.Pattern = pattern;
             return recurrence;
         }
 
         public static Recurrence Months(this Recurrence recurrence, Action<MonthlyRecurrencePattern>? patternBuilder = null) {
-            var pattern = new MonthlyRecurrencePattern(recurrence);
+            var pattern = new MonthlyRecurrencePattern(recurrence.Interval, recurrence.Start);
             patternBuilder?.Invoke(pattern);
             recurrence.Pattern = pattern;
             return recurrence;

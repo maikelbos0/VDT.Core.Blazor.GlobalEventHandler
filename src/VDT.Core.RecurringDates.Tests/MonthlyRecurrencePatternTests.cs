@@ -14,10 +14,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(2, "2022-12-01", "2023-01-03", false, 3)]
         [InlineData(2, "2022-12-01", "2023-02-03", true, 3)]
         public void IsValid(int interval, DateTime start, DateTime date, bool expectedIsValid, params int[] daysOfMonth) {
-            var pattern = new MonthlyRecurrencePattern(new Recurrence() {
-                Interval = interval,
-                Start = start
-            }) {
+            var pattern = new MonthlyRecurrencePattern(interval, start) {
                 DaysOfMonth = new HashSet<int>(daysOfMonth)
             };
 
@@ -30,7 +27,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(2020, 2, 1, 28, 29)]
         [InlineData(2022, 2, 1, 28)]
         public void GetDaysOfMonth_DaysOfMonth(int year, int month, params int[] expectedDays) {
-            var pattern = new MonthlyRecurrencePattern(new Recurrence()) {
+            var pattern = new MonthlyRecurrencePattern(1, DateTime.MinValue) {
                 DaysOfMonth = new HashSet<int>() { 1, 28, 29, 30, 31 }
             };
 
@@ -45,7 +42,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(2022, 4, 5, 13, 21, 22)]
         [InlineData(2022, 5, 3, 11, 19, 27)]
         public void GetDaysOfMonth_WeekDayOfMonth(int year, int month, params int[] expectedDays) {
-            var pattern = new MonthlyRecurrencePattern(new Recurrence()) {
+            var pattern = new MonthlyRecurrencePattern(1, DateTime.MinValue) {
                 DaysOfWeek = new HashSet<(DayOfWeekInMonth, DayOfWeek)>() {
                     (DayOfWeekInMonth.First, DayOfWeek.Tuesday),
                     (DayOfWeekInMonth.Second, DayOfWeek.Wednesday),
@@ -65,7 +62,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(2022, 3, 29, 30)]
         [InlineData(2022, 5, 25, 31)]
         public void GetDaysOfMonth_LastWeekDayOfMonth(int year, int month, params int[] expectedDays) {
-            var pattern = new MonthlyRecurrencePattern(new Recurrence()) {
+            var pattern = new MonthlyRecurrencePattern(1, DateTime.MinValue) {
                 DaysOfWeek = new HashSet<(DayOfWeekInMonth, DayOfWeek)>() { 
                     (DayOfWeekInMonth.Last, DayOfWeek.Tuesday),
                     (DayOfWeekInMonth.Last, DayOfWeek.Wednesday)

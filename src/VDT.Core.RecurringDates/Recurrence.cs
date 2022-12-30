@@ -24,7 +24,7 @@ namespace VDT.Core.RecurringDates {
         public DateTime End { get; set; } = DateTime.MaxValue;
 
         // TODO allow multiple patterns
-        public IRecurrencePattern Pattern { get; set; } = new NoRecurrencePattern();
+        public IRecurrencePattern Pattern { get; set; } = new NoRecurrencePattern(1, DateTime.MinValue);
 
         public IEnumerable<DateTime> GetDates(DateTime? from = null, DateTime? to = null) {
             var current = (from.HasValue && from.Value > Start ? from.Value : Start).Date;

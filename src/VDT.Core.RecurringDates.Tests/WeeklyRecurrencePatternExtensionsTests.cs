@@ -6,7 +6,7 @@ namespace VDT.Core.RecurringDates.Tests {
     public class WeeklyRecurrencePatternExtensionsTests {
         [Fact]
         public void UseFirstDayOfWeek() {
-            var pattern = new WeeklyRecurrencePattern(new Recurrence());
+            var pattern = new WeeklyRecurrencePattern(1, DateTime.MinValue);
 
             Assert.Same(pattern, pattern.UseFirstDayOfWeek(DayOfWeek.Tuesday));
 
@@ -15,7 +15,7 @@ namespace VDT.Core.RecurringDates.Tests {
 
         [Fact]
         public void IncludeDaysOfWeek() {
-            var pattern = new WeeklyRecurrencePattern(new Recurrence()) {
+            var pattern = new WeeklyRecurrencePattern(1, DateTime.MinValue) {
                 DaysOfWeek = new HashSet<DayOfWeek>() {
                     DayOfWeek.Tuesday,
                     DayOfWeek.Wednesday,
@@ -35,7 +35,7 @@ namespace VDT.Core.RecurringDates.Tests {
 
         [Fact]
         public void ExcludeDaysOfWeek() {
-            var pattern = new WeeklyRecurrencePattern(new Recurrence()) {
+            var pattern = new WeeklyRecurrencePattern(1, DateTime.MinValue) {
                 DaysOfWeek = new HashSet<DayOfWeek>() {
                     DayOfWeek.Tuesday,
                     DayOfWeek.Wednesday,

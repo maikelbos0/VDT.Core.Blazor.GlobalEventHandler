@@ -1,8 +1,10 @@
 ﻿using System;
 
 namespace VDT.Core.RecurringDates {
-    public class NoRecurrencePattern : IRecurrencePattern {
-        public bool IsValid(DateTime date) => false;
+    public class NoRecurrencePattern : RecurrencePattern, IRecurrencePattern {
+        public NoRecurrencePattern(int interval, DateTime start) : base(interval, start) { }
+
+        public override bool IsValid(DateTime date) => false;
 
         public DateTime? GetFirst(DateTime from) => null;
 

@@ -1,10 +1,11 @@
-﻿using Xunit;
+﻿using System;
+using Xunit;
 
 namespace VDT.Core.RecurringDates.Tests {
     public class DailyRecurrencePatternExtensionsTests {
         [Fact]
         public void IncludeWeekends() {
-            var pattern = new DailyRecurrencePattern(new Recurrence()) {
+            var pattern = new DailyRecurrencePattern(1, DateTime.MinValue) {
                 WeekendHandling = RecurrencePatternWeekendHandling.Include
             };
 
@@ -15,7 +16,7 @@ namespace VDT.Core.RecurringDates.Tests {
 
         [Fact]
         public void SkipWeekends() {
-            var pattern = new DailyRecurrencePattern(new Recurrence()) {
+            var pattern = new DailyRecurrencePattern(1, DateTime.MinValue) {
                 WeekendHandling = RecurrencePatternWeekendHandling.Skip
             };
 
@@ -26,7 +27,7 @@ namespace VDT.Core.RecurringDates.Tests {
 
         [Fact]
         public void AdjustWeekendsToMonday() {
-            var pattern = new DailyRecurrencePattern(new Recurrence()) {
+            var pattern = new DailyRecurrencePattern(1, DateTime.MinValue) {
                 WeekendHandling = RecurrencePatternWeekendHandling.AdjustToMonday
             };
 

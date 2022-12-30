@@ -6,7 +6,7 @@ namespace VDT.Core.RecurringDates.Tests {
     public class MonthlyRecurrencePatternExtensionsTests {
         [Fact]
         public void IncludeDaysOfMonth() {
-            var pattern = new MonthlyRecurrencePattern(new Recurrence()) {
+            var pattern = new MonthlyRecurrencePattern(1, DateTime.MinValue) {
                 DaysOfMonth = new HashSet<int>() { 5, 9, 17 }
             };
 
@@ -17,7 +17,7 @@ namespace VDT.Core.RecurringDates.Tests {
 
         [Fact]
         public void ExcludeDaysOfMonth() {
-            var pattern = new MonthlyRecurrencePattern(new Recurrence()) {
+            var pattern = new MonthlyRecurrencePattern(1, DateTime.MinValue) {
                 DaysOfMonth = new HashSet<int>() { 5, 9, 17 }
             };
 
@@ -28,7 +28,7 @@ namespace VDT.Core.RecurringDates.Tests {
 
         [Fact]
         public void IncludeDayOfWeek() {
-            var pattern = new MonthlyRecurrencePattern(new Recurrence()) {
+            var pattern = new MonthlyRecurrencePattern(1, DateTime.MinValue) {
                 DaysOfWeek = new HashSet<(DayOfWeekInMonth, DayOfWeek)>() {
                     (DayOfWeekInMonth.First, DayOfWeek.Tuesday),
                     (DayOfWeekInMonth.Third, DayOfWeek.Friday),
@@ -48,7 +48,7 @@ namespace VDT.Core.RecurringDates.Tests {
 
         [Fact]
         public void IncludeDaysOfWeek() {
-            var pattern = new MonthlyRecurrencePattern(new Recurrence()) {
+            var pattern = new MonthlyRecurrencePattern(1, DateTime.MinValue) {
                 DaysOfWeek = new HashSet<(DayOfWeekInMonth, DayOfWeek)>() {
                     (DayOfWeekInMonth.First, DayOfWeek.Tuesday),
                     (DayOfWeekInMonth.Third, DayOfWeek.Friday),
@@ -68,7 +68,7 @@ namespace VDT.Core.RecurringDates.Tests {
 
         [Fact]
         public void ExcludeDayOfWeek() {
-            var pattern = new MonthlyRecurrencePattern(new Recurrence()) {
+            var pattern = new MonthlyRecurrencePattern(1, DateTime.MinValue) {
                 DaysOfWeek = new HashSet<(DayOfWeekInMonth, DayOfWeek)>() {
                     (DayOfWeekInMonth.First, DayOfWeek.Tuesday),
                     (DayOfWeekInMonth.Third, DayOfWeek.Friday),
@@ -86,7 +86,7 @@ namespace VDT.Core.RecurringDates.Tests {
 
         [Fact]
         public void ExcludeDaysOfWeek() {
-            var pattern = new MonthlyRecurrencePattern(new Recurrence()) {
+            var pattern = new MonthlyRecurrencePattern(1, DateTime.MinValue) {
                 DaysOfWeek = new HashSet<(DayOfWeekInMonth, DayOfWeek)>() {
                     (DayOfWeekInMonth.First, DayOfWeek.Tuesday),
                     (DayOfWeekInMonth.Third, DayOfWeek.Friday),

@@ -1,15 +1,12 @@
 ﻿using System;
 
 namespace VDT.Core.RecurringDates {
-    public class DailyRecurrencePattern : IRecurrencePattern {
-        private readonly Recurrence recurrence;
-
+    public class DailyRecurrencePattern : RecurrencePattern, IRecurrencePattern {
         public RecurrencePatternWeekendHandling WeekendHandling { get; set; } = RecurrencePatternWeekendHandling.Include;
 
-        public DailyRecurrencePattern(Recurrence recurrence)
-            => this.recurrence = recurrence;
+        public DailyRecurrencePattern(int interval, DateTime start) : base(interval, start) { }
 
-        public bool IsValid(DateTime date)
+        public override bool IsValid(DateTime date)
             => date.DayOfWeek switch {
                 DayOfWeek.Monday => FitsInterval(date) || (WeekendHandling == RecurrencePatternWeekendHandling.AdjustToMonday && (FitsInterval(date.AddDays(-1)) || FitsInterval(date.AddDays(-2)))),
                 DayOfWeek.Saturday => WeekendHandling == RecurrencePatternWeekendHandling.Include && FitsInterval(date),
@@ -17,6 +14,6 @@ namespace VDT.Core.RecurringDates {
                 _ => FitsInterval(date)
             };
 
-        private bool FitsInterval(DateTime date) => recurrence.Interval == 1 || (date.Date - recurrence.Start.Date).Days % recurrence.Interval == 0;
+        private bool FitsInterval(DateTime date) => Interval == 1 || (date.Date - Start.Date).Days % Interval == 0;
     }
 }

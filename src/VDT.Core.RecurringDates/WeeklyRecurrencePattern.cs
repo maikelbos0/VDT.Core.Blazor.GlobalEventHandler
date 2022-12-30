@@ -15,8 +15,7 @@ namespace VDT.Core.RecurringDates {
             this.recurrence = recurrence;
         }
 
-        internal bool IsValid(DateTime date)
-            => DaysOfWeek.Contains(date.DayOfWeek) && FitsInterval(date);
+        internal bool IsValid(DateTime date) => DaysOfWeek.Contains(date.DayOfWeek) && FitsInterval(date);
 
         private bool FitsInterval(DateTime date) => recurrence.Interval == 1 || (GetFirstDayOfWeekDate(date).Date - GetFirstDayOfWeekDate(recurrence.Start).Date).Days % (7 * recurrence.Interval) == 0;
 

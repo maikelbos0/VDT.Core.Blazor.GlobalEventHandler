@@ -6,6 +6,25 @@ using Xunit;
 namespace VDT.Core.RecurringDates.Tests {
     public class MonthlyRecurrencePatternTests {
         [Theory]
+        [InlineData(1, "2022-12-01", "2022-12-01", true, 1)]
+        [InlineData(1, "2022-12-01", "2022-12-01", true, 1, 3)]
+        [InlineData(1, "2022-12-01", "2022-12-02", false, 1, 3)]
+        [InlineData(1, "2022-12-01", "2022-12-03", true, 1, 3)]
+        [InlineData(2, "2022-12-01", "2022-12-03", true, 3)]
+        [InlineData(2, "2022-12-01", "2023-01-03", false, 3)]
+        [InlineData(2, "2022-12-01", "2023-02-03", true, 3)]
+        public void IsValid(int interval, DateTime start, DateTime date, bool expectedIsValid, params int[] daysOfMonth) {
+            var pattern = new MonthlyRecurrencePattern(new Recurrence() {
+                Interval = interval,
+                Start = start
+            }) {
+                DaysOfMonth = new HashSet<int>(daysOfMonth)
+            };
+
+            Assert.Equal(expectedIsValid, pattern.IsValid(date));
+        }
+
+        [Theory]
         [InlineData(2022, 1, 1, 28, 29, 30, 31)]
         [InlineData(2022, 4, 1, 28, 29, 30)]
         [InlineData(2020, 2, 1, 28, 29)]

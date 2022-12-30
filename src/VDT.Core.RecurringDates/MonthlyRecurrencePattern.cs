@@ -14,6 +14,10 @@ namespace VDT.Core.RecurringDates {
             this.recurrence = recurrence;
         }
 
+        internal bool IsValid(DateTime date) => FitsInterval(date) && GetDaysOfMonth(date).Contains(date.Day);
+
+        private bool FitsInterval(DateTime date) => recurrence.Interval == 1 || (date.TotalMonths() - recurrence.Start.TotalMonths()) % recurrence.Interval == 0;
+
         internal HashSet<int> GetDaysOfMonth(DateTime date) {
             // TODO any corrections to last days of month could be done here, such as move to next month or move back to last day of month
             var daysInMonth = date.DaysInMonth();

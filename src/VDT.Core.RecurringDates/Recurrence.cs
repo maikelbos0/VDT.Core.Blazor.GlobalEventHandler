@@ -3,28 +3,18 @@ using System.Collections.Generic;
 
 namespace VDT.Core.RecurringDates {
     public class Recurrence {
-        private int interval = 1;
+        public DateTime Start { get; }
 
-        // TODO move interval to patterns to allow multiple patterns in a sensible way
-        public int Interval {
-            get {
-                return interval;
-            }
-            set {
-                if (value < 1) {
-                    throw new ArgumentOutOfRangeException(nameof(value), $"Expected {nameof(value)} to be at least 1 but found {value}.");
-                }
-
-                interval = value;
-            }
-        }
-
-        public DateTime Start { get; set; } = DateTime.MinValue;
-
-        public DateTime End { get; set; } = DateTime.MaxValue;
+        public DateTime End { get; }
 
         // TODO allow multiple patterns
-        public IRecurrencePattern Pattern { get; set; } = new NoRecurrencePattern(1, DateTime.MinValue);
+        public RecurrencePattern Pattern { get; }
+
+        public Recurrence(DateTime start, DateTime end, RecurrencePattern pattern) {
+            Start = start;
+            End = end;
+            Pattern = pattern;
+        }
 
         public IEnumerable<DateTime> GetDates(DateTime? from = null, DateTime? to = null) {
             var current = (from.HasValue && from.Value > Start ? from.Value : Start).Date;

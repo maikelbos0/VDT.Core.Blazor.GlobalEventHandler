@@ -5,6 +5,7 @@ namespace VDT.Core.RecurringDates.Tests {
     public class DailyRecurrencePatternTests {
         [Theory]
         [InlineData(RecurrencePatternWeekendHandling.Include, 1, "2022-12-01", "2022-12-01", true)]
+        [InlineData(RecurrencePatternWeekendHandling.Include, 1, "2022-12-01", "2022-11-30", true)]
         [InlineData(RecurrencePatternWeekendHandling.Include, 1, "2022-12-01", "2022-12-03", true)]
         [InlineData(RecurrencePatternWeekendHandling.Include, 1, "2022-12-01", "2022-12-04", true)]
         [InlineData(RecurrencePatternWeekendHandling.Include, 2, "2022-12-01", "2022-12-01", true)]
@@ -22,8 +23,8 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(RecurrencePatternWeekendHandling.AdjustToMonday, 7, "2022-12-02", "2022-12-12", false)]
         [InlineData(RecurrencePatternWeekendHandling.AdjustToMonday, 8, "2022-12-02", "2022-12-12", true)]
         [InlineData(RecurrencePatternWeekendHandling.AdjustToMonday, 9, "2022-12-02", "2022-12-12", true)]
-        public void IsValid(RecurrencePatternWeekendHandling weekendHandling, int interval, DateTime start, DateTime date, bool expectedIsValid) {
-            var pattern = new DailyRecurrencePattern(interval, start) {
+        public void IsValid(RecurrencePatternWeekendHandling weekendHandling, int interval, DateTime referenceDate, DateTime date, bool expectedIsValid) {
+            var pattern = new DailyRecurrencePattern(interval, referenceDate) {
                 WeekendHandling = weekendHandling
             };
             

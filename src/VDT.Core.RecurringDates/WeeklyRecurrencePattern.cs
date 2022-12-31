@@ -8,11 +8,11 @@ namespace VDT.Core.RecurringDates {
 
         public HashSet<DayOfWeek> DaysOfWeek { get; set; } = new HashSet<DayOfWeek>();
 
-        public WeeklyRecurrencePattern(int interval, DateTime start) : base(interval, start) { }
+        public WeeklyRecurrencePattern(int interval, DateTime referenceDate) : base(interval, referenceDate) { }
 
         public override bool IsValid(DateTime date) => DaysOfWeek.Contains(date.DayOfWeek) && FitsInterval(date);
 
-        private bool FitsInterval(DateTime date) => Interval == 1 || (GetFirstDayOfWeekDate(date).Date - GetFirstDayOfWeekDate(Start).Date).Days % (7 * Interval) == 0;
+        private bool FitsInterval(DateTime date) => Interval == 1 || (GetFirstDayOfWeekDate(date).Date - GetFirstDayOfWeekDate(ReferenceDate).Date).Days % (7 * Interval) == 0;
 
         private DateTime GetFirstDayOfWeekDate(DateTime date) => date.AddDays((FirstDayOfWeek - date.DayOfWeek - 7) % 7);
     }

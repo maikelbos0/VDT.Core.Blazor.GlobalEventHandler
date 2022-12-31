@@ -7,25 +7,25 @@ namespace VDT.Core.RecurringDates {
     public class Recurrence {
         private readonly List<RecurrencePattern> patterns = new();
 
-        public DateTime Start { get; }
+        public DateTime StartDate { get; }
 
-        public DateTime End { get; }
+        public DateTime EndDate { get; }
 
         public IReadOnlyList<RecurrencePattern> Patterns => new ReadOnlyCollection<RecurrencePattern>(patterns);
 
-        public Recurrence(DateTime start, DateTime end, params RecurrencePattern[] patterns) : this(start, end, patterns.AsEnumerable()) { }
+        public Recurrence(DateTime startDate, DateTime endDate, params RecurrencePattern[] patterns) : this(startDate, endDate, patterns.AsEnumerable()) { }
 
-        public Recurrence(DateTime start, DateTime end, IEnumerable<RecurrencePattern> patterns) {
-            Start = start;
-            End = end;
+        public Recurrence(DateTime startDate, DateTime endDate, IEnumerable<RecurrencePattern> patterns) {
+            StartDate = startDate;
+            EndDate = endDate;
             this.patterns.AddRange(patterns);
         }
 
         public IEnumerable<DateTime> GetDates(DateTime? from = null, DateTime? to = null) {
-            var current = (from.HasValue && from.Value > Start ? from.Value : Start).Date;
-            var end = (to.HasValue && to.Value < End ? to.Value : End).Date;
+            var current = (from.HasValue && from.Value > StartDate ? from.Value : StartDate).Date;
+            var endDate = (to.HasValue && to.Value < EndDate ? to.Value : EndDate).Date;
 
-            while (current <= end) {
+            while (current <= endDate) {
                 if (patterns.Any(pattern => pattern.IsValid(current))) {
                     yield return current;
                 }
@@ -35,9 +35,9 @@ namespace VDT.Core.RecurringDates {
         }
 
         public IEnumerable<DateTime> GetDates(int count, DateTime? from = null) {
-            var current = (from.HasValue && from.Value > Start ? from.Value : Start).Date;
+            var current = (from.HasValue && from.Value > StartDate ? from.Value : StartDate).Date;
 
-            while (current <= End && count > 0) {
+            while (current <= EndDate && count > 0) {
                 if (patterns.Any(pattern => pattern.IsValid(current))) {
                     count--;
                     yield return current;

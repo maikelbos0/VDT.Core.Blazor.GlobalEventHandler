@@ -8,11 +8,11 @@ namespace VDT.Core.RecurringDates {
 
         public HashSet<(DayOfWeekInMonth, DayOfWeek)> DaysOfWeek { get; set; } = new HashSet<(DayOfWeekInMonth, DayOfWeek)>();
 
-        public MonthlyRecurrencePattern(int interval, DateTime start) : base(interval, start) { }
+        public MonthlyRecurrencePattern(int interval, DateTime referenceDate) : base(interval, referenceDate) { }
 
         public override bool IsValid(DateTime date) => FitsInterval(date) && GetDaysOfMonth(date).Contains(date.Day);
 
-        private bool FitsInterval(DateTime date) => Interval == 1 || (date.TotalMonths() - Start.TotalMonths()) % Interval == 0;
+        private bool FitsInterval(DateTime date) => Interval == 1 || (date.TotalMonths() - ReferenceDate.TotalMonths()) % Interval == 0;
 
         internal HashSet<int> GetDaysOfMonth(DateTime date) {
             // TODO any corrections to last days of month could be done here, such as move to next month or move back to last day of month

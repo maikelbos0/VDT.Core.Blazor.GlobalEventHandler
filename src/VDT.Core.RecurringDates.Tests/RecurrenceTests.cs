@@ -5,7 +5,7 @@ namespace VDT.Core.RecurringDates.Tests {
     public class RecurrenceTests {
         [Fact]
         public void GetDates_No_Pattern() {
-            var recurrence = new Recurrence(new DateTime(2022, 1, 1), new DateTime(2022, 1, 31), new NoRecurrencePattern(1, new DateTime(2022, 1, 1)));
+            var recurrence = new Recurrence(new DateTime(2022, 1, 1), new DateTime(2022, 1, 31));
 
             var dates = recurrence.GetDates();
 

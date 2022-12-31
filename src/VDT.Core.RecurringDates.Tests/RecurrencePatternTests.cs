@@ -4,7 +4,7 @@ using Xunit;
 namespace VDT.Core.RecurringDates.Tests {
     public class RecurrencePatternTests {
         private class TestRecurrencePattern : RecurrencePattern {
-            public TestRecurrencePattern(int interval, DateTime start) : base(interval, start) { }
+            public TestRecurrencePattern(int interval, DateTime referenceDate) : base(interval, referenceDate) { }
 
             public override bool IsValid(DateTime date) => false;
         }

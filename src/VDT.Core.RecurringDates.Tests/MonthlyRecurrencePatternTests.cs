@@ -7,14 +7,15 @@ namespace VDT.Core.RecurringDates.Tests {
     public class MonthlyRecurrencePatternTests {
         [Theory]
         [InlineData(1, "2022-12-01", "2022-12-01", true, 1)]
+        [InlineData(1, "2022-12-01", "2022-11-01", true, 1)]
         [InlineData(1, "2022-12-01", "2022-12-01", true, 1, 3)]
         [InlineData(1, "2022-12-01", "2022-12-02", false, 1, 3)]
         [InlineData(1, "2022-12-01", "2022-12-03", true, 1, 3)]
         [InlineData(2, "2022-12-01", "2022-12-03", true, 3)]
         [InlineData(2, "2022-12-01", "2023-01-03", false, 3)]
         [InlineData(2, "2022-12-01", "2023-02-03", true, 3)]
-        public void IsValid(int interval, DateTime start, DateTime date, bool expectedIsValid, params int[] daysOfMonth) {
-            var pattern = new MonthlyRecurrencePattern(interval, start) {
+        public void IsValid(int interval, DateTime referenceDate, DateTime date, bool expectedIsValid, params int[] daysOfMonth) {
+            var pattern = new MonthlyRecurrencePattern(interval, referenceDate) {
                 DaysOfMonth = new HashSet<int>(daysOfMonth)
             };
 

@@ -2,28 +2,29 @@
 
 namespace VDT.Core.RecurringDates {
     public abstract class RecurrencePatternBuilder {
-        protected readonly RecurrenceBuilder recurrenceBuilder;
-        protected readonly int interval;
+        public RecurrenceBuilder RecurrenceBuilder { get; }
+
+        public int Interval { get; }
 
         protected RecurrencePatternBuilder(RecurrenceBuilder recurrenceBuilder, int interval) {
-            this.recurrenceBuilder = recurrenceBuilder;
-            this.interval = Guard.IsPositive(interval);
+            RecurrenceBuilder = recurrenceBuilder;
+            Interval = Guard.IsPositive(interval);
         }
 
-        public RecurrenceBuilder And() => recurrenceBuilder;
+        public RecurrenceBuilder And() => RecurrenceBuilder;
 
-        public Recurrence BuildRecurrence() => recurrenceBuilder.Build();
+        public Recurrence BuildRecurrence() => RecurrenceBuilder.Build();
 
         public abstract RecurrencePattern Build();
     }
 
     public abstract class RecurrencePatternBuilder<TBuilder> : RecurrencePatternBuilder where TBuilder : RecurrencePatternBuilder<TBuilder> {
-        protected DateTime? referenceDate;
+        public DateTime? ReferenceDate { get; set; }
 
         public RecurrencePatternBuilder(RecurrenceBuilder recurrenceBuilder, int interval) : base(recurrenceBuilder, interval) { }
 
         public RecurrencePatternBuilder<TBuilder> WithReferenceDate(DateTime referenceDate) {
-            this.referenceDate = referenceDate;
+            ReferenceDate = referenceDate;
             return this;
         }
     }

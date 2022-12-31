@@ -22,6 +22,36 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Fact]
+        public void Daily() {
+            var builder = new RecurrenceBuilder();
+
+            var result = builder.Daily();
+
+            Assert.Same(builder, result.RecurrenceBuilder);
+            Assert.Equal(1, result.Interval);
+        }
+
+        [Fact]
+        public void Every() {
+            var builder = new RecurrenceBuilder();
+
+            var result = builder.Every(2);
+
+            Assert.Same(builder, result.RecurrenceBuilder);
+            Assert.Equal(2, result.Interval);
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        [InlineData(int.MinValue)]
+        public void Every_Throws_For_Invalid_Interval(int interval) {
+            var builder = new RecurrenceBuilder();
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => builder.Every(interval));
+        }
+
+        [Fact]
         public void Build() {
             var builder = new RecurrenceBuilder() {
                 StartDate = new DateTime(2022, 1, 1),

@@ -9,6 +9,14 @@ namespace VDT.Core.RecurringDates.Tests {
             public override RecurrencePattern Build() => throw new NotImplementedException();
         }
 
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        [InlineData(int.MinValue)]
+        public void Constructor_Throws_For_Invalid_Interval(int interval) {
+            Assert.Throws<ArgumentOutOfRangeException>(() => new TestRecurrencePatternBuilder(new RecurrenceBuilder(), interval));
+        }
+
         [Fact]
         public void ReferenceDate() {
             var builder = new TestRecurrencePatternBuilder(new RecurrenceBuilder(), 1);

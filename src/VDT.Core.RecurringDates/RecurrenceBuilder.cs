@@ -18,6 +18,16 @@ namespace VDT.Core.RecurringDates {
             return this;
         }
 
+        public DailyRecurrencePatternBuilder Daily() {
+            var builder = new DailyRecurrencePatternBuilder(this, 1);
+            PatternBuilders.Add(builder);
+            return builder;
+        }
+
+        public RecurrencePatternBuilderStart Every(int interval) {
+            return new RecurrencePatternBuilderStart(this, interval);
+        }
+
         public Recurrence Build() {
             return new Recurrence(StartDate, EndDate, PatternBuilders.Select(builder => builder.Build()));
         }

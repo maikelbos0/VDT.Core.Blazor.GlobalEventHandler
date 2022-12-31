@@ -24,9 +24,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(RecurrencePatternWeekendHandling.AdjustToMonday, 8, "2022-12-02", "2022-12-12", true)]
         [InlineData(RecurrencePatternWeekendHandling.AdjustToMonday, 9, "2022-12-02", "2022-12-12", true)]
         public void IsValid(RecurrencePatternWeekendHandling weekendHandling, int interval, DateTime referenceDate, DateTime date, bool expectedIsValid) {
-            var pattern = new DailyRecurrencePattern(interval, referenceDate) {
-                WeekendHandling = weekendHandling
-            };
+            var pattern = new DailyRecurrencePattern(interval, referenceDate, weekendHandling);
             
             Assert.Equal(expectedIsValid, pattern.IsValid(date));
         }

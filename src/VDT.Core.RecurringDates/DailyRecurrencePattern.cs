@@ -2,9 +2,11 @@
 
 namespace VDT.Core.RecurringDates {
     public class DailyRecurrencePattern : RecurrencePattern, IRecurrencePattern {
-        public RecurrencePatternWeekendHandling WeekendHandling { get; set; } = RecurrencePatternWeekendHandling.Include;
+        public RecurrencePatternWeekendHandling WeekendHandling { get; }
 
-        public DailyRecurrencePattern(int interval, DateTime referenceDate) : base(interval, referenceDate) { }
+        public DailyRecurrencePattern(int interval, DateTime referenceDate, RecurrencePatternWeekendHandling? weekendHandling = null) : base(interval, referenceDate) {
+            WeekendHandling = weekendHandling ?? RecurrencePatternWeekendHandling.Include;
+        }
 
         public override bool IsValid(DateTime date)
             => date.DayOfWeek switch {

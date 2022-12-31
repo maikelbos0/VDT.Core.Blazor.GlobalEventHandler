@@ -22,22 +22,17 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Fact]
-        public void RepeatsEvery() {
-            var builder = new RecurrenceBuilder();
+        public void Build() {
+            var builder = new RecurrenceBuilder() {
+                StartDate = new DateTime(2022, 1, 1),
+                EndDate = new DateTime(2022, 12, 31)
+            };
 
-            Assert.Same(builder, builder.RepeatsEvery(2));
+            // TODO add and test patterns
+            var result = builder.Build();
 
-            Assert.Equal(2, builder.Interval);
-        }
-
-        [Theory]
-        [InlineData(0)]
-        [InlineData(-1)]
-        [InlineData(-100)]
-        public void RepeatsEvery_Throws_For_Invalid_Interval(int interval) {
-            var builder = new RecurrenceBuilder();
-
-            Assert.Throws<ArgumentOutOfRangeException>(() => builder.RepeatsEvery(interval));
+            Assert.Equal(new DateTime(2022, 1, 1), result.StartDate);
+            Assert.Equal(new DateTime(2022, 12, 31), result.EndDate);
         }
     }
 }

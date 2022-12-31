@@ -1,19 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace VDT.Core.RecurringDates {
     public class RecurrenceBuilder {
-        public int Interval { get; private set; } = 1;
-        public DateTime StartDate { get; private set; } = DateTime.MinValue;
-        public DateTime EndDate { get; private set; } = DateTime.MaxValue;
-
-        public RecurrenceBuilder RepeatsEvery(int interval) {
-            if (interval < 1) {
-                throw new ArgumentOutOfRangeException(nameof(interval), interval, $"Expected {nameof(interval)} to be at least 1.");
-            }
-
-            Interval = interval;
-            return this;
-        }
+        public DateTime StartDate { get; set; } = DateTime.MinValue;
+        public DateTime EndDate { get; set; } = DateTime.MaxValue;
+        public List<RecurrencePatternBuilder> PatternBuilders { get; set; } = new();
 
         public RecurrenceBuilder StartsOn(DateTime startDate) {
             StartDate = startDate.Date;
@@ -23,6 +16,10 @@ namespace VDT.Core.RecurringDates {
         public RecurrenceBuilder EndsOn(DateTime endDate) {
             EndDate = endDate.Date;
             return this;
+        }
+
+        public Recurrence Build() {
+            return new Recurrence(StartDate, EndDate, PatternBuilders.Select(builder => builder.Build()));
         }
     }
 }

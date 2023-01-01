@@ -4,14 +4,14 @@ namespace VDT.Core.RecurringDates {
     public abstract class RecurrencePatternBuilder {
         public RecurrenceBuilder RecurrenceBuilder { get; }
 
+        public RecurrenceBuilder And => RecurrenceBuilder;
+
         public int Interval { get; }
 
         protected RecurrencePatternBuilder(RecurrenceBuilder recurrenceBuilder, int interval) {
             RecurrenceBuilder = recurrenceBuilder;
             Interval = Guard.IsPositive(interval);
         }
-
-        public RecurrenceBuilder And() => RecurrenceBuilder;
 
         public Recurrence BuildRecurrence() => RecurrenceBuilder.Build();
 

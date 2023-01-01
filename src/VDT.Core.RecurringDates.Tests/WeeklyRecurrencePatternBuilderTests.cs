@@ -6,16 +6,16 @@ using Xunit;
 namespace VDT.Core.RecurringDates.Tests {
     public class WeeklyRecurrencePatternBuilderTests {
         [Fact]
-        public void UseFirstDayOfWeek() {
+        public void UsingFirstDayOfWeek() {
             var builder = new WeeklyRecurrencePatternBuilder(new RecurrenceBuilder(), 1);
 
-            Assert.Same(builder, builder.UseFirstDayOfWeek(DayOfWeek.Tuesday));
+            Assert.Same(builder, builder.UsingFirstDayOfWeek(DayOfWeek.Tuesday));
 
             Assert.Equal(DayOfWeek.Tuesday, builder.FirstDayOfWeek);
         }
 
         [Fact]
-        public void IncludeDaysOfWeek() {
+        public void On() {
             var builder = new WeeklyRecurrencePatternBuilder(new RecurrenceBuilder(), 1) {
                 DaysOfWeek = new HashSet<DayOfWeek>() {
                     DayOfWeek.Tuesday,
@@ -24,7 +24,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 }
             };
 
-            Assert.Same(builder, builder.IncludeDaysOfWeek(DayOfWeek.Tuesday, DayOfWeek.Friday));
+            Assert.Same(builder, builder.On(DayOfWeek.Tuesday, DayOfWeek.Friday));
 
             Assert.Equal(new[] {
                 DayOfWeek.Tuesday,

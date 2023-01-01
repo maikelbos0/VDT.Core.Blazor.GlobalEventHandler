@@ -11,15 +11,15 @@ namespace VDT.Core.RecurringDates {
 
         public WeeklyRecurrencePatternBuilder(RecurrenceBuilder recurrenceBuilder, int interval) : base(recurrenceBuilder, interval) { }
 
-        public WeeklyRecurrencePatternBuilder UseFirstDayOfWeek(DayOfWeek firstDayOfWeek) {
+        public WeeklyRecurrencePatternBuilder UsingFirstDayOfWeek(DayOfWeek firstDayOfWeek) {
             FirstDayOfWeek = firstDayOfWeek;
             return this;
         }
 
-        public WeeklyRecurrencePatternBuilder IncludeDaysOfWeek(params DayOfWeek[] days)
-            => IncludeDaysOfWeek(days.AsEnumerable());
+        public WeeklyRecurrencePatternBuilder On(params DayOfWeek[] days)
+            => On(days.AsEnumerable());
 
-        public WeeklyRecurrencePatternBuilder IncludeDaysOfWeek(IEnumerable<DayOfWeek> days) {
+        public WeeklyRecurrencePatternBuilder On(IEnumerable<DayOfWeek> days) {
             DaysOfWeek.UnionWith(days);
             return this;
         }

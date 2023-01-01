@@ -5,18 +5,18 @@ using Xunit;
 namespace VDT.Core.RecurringDates.Tests {
     public class MonthlyRecurrencePatternBuilderTests {
         [Fact]
-        public void IncludeDaysOfMonth() {
+        public void On_DaysOfMonth() {
             var builder = new MonthlyRecurrencePatternBuilder(new RecurrenceBuilder(), 1) {
                 DaysOfMonth = new HashSet<int>() { 5, 9, 17 }
             };
 
-            Assert.Same(builder, builder.IncludeDaysOfMonth(9, 19));
+            Assert.Same(builder, builder.On(9, 19));
 
             Assert.Equal(new[] { 5, 9, 17, 19 }, builder.DaysOfMonth);
         }
 
         [Fact]
-        public void IncludeDayOfWeek() {
+        public void On_DayOfWeek() {
             var builder = new MonthlyRecurrencePatternBuilder(new RecurrenceBuilder(), 1) {
                 DaysOfWeek = new HashSet<(DayOfWeekInMonth, DayOfWeek)>() {
                     (DayOfWeekInMonth.First, DayOfWeek.Tuesday),
@@ -25,7 +25,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 }
             };
 
-            Assert.Same(builder, builder.IncludeDayOfWeek(DayOfWeekInMonth.Third, DayOfWeek.Thursday));
+            Assert.Same(builder, builder.On(DayOfWeekInMonth.Third, DayOfWeek.Thursday));
 
             Assert.Equal(new[] {
                 (DayOfWeekInMonth.First, DayOfWeek.Tuesday),
@@ -36,7 +36,7 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Fact]
-        public void IncludeDaysOfWeek() {
+        public void On_DaysOfWeek() {
             var builder = new MonthlyRecurrencePatternBuilder(new RecurrenceBuilder(), 1) {
                 DaysOfWeek = new HashSet<(DayOfWeekInMonth, DayOfWeek)>() {
                     (DayOfWeekInMonth.First, DayOfWeek.Tuesday),
@@ -45,7 +45,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 }
             };
 
-            Assert.Same(builder, builder.IncludeDaysOfWeek((DayOfWeekInMonth.Third, DayOfWeek.Friday), (DayOfWeekInMonth.Third, DayOfWeek.Thursday)));
+            Assert.Same(builder, builder.On((DayOfWeekInMonth.Third, DayOfWeek.Friday), (DayOfWeekInMonth.Third, DayOfWeek.Thursday)));
 
             Assert.Equal(new[] {
                 (DayOfWeekInMonth.First, DayOfWeek.Tuesday),

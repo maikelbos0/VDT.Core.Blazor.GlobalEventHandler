@@ -10,21 +10,21 @@ namespace VDT.Core.RecurringDates {
 
         public MonthlyRecurrencePatternBuilder(RecurrenceBuilder recurrenceBuilder, int interval) : base(recurrenceBuilder, interval) { }
 
-        public MonthlyRecurrencePatternBuilder IncludeDaysOfMonth(params int[] days)
-            => IncludeDaysOfMonth(days.AsEnumerable());
+        public MonthlyRecurrencePatternBuilder On(params int[] days)
+            => On(days.AsEnumerable());
 
-        public MonthlyRecurrencePatternBuilder IncludeDaysOfMonth(IEnumerable<int> days) {
+        public MonthlyRecurrencePatternBuilder On(IEnumerable<int> days) {
             DaysOfMonth.UnionWith(days);
             return this;
         }
 
-        public MonthlyRecurrencePatternBuilder IncludeDayOfWeek(DayOfWeekInMonth weekOfMonth, DayOfWeek dayOfWeek)
-            => IncludeDaysOfWeek((weekOfMonth, dayOfWeek));
+        public MonthlyRecurrencePatternBuilder On(DayOfWeekInMonth weekOfMonth, DayOfWeek dayOfWeek)
+            => On((weekOfMonth, dayOfWeek));
 
-        public MonthlyRecurrencePatternBuilder IncludeDaysOfWeek(params (DayOfWeekInMonth, DayOfWeek)[] days)
-            => IncludeDaysOfWeek(days.AsEnumerable());
+        public MonthlyRecurrencePatternBuilder On(params (DayOfWeekInMonth, DayOfWeek)[] days)
+            => On(days.AsEnumerable());
 
-        public MonthlyRecurrencePatternBuilder IncludeDaysOfWeek(IEnumerable<(DayOfWeekInMonth, DayOfWeek)> days) {
+        public MonthlyRecurrencePatternBuilder On(IEnumerable<(DayOfWeekInMonth, DayOfWeek)> days) {
             DaysOfWeek.UnionWith(days);
             return this;
         }

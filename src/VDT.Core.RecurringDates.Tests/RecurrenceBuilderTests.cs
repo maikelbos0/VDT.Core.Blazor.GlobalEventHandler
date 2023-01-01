@@ -4,19 +4,19 @@ using Xunit;
 namespace VDT.Core.RecurringDates.Tests {
     public class RecurrenceBuilderTests {
         [Fact]
-        public void StartsOn() {
+        public void From() {
             var builder = new RecurrenceBuilder();
 
-            Assert.Same(builder, builder.StartsOn(new DateTime(2022, 1, 1)));
+            Assert.Same(builder, builder.From(new DateTime(2022, 1, 1)));
 
             Assert.Equal(new DateTime(2022, 1, 1), builder.StartDate);
         }
 
         [Fact]
-        public void EndsOn() {
+        public void Until() {
             var builder = new RecurrenceBuilder();
 
-            Assert.Same(builder, builder.EndsOn(new DateTime(2022, 12, 31)));
+            Assert.Same(builder, builder.Until(new DateTime(2022, 12, 31)));
 
             Assert.Equal(new DateTime(2022, 12, 31), builder.EndDate);
         }

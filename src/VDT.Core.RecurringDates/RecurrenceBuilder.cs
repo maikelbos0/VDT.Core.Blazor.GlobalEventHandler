@@ -8,12 +8,12 @@ namespace VDT.Core.RecurringDates {
         public DateTime EndDate { get; set; } = DateTime.MaxValue;
         public List<RecurrencePatternBuilder> PatternBuilders { get; set; } = new();
 
-        public RecurrenceBuilder StartsOn(DateTime startDate) {
+        public RecurrenceBuilder From(DateTime startDate) {
             StartDate = startDate.Date;
             return this;
         }
 
-        public RecurrenceBuilder EndsOn(DateTime endDate) {
+        public RecurrenceBuilder Until(DateTime endDate) {
             EndDate = endDate.Date;
             return this;
         }

@@ -30,6 +30,12 @@ namespace VDT.Core.RecurringDates {
             return builder;
         }
 
+        public MonthlyRecurrencePatternBuilder Monthly() {
+            var builder = new MonthlyRecurrencePatternBuilder(this, 1);
+            PatternBuilders.Add(builder);
+            return builder;
+        }
+
         public RecurrencePatternBuilderStart Every(int interval) {
             return new RecurrencePatternBuilderStart(this, interval);
         }

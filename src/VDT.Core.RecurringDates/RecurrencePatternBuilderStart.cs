@@ -20,5 +20,11 @@
             RecurrenceBuilder.PatternBuilders.Add(builder);
             return builder;
         }
+
+        public MonthlyRecurrencePatternBuilder Months() {
+            var builder = new MonthlyRecurrencePatternBuilder(RecurrenceBuilder, Interval);
+            RecurrenceBuilder.PatternBuilders.Add(builder);
+            return builder;
+        }
     }
 }

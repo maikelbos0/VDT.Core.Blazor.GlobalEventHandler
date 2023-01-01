@@ -1,14 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace VDT.Core.RecurringDates {
     public class MonthlyRecurrencePattern : RecurrencePattern, IRecurrencePattern {
-        public HashSet<int> DaysOfMonth { get; set; } = new HashSet<int>();
+        private readonly HashSet<int> daysOfMonth = new();
+        private readonly HashSet<(DayOfWeekInMonth, DayOfWeek)> daysOfWeek = new();
 
-        public HashSet<(DayOfWeekInMonth, DayOfWeek)> DaysOfWeek { get; set; } = new HashSet<(DayOfWeekInMonth, DayOfWeek)>();
+        public IReadOnlyList<int> DaysOfMonth => new ReadOnlyCollection<int>(daysOfMonth.ToList());
 
-        public MonthlyRecurrencePattern(int interval, DateTime referenceDate) : base(interval, referenceDate) { }
+        public IReadOnlyList<(DayOfWeekInMonth, DayOfWeek)> DaysOfWeek => new ReadOnlyCollection<(DayOfWeekInMonth, DayOfWeek)>(daysOfWeek.ToList());
+
+        public MonthlyRecurrencePattern(int interval, DateTime referenceDate, IEnumerable<int>? daysOfMonth = null, IEnumerable<(DayOfWeekInMonth, DayOfWeek)>? daysOfWeek = null) : base(interval, referenceDate) {
+            var addReferenceDay = true;
+
+            if (daysOfMonth != null && daysOfMonth.Any()) {
+                this.daysOfMonth.UnionWith(daysOfMonth);
+                addReferenceDay = false;
+            }
+            
+            if (daysOfWeek != null && daysOfWeek.Any()) {
+                this.daysOfWeek.UnionWith(daysOfWeek);
+                addReferenceDay = false;
+            }
+
+            if (addReferenceDay) {
+                this.daysOfMonth.Add(referenceDate.Day);
+            }
+        }
 
         public override bool IsValid(DateTime date) => FitsInterval(date) && GetDaysOfMonth(date).Contains(date.Day);
 

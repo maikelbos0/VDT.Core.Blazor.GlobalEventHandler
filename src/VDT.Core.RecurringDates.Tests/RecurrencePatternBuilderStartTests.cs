@@ -32,5 +32,16 @@ namespace VDT.Core.RecurringDates.Tests {
             Assert.Same(recurrenceBuilder, result.RecurrenceBuilder);
             Assert.Equal(2, result.Interval);
         }
+
+        [Fact]
+        public void Months() {
+            var recurrenceBuilder = new RecurrenceBuilder();
+            var start = new RecurrencePatternBuilderStart(recurrenceBuilder, 2);
+
+            var result = start.Months();
+
+            Assert.Same(recurrenceBuilder, result.RecurrenceBuilder);
+            Assert.Equal(2, result.Interval);
+        }
     }
 }

@@ -13,6 +13,12 @@
             var builder = new DailyRecurrencePatternBuilder(RecurrenceBuilder, Interval);
             RecurrenceBuilder.PatternBuilders.Add(builder);
             return builder;
-        }   
+        }
+
+        public WeeklyRecurrencePatternBuilder Weeks() {
+            var builder = new WeeklyRecurrencePatternBuilder(RecurrenceBuilder, Interval);
+            RecurrenceBuilder.PatternBuilders.Add(builder);
+            return builder;
+        }
     }
 }

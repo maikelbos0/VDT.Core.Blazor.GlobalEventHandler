@@ -32,6 +32,16 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Fact]
+        public void Weekly() {
+            var builder = new RecurrenceBuilder();
+
+            var result = builder.Weekly();
+
+            Assert.Same(builder, result.RecurrenceBuilder);
+            Assert.Equal(1, result.Interval);
+        }
+
+        [Fact]
         public void Every() {
             var builder = new RecurrenceBuilder();
 

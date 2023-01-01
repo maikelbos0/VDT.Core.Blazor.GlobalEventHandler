@@ -40,7 +40,7 @@ namespace VDT.Core.RecurringDates.Tests {
             var result = Assert.IsType<DailyRecurrencePattern>(builder.Build());
 
             Assert.Equal(recurrenceBuilder.StartDate, result.ReferenceDate);
-            Assert.Equal(1, result.Interval);
+            Assert.Equal(builder.Interval, result.Interval);
             Assert.Equal(RecurrencePatternWeekendHandling.Include, result.WeekendHandling);
         }
 
@@ -56,9 +56,9 @@ namespace VDT.Core.RecurringDates.Tests {
 
             var result = Assert.IsType<DailyRecurrencePattern>(builder.Build());
 
-            Assert.Equal(new DateTime(2022, 2, 1), result.ReferenceDate);
-            Assert.Equal(2, result.Interval);
-            Assert.Equal(RecurrencePatternWeekendHandling.Skip, result.WeekendHandling);
+            Assert.Equal(builder.ReferenceDate, result.ReferenceDate);
+            Assert.Equal(builder.Interval, result.Interval);
+            Assert.Equal(builder.WeekendHandling, result.WeekendHandling);
         }
     }
 }

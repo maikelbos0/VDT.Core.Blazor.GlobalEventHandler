@@ -24,6 +24,12 @@ namespace VDT.Core.RecurringDates {
             return builder;
         }
 
+        public WeeklyRecurrencePatternBuilder Weekly() {
+            var builder = new WeeklyRecurrencePatternBuilder(this, 1);
+            PatternBuilders.Add(builder);
+            return builder;
+        }
+
         public RecurrencePatternBuilderStart Every(int interval) {
             return new RecurrencePatternBuilderStart(this, interval);
         }

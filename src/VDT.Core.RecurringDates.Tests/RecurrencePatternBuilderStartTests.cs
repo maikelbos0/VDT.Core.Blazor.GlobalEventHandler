@@ -16,7 +16,18 @@ namespace VDT.Core.RecurringDates.Tests {
             var recurrenceBuilder = new RecurrenceBuilder();
             var start = new RecurrencePatternBuilderStart(recurrenceBuilder, 2);
 
-            var result = Assert.IsType<DailyRecurrencePatternBuilder>(start.Days());
+            var result = start.Days();
+
+            Assert.Same(recurrenceBuilder, result.RecurrenceBuilder);
+            Assert.Equal(2, result.Interval);
+        }
+
+        [Fact]
+        public void Weeks() {
+            var recurrenceBuilder = new RecurrenceBuilder();
+            var start = new RecurrencePatternBuilderStart(recurrenceBuilder, 2);
+
+            var result = start.Weeks();
 
             Assert.Same(recurrenceBuilder, result.RecurrenceBuilder);
             Assert.Equal(2, result.Interval);

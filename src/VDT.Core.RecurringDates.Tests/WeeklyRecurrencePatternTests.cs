@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace VDT.Core.RecurringDates.Tests {
@@ -13,10 +12,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(DayOfWeek.Monday, 2, "2022-12-01", "2022-12-09", false, DayOfWeek.Thursday, DayOfWeek.Friday)]
         [InlineData(DayOfWeek.Monday, 2, "2022-12-01", "2022-12-16", true, DayOfWeek.Thursday, DayOfWeek.Friday)]
         public void IsValid(DayOfWeek firstDayOfWeek, int interval, DateTime referenceDate, DateTime date, bool expectedIsValid, params DayOfWeek[] daysOfWeek) {
-            var pattern = new WeeklyRecurrencePattern(interval, referenceDate) {
-                FirstDayOfWeek = firstDayOfWeek,
-                DaysOfWeek = new HashSet<DayOfWeek>(daysOfWeek)
-            };
+            var pattern = new WeeklyRecurrencePattern(interval, referenceDate, firstDayOfWeek, daysOfWeek);
 
             Assert.Equal(expectedIsValid, pattern.IsValid(date));
         }

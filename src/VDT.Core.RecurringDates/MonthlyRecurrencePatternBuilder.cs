@@ -29,7 +29,7 @@ namespace VDT.Core.RecurringDates {
             return this;
         }
 
-        public override RecurrencePattern Build() {
+        public override RecurrencePattern BuildPattern() {
             return new MonthlyRecurrencePattern(Interval, ReferenceDate ?? RecurrenceBuilder.StartDate, DaysOfMonth, DaysOfWeek);
         }
     }

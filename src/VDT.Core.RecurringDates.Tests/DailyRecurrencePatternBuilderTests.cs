@@ -31,13 +31,13 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Fact]
-        public void Build_Defaults() {
+        public void BuildPattern_Defaults() {
             var recurrenceBuilder = new RecurrenceBuilder() {
                 StartDate = new DateTime(2022, 1, 1)
             };
             var builder = new DailyRecurrencePatternBuilder(recurrenceBuilder, 1);
 
-            var result = Assert.IsType<DailyRecurrencePattern>(builder.Build());
+            var result = Assert.IsType<DailyRecurrencePattern>(builder.BuildPattern());
 
             Assert.Equal(recurrenceBuilder.StartDate, result.ReferenceDate);
             Assert.Equal(builder.Interval, result.Interval);
@@ -45,7 +45,7 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Fact]
-        public void Build_Overrides() {
+        public void BuildPattern_Overrides() {
             var recurrenceBuilder = new RecurrenceBuilder() {
                 StartDate = new DateTime(2022, 1, 1)
             };
@@ -54,7 +54,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 WeekendHandling = RecurrencePatternWeekendHandling.Skip
             };
 
-            var result = Assert.IsType<DailyRecurrencePattern>(builder.Build());
+            var result = Assert.IsType<DailyRecurrencePattern>(builder.BuildPattern());
 
             Assert.Equal(builder.ReferenceDate, result.ReferenceDate);
             Assert.Equal(builder.Interval, result.Interval);

@@ -19,7 +19,7 @@
             return this;
         }
 
-        public override RecurrencePattern Build()
+        public override RecurrencePattern BuildPattern()
             => new DailyRecurrencePattern(Interval, ReferenceDate ?? RecurrenceBuilder.StartDate, WeekendHandling);
     }
 }

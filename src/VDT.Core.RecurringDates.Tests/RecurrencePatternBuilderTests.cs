@@ -6,7 +6,7 @@ namespace VDT.Core.RecurringDates.Tests {
         private class TestRecurrencePatternBuilder : RecurrencePatternBuilder<TestRecurrencePatternBuilder> {
             public TestRecurrencePatternBuilder(RecurrenceBuilder recurrenceBuilder, int interval) : base(recurrenceBuilder, interval) { }
 
-            public override RecurrencePattern Build() => throw new NotImplementedException();
+            public override RecurrencePattern BuildPattern() => throw new NotImplementedException();
         }
 
         [Theory]

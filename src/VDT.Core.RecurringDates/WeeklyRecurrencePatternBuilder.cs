@@ -24,7 +24,7 @@ namespace VDT.Core.RecurringDates {
             return this;
         }
 
-        public override RecurrencePattern Build()
+        public override RecurrencePattern BuildPattern()
             => new WeeklyRecurrencePattern(Interval, ReferenceDate ?? RecurrenceBuilder.StartDate, FirstDayOfWeek, DaysOfWeek);
     }
 }

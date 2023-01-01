@@ -41,7 +41,7 @@ namespace VDT.Core.RecurringDates {
         }
 
         public Recurrence Build() {
-            return new Recurrence(StartDate, EndDate, PatternBuilders.Select(builder => builder.Build()));
+            return new Recurrence(StartDate, EndDate, PatternBuilders.Select(builder => builder.BuildPattern()));
         }
     }
 }

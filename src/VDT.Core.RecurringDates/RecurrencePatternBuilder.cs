@@ -13,9 +13,9 @@ namespace VDT.Core.RecurringDates {
             Interval = Guard.IsPositive(interval);
         }
 
-        public Recurrence BuildRecurrence() => RecurrenceBuilder.Build();
+        public Recurrence Build() => RecurrenceBuilder.Build();
 
-        public abstract RecurrencePattern Build();
+        public abstract RecurrencePattern BuildPattern();
     }
 
     public abstract class RecurrencePatternBuilder<TBuilder> : RecurrencePatternBuilder where TBuilder : RecurrencePatternBuilder<TBuilder> {

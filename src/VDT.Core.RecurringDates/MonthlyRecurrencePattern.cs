@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace VDT.Core.RecurringDates {
-    public class MonthlyRecurrencePattern : RecurrencePattern, IRecurrencePattern {
+    public class MonthlyRecurrencePattern : RecurrencePattern {
         private readonly HashSet<int> daysOfMonth = new();
         private readonly HashSet<(DayOfWeekInMonth, DayOfWeek)> daysOfWeek = new();
 

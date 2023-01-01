@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace VDT.Core.RecurringDates {
-    public class DailyRecurrencePattern : RecurrencePattern, IRecurrencePattern {
+    public class DailyRecurrencePattern : RecurrencePattern {
         public RecurrencePatternWeekendHandling WeekendHandling { get; }
 
         public DailyRecurrencePattern(int interval, DateTime referenceDate, RecurrencePatternWeekendHandling? weekendHandling = null) : base(interval, referenceDate) {

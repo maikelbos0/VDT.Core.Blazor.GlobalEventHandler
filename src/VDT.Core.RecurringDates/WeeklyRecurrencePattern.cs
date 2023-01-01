@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading;
 
 namespace VDT.Core.RecurringDates {
-    public class WeeklyRecurrencePattern : RecurrencePattern, IRecurrencePattern {
+    public class WeeklyRecurrencePattern : RecurrencePattern {
         private readonly HashSet<DayOfWeek> daysOfWeek = new();
 
         public DayOfWeek FirstDayOfWeek { get; }

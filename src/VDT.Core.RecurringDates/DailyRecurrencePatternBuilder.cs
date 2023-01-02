@@ -6,7 +6,7 @@ namespace VDT.Core.RecurringDates {
     /// </summary>
     public class DailyRecurrencePatternBuilder : RecurrencePatternBuilder<DailyRecurrencePatternBuilder> {
         /// <summary>
-        /// Indicates how a recurrence pattern should handle <see cref="DayOfWeek.Saturday"/> and <see cref="DayOfWeek.Sunday"/>
+        /// Gets or sets how a recurrence pattern should handle <see cref="DayOfWeek.Saturday"/> and <see cref="DayOfWeek.Sunday"/>
         /// </summary>
         public RecurrencePatternWeekendHandling? WeekendHandling { get; set; }
 
@@ -20,6 +20,7 @@ namespace VDT.Core.RecurringDates {
         /// <summary>
         /// Include <see cref="DayOfWeek.Saturday"/> and <see cref="DayOfWeek.Sunday"/>
         /// </summary>
+        /// <returns>An instance of this recurrence pattern builder</returns>
         public DailyRecurrencePatternBuilder IncludeWeekends() {
             WeekendHandling = RecurrencePatternWeekendHandling.Include;
             return this;
@@ -28,6 +29,7 @@ namespace VDT.Core.RecurringDates {
         /// <summary>
         /// Skip <see cref="DayOfWeek.Saturday"/> and <see cref="DayOfWeek.Sunday"/>
         /// </summary>
+        /// <returns>An instance of this recurrence pattern builder</returns>
         public DailyRecurrencePatternBuilder SkipWeekends() {
             WeekendHandling = RecurrencePatternWeekendHandling.Skip;
             return this;
@@ -36,6 +38,7 @@ namespace VDT.Core.RecurringDates {
         /// <summary>
         /// Move the date to the following <see cref="DayOfWeek.Monday"/>; subsequent days will not be corrected for this move
         /// </summary>
+        /// <returns>An instance of this recurrence pattern builder</returns>
         public DailyRecurrencePatternBuilder AdjustWeekendsToMonday() {
             WeekendHandling = RecurrencePatternWeekendHandling.AdjustToMonday;
             return this;

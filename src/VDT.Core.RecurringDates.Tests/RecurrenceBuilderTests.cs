@@ -22,6 +22,15 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Fact]
+        public void StopAfter() {
+            var builder = new RecurrenceBuilder();
+
+            Assert.Same(builder, builder.StopAfter(10));
+
+            Assert.Equal(10, builder.Occurrences);
+        }
+
+        [Fact]
         public void Daily() {
             var builder = new RecurrenceBuilder();
 

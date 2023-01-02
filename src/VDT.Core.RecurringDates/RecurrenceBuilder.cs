@@ -6,6 +6,7 @@ namespace VDT.Core.RecurringDates {
     public class RecurrenceBuilder {
         public DateTime StartDate { get; set; } = DateTime.MinValue;
         public DateTime EndDate { get; set; } = DateTime.MaxValue;
+        public int? Occurrences { get; set; }
         public List<RecurrencePatternBuilder> PatternBuilders { get; set; } = new();
 
         public RecurrenceBuilder From(DateTime startDate) {
@@ -15,6 +16,11 @@ namespace VDT.Core.RecurringDates {
 
         public RecurrenceBuilder Until(DateTime endDate) {
             EndDate = endDate.Date;
+            return this;
+        }
+
+        internal RecurrenceBuilder StopAfter(int occurrences) {
+            Occurrences = occurrences;
             return this;
         }
 
@@ -41,7 +47,7 @@ namespace VDT.Core.RecurringDates {
         }
 
         public Recurrence Build() {
-            return new Recurrence(StartDate, EndDate, PatternBuilders.Select(builder => builder.BuildPattern()));
+            return new Recurrence(StartDate, EndDate, Occurrences, PatternBuilders.Select(builder => builder.BuildPattern()));
         }
     }
 }

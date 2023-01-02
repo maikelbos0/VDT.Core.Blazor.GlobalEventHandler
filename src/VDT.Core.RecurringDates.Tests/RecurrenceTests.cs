@@ -5,7 +5,11 @@ namespace VDT.Core.RecurringDates.Tests {
     public class RecurrenceTests {
         [Fact]
         public void GetDates_No_Pattern() {
-            var recurrence = new Recurrence(new DateTime(2022, 1, 1), new DateTime(2022, 1, 31));
+            var recurrence = new Recurrence(
+                new DateTime(2022, 1, 1), 
+                new DateTime(2022, 1, 11), 
+                null
+            );
 
             var dates = recurrence.GetDates();
 
@@ -13,21 +17,29 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Fact]
-        public void GetDates_Range_Single_Date() {
-            var recurrence = new Recurrence(new DateTime(2022, 1, 1), new DateTime(2022, 1, 1), new DailyRecurrencePattern(1, new DateTime(2022, 1, 1)));
-            
-            var dates = recurrence.GetDates();
-
-            Assert.Equal(new DateTime(2022, 1, 1), Assert.Single(dates));
-        }
-
-        [Fact]
-        public void GetDates_Range_Double_Pattern() {
+        public void GetDates_Single_Pattern() {
             var recurrence = new Recurrence(
                 new DateTime(2022, 1, 1), 
                 new DateTime(2022, 1, 4), 
+                null, 
+                new DailyRecurrencePattern(2, new DateTime(2022, 1, 1)));
+            
+            var dates = recurrence.GetDates();
+
+            Assert.Equal(new[] {
+                new DateTime(2022, 1, 1),
+                new DateTime(2022, 1, 3)
+            }, dates);
+        }
+
+        [Fact]
+        public void GetDates_Double_Pattern() {
+            var recurrence = new Recurrence(
+                new DateTime(2022, 1, 1), 
+                new DateTime(2022, 1, 4),
+                null,
                 new DailyRecurrencePattern(2, new DateTime(2022, 1, 1)),
-                new DailyRecurrencePattern(3, new DateTime(2022, 1, 1))
+                new DailyRecurrencePattern(5, new DateTime(2022, 1, 4))
             );
 
             var dates = recurrence.GetDates();
@@ -40,86 +52,82 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Fact]
-        public void GetDates_Range_To() {
-            var recurrence = new Recurrence(DateTime.MinValue, new DateTime(2022, 1, 31), new DailyRecurrencePattern(2, DateTime.MinValue));
-
-            var dates = recurrence.GetDates(new DateTime(2022, 1, 1), new DateTime(2022, 1, 7));
-
-            Assert.Equal(new[] {
-                new DateTime(2022, 1, 2),
+        public void GetDates_From_To_Outside_StartDate_EndDate() {
+            var recurrence = new Recurrence(
+                new DateTime(2022, 1, 1),
                 new DateTime(2022, 1, 4),
-                new DateTime(2022, 1, 6)
+                null,
+                new DailyRecurrencePattern(2, new DateTime(2022, 1, 1)));
+
+            var dates = recurrence.GetDates(DateTime.MinValue, DateTime.MaxValue);
+
+            Assert.Equal(new[] {
+                new DateTime(2022, 1, 1),
+                new DateTime(2022, 1, 3)
             }, dates);
         }
 
         [Fact]
-        public void GetDates_Range_End() {
-            var recurrence = new Recurrence(DateTime.MinValue, new DateTime(2022, 1, 7), new DailyRecurrencePattern(2, DateTime.MinValue));
+        public void GetDates_From_To_Inside_StartDate_EndDate() {
+            var recurrence = new Recurrence(
+                DateTime.MinValue,
+                DateTime.MaxValue,
+                null,
+                new DailyRecurrencePattern(2, new DateTime(2022, 1, 1)));
 
-            var dates = recurrence.GetDates(new DateTime(2022, 1, 1), new DateTime(2022, 1, 31));
+            var dates = recurrence.GetDates(new DateTime(2022, 1, 1), new DateTime(2022, 1, 4));
 
             Assert.Equal(new[] {
-                new DateTime(2022, 1, 2),
+                new DateTime(2022, 1, 1),
+                new DateTime(2022, 1, 3)
+            }, dates);
+        }
+
+        [Fact]
+        public void GetDates_Offset_ReferenceDate() {
+            var recurrence = new Recurrence(
+                new DateTime(2022, 1, 1),
                 new DateTime(2022, 1, 4),
-                new DateTime(2022, 1, 6)
-            }, dates);
-        }
+                null,
+                new DailyRecurrencePattern(2, new DateTime(2022, 1, 2)));
 
-        [Fact]
-        public void GetDates_Count_Start() {
-            var recurrence = new Recurrence(new DateTime(2022, 1, 1), DateTime.MaxValue, new DailyRecurrencePattern(1, new DateTime(2022, 1, 1)));
-
-            var dates = recurrence.GetDates(3, new DateTime(2021, 12, 1));
+            var dates = recurrence.GetDates();
 
             Assert.Equal(new[] {
-                new DateTime(2022, 1, 1),
                 new DateTime(2022, 1, 2),
-                new DateTime(2022, 1, 3)
+                new DateTime(2022, 1, 4)
             }, dates);
         }
 
         [Fact]
-        public void GetDates_Count_From() {
-            var recurrence = new Recurrence(DateTime.MinValue, DateTime.MaxValue, new DailyRecurrencePattern(1, DateTime.MinValue));
-
-            var dates = recurrence.GetDates(3, new DateTime(2022, 1, 1));
-
-            Assert.Equal(new[] {
-                new DateTime(2022, 1, 1),
-                new DateTime(2022, 1, 2),
-                new DateTime(2022, 1, 3)
-            }, dates);
-        }
-
-        [Fact]
-        public void GetDates_Count_End() {
-            var recurrence = new Recurrence(new DateTime(2022, 1, 1), new DateTime(2022, 1, 3), new DailyRecurrencePattern(1, new DateTime(2022, 1, 1)));
-
-            var dates = recurrence.GetDates(10);
-
-            Assert.Equal(new[] {
-                new DateTime(2022, 1, 1),
-                new DateTime(2022, 1, 2),
-                new DateTime(2022, 1, 3)
-            }, dates);
-        }
-
-        [Fact]
-        public void GetDates_Count_Double_Pattern() {
+        public void GetDates_Occurrences() {
             var recurrence = new Recurrence(
                 new DateTime(2022, 1, 1),
                 DateTime.MaxValue,
-                new DailyRecurrencePattern(2, new DateTime(2022, 1, 1)),
-                new DailyRecurrencePattern(3, new DateTime(2022, 1, 1))
-            );
+                2,
+                new DailyRecurrencePattern(2, new DateTime(2022, 1, 1)));
 
-            var dates = recurrence.GetDates(4);
+            var dates = recurrence.GetDates();
 
             Assert.Equal(new[] {
                 new DateTime(2022, 1, 1),
-                new DateTime(2022, 1, 3),
-                new DateTime(2022, 1, 4),
-                new DateTime(2022, 1, 5)
+                new DateTime(2022, 1, 3)
+            }, dates);
+        }
+
+        [Fact]
+        public void GetDates_Occurrences_From_After_StartDate() {
+            var recurrence = new Recurrence(
+                new DateTime(2022, 1, 1),
+                DateTime.MaxValue,
+                5,
+                new DailyRecurrencePattern(2, new DateTime(2022, 1, 1)));
+
+            var dates = recurrence.GetDates(new DateTime(2022, 1, 6));
+
+            Assert.Equal(new[] {
+                new DateTime(2022, 1, 7),
+                new DateTime(2022, 1, 9)
             }, dates);
         }
     }

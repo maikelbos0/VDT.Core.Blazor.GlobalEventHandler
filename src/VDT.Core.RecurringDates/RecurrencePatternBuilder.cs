@@ -15,6 +15,10 @@ namespace VDT.Core.RecurringDates {
 
         public Recurrence Build() => RecurrenceBuilder.Build();
 
+        /// <summary>
+        /// Build the pattern based on the provided specifications
+        /// </summary>
+        /// <returns>The composed recurring date pattern</returns>
         public abstract RecurrencePattern BuildPattern();
     }
 

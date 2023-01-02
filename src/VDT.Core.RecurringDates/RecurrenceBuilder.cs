@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace VDT.Core.RecurringDates {
+    /// <summary>
+    /// Builder for date recurrences
+    /// </summary>
     public class RecurrenceBuilder {
         public DateTime StartDate { get; set; } = DateTime.MinValue;
         public DateTime EndDate { get; set; } = DateTime.MaxValue;

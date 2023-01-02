@@ -29,7 +29,7 @@ namespace VDT.Core.RecurringDates {
         /// Sets the first day of the week to use when calculating dates and intervals
         /// </summary>
         /// <param name="firstDayOfWeek">Day of the week to use as the first</param>
-        /// <returns>An instance of this recurrence pattern builder</returns>
+        /// <returns>A reference to this recurrence pattern builder</returns>
         public WeeklyRecurrencePatternBuilder UsingFirstDayOfWeek(DayOfWeek firstDayOfWeek) {
             FirstDayOfWeek = firstDayOfWeek;
             return this;
@@ -39,7 +39,7 @@ namespace VDT.Core.RecurringDates {
         /// Adds the given days of the week to the valid days of the week for this recurrence pattern
         /// </summary>
         /// <param name="days">Days of the week that should be added</param>
-        /// <returns>An instance of this recurrence pattern builder</returns>
+        /// <returns>A reference to this recurrence pattern builder</returns>
         public WeeklyRecurrencePatternBuilder On(params DayOfWeek[] days)
             => On(days.AsEnumerable());
 
@@ -47,7 +47,7 @@ namespace VDT.Core.RecurringDates {
         /// Adds the given days of the week to the valid days of the week for this recurrence pattern
         /// </summary>
         /// <param name="days">Days of the week that should be added</param>
-        /// <returns>An instance of this recurrence pattern builder</returns>
+        /// <returns>A reference to this recurrence pattern builder</returns>
         public WeeklyRecurrencePatternBuilder On(IEnumerable<DayOfWeek> days) {
             DaysOfWeek.UnionWith(days);
             return this;

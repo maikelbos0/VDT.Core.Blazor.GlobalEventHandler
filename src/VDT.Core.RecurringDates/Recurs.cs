@@ -2,11 +2,11 @@
 
 namespace VDT.Core.RecurringDates {
     public static class Recurs {
-        public static RecurrenceBuilder From(DateTime startDate) => new RecurrenceBuilder().From(startDate);
+        public static IRecurrenceBuilder From(DateTime startDate) => new RecurrenceBuilder().From(startDate);
 
-        public static RecurrenceBuilder Until(DateTime endDate) => new RecurrenceBuilder().Until(endDate);
+        public static IRecurrenceBuilder Until(DateTime endDate) => new RecurrenceBuilder().Until(endDate);
 
-        public static RecurrenceBuilder StopAfter(int occurrences) => new RecurrenceBuilder().StopAfter(occurrences);
+        public static IRecurrenceBuilder StopAfter(int occurrences) => new RecurrenceBuilder().StopAfter(occurrences);
 
         public static DailyRecurrencePatternBuilder Daily() => new RecurrenceBuilder().Daily();
 

@@ -7,21 +7,21 @@ namespace VDT.Core.RecurringDates.Tests {
         public void From() {
             var result = Recurs.From(new DateTime(2022, 1, 1));
 
-            Assert.Equal(new DateTime(2022, 1, 1), result.StartDate);
+            Assert.Equal(new DateTime(2022, 1, 1), Assert.IsType<RecurrenceBuilder>(result).StartDate);
         }
 
         [Fact]
         public void Until() {
             var result = Recurs.Until(new DateTime(2022, 12, 31));
 
-            Assert.Equal(new DateTime(2022, 12, 31), result.EndDate);
+            Assert.Equal(new DateTime(2022, 12, 31), Assert.IsType<RecurrenceBuilder>(result).EndDate);
         }
 
         [Fact]
         public void StopAfter() {
             var result = Recurs.StopAfter(10);
 
-            Assert.Equal(10, result.Occurrences);
+            Assert.Equal(10, Assert.IsType<RecurrenceBuilder>(result).Occurrences);
         }
 
         [Fact]

@@ -19,6 +19,7 @@ namespace VDT.Core.RecurringDates.Tests {
             var result = start.Days();
 
             Assert.Same(recurrenceBuilder, result.RecurrenceBuilder);
+            Assert.Contains(result, recurrenceBuilder.PatternBuilders);
             Assert.Equal(2, result.Interval);
         }
 
@@ -30,6 +31,7 @@ namespace VDT.Core.RecurringDates.Tests {
             var result = start.Weeks();
 
             Assert.Same(recurrenceBuilder, result.RecurrenceBuilder);
+            Assert.Contains(result, recurrenceBuilder.PatternBuilders);
             Assert.Equal(2, result.Interval);
         }
 
@@ -41,6 +43,7 @@ namespace VDT.Core.RecurringDates.Tests {
             var result = start.Months();
 
             Assert.Same(recurrenceBuilder, result.RecurrenceBuilder);
+            Assert.Contains(result, recurrenceBuilder.PatternBuilders);
             Assert.Equal(2, result.Interval);
         }
     }

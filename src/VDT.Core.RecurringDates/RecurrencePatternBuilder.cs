@@ -1,6 +1,9 @@
 ﻿using System;
 
 namespace VDT.Core.RecurringDates {
+    /// <summary>
+    /// Builder for composing patterns for recurring dates
+    /// </summary>
     public abstract class RecurrencePatternBuilder : IRecurrenceBuilder {
         public RecurrenceBuilder RecurrenceBuilder { get; }
 
@@ -42,6 +45,10 @@ namespace VDT.Core.RecurringDates {
         public RecurrencePatternBuilderStart Every(int interval) => RecurrenceBuilder.Every(interval);
     }
 
+    /// <summary>
+    /// Builder for composing patterns for recurring dates
+    /// </summary>
+    /// <typeparam name="TBuilder">Builder implementation type</typeparam>
     public abstract class RecurrencePatternBuilder<TBuilder> : RecurrencePatternBuilder where TBuilder : RecurrencePatternBuilder<TBuilder> {
         public DateTime? ReferenceDate { get; set; }
 

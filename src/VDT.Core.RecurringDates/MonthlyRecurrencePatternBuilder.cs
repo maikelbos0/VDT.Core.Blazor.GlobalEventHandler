@@ -3,11 +3,25 @@ using System.Linq;
 using System;
 
 namespace VDT.Core.RecurringDates {
+    /// <summary>
+    /// Builder for composing patterns for dates that recur every month or every several months
+    /// </summary>
     public class MonthlyRecurrencePatternBuilder : RecurrencePatternBuilder<MonthlyRecurrencePatternBuilder> {
+        /// <summary>
+        /// Gets or sets the days of the month which are valid for this recurrence pattern
+        /// </summary>
         public HashSet<int> DaysOfMonth { get; set; } = new HashSet<int>();
 
+        /// <summary>
+        /// Gets or sets the ordinal days of the week (e.g. the second Thursday of the month) which are valid for this recurrence pattern
+        /// </summary>
         public HashSet<(DayOfWeekInMonth, DayOfWeek)> DaysOfWeek { get; set; } = new HashSet<(DayOfWeekInMonth, DayOfWeek)>();
 
+        /// <summary>
+        /// Create a builder for composing patterns for dates that recur every month or every several months
+        /// </summary>
+        /// <param name="recurrenceBuilder">Builder for date recurrences to which this pattern builder belongs</param>
+        /// <param name="interval">Interval in months between occurrences of the pattern to be created</param>
         public MonthlyRecurrencePatternBuilder(RecurrenceBuilder recurrenceBuilder, int interval) : base(recurrenceBuilder, interval) { }
 
         public MonthlyRecurrencePatternBuilder On(params int[] days)

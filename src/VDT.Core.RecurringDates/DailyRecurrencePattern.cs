@@ -6,14 +6,14 @@ namespace VDT.Core.RecurringDates {
     /// </summary>
     public class DailyRecurrencePattern : RecurrencePattern {
         /// <summary>
-        /// Indicates how a recurrence pattern should handle <see cref="DayOfWeek.Saturday"/> and <see cref="DayOfWeek.Sunday"/>
+        /// Indicates how this recurrence pattern should handle <see cref="DayOfWeek.Saturday"/> and <see cref="DayOfWeek.Sunday"/>
         /// </summary>
         public RecurrencePatternWeekendHandling WeekendHandling { get; }
 
         /// <summary>
         /// Create a pattern for dates that recur every day or every several days
         /// </summary>
-        /// <param name="interval">Interval between occurrences of this pattern</param>
+        /// <param name="interval">Interval in days between occurrences of this pattern</param>
         /// <param name="referenceDate">Date to use as a reference when calculating dates and intervals</param>
         /// <param name="weekendHandling">Indicates how a recurrence pattern should handle <see cref="DayOfWeek.Saturday"/> and <see cref="DayOfWeek.Sunday"/></param>
         public DailyRecurrencePattern(int interval, DateTime referenceDate, RecurrencePatternWeekendHandling? weekendHandling = null) : base(interval, referenceDate) {

@@ -22,7 +22,7 @@ namespace VDT.Core.RecurringDates {
         /// Create a builder for composing patterns for dates that recur every week or every several weeks
         /// </summary>
         /// <param name="recurrenceBuilder">Builder for date recurrences to which this pattern builder belongs</param>
-        /// <param name="interval">Interval between occurrences of the pattern to be created</param>
+        /// <param name="interval">Interval in weeks between occurrences of the pattern to be created</param>
         public WeeklyRecurrencePatternBuilder(RecurrenceBuilder recurrenceBuilder, int interval) : base(recurrenceBuilder, interval) { }
 
         /// <summary>

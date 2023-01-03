@@ -39,7 +39,7 @@ namespace VDT.Core.RecurringDates {
         WeeklyRecurrencePatternBuilder Weekly();
 
         /// <summary>
-        /// Adds a pattern to this recurrence to repeat monthky
+        /// Adds a pattern to this recurrence to repeat monthly
         /// </summary>
         /// <returns>A builder to configure the new monthly pattern</returns>
         MonthlyRecurrencePatternBuilder Monthly();

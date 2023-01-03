@@ -2,13 +2,24 @@
 
 namespace VDT.Core.RecurringDates {
     /// <summary>
-    /// Builder for composing patterns for recurring dates
+    /// Base builder for composing patterns for recurring dates
     /// </summary>
     public abstract class RecurrencePatternBuilder : IRecurrenceBuilder {
+        /// <summary>
+        /// Builder for date recurrences to which this pattern builder belongs
+        /// </summary>
         public RecurrenceBuilder RecurrenceBuilder { get; }
 
+        /// <summary>
+        /// Interval between occurrences of the pattern to be created
+        /// </summary>
         public int Interval { get; }
 
+        /// <summary>
+        /// Create a builder for composing patterns for dates
+        /// </summary>
+        /// <param name="recurrenceBuilder">Builder for date recurrences to which this pattern builder belongs</param>
+        /// <param name="interval">Interval between occurrences of the pattern to be created</param>
         protected RecurrencePatternBuilder(RecurrenceBuilder recurrenceBuilder, int interval) {
             RecurrenceBuilder = recurrenceBuilder;
             Interval = Guard.IsPositive(interval);
@@ -46,14 +57,27 @@ namespace VDT.Core.RecurringDates {
     }
 
     /// <summary>
-    /// Builder for composing patterns for recurring dates
+    /// Base builder for composing patterns for recurring dates
     /// </summary>
     /// <typeparam name="TBuilder">Builder implementation type</typeparam>
     public abstract class RecurrencePatternBuilder<TBuilder> : RecurrencePatternBuilder where TBuilder : RecurrencePatternBuilder<TBuilder> {
+        /// <summary>
+        /// Gets or sets the date to use as a reference when calculating dates and intervals
+        /// </summary>
         public DateTime? ReferenceDate { get; set; }
 
+        /// <summary>
+        /// Create a builder for composing patterns for dates
+        /// </summary>
+        /// <param name="recurrenceBuilder">Builder for date recurrences to which this pattern builder belongs</param>
+        /// <param name="interval">Interval between occurrences of the pattern to be created</param>
         public RecurrencePatternBuilder(RecurrenceBuilder recurrenceBuilder, int interval) : base(recurrenceBuilder, interval) { }
 
+        /// <summary>
+        /// Sets the date to use as a reference when calculating dates and intervals
+        /// </summary>
+        /// <param name="referenceDate">Reference date</param>
+        /// <returns>A reference to this recurrence pattern builder</returns>
         public RecurrencePatternBuilder<TBuilder> WithReferenceDate(DateTime referenceDate) {
             ReferenceDate = referenceDate;
             return this;

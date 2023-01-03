@@ -24,9 +24,19 @@ namespace VDT.Core.RecurringDates {
         /// <param name="interval">Interval in months between occurrences of the pattern to be created</param>
         public MonthlyRecurrencePatternBuilder(RecurrenceBuilder recurrenceBuilder, int interval) : base(recurrenceBuilder, interval) { }
 
+        /// <summary>
+        /// Adds the given days of the month to the valid days of the month for this recurrence pattern
+        /// </summary>
+        /// <param name="days">Days of the month that should be added</param>
+        /// <returns>A reference to this recurrence pattern builder</returns>
         public MonthlyRecurrencePatternBuilder On(params int[] days)
             => On(days.AsEnumerable());
 
+        /// <summary>
+        /// Adds the given days of the month to the valid days of the month for this recurrence pattern
+        /// </summary>
+        /// <param name="days">Days of the month that should be added</param>
+        /// <returns>A reference to this recurrence pattern builder</returns>
         public MonthlyRecurrencePatternBuilder On(IEnumerable<int> days) {
             DaysOfMonth.UnionWith(days);
             return this;
@@ -43,6 +53,7 @@ namespace VDT.Core.RecurringDates {
             return this;
         }
 
+        /// <inheritdoc/>
         public override RecurrencePattern BuildPattern() {
             return new MonthlyRecurrencePattern(Interval, ReferenceDate ?? RecurrenceBuilder.StartDate, DaysOfMonth, DaysOfWeek);
         }

@@ -87,14 +87,21 @@ namespace VDT.Core.RecurringDates.Tests {
         public void Build() {
             var builder = new RecurrenceBuilder() {
                 StartDate = new DateTime(2022, 1, 1),
-                EndDate = new DateTime(2022, 12, 31)
+                EndDate = new DateTime(2022, 12, 31),
+                Occurrences = 10
             };
 
-            // TODO add and test patterns
+            builder.PatternBuilders.Add(new DailyRecurrencePatternBuilder(builder, 3));
+            builder.PatternBuilders.Add(new WeeklyRecurrencePatternBuilder(builder, 2));
+
             var result = builder.Build();
 
-            Assert.Equal(new DateTime(2022, 1, 1), result.StartDate);
-            Assert.Equal(new DateTime(2022, 12, 31), result.EndDate);
+            Assert.Equal(builder.StartDate, result.StartDate);
+            Assert.Equal(builder.EndDate, result.EndDate);
+            Assert.Equal(builder.Occurrences, result.Occurrences);
+            Assert.Equal(builder.PatternBuilders.Count, result.Patterns.Count);
+            Assert.Contains(result.Patterns, pattern => pattern is DailyRecurrencePattern && pattern.Interval == 3);
+            Assert.Contains(result.Patterns, pattern => pattern is WeeklyRecurrencePattern && pattern.Interval == 2);
         }
     }
 }

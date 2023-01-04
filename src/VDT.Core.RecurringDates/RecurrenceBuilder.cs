@@ -8,17 +8,17 @@ namespace VDT.Core.RecurringDates {
     /// </summary>
     public class RecurrenceBuilder : IRecurrenceBuilder {
         /// <summary>
-        /// Gets or sets the inclusive start date for a recurrence; defaults to <see cref="DateTime.MinValue"/>
+        /// Gets or sets the inclusive start date for this recurrence; defaults to <see cref="DateTime.MinValue"/>
         /// </summary>
         public DateTime StartDate { get; set; } = DateTime.MinValue;
 
         /// <summary>
-        /// Gets or sets the inclusive end date for a recurrence; defaults to <see cref="DateTime.MaxValue"/>
+        /// Gets or sets the inclusive end date for this recurrence; defaults to <see cref="DateTime.MaxValue"/>
         /// </summary>
         public DateTime EndDate { get; set; } = DateTime.MaxValue;
 
         /// <summary>
-        /// Gets or sets the maximum number of occurrences for a recurrence; if <see langword="null"/> it repeats without limit
+        /// Gets or sets the maximum number of occurrences for this recurrence; if <see langword="null"/> it repeats without limit
         /// </summary>
         public int? Occurrences { get; set; }
 

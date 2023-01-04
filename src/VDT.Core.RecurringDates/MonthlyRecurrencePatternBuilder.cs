@@ -42,12 +42,28 @@ namespace VDT.Core.RecurringDates {
             return this;
         }
 
-        public MonthlyRecurrencePatternBuilder On(DayOfWeekInMonth weekOfMonth, DayOfWeek dayOfWeek)
-            => On((weekOfMonth, dayOfWeek));
+        /// <summary>
+        /// Adds the given ordinal day of the week (e.g. the second Thursday of the month) to the valid ordinal days of the week for this recurrence pattern
+        /// </summary>
+        /// <param name="dayOfWeekInMonth">Ordinal</param>
+        /// <param name="dayOfWeek">Day of the week</param>
+        /// <returns>A reference to this recurrence pattern builder</returns>
+        public MonthlyRecurrencePatternBuilder On(DayOfWeekInMonth dayOfWeekInMonth, DayOfWeek dayOfWeek)
+            => On((dayOfWeekInMonth, dayOfWeek));
 
+        /// <summary>
+        /// Adds the given ordinal days of the week (e.g. the second Thursday of the month) to the valid ordinal days of the week for this recurrence pattern
+        /// </summary>
+        /// <param name="days">Ordinal days of the week that should be added</param>
+        /// <returns>A reference to this recurrence pattern builder</returns>
         public MonthlyRecurrencePatternBuilder On(params (DayOfWeekInMonth, DayOfWeek)[] days)
             => On(days.AsEnumerable());
 
+        /// <summary>
+        /// Adds the given ordinal days of the week (e.g. the second Thursday of the month) to the valid ordinal days of the week for this recurrence pattern
+        /// </summary>
+        /// <param name="days">Ordinal days of the week that should be added</param>
+        /// <returns>A reference to this recurrence pattern builder</returns>
         public MonthlyRecurrencePatternBuilder On(IEnumerable<(DayOfWeekInMonth, DayOfWeek)> days) {
             DaysOfWeek.UnionWith(days);
             return this;

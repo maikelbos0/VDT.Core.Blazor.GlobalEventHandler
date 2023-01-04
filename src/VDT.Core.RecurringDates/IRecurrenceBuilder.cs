@@ -6,21 +6,21 @@ namespace VDT.Core.RecurringDates {
     /// </summary>
     public interface IRecurrenceBuilder {
         /// <summary>
-        /// Sets the inclusive start date for a recurrence
+        /// Sets the inclusive start date for this recurrence
         /// </summary>
         /// <param name="startDate">The inclusive start date</param>
         /// <returns>A reference to this recurrence builder</returns>
         IRecurrenceBuilder From(DateTime startDate);
 
         /// <summary>
-        /// Sets the inclusive end date for a recurrence
+        /// Sets the inclusive end date for this recurrence
         /// </summary>
         /// <param name="endDate">The inclusive end date</param>
         /// <returns>A reference to this recurrence builder</returns>
         IRecurrenceBuilder Until(DateTime endDate);
 
         /// <summary>
-        /// Sets the maximum number of occurrences for a recurrence
+        /// Sets the maximum number of occurrences for this recurrence
         /// </summary>
         /// <param name="occurrences">The maximum number of occurrences</param>
         /// <returns>A reference to this recurrence builder</returns>

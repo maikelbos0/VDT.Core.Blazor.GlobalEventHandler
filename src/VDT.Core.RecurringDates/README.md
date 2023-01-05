@@ -31,8 +31,10 @@ Builders are provided to help you easily set up a recurrence with patterns to ca
 - `Monthly` adds a pattern that repeats every month; it returns a builder that allows you to configure the month-based pattern
 - `Every(x).Months()` adds a pattern that repeats every `x` months; it returns a builder that allows you to configure the month-based pattern
 
-The pattern builders for days, weeks and months in turn allow you to configure them as desired. It's simple to chain calls to the above methods to set the 
-limits and add multiple patterns for a single recurrence.
+The pattern builders for days, weeks and months in turn allow you to configure them as desired:
+- TODO: add builder methods + defaults
+
+It's simple to chain calls to the above methods to set the limits and add multiple patterns for a single recurrence.
 
 ### Examples
 
@@ -80,12 +82,53 @@ recurrence objects directly.
 ### Example
 
 ```
+// Create a recurrence that repeats every 9 days from January 1st 2022
+var every9days = new Recurrence(
+    startDate: new DateTime(2022, 1, 1),
+    endDate: DateTime.MaxValue,
+    occurrences: null,
+    patterns: new DailyRecurrencePattern(interval: 9, referenceDate: new DateTime(2022, 1, 1), weekendHandling: null)
+);
+
+// Get all valid days for February 2022: 2022-02-06, 2022-02-15 and 2022-02-24
+var dates = every9days.GetDates(new DateTime(2022, 2, 1), new DateTime(2022, 2, 28));
+
+
+// Create a recurrence for the year 2022 with 2 patterns:
+// - Every 2 weeks on Monday and Tuesday, determining the ongoing week using Sunday first day of the week
+// - Every 1st and 3rd day of the month
+var doublePattern = new Recurrence(
+    startDate: new DateTime(2022, 1, 1),
+    endDate: new DateTime(2022, 12, 31),
+    occurrences: null,
+    patterns: new RecurrencePattern[] {
+        new WeeklyRecurrencePattern(interval: 2, referenceDate: new DateTime(2022, 1, 1), firstDayOfWeek: DayOfWeek.Sunday, daysOfWeek: new[] { DayOfWeek.Monday, DayOfWeek.Tuesday }),
+        new MonthlyRecurrencePattern(interval: 1, referenceDate: new DateTime(2022, 1, 1), daysOfMonth: new[] { 1, 3 })
+    }
+);
+
+// Get all valid days for February 2022: 2022-02-01, 2022-02-03, 2022-02-07, 2022-02-08, 2022-02-22 and 2022-02-23
+var dates = doublePattern.GetDates(new DateTime(2022, 2, 1), new DateTime(2022, 2, 28));
+
+
+// Create a recurrence that repeats every last Friday of the month for 3 occurrences, starting in April 2022
+var fridays = new Recurrence(
+    startDate: new DateTime(2022, 4, 1),
+    endDate: DateTime.MaxValue,
+    occurrences: 3,
+    patterns: new MonthlyRecurrencePattern(interval: 1, referenceDate: new DateTime(2022, 4, 1), daysOfWeek: new[] { (DayOfWeekInMonth.Last, DayOfWeek.Friday) })
+);
+
+// Get all valid dates: 2022-04-29, 2022-05-27 and 2022-06-24
+var dates = fridays.GetDates();
 ```
 
 ## Custom patterns
 
+TODO
 
 ### Example
 
 ```
+TODO?
 ```

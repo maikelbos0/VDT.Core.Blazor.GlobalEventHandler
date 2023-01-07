@@ -16,6 +16,7 @@
 		<Copyright>Copyright © 2022 Maikel Bos</Copyright>
 		<PackageTags>Blazor component, blazor, wizard, setup assistant, assistant, sequence, steps</PackageTags>
 		<PackageProjectUrl>https://github.com/maikelbos0/VDT.Core</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	</PropertyGroup>
 

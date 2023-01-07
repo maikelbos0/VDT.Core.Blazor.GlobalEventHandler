@@ -17,6 +17,7 @@
 		<Copyright>Copyright © 2021 Maikel Bos</Copyright>
 		<PackageTags>Dependency injection, DI, convention, extension, attributes, decorators, decorator pattern</PackageTags>
 		<PackageProjectUrl>https://github.com/maikelbos0/VDT.Core</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	</PropertyGroup>
 

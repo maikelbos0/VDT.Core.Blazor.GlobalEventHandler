@@ -18,6 +18,7 @@
 		<Copyright>Copyright © 2022 Maikel Bos</Copyright>
 		<PackageTags>XML, HTML, Markdown, markup, format, convert, converter, transform, transformer</PackageTags>
 		<PackageProjectUrl>https://github.com/maikelbos0/VDT.Core</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	</PropertyGroup>
 

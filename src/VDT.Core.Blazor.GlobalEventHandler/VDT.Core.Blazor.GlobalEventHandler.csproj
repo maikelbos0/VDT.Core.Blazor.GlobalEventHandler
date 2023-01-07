@@ -17,6 +17,7 @@
 		<Copyright>Copyright © 2021 Maikel Bos</Copyright>
 		<PackageTags>Blazor component, blazor, events, event handling, event handler, keydown, keyup, window events, global events, window event handlers, global event handlers</PackageTags>
 		<PackageProjectUrl>https://github.com/maikelbos0/VDT.Core</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	</PropertyGroup>
 

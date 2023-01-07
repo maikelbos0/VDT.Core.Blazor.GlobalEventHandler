@@ -17,6 +17,7 @@
 		<Copyright>Copyright © 2022 Maikel Bos</Copyright>
 		<PackageTags>date DateTime dates repeat repeats repeating recur recurs recurring pattern daily days weekly weeks monthly months weekdays</PackageTags>
 		<PackageProjectUrl>https://github.com/maikelbos0/VDT.Core</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	</PropertyGroup>
 

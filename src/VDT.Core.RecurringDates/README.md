@@ -137,10 +137,71 @@ var dates = fridays.GetDates();
 
 ## Custom patterns
 
-TODO
+If you have a need for adding custom patterns, you can create your own by inheriting from the base `RecurrencePattern` class. In addition, you can create your
+own builder by inheriting from the base `RecurrencePatternBuilder<TBuilder>` and adding extension methods to the `RecurrenceBuilder` and 
+`RecurrencePatternBuilderStart` classes.
+
+Unfortunately compiler restrictions do not allow you to extend the static `Recurs` class, so you'll need to either manually instantiate the `RecurrenceBuilder`
+class, start with one of the existing starting methods on the `Recurs` class, or create your own starting point.
 
 ### Example
 
 ```
-TODO?
+public class AnnualRecurrencePattern : RecurrencePattern {
+    private readonly HashSet<int> daysOfYear = new();
+
+    public AnnualRecurrencePattern(int interval, DateTime referenceDate, IEnumerable<int> daysOfYear) : base(interval, referenceDate) {
+        this.daysOfYear.UnionWith(daysOfYear);
+    }
+
+    public override bool IsValid(DateTime date)
+        => daysOfYear.Contains(date.DayOfYear) && (Interval == 1 || (date.Year - ReferenceDate.Year) % Interval == 0);
+}
+
+public class AnnualRecurrencePatternBuilder : RecurrencePatternBuilder<AnnualRecurrencePatternBuilder> {
+    public HashSet<int> DaysOfYear { get; set; } = new HashSet<int>();
+
+    public AnnualRecurrencePatternBuilder(RecurrenceBuilder recurrenceBuilder, int interval) : base(recurrenceBuilder, interval) { }
+
+    public AnnualRecurrencePatternBuilder On(params int[] days)
+        => On(days.AsEnumerable());
+
+    public AnnualRecurrencePatternBuilder On(IEnumerable<int> days) {
+        DaysOfYear.UnionWith(days);
+        return this;
+    }
+
+    public override RecurrencePattern BuildPattern()
+        => new AnnualRecurrencePattern(Interval, ReferenceDate ?? RecurrenceBuilder.StartDate, DaysOfYear);
+}
+
+public static class RecurrenceBuilderExtensions {
+    public static AnnualRecurrencePatternBuilder Anually(this IRecurrenceBuilder recurrenceBuilder) {
+        var builder = new AnnualRecurrencePatternBuilder(recurrenceBuilder.GetRecurrenceBuilder(), 1);
+        recurrenceBuilder.GetRecurrenceBuilder().PatternBuilders.Add(builder);
+        return builder;
+    }
+}
+
+public static class RecurrencePatternBuilderStartExtensions {
+    public static AnnualRecurrencePatternBuilder Years(this RecurrencePatternBuilderStart start) {
+        var builder = new AnnualRecurrencePatternBuilder(start.RecurrenceBuilder, start.Interval);
+        start.RecurrenceBuilder.PatternBuilders.Add(builder);
+        return builder;
+    }
+
+}
+```
+
+```
+// Create a recurrence that repeats every 2 years on day 100 and every year on day 300, starting in 2010
+var recurrence = Recurs
+    .Every(2).Years().On(100)
+    .Anually().On(300)
+    .From(new DateTime(2010, 1, 1))
+    .Build();
+
+// Get all valid days for the years 2010 to 2012; 2010-04-10, 2010-10-27, 2011-10-27, 2012-04-09 and 2012-10-26
+var dates = recurrence.GetDates(new DateTime(2010, 1, 1), new DateTime(2012, 12, 31)).ToList();
+
 ```

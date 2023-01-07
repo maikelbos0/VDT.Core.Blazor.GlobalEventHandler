@@ -6,7 +6,7 @@ namespace VDT.Core.RecurringDates.Tests {
         private class TestRecurrencePattern : RecurrencePattern {
             public TestRecurrencePattern(int interval, DateTime referenceDate) : base(interval, referenceDate) { }
 
-            public override bool IsValid(DateTime date) => false;
+            public override bool IsValid(DateTime date) => throw new NotImplementedException();
         }
 
         [Theory]

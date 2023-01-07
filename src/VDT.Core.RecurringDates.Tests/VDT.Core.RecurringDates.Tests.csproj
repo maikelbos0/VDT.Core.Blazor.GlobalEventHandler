@@ -21,7 +21,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\VDT.Core.RecurringDates\VDT.Core.RecurringDates.csproj" />
+		<ProjectReference Include="..\VDT.Core.RecurringDates\VDT.Core.RecurringDates.csproj" />
 	</ItemGroup>
 
 </Project>

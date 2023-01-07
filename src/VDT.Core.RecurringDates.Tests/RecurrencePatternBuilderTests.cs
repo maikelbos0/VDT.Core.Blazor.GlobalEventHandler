@@ -26,12 +26,12 @@ namespace VDT.Core.RecurringDates.Tests {
             Assert.Equal(new DateTime(2022, 2, 1), builder.ReferenceDate);
         }
 
-
         [Fact]
         public void From() {
             var builder = new RecurrenceBuilder();
+            var patternBuilder = new TestRecurrencePatternBuilder(builder, 1);
 
-            Assert.Same(builder, builder.From(new DateTime(2022, 1, 1)));
+            Assert.Same(builder, patternBuilder.From(new DateTime(2022, 1, 1)));
 
             Assert.Equal(new DateTime(2022, 1, 1), builder.StartDate);
         }
@@ -64,6 +64,7 @@ namespace VDT.Core.RecurringDates.Tests {
             var result = patternBuilder.Daily();
 
             Assert.Same(builder, result.RecurrenceBuilder);
+            Assert.Contains(result, builder.PatternBuilders);
             Assert.Equal(1, result.Interval);
         }
 
@@ -75,6 +76,7 @@ namespace VDT.Core.RecurringDates.Tests {
             var result = patternBuilder.Weekly();
 
             Assert.Same(builder, result.RecurrenceBuilder);
+            Assert.Contains(result, builder.PatternBuilders);
             Assert.Equal(1, result.Interval);
         }
 
@@ -86,6 +88,7 @@ namespace VDT.Core.RecurringDates.Tests {
             var result = patternBuilder.Monthly();
 
             Assert.Same(builder, result.RecurrenceBuilder);
+            Assert.Contains(result, builder.PatternBuilders);
             Assert.Equal(1, result.Interval);
         }
 

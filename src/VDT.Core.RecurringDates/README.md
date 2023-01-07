@@ -1,11 +1,6 @@
 ﻿# VDT.Core.RecurringDates
 
-Easily calculate ranges of recurring dates based on patterns in an intuitive and flexible way, for example:
-
-- Every 3 days in a certain period
-- Every Friday from a certain date
-- Every third Tuesday of every second month
-- Every Monday and Friday for 11 occurrences
+Easily calculate ranges of recurring dates based on patterns in an intuitive and flexible way.
 
 ## Features
 
@@ -21,15 +16,15 @@ Easily calculate ranges of recurring dates based on patterns in an intuitive and
 Builders are provided to help you easily set up a recurrence with patterns to calculate dates. Use the static `Recurs` class as a starting point to create a
 `RecurrenceBuilder` that lets you fluently build your recurrence:
 
-- `From` sets a start date before which no dates are valid
-- `Until` sets an end date after which no dates are valid
-- `StopAfter` sets a maximum number of occurrences after which no dates are valid
-- `Daily` adds a pattern that repeats every day; it returns a builder that allows you to configure the day-based pattern
-- `Every(x).Days()` adds a pattern that repeats every `x` days; it returns a builder that allows you to configure the day-based pattern
-- `Weekly` adds a pattern that repeats every week; it returns a builder that allows you to configure the week-based pattern
-- `Every(x).Weeks()` adds a pattern that repeats every `x` weeks; it returns a builder that allows you to configure the week-based pattern
-- `Monthly` adds a pattern that repeats every month; it returns a builder that allows you to configure the month-based pattern
-- `Every(x).Months()` adds a pattern that repeats every `x` months; it returns a builder that allows you to configure the month-based pattern
+- `From(date)` sets a start date
+- `Until(date)` sets an end date
+- `StopAfter(date)` sets a maximum number of occurrences
+- `Daily()` adds a pattern that repeats every day; it returns a builder that allows you to configure the day-based pattern
+- `Every(interval).Days()` adds a pattern that repeats every `interval` days; it returns a builder that allows you to configure the day-based pattern
+- `Weekly()` adds a pattern that repeats every week; it returns a builder that allows you to configure the week-based pattern
+- `Every(interval).Weeks()` adds a pattern that repeats every `interval` weeks; it returns a builder that allows you to configure the week-based pattern
+- `Monthly()` adds a pattern that repeats every month; it returns a builder that allows you to configure the month-based pattern
+- `Every(interval).Months()` adds a pattern that repeats every `interval` months; it returns a builder that allows you to configure the month-based pattern
 
 The pattern builders for days, weeks and months in turn allow you to configure them as desired:
 

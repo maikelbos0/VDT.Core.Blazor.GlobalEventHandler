@@ -11,7 +11,7 @@ namespace VDT.Core.RecurringDates {
         public int Interval { get; }
 
         /// <summary>
-        /// Date to use as a reference when calculating dates and intervals
+        /// Date to use as a reference for calculating periods when the interval is greater than 1
         /// </summary>
         public DateTime ReferenceDate { get; }
 
@@ -19,7 +19,7 @@ namespace VDT.Core.RecurringDates {
         /// Create a recurring date pattern
         /// </summary>
         /// <param name="interval">Interval between occurrences of this pattern</param>
-        /// <param name="referenceDate">Date to use as a reference when calculating dates and intervals</param>
+        /// <param name="referenceDate">Date to use as a reference for calculating periods when the interval is greater than 1</param>
         public RecurrencePattern(int interval, DateTime referenceDate) {
             Interval = Guard.IsPositive(interval);
             ReferenceDate = referenceDate;

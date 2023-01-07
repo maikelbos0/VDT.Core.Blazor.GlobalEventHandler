@@ -9,7 +9,7 @@ namespace VDT.Core.RecurringDates {
     /// </summary>
     public class WeeklyRecurrencePatternBuilder : RecurrencePatternBuilder<WeeklyRecurrencePatternBuilder> {
         /// <summary>
-        /// Gets or sets the first day of the week to use when calculating dates and intervals
+        /// Gets or sets the first day of the week to use when calculating the reference week when the interval is greater than 1
         /// </summary>
         public DayOfWeek FirstDayOfWeek { get; set; } = Thread.CurrentThread.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
 
@@ -26,7 +26,7 @@ namespace VDT.Core.RecurringDates {
         public WeeklyRecurrencePatternBuilder(RecurrenceBuilder recurrenceBuilder, int interval) : base(recurrenceBuilder, interval) { }
 
         /// <summary>
-        /// Sets the first day of the week to use when calculating dates and intervals
+        /// Sets the first day of the week to use when calculating the reference week when the interval is greater than 1
         /// </summary>
         /// <param name="firstDayOfWeek">Day of the week to use as the first</param>
         /// <returns>A reference to this recurrence pattern builder</returns>

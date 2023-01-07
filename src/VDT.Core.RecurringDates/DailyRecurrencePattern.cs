@@ -14,7 +14,7 @@ namespace VDT.Core.RecurringDates {
         /// Create a pattern for dates that recur every day or every several days
         /// </summary>
         /// <param name="interval">Interval in days between occurrences of this pattern</param>
-        /// <param name="referenceDate">Date to use as a reference when calculating dates and intervals</param>
+        /// <param name="referenceDate">Date to use as a reference date when the interval is greater than 1</param>
         /// <param name="weekendHandling">Indicates how a recurrence pattern should handle <see cref="DayOfWeek.Saturday"/> and <see cref="DayOfWeek.Sunday"/></param>
         public DailyRecurrencePattern(int interval, DateTime referenceDate, RecurrencePatternWeekendHandling? weekendHandling = null) : base(interval, referenceDate) {
             WeekendHandling = weekendHandling ?? RecurrencePatternWeekendHandling.Include;

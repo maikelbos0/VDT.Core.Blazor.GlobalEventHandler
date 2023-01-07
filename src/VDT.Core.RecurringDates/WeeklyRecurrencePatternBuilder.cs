@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading;
 using System;
 using System.Linq;
 
@@ -11,7 +10,7 @@ namespace VDT.Core.RecurringDates {
         /// <summary>
         /// Gets or sets the first day of the week to use when calculating the reference week when the interval is greater than 1
         /// </summary>
-        public DayOfWeek FirstDayOfWeek { get; set; } = Thread.CurrentThread.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
+        public DayOfWeek? FirstDayOfWeek { get; set; }
 
         /// <summary>
         /// Gets or sets the days of the week which are valid for this recurrence pattern

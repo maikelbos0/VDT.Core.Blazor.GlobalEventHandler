@@ -32,7 +32,7 @@ namespace VDT.Core.RecurringDates {
         public abstract RecurrencePattern BuildPattern();
 
         /// <inheritdoc/>
-        public Recurrence Build() => RecurrenceBuilder.Build();
+        public RecurrenceBuilder GetRecurrenceBuilder() => RecurrenceBuilder;
 
         /// <inheritdoc/>
         public IRecurrenceBuilder From(DateTime startDate) => RecurrenceBuilder.From(startDate);
@@ -54,6 +54,9 @@ namespace VDT.Core.RecurringDates {
 
         /// <inheritdoc/>
         public RecurrencePatternBuilderStart Every(int interval) => RecurrenceBuilder.Every(interval);
+
+        /// <inheritdoc/>
+        public Recurrence Build() => RecurrenceBuilder.Build();
     }
 
     /// <summary>

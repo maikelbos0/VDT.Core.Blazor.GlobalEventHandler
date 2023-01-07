@@ -70,8 +70,7 @@ namespace VDT.Core.RecurringDates {
         }
 
         /// <inheritdoc/>
-        public override RecurrencePattern BuildPattern() {
-            return new MonthlyRecurrencePattern(Interval, ReferenceDate ?? RecurrenceBuilder.StartDate, DaysOfMonth, DaysOfWeek);
-        }
+        public override RecurrencePattern BuildPattern()
+            => new MonthlyRecurrencePattern(Interval, ReferenceDate ?? RecurrenceBuilder.StartDate, DaysOfMonth, DaysOfWeek);
     }
 }

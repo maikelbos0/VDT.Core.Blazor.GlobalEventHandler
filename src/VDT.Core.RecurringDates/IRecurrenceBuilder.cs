@@ -6,6 +6,12 @@ namespace VDT.Core.RecurringDates {
     /// </summary>
     public interface IRecurrenceBuilder {
         /// <summary>
+        /// Gets the actual recurrence builder implementation for this interface
+        /// </summary>
+        /// <returns>The actual recurrence builder</returns>
+        RecurrenceBuilder GetRecurrenceBuilder();
+
+        /// <summary>
         /// Sets the inclusive start date for this recurrence
         /// </summary>
         /// <param name="startDate">The inclusive start date</param>

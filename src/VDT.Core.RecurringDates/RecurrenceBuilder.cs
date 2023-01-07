@@ -28,6 +28,9 @@ namespace VDT.Core.RecurringDates {
         public List<RecurrencePatternBuilder> PatternBuilders { get; set; } = new();
 
         /// <inheritdoc/>
+        public RecurrenceBuilder GetRecurrenceBuilder() => this;
+
+        /// <inheritdoc/>
         public IRecurrenceBuilder From(DateTime startDate) {
             StartDate = startDate.Date;
             return this;

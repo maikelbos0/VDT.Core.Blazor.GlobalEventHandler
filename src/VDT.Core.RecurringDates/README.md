@@ -32,7 +32,19 @@ Builders are provided to help you easily set up a recurrence with patterns to ca
 - `Every(x).Months()` adds a pattern that repeats every `x` months; it returns a builder that allows you to configure the month-based pattern
 
 The pattern builders for days, weeks and months in turn allow you to configure them as desired:
-- TODO: add builder methods + defaults
+
+- Daily patterns can be provided with:
+  - A reference date to determine what day the pattern starts in case if an interval greater than 1
+  - The option to include weekends, skip weekends or move any date that falls in a weekend to the following Monday
+- Weekly patterns can be provided with:
+  - A reference date and first day of the week to determine what week the pattern starts in case if an interval greater than 1
+  - The days of the week that are valid
+  - If no days of the week are provided the day of the week of the reference date will be used
+- Monthly patterns can be provided with:
+  - A reference date to determine what month the pattern starts in case if an interval greater than 1
+  - The days of the month that are valid
+  - The ordinal days of the week in the month that are valid (e.g. last Friday of the month)
+  - If no days of the month or week are provided, the day of the month of the reference date will be used
 
 It's simple to chain calls to the above methods to set the limits and add multiple patterns for a single recurrence.
 

@@ -44,6 +44,25 @@ namespace VDT.Core.RecurringDates {
             return this;
         }
 
+        /// <summary>
+        /// Move the date to the preceding <see cref="DayOfWeek.Friday"/>; subsequent days will not be corrected for this move
+        /// </summary>
+        /// <returns>A reference to this recurrence pattern builder</returns>
+        public DailyRecurrencePatternBuilder AdjustWeekendsToFriday() {
+            WeekendHandling = RecurrencePatternWeekendHandling.AdjustToFriday;
+            return this;
+        }
+
+        /// <summary>
+        /// Move any <see cref="DayOfWeek.Saturday"/> to the preceding <see cref="DayOfWeek.Friday" /> and any <see cref="DayOfWeek.Sunday"/> to the following 
+        /// <see cref="DayOfWeek.Monday"/>; subsequent days will not be corrected for this move
+        /// </summary>
+        /// <returns>A reference to this recurrence pattern builder</returns>
+        public DailyRecurrencePatternBuilder AdjustWeekendsToWeekday() {
+            WeekendHandling = RecurrencePatternWeekendHandling.AdjustToWeekday;
+            return this;
+        }
+
         /// <inheritdoc/>
         public override RecurrencePattern BuildPattern()
             => new DailyRecurrencePattern(Interval, ReferenceDate ?? RecurrenceBuilder.StartDate, WeekendHandling);

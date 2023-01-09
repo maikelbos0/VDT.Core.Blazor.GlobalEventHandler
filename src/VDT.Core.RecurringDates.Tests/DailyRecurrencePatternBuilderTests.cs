@@ -31,6 +31,24 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Fact]
+        public void AdjustWeekendsToFriday() {
+            var builder = new DailyRecurrencePatternBuilder(new RecurrenceBuilder(), 1);
+
+            Assert.Same(builder, builder.AdjustWeekendsToFriday());
+
+            Assert.Equal(RecurrencePatternWeekendHandling.AdjustToFriday, builder.WeekendHandling);
+        }
+
+        [Fact]
+        public void AdjustWeekendsToWeekday() {
+            var builder = new DailyRecurrencePatternBuilder(new RecurrenceBuilder(), 1);
+
+            Assert.Same(builder, builder.AdjustWeekendsToWeekday());
+
+            Assert.Equal(RecurrencePatternWeekendHandling.AdjustToWeekday, builder.WeekendHandling);
+        }
+
+        [Fact]
         public void BuildPattern_Defaults() {
             var recurrenceBuilder = new RecurrenceBuilder() {
                 StartDate = new DateTime(2022, 1, 1)

@@ -16,18 +16,20 @@ namespace VDT.Core.RecurringDates {
         Skip,
 
         /// <summary>
-        /// Move the date to the following <see cref="DayOfWeek.Monday"/>; subsequent days will not be corrected for this move
+        /// Let the <see cref="DayOfWeek.Monday"/> following any valid <see cref="DayOfWeek.Saturday"/> and <see cref="DayOfWeek.Sunday"/> be a valid date 
+        /// instead; subsequent days will not be corrected for this move
         /// </summary>
         AdjustToMonday,
 
         /// <summary>
-        /// Move the date to the preceding <see cref="DayOfWeek.Friday"/>; subsequent days will not be corrected for this move
+        /// Let the <see cref="DayOfWeek.Friday"/> preceding any valid <see cref="DayOfWeek.Saturday"/> and <see cref="DayOfWeek.Sunday"/> be a valid date 
+        /// instead; subsequent days will not be corrected for this move
         /// </summary>
         AdjustToFriday,
 
         /// <summary>
-        /// Move any <see cref="DayOfWeek.Saturday"/> to the preceding <see cref="DayOfWeek.Friday" /> and any <see cref="DayOfWeek.Sunday"/> to the following 
-        /// <see cref="DayOfWeek.Monday"/>; subsequent days will not be corrected for this move
+        /// Let the <see cref="DayOfWeek.Friday"/> preceding any valid <see cref="DayOfWeek.Saturday"/> and the <see cref="DayOfWeek.Monday"/> following any 
+        /// valid <see cref="DayOfWeek.Sunday"/> be a valid date instead; subsequent days will not be corrected for this move
         /// </summary>
         AdjustToWeekday
     }

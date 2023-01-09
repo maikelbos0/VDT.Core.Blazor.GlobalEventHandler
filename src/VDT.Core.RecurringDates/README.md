@@ -30,7 +30,7 @@ The pattern builders for days, weeks and months in turn allow you to configure t
 
 - Daily patterns can be provided with:
   - A reference date to determine what day the pattern starts in case if an interval greater than 1
-  - The option to include weekends, skip weekends or move any date that falls in a weekend to the following Monday
+  - The option to include weekends, skip weekends or move any date that falls in a weekend to the following Monday or preceding Friday
 - Weekly patterns can be provided with:
   - A reference date and first day of the week to determine what week the pattern starts in case if an interval greater than 1
   - The days of the week that are valid

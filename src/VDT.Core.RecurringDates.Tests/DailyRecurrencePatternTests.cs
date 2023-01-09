@@ -23,6 +23,17 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(RecurrencePatternWeekendHandling.AdjustToMonday, 7, "2022-12-02", "2022-12-12", false)]
         [InlineData(RecurrencePatternWeekendHandling.AdjustToMonday, 8, "2022-12-02", "2022-12-12", true)]
         [InlineData(RecurrencePatternWeekendHandling.AdjustToMonday, 9, "2022-12-02", "2022-12-12", true)]
+
+        [InlineData(RecurrencePatternWeekendHandling.AdjustToFriday, 7, "2022-12-03", "2022-12-09", true)]
+        [InlineData(RecurrencePatternWeekendHandling.AdjustToFriday, 8, "2022-12-03", "2022-12-09", true)]
+        [InlineData(RecurrencePatternWeekendHandling.AdjustToFriday, 9, "2022-12-03", "2022-12-09", false)]
+
+        [InlineData(RecurrencePatternWeekendHandling.AdjustToWeekday, 7, "2022-12-02", "2022-12-12", false)]
+        [InlineData(RecurrencePatternWeekendHandling.AdjustToWeekday, 8, "2022-12-02", "2022-12-12", false)]
+        [InlineData(RecurrencePatternWeekendHandling.AdjustToWeekday, 9, "2022-12-02", "2022-12-12", true)]
+        [InlineData(RecurrencePatternWeekendHandling.AdjustToWeekday, 7, "2022-12-03", "2022-12-09", true)]
+        [InlineData(RecurrencePatternWeekendHandling.AdjustToWeekday, 8, "2022-12-03", "2022-12-09", false)]
+        [InlineData(RecurrencePatternWeekendHandling.AdjustToWeekday, 9, "2022-12-03", "2022-12-09", false)]
         public void IsValid(RecurrencePatternWeekendHandling weekendHandling, int interval, DateTime referenceDate, DateTime date, bool expectedIsValid) {
             var pattern = new DailyRecurrencePattern(interval, referenceDate, weekendHandling);
             

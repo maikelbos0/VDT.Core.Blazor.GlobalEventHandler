@@ -23,7 +23,14 @@ namespace VDT.Core.RecurringDates {
         /// <inheritdoc/>
         public override bool IsValid(DateTime date)
             => date.DayOfWeek switch {
-                DayOfWeek.Monday => FitsInterval(date) || (WeekendHandling == RecurrencePatternWeekendHandling.AdjustToMonday && (FitsInterval(date.AddDays(-1)) || FitsInterval(date.AddDays(-2)))),
+                DayOfWeek.Monday
+                    => FitsInterval(date)
+                        || (WeekendHandling == RecurrencePatternWeekendHandling.AdjustToMonday && (FitsInterval(date.AddDays(-1)) || FitsInterval(date.AddDays(-2))))
+                        || (WeekendHandling == RecurrencePatternWeekendHandling.AdjustToWeekday && FitsInterval(date.AddDays(-1))),
+                DayOfWeek.Friday 
+                    => FitsInterval(date)
+                        || (WeekendHandling == RecurrencePatternWeekendHandling.AdjustToFriday && (FitsInterval(date.AddDays(1)) || FitsInterval(date.AddDays(2))))
+                        || (WeekendHandling == RecurrencePatternWeekendHandling.AdjustToWeekday && FitsInterval(date.AddDays(1))),
                 DayOfWeek.Saturday => WeekendHandling == RecurrencePatternWeekendHandling.Include && FitsInterval(date),
                 DayOfWeek.Sunday => WeekendHandling == RecurrencePatternWeekendHandling.Include && FitsInterval(date),
                 _ => FitsInterval(date)

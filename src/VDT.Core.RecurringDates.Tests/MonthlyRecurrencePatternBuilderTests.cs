@@ -15,6 +15,16 @@ namespace VDT.Core.RecurringDates.Tests {
             Assert.Equal(new[] { 5, 9, 17, 19 }, builder.DaysOfMonth);
         }
 
+        [Theory]
+        [InlineData(0, 1, 2)]
+        [InlineData(9, 19, -1)]
+        [InlineData(int.MinValue)]
+        public void On_DaysOfMonth_Throws_For_Invalid_Days(params int[] days) {
+            var builder = new MonthlyRecurrencePatternBuilder(new RecurrenceBuilder(), 1);
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => builder.On(days));
+        }
+
         [Fact]
         public void On_DayOfWeek() {
             var builder = new MonthlyRecurrencePatternBuilder(new RecurrenceBuilder(), 1) {

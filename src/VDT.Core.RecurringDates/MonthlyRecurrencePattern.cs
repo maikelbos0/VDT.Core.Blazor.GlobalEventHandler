@@ -32,7 +32,7 @@ namespace VDT.Core.RecurringDates {
             var addReferenceDay = true;
 
             if (daysOfMonth != null && daysOfMonth.Any()) {
-                this.daysOfMonth.UnionWith(daysOfMonth);
+                this.daysOfMonth.UnionWith(Guard.ArePositive(daysOfMonth));
                 addReferenceDay = false;
             }
             

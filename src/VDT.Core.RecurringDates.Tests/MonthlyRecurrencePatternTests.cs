@@ -5,6 +5,14 @@ using Xunit;
 namespace VDT.Core.RecurringDates.Tests {
     public class MonthlyRecurrencePatternTests {
         [Theory]
+        [InlineData(0, 1, 2)]
+        [InlineData(9, 19, -1)]
+        [InlineData(int.MinValue)]
+        public void Constructor_Throws_For_Invalid_DaysOfMonth(params int[] daysOfMonth) {
+            Assert.Throws<ArgumentOutOfRangeException>(() => new MonthlyRecurrencePattern(1, DateTime.MinValue, daysOfMonth: daysOfMonth));
+        }
+
+        [Theory]
         [InlineData(1, "2022-12-01", "2022-12-01", true, 1)]
         [InlineData(1, "2022-12-01", "2022-11-01", true, 1)]
         [InlineData(1, "2022-12-01", "2022-12-01", true, 1, 3)]

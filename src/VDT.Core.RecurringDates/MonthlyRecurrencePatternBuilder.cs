@@ -38,7 +38,7 @@ namespace VDT.Core.RecurringDates {
         /// <param name="days">Days of the month that should be added</param>
         /// <returns>A reference to this recurrence pattern builder</returns>
         public MonthlyRecurrencePatternBuilder On(IEnumerable<int> days) {
-            DaysOfMonth.UnionWith(days);
+            DaysOfMonth.UnionWith(Guard.ArePositive(days));
             return this;
         }
 

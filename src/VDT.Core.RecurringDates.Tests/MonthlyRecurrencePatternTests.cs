@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
@@ -72,6 +73,29 @@ namespace VDT.Core.RecurringDates.Tests {
             var result = pattern.GetDaysOfMonth(new DateTime(year, month, 1));
 
             Assert.Equal(expectedDays.ToHashSet(), result);
+        }
+
+        [Theory]
+        [InlineData(2022, 1, LastDayOfMonth.Last, 31)]
+        [InlineData(2022, 4, LastDayOfMonth.SecondLast, 29)]
+        [InlineData(2020, 2, LastDayOfMonth.ThirdLast, 27)]
+        [InlineData(2022, 2, LastDayOfMonth.FourthLast, 25)]
+        [InlineData(2022, 2, LastDayOfMonth.FifthLast, 24)]
+        public void GetDaysOfMonth_LastDayOfMonth(int year, int month, LastDayOfMonth lastDayOfMonth, params int[] expectedDays) {
+            var pattern = new MonthlyRecurrencePattern(1, DateTime.MinValue, lastDaysOfMonth: new LastDayOfMonth[] { lastDayOfMonth });
+
+            var result = pattern.GetDaysOfMonth(new DateTime(year, month, 1));
+
+            Assert.Equal(expectedDays.ToHashSet(), result);
+        }
+
+        [Fact]
+        public void GetDaysOfMonth_LastDaysOfMonth() {
+            var pattern = new MonthlyRecurrencePattern(1, DateTime.MinValue, lastDaysOfMonth: new LastDayOfMonth[] { LastDayOfMonth.FifthLast, LastDayOfMonth.ThirdLast, LastDayOfMonth.Last });
+
+            var result = pattern.GetDaysOfMonth(new DateTime(2022, 1, 1));
+
+            Assert.Equal(new HashSet<int>() { 27, 29, 31 }, result);
         }
     }
 }

@@ -39,7 +39,8 @@ The pattern builders for days, weeks and months in turn allow you to configure t
   - A reference date to determine what month the pattern starts in case if an interval greater than 1
   - The days of the month that are valid
   - The ordinal days of the week in the month that are valid (e.g. last Friday of the month)
-  - If no days of the month or week are provided, the day of the month of the reference date will be used
+  - The last days of the month that are valid (e.g. second last day of the month)
+  - If no days are provided, the day of the month of the reference date will be used
 
 It's simple to chain calls to the above methods to set the limits and add multiple patterns for a single recurrence.
 

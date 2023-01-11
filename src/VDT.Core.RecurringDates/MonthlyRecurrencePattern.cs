@@ -70,7 +70,6 @@ namespace VDT.Core.RecurringDates {
         private bool FitsInterval(DateTime date) => Interval == 1 || (date.TotalMonths() - ReferenceDate.TotalMonths()) % Interval == 0;
 
         internal HashSet<int> GetDaysOfMonth(DateTime date) {
-            // TODO any corrections to last days of month could be done here, such as move to next month or move back to last day of month
             var daysInMonth = date.DaysInMonth();
             var days = new HashSet<int>();
             var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);

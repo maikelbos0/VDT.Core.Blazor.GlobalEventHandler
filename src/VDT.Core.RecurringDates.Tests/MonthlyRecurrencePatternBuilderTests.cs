@@ -15,6 +15,16 @@ namespace VDT.Core.RecurringDates.Tests {
             Assert.Equal(new[] { 5, 9, 17, 19 }, builder.DaysOfMonth);
         }
 
+        [Theory]
+        [InlineData(0, 1, 2)]
+        [InlineData(9, 19, -1)]
+        [InlineData(int.MinValue)]
+        public void On_DaysOfMonth_Throws_For_Invalid_Days(params int[] days) {
+            var builder = new MonthlyRecurrencePatternBuilder(new RecurrenceBuilder(), 1);
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => builder.On(days));
+        }
+
         [Fact]
         public void On_DayOfWeek() {
             var builder = new MonthlyRecurrencePatternBuilder(new RecurrenceBuilder(), 1) {
@@ -56,6 +66,17 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Fact]
+        public void On_LastDaysOfMonth() {
+            var builder = new MonthlyRecurrencePatternBuilder(new RecurrenceBuilder(), 1) {
+                LastDaysOfMonth = new HashSet<LastDayOfMonth>() { LastDayOfMonth.Last, LastDayOfMonth.FourthLast }
+            };
+
+            Assert.Same(builder, builder.On(LastDayOfMonth.SecondLast, LastDayOfMonth.FourthLast));
+
+            Assert.Equal(new[] { LastDayOfMonth.Last, LastDayOfMonth.FourthLast, LastDayOfMonth.SecondLast }, builder.LastDaysOfMonth);
+        }
+
+        [Fact]
         public void BuildPattern_Defaults() {
             var recurrenceBuilder = new RecurrenceBuilder() {
                 StartDate = new DateTime(2022, 1, 1)
@@ -78,7 +99,8 @@ namespace VDT.Core.RecurringDates.Tests {
             var builder = new MonthlyRecurrencePatternBuilder(recurrenceBuilder, 2) {
                 ReferenceDate = new DateTime(2022, 2, 1),
                 DaysOfMonth = new HashSet<int>() { 3, 5, 20 },
-                DaysOfWeek = new HashSet<(DayOfWeekInMonth, DayOfWeek)>() { (DayOfWeekInMonth.First, DayOfWeek.Sunday), (DayOfWeekInMonth.Third, DayOfWeek.Thursday) }
+                DaysOfWeek = new HashSet<(DayOfWeekInMonth, DayOfWeek)>() { (DayOfWeekInMonth.First, DayOfWeek.Sunday), (DayOfWeekInMonth.Third, DayOfWeek.Thursday) },
+                LastDaysOfMonth = new HashSet<LastDayOfMonth>() { LastDayOfMonth.Last, LastDayOfMonth.FourthLast }
             };
 
             var result = Assert.IsType<MonthlyRecurrencePattern>(builder.BuildPattern());
@@ -87,6 +109,7 @@ namespace VDT.Core.RecurringDates.Tests {
             Assert.Equal(builder.Interval, result.Interval);
             Assert.Equal(builder.DaysOfMonth, result.DaysOfMonth);
             Assert.Equal(builder.DaysOfWeek, result.DaysOfWeek);
+            Assert.Equal(builder.LastDaysOfMonth, result.LastDaysOfMonth);
         }
     }
 }

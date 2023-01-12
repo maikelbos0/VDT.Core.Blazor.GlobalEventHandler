@@ -17,7 +17,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(0)]
         [InlineData(-1)]
         [InlineData(int.MinValue)]
-        public void IsPositive_Throws_For_Negative_Numbers(int value) {
+        public void IsPositive_Throws_For_Negative_Numbers_Or_Zero(int value) {
             Assert.Throws<ArgumentOutOfRangeException>(() => Guard.IsPositive(value));
         }
 
@@ -35,7 +35,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(0, 1, 2)]
         [InlineData(9, 19, -1)]
         [InlineData(int.MinValue)]
-        public void ArePositive_Throws_For_Negative_Numbers(params int[] values) {
+        public void ArePositive_Throws_For_Negative_Numbers_Or_Zero(params int[] values) {
             Assert.Throws<ArgumentOutOfRangeException>(() => Guard.ArePositive(values));
         }
     }

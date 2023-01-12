@@ -14,7 +14,7 @@ namespace VDT.Core.RecurringDates {
 
         internal static IEnumerable<int> ArePositive(IEnumerable<int> values) {
             if (values.Any(value => value < 1)) {
-                throw new ArgumentOutOfRangeException(nameof(values), values, $"Expected all {nameof(values)} to be at least 1 but found {string.Join(",", values)}.");
+                throw new ArgumentOutOfRangeException(nameof(values), values, $"Expected all {nameof(values)} to be at least 1 but found {string.Join(", ", values)}.");
             }
 
             return values;

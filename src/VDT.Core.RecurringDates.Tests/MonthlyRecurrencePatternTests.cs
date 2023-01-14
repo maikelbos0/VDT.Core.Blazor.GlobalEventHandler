@@ -34,7 +34,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(2020, 2, 1, 28, 29)]
         [InlineData(2022, 2, 1, 28)]
         public void GetDaysOfMonth_DaysOfMonth(int year, int month, params int[] expectedDays) {
-            var pattern = new MonthlyRecurrencePattern(1, DateTime.MinValue, daysOfMonth: new int[] { 1, 28, 29, 30, 31 });
+            var pattern = new MonthlyRecurrencePattern(1, DateTime.MinValue, daysOfMonth: new[] { 1, 28, 29, 30, 31 });
 
             var result = pattern.GetDaysOfMonth(new DateTime(year, month, 1));
 
@@ -47,7 +47,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(2022, 4, 5, 13, 21, 22)]
         [InlineData(2022, 5, 3, 11, 19, 27)]
         public void GetDaysOfMonth_WeekDayOfMonth(int year, int month, params int[] expectedDays) {
-            var pattern = new MonthlyRecurrencePattern(1, DateTime.MinValue, daysOfWeek: new (DayOfWeekInMonth, DayOfWeek)[] {
+            var pattern = new MonthlyRecurrencePattern(1, DateTime.MinValue, daysOfWeek: new[] {
                 (DayOfWeekInMonth.First, DayOfWeek.Tuesday),
                 (DayOfWeekInMonth.Second, DayOfWeek.Wednesday),
                 (DayOfWeekInMonth.Third, DayOfWeek.Thursday),
@@ -65,7 +65,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(2022, 3, 29, 30)]
         [InlineData(2022, 5, 25, 31)]
         public void GetDaysOfMonth_LastWeekDayOfMonth(int year, int month, params int[] expectedDays) {
-            var pattern = new MonthlyRecurrencePattern(1, DateTime.MinValue, daysOfWeek: new (DayOfWeekInMonth, DayOfWeek)[] {
+            var pattern = new MonthlyRecurrencePattern(1, DateTime.MinValue, daysOfWeek: new[] {
                 (DayOfWeekInMonth.Last, DayOfWeek.Tuesday),
                 (DayOfWeekInMonth.Last, DayOfWeek.Wednesday)
             });
@@ -82,7 +82,7 @@ namespace VDT.Core.RecurringDates.Tests {
         [InlineData(2022, 2, LastDayOfMonth.FourthLast, 25)]
         [InlineData(2022, 2, LastDayOfMonth.FifthLast, 24)]
         public void GetDaysOfMonth_LastDayOfMonth(int year, int month, LastDayOfMonth lastDayOfMonth, params int[] expectedDays) {
-            var pattern = new MonthlyRecurrencePattern(1, DateTime.MinValue, lastDaysOfMonth: new LastDayOfMonth[] { lastDayOfMonth });
+            var pattern = new MonthlyRecurrencePattern(1, DateTime.MinValue, lastDaysOfMonth: new[] { lastDayOfMonth });
 
             var result = pattern.GetDaysOfMonth(new DateTime(year, month, 1));
 
@@ -91,11 +91,27 @@ namespace VDT.Core.RecurringDates.Tests {
 
         [Fact]
         public void GetDaysOfMonth_LastDaysOfMonth() {
-            var pattern = new MonthlyRecurrencePattern(1, DateTime.MinValue, lastDaysOfMonth: new LastDayOfMonth[] { LastDayOfMonth.FifthLast, LastDayOfMonth.ThirdLast, LastDayOfMonth.Last });
+            var pattern = new MonthlyRecurrencePattern(1, DateTime.MinValue, lastDaysOfMonth: new[] { LastDayOfMonth.FifthLast, LastDayOfMonth.ThirdLast, LastDayOfMonth.Last });
 
             var result = pattern.GetDaysOfMonth(new DateTime(2022, 1, 1));
 
             Assert.Equal(new HashSet<int>() { 27, 29, 31 }, result);
+        }
+
+        [Fact]
+        public void GetDaysOfMonth_Caches() {
+            var pattern = new MonthlyRecurrencePattern(
+                1,
+                DateTime.MinValue,
+                daysOfMonth: new[] { 5, 10 },
+                daysOfWeek: new[] { (DayOfWeekInMonth.Third, DayOfWeek.Thursday) },
+                lastDaysOfMonth: new[] { LastDayOfMonth.Last }
+            );
+
+            var result = pattern.GetDaysOfMonth(new DateTime(2022, 1, 1));
+
+            Assert.Same(result, pattern.GetDaysOfMonth(new DateTime(2022, 1, 1)));
+            Assert.NotEqual(result, pattern.GetDaysOfMonth(new DateTime(2022, 2, 1)));
         }
     }
 }

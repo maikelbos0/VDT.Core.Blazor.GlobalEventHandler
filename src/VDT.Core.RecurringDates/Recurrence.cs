@@ -8,6 +8,7 @@ namespace VDT.Core.RecurringDates {
     /// A recurrence to determine valid dates for the given patterns
     /// </summary>
     public class Recurrence {
+        internal readonly Dictionary<DateTime, bool> cache = new();
         private readonly List<RecurrencePattern> patterns = new();
 
         /// <summary>
@@ -106,7 +107,13 @@ namespace VDT.Core.RecurringDates {
         }
 
         internal bool IsValidInAnyPattern(DateTime date) {
-            return patterns.Any(pattern => pattern.IsValid(date));
+            // Date should always be a date only at this point
+            if (!cache.TryGetValue(date, out var isValid)) {
+                isValid = patterns.Any(pattern => pattern.IsValid(date));
+                cache[date] = isValid;
+            }
+
+            return isValid;
         }
     }
 }

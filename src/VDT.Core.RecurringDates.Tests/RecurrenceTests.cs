@@ -155,5 +155,24 @@ namespace VDT.Core.RecurringDates.Tests {
 
             Assert.Equal(expectedIsValid, recurrence.IsValidInAnyPattern(date));
         }
+
+        [Fact]
+        public void IsValidInAnyPattern_Caches() {
+            var recurrence = new Recurrence(DateTime.MinValue, DateTime.MaxValue, null);
+
+            var result = recurrence.IsValidInAnyPattern(new DateTime(2022, 1, 1));
+
+            Assert.Equal(result, recurrence.cache[new DateTime(2022, 1, 1)]);
+        }
+
+        [Fact]
+        public void IsValidInAnyPattern_Returns_From_Caches() {
+            var recurrence = new Recurrence(DateTime.MinValue, DateTime.MaxValue, null);
+            var cachedIsValid = true;
+
+            recurrence.cache[new DateTime(2022, 1, 1)] = cachedIsValid;
+
+            Assert.Equal(cachedIsValid, recurrence.IsValidInAnyPattern(new DateTime(2022, 1, 1)));
+        }
     }
 }

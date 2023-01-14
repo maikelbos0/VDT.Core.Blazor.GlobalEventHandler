@@ -22,7 +22,8 @@ namespace VDT.Core.RecurringDates.Tests {
                 new DateTime(2022, 1, 1), 
                 new DateTime(2022, 1, 4), 
                 null, 
-                new DailyRecurrencePattern(2, new DateTime(2022, 1, 1)));
+                new DailyRecurrencePattern(2, new DateTime(2022, 1, 1))
+            );
             
             var dates = recurrence.GetDates();
 
@@ -57,7 +58,8 @@ namespace VDT.Core.RecurringDates.Tests {
                 new DateTime(2022, 1, 1),
                 new DateTime(2022, 1, 4),
                 null,
-                new DailyRecurrencePattern(2, new DateTime(2022, 1, 1)));
+                new DailyRecurrencePattern(2, new DateTime(2022, 1, 1))
+            );
 
             var dates = recurrence.GetDates(DateTime.MinValue, DateTime.MaxValue);
 
@@ -73,7 +75,8 @@ namespace VDT.Core.RecurringDates.Tests {
                 DateTime.MinValue,
                 DateTime.MaxValue,
                 null,
-                new DailyRecurrencePattern(2, new DateTime(2022, 1, 1)));
+                new DailyRecurrencePattern(2, new DateTime(2022, 1, 1))
+            );
 
             var dates = recurrence.GetDates(new DateTime(2022, 1, 1), new DateTime(2022, 1, 4));
 
@@ -89,7 +92,8 @@ namespace VDT.Core.RecurringDates.Tests {
                 new DateTime(2022, 1, 1),
                 new DateTime(2022, 1, 4),
                 null,
-                new DailyRecurrencePattern(2, new DateTime(2022, 1, 2)));
+                new DailyRecurrencePattern(2, new DateTime(2022, 1, 2))
+            );
 
             var dates = recurrence.GetDates();
 
@@ -105,7 +109,8 @@ namespace VDT.Core.RecurringDates.Tests {
                 new DateTime(2022, 1, 1),
                 DateTime.MaxValue,
                 2,
-                new DailyRecurrencePattern(2, new DateTime(2022, 1, 1)));
+                new DailyRecurrencePattern(2, new DateTime(2022, 1, 1))
+            );
 
             var dates = recurrence.GetDates();
 
@@ -121,7 +126,8 @@ namespace VDT.Core.RecurringDates.Tests {
                 new DateTime(2022, 1, 1),
                 DateTime.MaxValue,
                 5,
-                new DailyRecurrencePattern(2, new DateTime(2022, 1, 1)));
+                new DailyRecurrencePattern(2, new DateTime(2022, 1, 1))
+            );
 
             var dates = recurrence.GetDates(new DateTime(2022, 1, 6));
 
@@ -129,6 +135,25 @@ namespace VDT.Core.RecurringDates.Tests {
                 new DateTime(2022, 1, 7),
                 new DateTime(2022, 1, 9)
             }, dates);
+        }
+
+        [Theory]
+        [InlineData("2022-01-01", true)]
+        [InlineData("2022-01-02", false)]
+        [InlineData("2022-01-03", true)]
+        [InlineData("2022-01-04", true)]
+        [InlineData("2022-01-05", true)]
+        [InlineData("2022-01-06", false)]
+        public void IsValidInAnyPattern(DateTime date, bool expectedIsValid) {
+            var recurrence = new Recurrence(
+                DateTime.MinValue,
+                DateTime.MaxValue,
+                null,
+                new DailyRecurrencePattern(2, new DateTime(2022, 1, 1)),
+                new DailyRecurrencePattern(3, new DateTime(2022, 1, 1))
+            );
+
+            Assert.Equal(expectedIsValid, recurrence.IsValidInAnyPattern(date));
         }
     }
 }

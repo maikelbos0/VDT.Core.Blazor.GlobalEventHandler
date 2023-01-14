@@ -79,7 +79,7 @@ namespace VDT.Core.RecurringDates {
                 var currentDate = from;
 
                 while (currentDate <= to) {
-                    if (patterns.Any(pattern => pattern.IsValid(currentDate))) {
+                    if (IsValidInAnyPattern(currentDate)) {
                         yield return currentDate;
                     }
 
@@ -92,7 +92,7 @@ namespace VDT.Core.RecurringDates {
                 var currentDate = StartDate;
 
                 while (currentDate <= to && Occurrences > occurrences) {
-                    if (patterns.Any(pattern => pattern.IsValid(currentDate))) {
+                    if (IsValidInAnyPattern(currentDate)) {
                         occurrences++;
 
                         if (currentDate >= from) {
@@ -103,6 +103,10 @@ namespace VDT.Core.RecurringDates {
                     currentDate = currentDate.AddDays(1);
                 }
             }
+        }
+
+        internal bool IsValidInAnyPattern(DateTime date) {
+            return patterns.Any(pattern => pattern.IsValid(date));
         }
     }
 }

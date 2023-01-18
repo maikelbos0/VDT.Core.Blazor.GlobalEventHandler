@@ -76,7 +76,8 @@ namespace VDT.Core.RecurringDates {
 
         /// <inheritdoc/>
         public Recurrence Build() {
-            return new Recurrence(StartDate, EndDate, Occurrences, PatternBuilders.Select(builder => builder.BuildPattern()));
+            // TODO add cache option to builder
+            return new Recurrence(StartDate, EndDate, Occurrences, false, PatternBuilders.Select(builder => builder.BuildPattern()));
         }
     }
 }

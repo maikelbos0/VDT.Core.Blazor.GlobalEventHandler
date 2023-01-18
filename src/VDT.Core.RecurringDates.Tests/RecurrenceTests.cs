@@ -1,14 +1,38 @@
 ﻿using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace VDT.Core.RecurringDates.Tests {
     public class RecurrenceTests {
+        private class TestRecurrencePattern : RecurrencePattern {
+            public HashSet<DateTime> ValidDates { get; } = new();
+
+            public TestRecurrencePattern(int interval, DateTime referenceDate) : base(interval, referenceDate) { }
+
+            public override bool IsValid(DateTime date) => ValidDates.Contains(date);
+        }
+
+        [Theory]
+        [InlineData(true, true)]
+        [InlineData(false, false)]
+        public void CacheDates(bool cacheDates, bool expectedCacheDates) {
+            var recurrence = new Recurrence(
+                new DateTime(2022, 1, 1),
+                new DateTime(2022, 1, 11),
+                null,
+                cacheDates
+            );
+
+            Assert.Equal(expectedCacheDates, recurrence.CacheDates);
+        }
+
         [Fact]
         public void GetDates_No_Pattern() {
             var recurrence = new Recurrence(
-                new DateTime(2022, 1, 1), 
-                new DateTime(2022, 1, 11), 
-                null
+                new DateTime(2022, 1, 1),
+                new DateTime(2022, 1, 11),
+                null,
+                false
             );
 
             var dates = recurrence.GetDates();
@@ -19,12 +43,13 @@ namespace VDT.Core.RecurringDates.Tests {
         [Fact]
         public void GetDates_Single_Pattern() {
             var recurrence = new Recurrence(
-                new DateTime(2022, 1, 1), 
-                new DateTime(2022, 1, 4), 
-                null, 
+                new DateTime(2022, 1, 1),
+                new DateTime(2022, 1, 4),
+                null,
+                false,
                 new DailyRecurrencePattern(2, new DateTime(2022, 1, 1))
             );
-            
+
             var dates = recurrence.GetDates();
 
             Assert.Equal(new[] {
@@ -36,9 +61,10 @@ namespace VDT.Core.RecurringDates.Tests {
         [Fact]
         public void GetDates_Double_Pattern() {
             var recurrence = new Recurrence(
-                new DateTime(2022, 1, 1), 
+                new DateTime(2022, 1, 1),
                 new DateTime(2022, 1, 4),
                 null,
+                false,
                 new DailyRecurrencePattern(2, new DateTime(2022, 1, 1)),
                 new DailyRecurrencePattern(5, new DateTime(2022, 1, 4))
             );
@@ -58,6 +84,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 new DateTime(2022, 1, 1),
                 new DateTime(2022, 1, 4),
                 null,
+                false,
                 new DailyRecurrencePattern(2, new DateTime(2022, 1, 1))
             );
 
@@ -75,6 +102,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 DateTime.MinValue,
                 DateTime.MaxValue,
                 null,
+                false,
                 new DailyRecurrencePattern(2, new DateTime(2022, 1, 1))
             );
 
@@ -92,6 +120,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 new DateTime(2022, 1, 1),
                 new DateTime(2022, 1, 4),
                 null,
+                false,
                 new DailyRecurrencePattern(2, new DateTime(2022, 1, 2))
             );
 
@@ -109,6 +138,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 new DateTime(2022, 1, 1),
                 DateTime.MaxValue,
                 2,
+                false,
                 new DailyRecurrencePattern(2, new DateTime(2022, 1, 1))
             );
 
@@ -126,6 +156,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 new DateTime(2022, 1, 1),
                 DateTime.MaxValue,
                 5,
+                false,
                 new DailyRecurrencePattern(2, new DateTime(2022, 1, 1))
             );
 
@@ -149,6 +180,7 @@ namespace VDT.Core.RecurringDates.Tests {
                 DateTime.MinValue,
                 DateTime.MaxValue,
                 null,
+                false,
                 new DailyRecurrencePattern(2, new DateTime(2022, 1, 1)),
                 new DailyRecurrencePattern(3, new DateTime(2022, 1, 1))
             );
@@ -157,22 +189,27 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Fact]
-        public void IsValidInAnyPattern_Caches() {
-            var recurrence = new Recurrence(DateTime.MinValue, DateTime.MaxValue, null);
+        public void IsValidInAnyPattern_Caches_When_CacheDates_Is_True() {
+            var recurrencePattern = new TestRecurrencePattern(2, new DateTime(2022, 1, 1));
+            var recurrence = new Recurrence(DateTime.MinValue, DateTime.MaxValue, null, true, recurrencePattern);
+            
+            var firstResult = recurrence.IsValidInAnyPattern(new DateTime(2022, 1, 1));
 
-            var result = recurrence.IsValidInAnyPattern(new DateTime(2022, 1, 1));
+            recurrencePattern.ValidDates.Add(new DateTime(2022, 1, 1));
 
-            Assert.Equal(result, recurrence.cache[new DateTime(2022, 1, 1)]);
+            Assert.Equal(firstResult, recurrence.IsValidInAnyPattern(new DateTime(2022, 1, 1)));
         }
 
         [Fact]
-        public void IsValidInAnyPattern_Returns_From_Caches() {
-            var recurrence = new Recurrence(DateTime.MinValue, DateTime.MaxValue, null);
-            var cachedIsValid = true;
+        public void IsValidInAnyPattern_Does_Not_Cache_When_CacheDates_Is_False() {
+            var recurrencePattern = new TestRecurrencePattern(2, new DateTime(2022, 1, 1));
+            var recurrence = new Recurrence(DateTime.MinValue, DateTime.MaxValue, null, false, recurrencePattern);
 
-            recurrence.cache[new DateTime(2022, 1, 1)] = cachedIsValid;
+            var firstResult = recurrence.IsValidInAnyPattern(new DateTime(2022, 1, 1));
 
-            Assert.Equal(cachedIsValid, recurrence.IsValidInAnyPattern(new DateTime(2022, 1, 1)));
+            recurrencePattern.ValidDates.Add(new DateTime(2022, 1, 1));
+
+            Assert.NotEqual(firstResult, recurrence.IsValidInAnyPattern(new DateTime(2022, 1, 1)));
         }
     }
 }

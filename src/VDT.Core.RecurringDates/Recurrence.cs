@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace VDT.Core.RecurringDates {
     /// A recurrence to determine valid dates for the given patterns
     /// </summary>
     public class Recurrence {
-        internal readonly Dictionary<DateTime, bool> cache = new();
+        internal readonly ConcurrentDictionary<DateTime, bool> cache = new();
         private readonly List<RecurrencePattern> patterns = new();
 
         /// <summary>
@@ -75,7 +76,7 @@ namespace VDT.Core.RecurringDates {
             else {
                 return GetDatesWithOccurrences(from.Value.Date, to.Value.Date);
             }
-            
+
             IEnumerable<DateTime> GetDatesWithoutOccurrences(DateTime from, DateTime to) {
                 var currentDate = from;
 
@@ -107,13 +108,9 @@ namespace VDT.Core.RecurringDates {
         }
 
         internal bool IsValidInAnyPattern(DateTime date) {
-            // Date should always be a date only at this point
-            if (!cache.TryGetValue(date, out var isValid)) {
-                isValid = patterns.Any(pattern => pattern.IsValid(date));
-                cache[date] = isValid;
-            }
+            return cache.GetOrAdd(date, IsValidInAnyPatternInternal);
 
-            return isValid;
+            bool IsValidInAnyPatternInternal(DateTime date) => patterns.Any(pattern => pattern.IsValid(date));
         }
     }
 }

@@ -110,19 +110,7 @@ namespace VDT.Core.RecurringDates.Tests {
 
             var result = pattern.GetDaysOfMonth(new DateTime(2022, 1, 1));
 
-            Assert.Same(result, pattern.monthCache[(2022, 1)]);
-        }
-
-        [Fact]
-        public void GetDaysOfMonth_Returns_From_Cache() {
-            var cachedDaysOfMonth = new HashSet<int>() { 1, 4, 8 };
-            var pattern = new MonthlyRecurrencePattern(1, DateTime.MinValue);
-
-            pattern.monthCache[(2022, 1)] = cachedDaysOfMonth;
-
-            var result = pattern.GetDaysOfMonth(new DateTime(2022, 1, 1));
-
-            Assert.Same(cachedDaysOfMonth, result);
+            Assert.Same(result, pattern.GetDaysOfMonth(new DateTime(2022, 1, 1)));
         }
     }
 }

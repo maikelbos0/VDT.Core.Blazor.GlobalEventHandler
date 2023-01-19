@@ -9,7 +9,7 @@ namespace VDT.Core.RecurringDates {
     /// Pattern for dates that recur every month or every several months
     /// </summary>
     public class MonthlyRecurrencePattern : RecurrencePattern {
-        internal readonly ConcurrentDictionary<(int, int), HashSet<int>> monthCache = new();
+        private readonly ConcurrentDictionary<(int, int), HashSet<int>> monthCache = new();
         private readonly HashSet<int> daysOfMonth = new();
         private readonly HashSet<(DayOfWeekInMonth, DayOfWeek)> daysOfWeek = new();
         private readonly HashSet<LastDayOfMonth> lastDaysOfMonth = new();

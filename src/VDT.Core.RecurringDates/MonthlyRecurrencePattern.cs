@@ -9,7 +9,7 @@ namespace VDT.Core.RecurringDates {
     /// Pattern for dates that recur every month or every several months
     /// </summary>
     public class MonthlyRecurrencePattern : RecurrencePattern {
-        private readonly ConcurrentDictionary<(int, int), HashSet<int>> monthCache = new();
+        private readonly ConcurrentDictionary<(int, int), HashSet<int>>? daysOfMonthCache;
         private readonly HashSet<int> daysOfMonth = new();
         private readonly HashSet<(DayOfWeekInMonth, DayOfWeek)> daysOfWeek = new();
         private readonly HashSet<LastDayOfMonth> lastDaysOfMonth = new();
@@ -37,12 +37,14 @@ namespace VDT.Core.RecurringDates {
         /// <param name="daysOfMonth">Days of the month which are valid for this recurrence pattern</param>
         /// <param name="daysOfWeek">Ordinal days of the week (e.g. the second Thursday of the month) which are valid for this recurrence pattern</param>
         /// <param name="lastDaysOfMonth">Last days of the month which are valid for this recurrence pattern</param>
+        /// <param name="cacheDaysOfMonth">Indicates whether or not days of specific months should be cached</param>
         public MonthlyRecurrencePattern(
             int interval, 
-            DateTime referenceDate, 
+            DateTime referenceDate,
             IEnumerable<int>? daysOfMonth = null, 
             IEnumerable<(DayOfWeekInMonth, DayOfWeek)>? daysOfWeek = null,
-            IEnumerable<LastDayOfMonth>? lastDaysOfMonth = null
+            IEnumerable<LastDayOfMonth>? lastDaysOfMonth = null,
+            bool cacheDaysOfMonth = false
         ) : base(interval, referenceDate) {
             var addReferenceDay = true;
 
@@ -64,6 +66,10 @@ namespace VDT.Core.RecurringDates {
             if (addReferenceDay) {
                 this.daysOfMonth.Add(referenceDate.Day);
             }
+
+            if (cacheDaysOfMonth) {
+                daysOfMonthCache = new();
+            }
         }
 
         /// <inheritdoc/>
@@ -72,7 +78,7 @@ namespace VDT.Core.RecurringDates {
         private bool FitsInterval(DateTime date) => Interval == 1 || (date.TotalMonths() - ReferenceDate.TotalMonths()) % Interval == 0;
 
         internal HashSet<int> GetDaysOfMonth(DateTime date) {
-            return monthCache.GetOrAdd((date.Year, date.Month), GetDaysOfMonthInternal);
+            return daysOfMonthCache?.GetOrAdd((date.Year, date.Month), GetDaysOfMonthInternal) ?? GetDaysOfMonthInternal((date.Year, date.Month));
 
             HashSet<int> GetDaysOfMonthInternal((int Year, int Month) key) {
                 var allDaysOfMonth = new HashSet<int>();

@@ -99,18 +99,35 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Fact]
-        public void GetDaysOfMonth_Caches() {
+        public void GetDaysOfMonth_Caches_When_CacheDaysOfMonth_Is_True() {
             var pattern = new MonthlyRecurrencePattern(
                 1,
                 DateTime.MinValue,
                 daysOfMonth: new[] { 5, 10 },
                 daysOfWeek: new[] { (DayOfWeekInMonth.Third, DayOfWeek.Thursday) },
-                lastDaysOfMonth: new[] { LastDayOfMonth.Last }
+                lastDaysOfMonth: new[] { LastDayOfMonth.Last },
+                true
             );
 
             var result = pattern.GetDaysOfMonth(new DateTime(2022, 1, 1));
 
             Assert.Same(result, pattern.GetDaysOfMonth(new DateTime(2022, 1, 1)));
+        }
+
+        [Fact]
+        public void GetDaysOfMonth_Caches_When_CacheDaysOfMonth_Is_False() {
+            var pattern = new MonthlyRecurrencePattern(
+                1,
+                DateTime.MinValue,
+                daysOfMonth: new[] { 5, 10 },
+                daysOfWeek: new[] { (DayOfWeekInMonth.Third, DayOfWeek.Thursday) },
+                lastDaysOfMonth: new[] { LastDayOfMonth.Last },
+                false
+            );
+
+            var result = pattern.GetDaysOfMonth(new DateTime(2022, 1, 1));
+
+            Assert.NotSame(result, pattern.GetDaysOfMonth(new DateTime(2022, 1, 1)));
         }
     }
 }

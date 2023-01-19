@@ -43,9 +43,9 @@ namespace VDT.Core.RecurringDates {
         /// <param name="startDate">Inclusive start date for this recurrence</param>
         /// <param name="endDate">Inclusive end date for this recurrence</param>
         /// <param name="occurrences">Maximum number of occurrences for this recurrence</param>
-        /// <param name="cacheDates">Indicates whether or not date validity should be cached; if you use custom patterns that can be edited the cache may need to be disabled</param>
         /// <param name="patterns">Recurrence patterns that this recurrence will use to determine valid dates</param>
-        public Recurrence(DateTime startDate, DateTime endDate, int? occurrences, bool cacheDates, params RecurrencePattern[] patterns) : this(startDate, endDate, occurrences, cacheDates, patterns.AsEnumerable()) { }
+        [Obsolete("This constructor has been deprecated because it is incomplete. It will be removed in future versions.")]
+        public Recurrence(DateTime startDate, DateTime endDate, int? occurrences, params RecurrencePattern[] patterns) : this(startDate, endDate, occurrences, patterns.AsEnumerable(), false) { }
 
         /// <summary>
         /// Create a recurrence to determine valid dates for the given patterns
@@ -53,14 +53,14 @@ namespace VDT.Core.RecurringDates {
         /// <param name="startDate">Inclusive start date for this recurrence</param>
         /// <param name="endDate">Inclusive end date for this recurrence</param>
         /// <param name="occurrences">Maximum number of occurrences for this recurrence</param>
-        /// <param name="cacheDates">Indicates whether or not date validity should be cached; if you use custom patterns that can be edited the cache may need to be disabled</param>
         /// <param name="patterns">Recurrence patterns that this recurrence will use to determine valid dates</param>
-        public Recurrence(DateTime startDate, DateTime endDate, int? occurrences, bool cacheDates, IEnumerable<RecurrencePattern> patterns) {
+        /// <param name="cacheDates">Indicates whether or not date validity should be cached; if you use custom patterns that can be edited the cache may need to be disabled</param>
+        public Recurrence(DateTime startDate, DateTime endDate, int? occurrences, IEnumerable<RecurrencePattern> patterns, bool cacheDates) {
             StartDate = startDate.Date;
             EndDate = endDate.Date;
             Occurrences = occurrences;
             this.patterns.AddRange(patterns);
-
+            
             if (cacheDates) {
                 dateCache = new();
             }

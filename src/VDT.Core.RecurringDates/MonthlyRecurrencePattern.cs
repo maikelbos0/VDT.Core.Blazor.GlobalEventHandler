@@ -30,6 +30,11 @@ namespace VDT.Core.RecurringDates {
         public IReadOnlyList<LastDayOfMonth> LastDaysOfMonth => new ReadOnlyCollection<LastDayOfMonth>(lastDaysOfMonth.ToList());
 
         /// <summary>
+        /// Indicates whether or not days of specific months should be cached
+        /// </summary>
+        public bool CacheDaysOfMonth => daysOfMonthCache != null;
+
+        /// <summary>
         /// Create a builder for composing patterns for dates that recur every month or every several months
         /// </summary>
         /// <param name="interval">Interval in months between occurrences of the pattern to be created</param>
@@ -37,7 +42,7 @@ namespace VDT.Core.RecurringDates {
         /// <param name="daysOfMonth">Days of the month which are valid for this recurrence pattern</param>
         /// <param name="daysOfWeek">Ordinal days of the week (e.g. the second Thursday of the month) which are valid for this recurrence pattern</param>
         /// <param name="lastDaysOfMonth">Last days of the month which are valid for this recurrence pattern</param>
-        /// <param name="cacheDaysOfMonth">Indicates whether or not days of specific months should be cached</param>
+        /// <param name="cacheDaysOfMonth">Indicates whether or not days of specific months should be cached; defaults to <see langword="false"/></param>
         public MonthlyRecurrencePattern(
             int interval, 
             DateTime referenceDate,

@@ -14,6 +14,15 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Theory]
+        [InlineData(true, true)]
+        [InlineData(false, false)]
+        public void CacheDaysOfMonth(bool cacheDaysOfMonth, bool expectedCacheDaysOfMonth) {
+            var pattern = new MonthlyRecurrencePattern(1, DateTime.MinValue, cacheDaysOfMonth: cacheDaysOfMonth);
+
+            Assert.Equal(expectedCacheDaysOfMonth, pattern.CacheDaysOfMonth);
+        }
+
+        [Theory]
         [InlineData(1, "2022-12-01", "2022-12-01", true, 1)]
         [InlineData(1, "2022-12-01", "2022-11-01", true, 1)]
         [InlineData(1, "2022-12-01", "2022-12-01", true, 1, 3)]

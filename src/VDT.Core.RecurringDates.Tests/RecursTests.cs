@@ -46,8 +46,8 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Fact]
-        public void WithCaching() {
-            var result = Recurs.WithCaching();
+        public void WithDateCaching() {
+            var result = Recurs.WithDateCaching();
 
             Assert.True(result.CacheDates);
         }

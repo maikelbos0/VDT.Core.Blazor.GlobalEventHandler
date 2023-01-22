@@ -103,7 +103,7 @@ namespace VDT.Core.RecurringDates {
         /// Enable caching of days of specific months
         /// </summary>
         /// <returns>A reference to this recurrence pattern builder</returns>
-        public MonthlyRecurrencePatternBuilder WithCaching() {
+        public MonthlyRecurrencePatternBuilder WithDaysOfMonthCaching() {
             CacheDaysOfMonth = true;
             return this;
         }

@@ -49,7 +49,7 @@ namespace VDT.Core.RecurringDates {
         /// enabled
         /// </summary>
         /// <returns>A newly created recurrence builder</returns>
-        public static RecurrenceBuilder WithCaching() => new RecurrenceBuilder().WithCaching();
+        public static RecurrenceBuilder WithDateCaching() => new RecurrenceBuilder().WithDateCaching();
 
         /// <summary>
         /// Creates a new recurrence builder and sets it up for adding recurrence patterns that repeat with the provided interval

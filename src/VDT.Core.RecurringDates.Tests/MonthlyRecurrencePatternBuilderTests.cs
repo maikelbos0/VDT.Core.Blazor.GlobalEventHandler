@@ -77,10 +77,10 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Fact]
-        public void CachingDaysOfMonth() {
+        public void WithDaysOfMonthCaching() {
             var builder = new MonthlyRecurrencePatternBuilder(new RecurrenceBuilder(), 1);
 
-            Assert.Same(builder, builder.WithCaching());
+            Assert.Same(builder, builder.WithDaysOfMonthCaching());
 
             Assert.True(builder.CacheDaysOfMonth);
         }

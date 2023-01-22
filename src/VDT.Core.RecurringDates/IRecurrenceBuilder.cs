@@ -61,7 +61,7 @@ namespace VDT.Core.RecurringDates {
         /// Enable caching of date validity; if you use custom patterns that can be edited the cache should not be enabled
         /// </summary>
         /// <returns>A reference to this recurrence pattern builder</returns>
-        RecurrenceBuilder WithCaching();
+        RecurrenceBuilder WithDateCaching();
 
         /// <summary>
         /// Build the recurrence based on the provided specifications and patterns

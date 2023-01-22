@@ -81,7 +81,7 @@ namespace VDT.Core.RecurringDates {
         }
 
         /// <inheritdoc/>
-        public RecurrenceBuilder WithCaching() {
+        public RecurrenceBuilder WithDateCaching() {
             CacheDates = true;
             return this;
         }

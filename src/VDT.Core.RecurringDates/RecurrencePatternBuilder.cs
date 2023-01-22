@@ -56,7 +56,7 @@ namespace VDT.Core.RecurringDates {
         public RecurrencePatternBuilderStart Every(int interval) => RecurrenceBuilder.Every(interval);
 
         /// <inheritdoc/>
-        public RecurrenceBuilder WithCaching() => RecurrenceBuilder.WithCaching();
+        public RecurrenceBuilder WithDateCaching() => RecurrenceBuilder.WithDateCaching();
 
         /// <inheritdoc/>
         public Recurrence Build() => RecurrenceBuilder.Build();

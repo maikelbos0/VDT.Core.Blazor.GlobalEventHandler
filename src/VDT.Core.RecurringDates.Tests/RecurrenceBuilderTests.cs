@@ -84,10 +84,10 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Fact]
-        public void WithCaching() {
+        public void WithDateCaching() {
             var builder = new RecurrenceBuilder();
 
-            Assert.Same(builder, builder.WithCaching());
+            Assert.Same(builder, builder.WithDateCaching());
 
             Assert.True(builder.CacheDates);
         }

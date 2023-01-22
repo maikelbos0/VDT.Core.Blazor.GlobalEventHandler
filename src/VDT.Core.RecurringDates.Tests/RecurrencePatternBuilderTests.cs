@@ -102,5 +102,25 @@ namespace VDT.Core.RecurringDates.Tests {
             Assert.Same(builder, result.RecurrenceBuilder);
             Assert.Equal(2, result.Interval);
         }
+
+        [Fact]
+        public void WithCaching() {
+            var builder = new RecurrenceBuilder();
+            var patternBuilder = new TestRecurrencePatternBuilder(builder, 1);
+
+            Assert.Same(builder, patternBuilder.WithCaching());
+
+            Assert.True(builder.CacheDates);
+        }
+
+        [Fact]
+        public void Build() {
+            var builder = new RecurrenceBuilder();
+            var patternBuilder = new TestRecurrencePatternBuilder(builder, 1);
+
+            var result = patternBuilder.Build();
+
+            Assert.NotNull(result);
+        }
     }
 }

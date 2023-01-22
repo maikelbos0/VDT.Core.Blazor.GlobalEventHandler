@@ -27,7 +27,7 @@ namespace VDT.Core.RecurringDates {
         /// Indicates whether or not days of specific months should be cached; enable this cache to significantly speed up this pattern type at the cost of
         /// memory; defaults to <see langword="false"/>
         /// </summary>
-        public bool CacheDaysOfMonth { get; set; } = false;
+        public bool CacheDaysOfMonth { get; set; }
 
         /// <summary>
         /// Create a builder for composing patterns for dates that recur every month or every several months

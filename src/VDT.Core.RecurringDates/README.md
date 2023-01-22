@@ -25,6 +25,7 @@ Builders are provided to help you easily set up a recurrence with patterns to ca
 - `Every(interval).Weeks()` adds a pattern that repeats every `interval` weeks; it returns a builder that allows you to configure the week-based pattern
 - `Monthly()` adds a pattern that repeats every month; it returns a builder that allows you to configure the month-based pattern
 - `Every(interval).Months()` adds a pattern that repeats every `interval` months; it returns a builder that allows you to configure the month-based pattern
+- `WithDateCaching()` enables caching of date validity which helps performance but increases memory usage
 
 The pattern builders for days, weeks and months in turn allow you to configure them as desired:
 
@@ -41,6 +42,7 @@ The pattern builders for days, weeks and months in turn allow you to configure t
   - The ordinal days of the week in the month that are valid (e.g. last Friday of the month)
   - The last days of the month that are valid (e.g. second last day of the month)
   - If no days are provided, the day of the month of the reference date will be used
+  - The option to enable caching to speed up this relatively slow pattern at a cost of increased memory usage
 
 It's simple to chain calls to the above methods to set the limits and add multiple patterns for a single recurrence.
 

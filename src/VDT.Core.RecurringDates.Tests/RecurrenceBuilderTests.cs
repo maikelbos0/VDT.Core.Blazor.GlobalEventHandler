@@ -84,6 +84,15 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Fact]
+        public void WithDateCaching() {
+            var builder = new RecurrenceBuilder();
+
+            Assert.Same(builder, builder.WithDateCaching());
+
+            Assert.True(builder.CacheDates);
+        }
+
+        [Fact]
         public void Build() {
             var builder = new RecurrenceBuilder() {
                 StartDate = new DateTime(2022, 1, 1),

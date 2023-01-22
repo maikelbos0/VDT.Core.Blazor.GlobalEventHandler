@@ -9,7 +9,9 @@ namespace VDT.Core.RecurringDates {
     /// Pattern for dates that recur every week or every several weeks
     /// </summary>
     public class WeeklyRecurrencePattern : RecurrencePattern {
+        private readonly DateTime firstDayOfReferenceWeek;
         private readonly HashSet<DayOfWeek> daysOfWeek = new();
+
         /// <summary>
         /// Gets the first day of the week to use when calculating the reference week when the interval is greater than 1
         /// </summary>
@@ -29,6 +31,7 @@ namespace VDT.Core.RecurringDates {
         /// <param name="daysOfWeek">Days of the week which are valid for this recurrence pattern</param>
         public WeeklyRecurrencePattern(int interval, DateTime referenceDate, DayOfWeek? firstDayOfWeek = null, IEnumerable<DayOfWeek>? daysOfWeek = null) : base(interval, referenceDate) {
             FirstDayOfWeek = firstDayOfWeek ?? Thread.CurrentThread.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
+            firstDayOfReferenceWeek = GetFirstDayOfWeekDate(ReferenceDate).Date;
 
             if (daysOfWeek != null && daysOfWeek.Any()) {
                 this.daysOfWeek.UnionWith(daysOfWeek);
@@ -41,7 +44,7 @@ namespace VDT.Core.RecurringDates {
         /// <inheritdoc/>
         public override bool IsValid(DateTime date) => daysOfWeek.Contains(date.DayOfWeek) && FitsInterval(date);
 
-        private bool FitsInterval(DateTime date) => Interval == 1 || (GetFirstDayOfWeekDate(date).Date - GetFirstDayOfWeekDate(ReferenceDate).Date).Days % (7 * Interval) == 0;
+        private bool FitsInterval(DateTime date) => Interval == 1 || (GetFirstDayOfWeekDate(date).Date - firstDayOfReferenceWeek).Days % (7 * Interval) == 0;
 
         private DateTime GetFirstDayOfWeekDate(DateTime date) => date.AddDays((FirstDayOfWeek - date.DayOfWeek - 7) % 7);
     }

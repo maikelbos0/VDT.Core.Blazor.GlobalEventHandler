@@ -45,6 +45,13 @@ namespace VDT.Core.RecurringDates {
         public static MonthlyRecurrencePatternBuilder Monthly() => new RecurrenceBuilder().Monthly();
 
         /// <summary>
+        /// Creates a new recurrence builder and enables caching of date validity; if you use custom patterns that can be edited the cache should not be 
+        /// enabled
+        /// </summary>
+        /// <returns>A newly created recurrence builder</returns>
+        public static RecurrenceBuilder WithDateCaching() => new RecurrenceBuilder().WithDateCaching();
+
+        /// <summary>
         /// Creates a new recurrence builder and sets it up for adding recurrence patterns that repeat with the provided interval
         /// </summary>
         /// <param name="interval">The interval with which to repeat the new recurrence pattern</param>

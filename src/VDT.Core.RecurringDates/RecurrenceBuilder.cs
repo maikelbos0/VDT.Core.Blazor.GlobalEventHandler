@@ -23,6 +23,12 @@ namespace VDT.Core.RecurringDates {
         public int? Occurrences { get; set; }
 
         /// <summary>
+        /// Indicates whether or not date validity should be cached; if you use custom patterns that can be edited the cache should not be enabled; defaults 
+        /// to <see langword="false"/>
+        /// </summary>
+        public bool CacheDates { get; set; }
+
+        /// <summary>
         /// Gets or sets the builders which will be invoked to build recurrence patterns for this recurrence
         /// </summary>
         public List<RecurrencePatternBuilder> PatternBuilders { get; set; } = new();
@@ -75,8 +81,14 @@ namespace VDT.Core.RecurringDates {
         }
 
         /// <inheritdoc/>
+        public RecurrenceBuilder WithDateCaching() {
+            CacheDates = true;
+            return this;
+        }
+
+        /// <inheritdoc/>
         public Recurrence Build() {
-            return new Recurrence(StartDate, EndDate, Occurrences, PatternBuilders.Select(builder => builder.BuildPattern()));
+            return new Recurrence(StartDate, EndDate, Occurrences, PatternBuilders.Select(builder => builder.BuildPattern()), CacheDates);
         }
     }
 }

@@ -24,6 +24,12 @@ namespace VDT.Core.RecurringDates {
         public HashSet<LastDayOfMonth> LastDaysOfMonth { get; set; } = new HashSet<LastDayOfMonth>();
 
         /// <summary>
+        /// Indicates whether or not days of specific months should be cached; enable this cache to significantly speed up this pattern type at the cost of
+        /// memory; defaults to <see langword="false"/>
+        /// </summary>
+        public bool CacheDaysOfMonth { get; set; }
+
+        /// <summary>
         /// Create a builder for composing patterns for dates that recur every month or every several months
         /// </summary>
         /// <param name="recurrenceBuilder">Builder for date recurrences to which this pattern builder belongs</param>
@@ -93,8 +99,17 @@ namespace VDT.Core.RecurringDates {
             return this;
         }
 
+        /// <summary>
+        /// Enable caching of days of specific months
+        /// </summary>
+        /// <returns>A reference to this recurrence pattern builder</returns>
+        public MonthlyRecurrencePatternBuilder WithDaysOfMonthCaching() {
+            CacheDaysOfMonth = true;
+            return this;
+        }
+
         /// <inheritdoc/>
         public override RecurrencePattern BuildPattern()
-            => new MonthlyRecurrencePattern(Interval, ReferenceDate ?? RecurrenceBuilder.StartDate, DaysOfMonth, DaysOfWeek, LastDaysOfMonth);
+            => new MonthlyRecurrencePattern(Interval, ReferenceDate ?? RecurrenceBuilder.StartDate, DaysOfMonth, DaysOfWeek, LastDaysOfMonth, CacheDaysOfMonth);
     }
 }

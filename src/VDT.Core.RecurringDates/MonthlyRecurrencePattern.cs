@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -8,6 +9,7 @@ namespace VDT.Core.RecurringDates {
     /// Pattern for dates that recur every month or every several months
     /// </summary>
     public class MonthlyRecurrencePattern : RecurrencePattern {
+        private readonly ConcurrentDictionary<(int, int), HashSet<int>>? daysOfMonthCache;
         private readonly HashSet<int> daysOfMonth = new();
         private readonly HashSet<(DayOfWeekInMonth, DayOfWeek)> daysOfWeek = new();
         private readonly HashSet<LastDayOfMonth> lastDaysOfMonth = new();
@@ -28,6 +30,11 @@ namespace VDT.Core.RecurringDates {
         public IReadOnlyList<LastDayOfMonth> LastDaysOfMonth => new ReadOnlyCollection<LastDayOfMonth>(lastDaysOfMonth.ToList());
 
         /// <summary>
+        /// Indicates whether or not days of specific months should be cached
+        /// </summary>
+        public bool CacheDaysOfMonth => daysOfMonthCache != null;
+
+        /// <summary>
         /// Create a builder for composing patterns for dates that recur every month or every several months
         /// </summary>
         /// <param name="interval">Interval in months between occurrences of the pattern to be created</param>
@@ -35,12 +42,14 @@ namespace VDT.Core.RecurringDates {
         /// <param name="daysOfMonth">Days of the month which are valid for this recurrence pattern</param>
         /// <param name="daysOfWeek">Ordinal days of the week (e.g. the second Thursday of the month) which are valid for this recurrence pattern</param>
         /// <param name="lastDaysOfMonth">Last days of the month which are valid for this recurrence pattern</param>
+        /// <param name="cacheDaysOfMonth">Indicates whether or not days of specific months should be cached; defaults to <see langword="false"/></param>
         public MonthlyRecurrencePattern(
             int interval, 
-            DateTime referenceDate, 
+            DateTime referenceDate,
             IEnumerable<int>? daysOfMonth = null, 
             IEnumerable<(DayOfWeekInMonth, DayOfWeek)>? daysOfWeek = null,
-            IEnumerable<LastDayOfMonth>? lastDaysOfMonth = null
+            IEnumerable<LastDayOfMonth>? lastDaysOfMonth = null,
+            bool cacheDaysOfMonth = false
         ) : base(interval, referenceDate) {
             var addReferenceDay = true;
 
@@ -62,6 +71,10 @@ namespace VDT.Core.RecurringDates {
             if (addReferenceDay) {
                 this.daysOfMonth.Add(referenceDate.Day);
             }
+
+            if (cacheDaysOfMonth) {
+                daysOfMonthCache = new();
+            }
         }
 
         /// <inheritdoc/>
@@ -70,21 +83,25 @@ namespace VDT.Core.RecurringDates {
         private bool FitsInterval(DateTime date) => Interval == 1 || (date.TotalMonths() - ReferenceDate.TotalMonths()) % Interval == 0;
 
         internal HashSet<int> GetDaysOfMonth(DateTime date) {
-            var allDaysOfMonth = new HashSet<int>();
-            var daysInMonth = date.DaysInMonth();
-            var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
-            var lastDayOfMonth = new DateTime(date.Year, date.Month, daysInMonth);
+            return daysOfMonthCache?.GetOrAdd((date.Year, date.Month), GetDaysOfMonthInternal) ?? GetDaysOfMonthInternal((date.Year, date.Month));
 
-            allDaysOfMonth.UnionWith(daysOfMonth.Where(dayOfMonth => dayOfMonth <= daysInMonth));
-            allDaysOfMonth.UnionWith(DaysOfWeek
-                .Where(dayOfWeek => dayOfWeek.Item1 != DayOfWeekInMonth.Last)
-                .Select(dayOfWeek => firstDayOfMonth.AddDays((int)dayOfWeek.Item1 * 7 + (dayOfWeek.Item2 - firstDayOfMonth.DayOfWeek + 7) % 7).Day));
-            allDaysOfMonth.UnionWith(DaysOfWeek
-                .Where(dayOfWeek => dayOfWeek.Item1 == DayOfWeekInMonth.Last)
-                .Select(dayOfWeek => lastDayOfMonth.AddDays((dayOfWeek.Item2 - lastDayOfMonth.DayOfWeek - 7) % 7).Day));
-            allDaysOfMonth.UnionWith(lastDaysOfMonth.Select(lastDayOfMonth => daysInMonth - (int)lastDayOfMonth));
+            HashSet<int> GetDaysOfMonthInternal((int Year, int Month) key) {
+                var allDaysOfMonth = new HashSet<int>();
+                var daysInMonth = date.DaysInMonth();
+                var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
+                var lastDayOfMonth = new DateTime(date.Year, date.Month, daysInMonth);
 
-            return allDaysOfMonth;
+                allDaysOfMonth.UnionWith(daysOfMonth.Where(dayOfMonth => dayOfMonth <= daysInMonth));
+                allDaysOfMonth.UnionWith(DaysOfWeek
+                    .Where(dayOfWeek => dayOfWeek.Item1 != DayOfWeekInMonth.Last)
+                    .Select(dayOfWeek => firstDayOfMonth.AddDays((int)dayOfWeek.Item1 * 7 + (dayOfWeek.Item2 - firstDayOfMonth.DayOfWeek + 7) % 7).Day));
+                allDaysOfMonth.UnionWith(DaysOfWeek
+                    .Where(dayOfWeek => dayOfWeek.Item1 == DayOfWeekInMonth.Last)
+                    .Select(dayOfWeek => lastDayOfMonth.AddDays((dayOfWeek.Item2 - lastDayOfMonth.DayOfWeek - 7) % 7).Day));
+                allDaysOfMonth.UnionWith(lastDaysOfMonth.Select(lastDayOfMonth => daysInMonth - (int)lastDayOfMonth));
+
+                return allDaysOfMonth;
+            }
         }
     }
 }

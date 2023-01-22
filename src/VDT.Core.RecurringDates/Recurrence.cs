@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -8,6 +9,7 @@ namespace VDT.Core.RecurringDates {
     /// A recurrence to determine valid dates for the given patterns
     /// </summary>
     public class Recurrence {
+        private readonly ConcurrentDictionary<DateTime, bool>? dateCache;
         private readonly List<RecurrencePattern> patterns = new();
 
         /// <summary>
@@ -26,6 +28,11 @@ namespace VDT.Core.RecurringDates {
         public int? Occurrences { get; }
 
         /// <summary>
+        /// Indicates whether or not date validity should be cached; if you use custom patterns that can be edited the cache may need to be disabled
+        /// </summary>
+        public bool CacheDates => dateCache != null;
+
+        /// <summary>
         /// Gets the recurrence patterns that this recurrence will use to determine valid dates
         /// </summary>
         public IReadOnlyList<RecurrencePattern> Patterns => new ReadOnlyCollection<RecurrencePattern>(patterns);
@@ -37,7 +44,8 @@ namespace VDT.Core.RecurringDates {
         /// <param name="endDate">Inclusive end date for this recurrence</param>
         /// <param name="occurrences">Maximum number of occurrences for this recurrence</param>
         /// <param name="patterns">Recurrence patterns that this recurrence will use to determine valid dates</param>
-        public Recurrence(DateTime startDate, DateTime endDate, int? occurrences, params RecurrencePattern[] patterns) : this(startDate, endDate, occurrences, patterns.AsEnumerable()) { }
+        [Obsolete("This constructor has been deprecated because it is incomplete. It will be removed in future versions.")]
+        public Recurrence(DateTime startDate, DateTime endDate, int? occurrences, params RecurrencePattern[] patterns) : this(startDate, endDate, occurrences, patterns.AsEnumerable(), false) { }
 
         /// <summary>
         /// Create a recurrence to determine valid dates for the given patterns
@@ -46,11 +54,16 @@ namespace VDT.Core.RecurringDates {
         /// <param name="endDate">Inclusive end date for this recurrence</param>
         /// <param name="occurrences">Maximum number of occurrences for this recurrence</param>
         /// <param name="patterns">Recurrence patterns that this recurrence will use to determine valid dates</param>
-        public Recurrence(DateTime startDate, DateTime endDate, int? occurrences, IEnumerable<RecurrencePattern> patterns) {
+        /// <param name="cacheDates">Indicates whether or not date validity should be cached; if you use custom patterns that can be edited the cache may need to be disabled</param>
+        public Recurrence(DateTime startDate, DateTime endDate, int? occurrences, IEnumerable<RecurrencePattern> patterns, bool cacheDates) {
             StartDate = startDate.Date;
             EndDate = endDate.Date;
             Occurrences = occurrences;
             this.patterns.AddRange(patterns);
+            
+            if (cacheDates) {
+                dateCache = new();
+            }
         }
 
         /// <summary>
@@ -74,12 +87,12 @@ namespace VDT.Core.RecurringDates {
             else {
                 return GetDatesWithOccurrences(from.Value.Date, to.Value.Date);
             }
-            
+
             IEnumerable<DateTime> GetDatesWithoutOccurrences(DateTime from, DateTime to) {
                 var currentDate = from;
 
                 while (currentDate <= to) {
-                    if (patterns.Any(pattern => pattern.IsValid(currentDate))) {
+                    if (IsValidInAnyPattern(currentDate)) {
                         yield return currentDate;
                     }
 
@@ -92,7 +105,7 @@ namespace VDT.Core.RecurringDates {
                 var currentDate = StartDate;
 
                 while (currentDate <= to && Occurrences > occurrences) {
-                    if (patterns.Any(pattern => pattern.IsValid(currentDate))) {
+                    if (IsValidInAnyPattern(currentDate)) {
                         occurrences++;
 
                         if (currentDate >= from) {
@@ -103,6 +116,12 @@ namespace VDT.Core.RecurringDates {
                     currentDate = currentDate.AddDays(1);
                 }
             }
+        }
+
+        internal bool IsValidInAnyPattern(DateTime date) {
+            return dateCache?.GetOrAdd(date, IsValidInAnyPatternInternal) ?? IsValidInAnyPatternInternal(date);
+
+            bool IsValidInAnyPatternInternal(DateTime date) => patterns.Any(pattern => pattern.IsValid(date));
         }
     }
 }

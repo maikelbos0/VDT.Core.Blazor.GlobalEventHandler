@@ -5,6 +5,14 @@ using Xunit;
 
 namespace VDT.Core.RecurringDates.Tests {
     public class MonthlyRecurrencePatternTests {
+        [Fact]
+        public void Constructor_Without_Days_Adds_Default_Day() {
+            var startDate = new DateTime(2022, 1, 15);
+            var pattern = new MonthlyRecurrencePattern(1, startDate);
+
+            Assert.Equal(startDate.Day, Assert.Single(pattern.DaysOfMonth));
+        }
+
         [Theory]
         [InlineData(0, 1, 2)]
         [InlineData(9, 19, -1)]

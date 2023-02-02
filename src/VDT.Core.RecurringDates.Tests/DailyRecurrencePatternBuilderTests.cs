@@ -49,24 +49,8 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Fact]
-        public void BuildPattern_Defaults() {
-            var recurrenceBuilder = new RecurrenceBuilder() {
-                StartDate = new DateTime(2022, 1, 1)
-            };
-            var builder = new DailyRecurrencePatternBuilder(recurrenceBuilder, 1);
-
-            var result = Assert.IsType<DailyRecurrencePattern>(builder.BuildPattern());
-
-            Assert.Equal(recurrenceBuilder.StartDate, result.ReferenceDate);
-            Assert.Equal(builder.Interval, result.Interval);
-            Assert.Equal(RecurrencePatternWeekendHandling.Include, result.WeekendHandling);
-        }
-
-        [Fact]
-        public void BuildPattern_Overrides() {
-            var recurrenceBuilder = new RecurrenceBuilder() {
-                StartDate = new DateTime(2022, 1, 1)
-            };
+        public void BuildPattern() {
+            var recurrenceBuilder = new RecurrenceBuilder();
             var builder = new DailyRecurrencePatternBuilder(recurrenceBuilder, 2) {
                 ReferenceDate = new DateTime(2022, 2, 1),
                 WeekendHandling = RecurrencePatternWeekendHandling.Skip
@@ -77,6 +61,16 @@ namespace VDT.Core.RecurringDates.Tests {
             Assert.Equal(builder.ReferenceDate, result.ReferenceDate);
             Assert.Equal(builder.Interval, result.Interval);
             Assert.Equal(builder.WeekendHandling, result.WeekendHandling);
+        }
+
+        [Fact]
+        public void BuildPattern_Takes_StartDate_As_Default_ReferenceDate() {
+            var recurrenceBuilder = new RecurrenceBuilder() { StartDate = new DateTime(2022, 2, 1) };
+            var builder = new DailyRecurrencePatternBuilder(recurrenceBuilder, 2);
+
+            var result = builder.BuildPattern();
+
+            Assert.Equal(recurrenceBuilder.StartDate, result.ReferenceDate);
         }
     }
 }

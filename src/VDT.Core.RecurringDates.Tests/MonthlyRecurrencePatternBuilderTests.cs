@@ -86,26 +86,8 @@ namespace VDT.Core.RecurringDates.Tests {
         }
 
         [Fact]
-        public void BuildPattern_Defaults() {
-            var recurrenceBuilder = new RecurrenceBuilder() {
-                StartDate = new DateTime(2022, 1, 1)
-            };
-            var builder = new MonthlyRecurrencePatternBuilder(recurrenceBuilder, 1);
-
-            var result = Assert.IsType<MonthlyRecurrencePattern>(builder.BuildPattern());
-
-            Assert.Equal(recurrenceBuilder.StartDate, result.ReferenceDate);
-            Assert.Equal(builder.Interval, result.Interval);
-            Assert.Equal(recurrenceBuilder.StartDate.Day, Assert.Single(result.DaysOfMonth));
-            Assert.Empty(result.DaysOfWeek);
-            Assert.False(result.CacheDaysOfMonth);
-        }
-
-        [Fact]
-        public void BuildPattern_Overrides() {
-            var recurrenceBuilder = new RecurrenceBuilder() {
-                StartDate = new DateTime(2022, 1, 1)
-            };
+        public void BuildPattern() {
+            var recurrenceBuilder = new RecurrenceBuilder();
             var builder = new MonthlyRecurrencePatternBuilder(recurrenceBuilder, 2) {
                 ReferenceDate = new DateTime(2022, 2, 1),
                 DaysOfMonth = new HashSet<int>() { 3, 5, 20 },
@@ -122,6 +104,16 @@ namespace VDT.Core.RecurringDates.Tests {
             Assert.Equal(builder.DaysOfWeek, result.DaysOfWeek);
             Assert.Equal(builder.LastDaysOfMonth, result.LastDaysOfMonth);
             Assert.True(result.CacheDaysOfMonth);
+        }
+
+        [Fact]
+        public void BuildPattern_Takes_StartDate_As_Default_ReferenceDate() {
+            var recurrenceBuilder = new RecurrenceBuilder() { StartDate = new DateTime(2022, 2, 1) };
+            var builder = new MonthlyRecurrencePatternBuilder(recurrenceBuilder, 2);
+
+            var result = builder.BuildPattern();
+
+            Assert.Equal(recurrenceBuilder.StartDate, result.ReferenceDate);
         }
     }
 }

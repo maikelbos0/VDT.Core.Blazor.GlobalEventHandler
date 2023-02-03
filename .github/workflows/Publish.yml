@@ -5,15 +5,18 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  Build:
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: src
 
     steps:
     - uses: actions/checkout@v2
-    
+
     - name: Restore
-      working-directory: src
       run: dotnet restore
-      
+
     - name: Build
       run: dotnet build --configuration Release --no-restore

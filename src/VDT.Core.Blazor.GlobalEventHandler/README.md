@@ -1,6 +1,6 @@
 ﻿# VDT.Core.Blazor.GlobalEventHandler
 
-Blazor component that allows you to handle global window level events in your application
+Blazor component that allows you to handle global window level events in your application.
 
 ## Features
 

@@ -1,10 +1,8 @@
 ﻿# VDT.Core.Blazor.GlobalEventHandler
 
-Blazor component that allows you to handle global window level events in your application
+[![NuGet](https://img.shields.io/nuget/v/VDT.Core.Blazor.GlobalEventHandler.svg)](https://www.nuget.org/packages/VDT.Core.Blazor.GlobalEventHandler/) ![Build & publish package](https://github.com/maikelbos0/VDT.Core.Blazor.GlobalEventHandler/actions/workflows/Publish.yml/badge.svg)
 
-## Releases
-
-[![NuGet](https://img.shields.io/nuget/v/VDT.Core.Blazor.GlobalEventHandler.svg)](https://www.nuget.org/packages/VDT.Core.Blazor.GlobalEventHandler/)
+Blazor component that allows you to handle global window level events in your application.
 
 ## Package documentation
 

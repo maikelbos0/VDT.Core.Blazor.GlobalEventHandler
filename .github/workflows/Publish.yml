@@ -13,7 +13,13 @@ jobs:
         working-directory: src
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup .NET 5
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 5.0.x
 
     - name: Restore
       run: dotnet restore
@@ -22,7 +28,8 @@ jobs:
       run: dotnet build --configuration Release --no-restore
 
     - name: Test
-      run: dotnet test **/*.Tests.dll --no-build
+      run: dotnet test --no-build
+      #run: dotnet test **/*.Tests.dll --no-build
 
     - name: Publish
       run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.NUGETAPIKEY }} --source https://api.nuget.org/v3/index.json

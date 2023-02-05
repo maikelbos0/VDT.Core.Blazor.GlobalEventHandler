@@ -46,11 +46,27 @@ jobs:
     - name: Get current version
       id: get_current_version
       run: |
-        current_version=$(grep -Po '\d+\.\d+\.\d+' <<< $(find . -name '*.nupkg'))
+        current_version=$(grep -Po "\d+\.\d+\.\d+" <<< $(find . -name "*.nupkg"))
         echo "current_version=$current_version" >> $GITHUB_ENV
 
-    - name: Output file
+    - name: Output current version
       run: echo "${{ env.current_version }}" 
+
+    - name: Get published versions
+      run: |
+        published_versions=$(curl https://api.nuget.org/v3-flatcontainer/VDT.Core.Blazor.GlobalEventHandler/index.json)
+        published_versions="${published_versions//$'\n'/''}"
+        published_versions="${published_versions//$'\r'/''}"
+        echo "published_versions=$published_versions" >> $GITHUB_ENV
+
+    - name: Output published versions
+      run: echo "${{ env.published_versions }}" 
+
+    - name: Output published versions json
+      run: echo "${{ fromJson(env.published_versions) }}"
+
+    - name: Output published versions json array
+      run: echo "${{ fromJson(env.published_versions).versions }}"
 
 #    - name: Publish
 #      run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.NUGETAPIKEY }} --source https://api.nuget.org/v3/index.json

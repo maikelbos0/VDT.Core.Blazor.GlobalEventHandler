@@ -51,7 +51,7 @@ jobs:
 
     - name: Find package file
       id: find_package_file
-      run: echo "package = `find . -name '*.nupkg'`" >> $GITHUB_ENV
+      run: echo "package=test" >> $GITHUB_ENV
 
     - run: echo "${{ env.package }}" 
 

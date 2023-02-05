@@ -43,20 +43,14 @@ jobs:
         reporter: dotnet-trx
         fail-on-error: true
 
-    - name: Find package file test
+    - name: Get current version
+      id: get_current_version
       run: |
-        package_name=$(find . -name '*.nupkg')
-        echo "$package_name" 
-
-    - name: Find package file
-      id: find_package_file
-      run: |
-        package_name=$(find . -name '*.nupkg')
-        echo "package_name=$package_name" >> $GITHUB_ENV
+        current_version=$(grep -Po '\d+\.\d+\.\d+' <<< $(find . -name '*.nupkg'))
+        echo "current_version=$current_version" >> $GITHUB_ENV
 
     - name: Output file
-#      id: output_file 
-      run: echo "${{ env.package_name }}" 
+      run: echo "${{ env.current_version }}" 
 
 #    - name: Publish
 #      run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.NUGETAPIKEY }} --source https://api.nuget.org/v3/index.json

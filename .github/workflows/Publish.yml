@@ -44,7 +44,7 @@ jobs:
         fail-on-error: true
 
     - name: Find package file
-      run: echo "package = `find -maxdepth 5 -iname . *.nupkg`" >> $GITHUB_ENV
+      run: echo "package = `find -maxdepth 5 -iname . -name *.nupkg`" >> $GITHUB_ENV
 
     - run: echo "${{ env.package }}" 
 

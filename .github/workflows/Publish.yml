@@ -43,11 +43,13 @@ jobs:
         reporter: dotnet-trx
         fail-on-error: true
 
-    - name: See path
-      run: pwd
-
     - name: Find package file test
       run: find . -name '*.nupkg'
+
+    - name: Find package file test 2
+      run: |
+        package_name=$(find . -name '*.nupkg')
+        echo "$package_name" 
 
     - name: Find package file
       id: find_package_file

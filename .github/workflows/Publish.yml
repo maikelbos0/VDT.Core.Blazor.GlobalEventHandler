@@ -47,10 +47,10 @@ jobs:
       run: pwd
 
     - name: Find package file test
-      run: find . -name "*.nupkg"
+      run: find . -name '*.nupkg'
 
     - name: Find package file
-      run: echo "package = `find -maxdepth 5 -iname . -name *.nupkg`" >> $GITHUB_ENV
+      run: echo "package = `find . -name '*.nupkg'`" >> $GITHUB_ENV
 
     - run: echo "${{ env.package }}" 
 

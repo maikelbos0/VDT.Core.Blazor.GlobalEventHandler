@@ -44,18 +44,19 @@ jobs:
         fail-on-error: true
 
     - name: Find package file test
-      run: find . -name '*.nupkg'
-
-    - name: Find package file test 2
       run: |
         package_name=$(find . -name '*.nupkg')
         echo "$package_name" 
 
     - name: Find package file
       id: find_package_file
-      run: echo "package=test" >> $GITHUB_ENV
+      run: |
+        package_name=$(find . -name '*.nupkg')
+        echo "package_name=$package_name" >> $GITHUB_ENV
 
-    - run: echo "${{ env.package }}" 
+    - name: Output file
+#      id: output_file 
+      run: echo "${{ env.package_name }}" 
 
 #    - name: Publish
 #      run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.NUGETAPIKEY }} --source https://api.nuget.org/v3/index.json

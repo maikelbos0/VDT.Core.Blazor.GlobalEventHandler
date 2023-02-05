@@ -43,10 +43,16 @@ jobs:
         reporter: dotnet-trx
         fail-on-error: true
 
+    - name: See path
+      run: pwd
+
+    - name: Find package file test
+      run: find -maxdepth 5 -iname . -name *.nupkg
+
     - name: Find package file
       run: echo "package = `find -maxdepth 5 -iname . -name *.nupkg`" >> $GITHUB_ENV
 
     - run: echo "${{ env.package }}" 
 
-    - name: Publish
-      run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.NUGETAPIKEY }} --source https://api.nuget.org/v3/index.json
+#    - name: Publish
+#      run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.NUGETAPIKEY }} --source https://api.nuget.org/v3/index.json

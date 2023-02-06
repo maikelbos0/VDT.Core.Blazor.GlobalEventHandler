@@ -67,4 +67,7 @@ jobs:
         name: Test XYZ
         conclusion: ${{ job.status }}
         output: |
-          {"summary":"test"}
+          {
+            "title": "This is the title"
+            "summary": "**This** is the summary\\n- Test\\n- Test"
+          }

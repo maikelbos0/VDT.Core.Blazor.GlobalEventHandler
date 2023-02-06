@@ -29,7 +29,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
             subject.JSRuntime = runtime;
             await subject.OnAfterRenderAsync(true);
 
-            await module.DidNotReceive().InvokeVoidAsync("register", Arg.Is<object[]>(args => Assert.Single(args) is DotNetObjectReference<GlobalEventHandler>));
+            await module.Received().InvokeVoidAsync("register", Arg.Is<object[]>(args => Assert.Single(args) is DotNetObjectReference<GlobalEventHandler>));
         }
 
         [Fact]

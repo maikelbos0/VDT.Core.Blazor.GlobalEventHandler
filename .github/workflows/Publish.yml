@@ -67,7 +67,7 @@ jobs:
 
     - name: Output published versions json array
       run: echo "${{ fromJson(env.published_versions).versions }}"
-
+      
 #https://docs.github.com/en/github-ae@latest/actions/learn-github-actions/expressions
 # contains(array, item)
 

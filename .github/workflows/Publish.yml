@@ -58,30 +58,14 @@ jobs:
         published_versions="${published_versions//$'\n'/''}"
         published_versions="${published_versions//$'\r'/''}"
         echo "published_versions=$published_versions" >> $GITHUB_ENV
-
-    - name: Output published versions
-      run: echo "${{ env.published_versions }}" 
-
-    - name: Output published versions json
-      run: echo "${{ fromJson(env.published_versions) }}"
-
-    - name: Output published versions json array
-      run: echo "${{ fromJson(env.published_versions).versions }}"
       
-#https://docs.github.com/en/github-ae@latest/actions/learn-github-actions/expressions
-# contains(array, item)
-
-    - name: Test false
-      if: contains(fromJson(env.published_versions).versions, '1.2.3')
-      run: echo "Test false"
-
-    - name: Test true
-      if: contains(fromJson(env.published_versions).versions, '1.1.3')
-      run: echo "Test true"
-
-    - name: Test true
+    - name: Test found
       if: contains(fromJson(env.published_versions).versions, env.current_version)
-      run: echo "Test true"
+      run: echo 'Test found'
+      
+    - name: Test negation
+      if: contains(fromJson(env.published_versions).versions, env.current_version) == false
+      run: echo 'Test negated'
 
 #    - name: Publish
 #      run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.NUGETAPIKEY }} --source https://api.nuget.org/v3/index.json

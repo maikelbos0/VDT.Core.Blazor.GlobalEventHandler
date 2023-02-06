@@ -32,7 +32,7 @@ jobs:
       run: dotnet build --configuration Release --no-restore
 
     - name: Test
-      run: dotnet test --configuration Release --no-build --logger "trx;LogFileName=test-results.trx" --collect:"XPlat Code Coverage"
+      run: dotnet test --configuration Release --no-build --logger "trx;LogFileName=test-results.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=TestResults/coverage-results.xml
 
     - name: Publish test report
       uses: dorny/test-reporter@v1.6.0
@@ -46,7 +46,7 @@ jobs:
     - name: Create code coverage summary
       uses: irongut/CodeCoverageSummary@v1.3.0
       with:
-        filename: "**/coverage.cobertura.xml"
+        filename: "**/coverage-results.xml"
         badge: true
         format: markdown
         output: both

@@ -59,3 +59,12 @@ jobs:
     - name: Publish
       if: contains(fromJson(env.published_versions).versions, env.current_version) == false
       run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.NUGETAPIKEY }} --source https://api.nuget.org/v3/index.json
+
+    - uses: LouisBrunner/checks-action@v1.6.0
+      if: always()
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        name: Test XYZ
+        conclusion: ${{ job.status }}
+        output: |
+          {"summary":"test"}

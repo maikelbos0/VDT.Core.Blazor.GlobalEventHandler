@@ -34,7 +34,7 @@ jobs:
     - name: Test
       run: dotnet test --configuration Release --no-build --logger "trx;LogFileName=test-results.trx"
 
-    - name: Test report
+    - name: Publish test report
       uses: dorny/test-reporter@v1
       if: always()
       with:
@@ -49,23 +49,13 @@ jobs:
         current_version=$(grep -Po "\d+\.\d+\.\d+" <<< $(find . -name "*.nupkg"))
         echo "current_version=$current_version" >> $GITHUB_ENV
 
-    - name: Output current version
-      run: echo "${{ env.current_version }}" 
-
     - name: Get published versions
       run: |
         published_versions=$(curl https://api.nuget.org/v3-flatcontainer/VDT.Core.Blazor.GlobalEventHandler/index.json)
         published_versions="${published_versions//$'\n'/''}"
         published_versions="${published_versions//$'\r'/''}"
         echo "published_versions=$published_versions" >> $GITHUB_ENV
-      
-    - name: Test found
-      if: contains(fromJson(env.published_versions).versions, env.current_version)
-      run: echo 'Test found'
-      
-    - name: Test negation
-      if: contains(fromJson(env.published_versions).versions, env.current_version) == false
-      run: echo 'Test negated'
 
-#    - name: Publish
-#      run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.NUGETAPIKEY }} --source https://api.nuget.org/v3/index.json
+    - name: Publish
+      if: contains(fromJson(env.published_versions).versions, env.current_version) == false
+      run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.NUGETAPIKEY }} --source https://api.nuget.org/v3/index.json

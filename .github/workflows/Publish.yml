@@ -51,6 +51,21 @@ jobs:
         format: markdown
         output: both
         thresholds: '60 80'
+    
+    - name: Find code coverage summary
+      run: find . \( -name "*.md" -and -not -name "README.*" \) 
+                      
+    - name: Read code coverage summary
+      id: read_code_coverage_summary
+      run: |
+        code_coverage_summary=$(cat code-coverage-results.md)
+        code_coverage_summary="${code_coverage_summary//'%'/'%25'}"
+        code_coverage_summary="${code_coverage_summary//$'\n'/'%0A'}"
+        code_coverage_summary="${code_coverage_summary//$'\r'/'%0D'}"
+        echo "code_coverage_summary=$code_coverage_summary" >> $GITHUB_ENV
+
+    - name: Output summary
+      run: echo "${{ env.code_coverage_summary }}"     
 
     - name: Get current version
       id: get_current_version

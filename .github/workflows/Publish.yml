@@ -69,7 +69,7 @@ jobs:
         -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
         -H "X-GitHub-Api-Version: 2022-11-28" \
         https://api.github.com/repos/maikelbos0/VDT.Core.Blazor.GlobalEventHandler/check-runs \
-        -d '{"name":"Test 123","head_sha":"${{ env.GITHUB_SHA }}","status":"completed","output":{"title":"Test 123","summary":"**This** is the summary"}}'
+        -d '{"name":"Test 123","head_sha":"${{ github.sha }}","status":"completed","conclusion":"success","output":{"title":"Test 123","summary":"**This** is the summary"}}'
 #-d '{"name":"Test 123","head_sha":"ce587453ced02b1526dfb4cb910479d431683101","status":"completed","external_id":"42","started_at":"2018-05-04T01:14:52Z","output":{"title":"Mighty Readme report","summary":"","text":""}}'        
 
     - name: Check run from action 
@@ -81,6 +81,6 @@ jobs:
         conclusion: ${{ job.status }}
         output: |
           {
-            "title": "This is the title"
-            "summary": "**This** is the summary"
+            "title": "This is the title",
+            "summary": "**This** is the summary\n- Test\n- Test"
           }

@@ -77,9 +77,6 @@ jobs:
         https://api.github.com/repos/maikelbos0/VDT.Core.Blazor.GlobalEventHandler/check-runs \
         -d $'{"name":"Code coverage summary","head_sha":"${{ github.sha }}","status":"completed","conclusion":"success","output":{"title":"Code coverage summary","summary":"${{ env.code_coverage_summary }}"}}'
 
-    - name: Show event name
-      run: echo "${{ github.event_name }}"
-
     - name: Get current version
       id: get_current_version
       if: github.event_name == 'push'

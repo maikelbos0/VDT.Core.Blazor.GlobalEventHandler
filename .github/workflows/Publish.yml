@@ -3,6 +3,8 @@ name: Build & publish package
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 permissions:
   contents: read
@@ -77,11 +79,13 @@ jobs:
 
     - name: Get current version
       id: get_current_version
+      if: github.event_name == 'push'
       run: |
         current_version=$(grep -Po "\d+\.\d+\.\d+" <<< $(find . -name "*.nupkg"))
         echo "current_version=$current_version" >> $GITHUB_ENV
 
     - name: Get published versions
+      if: github.event_name == 'push'
       run: |
         published_versions=$(curl https://api.nuget.org/v3-flatcontainer/VDT.Core.Blazor.GlobalEventHandler/index.json)
         published_versions="${published_versions//$'\n'/''}"
@@ -89,5 +93,5 @@ jobs:
         echo "published_versions=$published_versions" >> $GITHUB_ENV
 
     - name: Publish package
-      if: contains(fromJson(env.published_versions).versions, env.current_version) == false
+      if: github.event_name == 'push' && contains(fromJson(env.published_versions).versions, env.current_version) == false
       run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.NUGETAPIKEY }} --source https://api.nuget.org/v3/index.json

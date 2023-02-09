@@ -1,0 +1,38 @@
+﻿@page "/KeyboardEvents"
+
+<GlobalEventHandler OnKeyDown="OnKeyDown" OnKeyUp="OnKeyUp" />
+
+<h1>Keyboard events</h1>
+
+<p>
+    Event handlers for key down and up are provided. Press any key to see a demonstration.
+</p>
+
+<h2><code>OnKeyDown</code> event</h2>
+
+<p>
+    The <code>OnKeyDown</code> event occurs when the user presses a key on the keyboard.
+</p>
+
+<EventDisplay EventArgs="keyDownEventArgs" />
+
+<h2><code>OnKeyUp</code> event</h2>
+
+<p>
+    The <code>OnKeyUp</code> event occurs when the user releases a key on the keyboard.
+</p>
+
+<EventDisplay EventArgs="keyUpEventArgs" />
+
+@code {
+    private KeyboardEventArgs? keyDownEventArgs;
+    private KeyboardEventArgs? keyUpEventArgs;
+
+    public void OnKeyDown(KeyboardEventArgs args) {
+        keyDownEventArgs = args;
+    }
+
+    public void OnKeyUp(KeyboardEventArgs args) {
+        keyUpEventArgs = args;
+    }
+}

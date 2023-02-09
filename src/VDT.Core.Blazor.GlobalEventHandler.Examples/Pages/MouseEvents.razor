@@ -1,0 +1,93 @@
+﻿@page "/MouseEvents"
+
+<GlobalEventHandler OnClick="OnClick" OnMouseDown="OnMouseDown" OnMouseUp="OnMouseUp" OnMouseMove="OnMouseMove" OnContextMenu="OnContextMenu" OnDoubleClick="OnDoubleClick" />
+
+<h1>Mouse events</h1>
+
+<p>
+    Event handlers for click, mouse down, mouse up, double click, context menu click (right click) and mouse move are provided. Click any mouse button or move
+    your mouse for a demonstration.
+</p>
+
+<h2><code>OnClick</code> event</h2>
+
+<p>
+    The <code>OnClick</code> event occurs when when the user clicks anywhere in the document.
+</p>
+
+<EventDisplay EventArgs="clickEventArgs" />
+
+<h2><code>OnMouseDown</code> event</h2>
+
+<p>
+    The <code>OnMouseDown</code> event occurs when the user presses a mouse button anywhere in the document.
+</p>
+
+<EventDisplay EventArgs="mouseDownEventArgs" />
+
+<h2><code>OnMouseUp</code> event</h2>
+
+<p>
+    The <code>OnMouseUp</code> event occurs when the user releases a mouse button anywhere in the document.
+</p>
+
+<EventDisplay EventArgs="mouseUpEventArgs" />
+
+<h2><code>OnMouseMove</code> event</h2>
+
+<p>
+    The <code>OnMouseMove</code> event occurs when the user moves the mouse anywhere in the document.
+</p>
+
+<EventDisplay EventArgs="mouseMoveEventArgs" />
+
+<h2><code>OnContextMenu</code> event</h2>
+
+<p>
+    The <code>OnContextMenu</code> event occurs when the user presses the right mouse button anywhere in the document.
+</p>
+
+<EventDisplay EventArgs="contextMenuEventArgs" />
+
+<h2><code>OnDoubleClick</code> event</h2>
+
+<p>
+    The <code>OnDoubleClick</code> event occurs when the user double clicks anywhere in the document.
+</p>
+
+<EventDisplay EventArgs="doubleClickEventArgs" />
+
+@code {
+    private MouseEventArgs? clickEventArgs;
+    private MouseEventArgs? mouseDownEventArgs;
+    private MouseEventArgs? mouseUpEventArgs;
+    private MouseEventArgs? mouseMoveEventArgs;
+    private MouseEventArgs? contextMenuEventArgs;
+    private MouseEventArgs? doubleClickEventArgs;
+
+    public void OnClick(MouseEventArgs args) {
+        clickEventArgs = args;
+
+        throw new InvalidCastException();
+    }
+
+    public void OnMouseDown(MouseEventArgs args) {
+        mouseDownEventArgs = args;
+    }
+
+    public void OnMouseUp(MouseEventArgs args) {
+        mouseUpEventArgs = args;
+    }
+
+    public void OnMouseMove(MouseEventArgs args) {
+        mouseMoveEventArgs = args;
+    }
+
+    public void OnContextMenu(MouseEventArgs args) {
+        contextMenuEventArgs = args;
+    }
+
+    public void OnDoubleClick(MouseEventArgs args) {
+        doubleClickEventArgs = args;
+    }
+}

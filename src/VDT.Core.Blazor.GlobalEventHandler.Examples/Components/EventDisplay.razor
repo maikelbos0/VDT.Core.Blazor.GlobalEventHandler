@@ -1,12 +1,11 @@
 ﻿@using System.Text.Json
 @typeparam TEventArgs
 
-<pre class="bg-light p-2">
-    @if (EventArgs != null)
-    {
+@if (EventArgs != null) {
+    <pre class="bg-light p-2">
         @JsonSerializer.Serialize(EventArgs, new JsonSerializerOptions() { WriteIndented = true })
-    }
-</pre>
+    </pre>
+}
 
 @code {
     [Parameter]

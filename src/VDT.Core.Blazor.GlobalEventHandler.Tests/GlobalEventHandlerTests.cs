@@ -2,6 +2,10 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using NSubstitute;
+using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -187,6 +191,18 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
             await subject.InvokeScroll(expected);
 
             Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void GlobalEventHandler_Module_Has_Correct_Fingerprint() {
+            using var sha256 = SHA256.Create();
+
+            var fingerprintFinder = new Regex("globaleventhandler\\.([a-f0-9]+)\\.js$", RegexOptions.IgnoreCase);
+            var filePath = Directory.GetFiles(Path.Combine("..", "..", "..", "..", "VDT.Core.Blazor.GlobalEventHandler", "wwwroot"), "*.js").Single();
+            var foundFingerprint = fingerprintFinder.Match(filePath).Groups[1].Value;
+            var expectedFingerprint = string.Join("", sha256.ComputeHash(File.ReadAllBytes(filePath)).Take(5).Select(b => b.ToString("x2")));
+
+            Assert.Equal(expectedFingerprint, foundFingerprint);
         }
     }
 }

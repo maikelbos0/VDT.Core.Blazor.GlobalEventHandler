@@ -194,15 +194,28 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
         }
 
         [Fact]
+        public void GlobalEventHandler_ModuleLocation_Is_Correct() {
+            var fileName = Path.GetFileName(GlobalEventHandler.ModuleLocation);
+
+            // TODO: find a more reliable way to get the location of the javascript module
+            var expectedFilePath = Directory.GetFiles(Path.Combine("..", "..", "..", "..", "VDT.Core.Blazor.GlobalEventHandler", "wwwroot"), "globaleventhandler.*.js").Single();
+            var expectedFileName = Path.GetFileName(expectedFilePath);
+
+            Assert.Equal(expectedFileName, fileName);
+        }
+
+        [Fact]
         public void GlobalEventHandler_Module_Has_Correct_Fingerprint() {
             using var sha256 = SHA256.Create();
 
+            // TODO: find a more reliable way to get the location of the javascript module
+            var filePath = Directory.GetFiles(Path.Combine("..", "..", "..", "..", "VDT.Core.Blazor.GlobalEventHandler", "wwwroot"), "globaleventhandler.*.js").Single();
             var fingerprintFinder = new Regex("globaleventhandler\\.([a-f0-9]+)\\.js$", RegexOptions.IgnoreCase);
-            var filePath = Directory.GetFiles(Path.Combine("..", "..", "..", "..", "VDT.Core.Blazor.GlobalEventHandler", "wwwroot"), "*.js").Single();
-            var foundFingerprint = fingerprintFinder.Match(filePath).Groups[1].Value;
-            var expectedFingerprint = string.Join("", sha256.ComputeHash(File.ReadAllBytes(filePath)).Take(5).Select(b => b.ToString("x2")));
+            var fingerprint = fingerprintFinder.Match(filePath).Groups[1].Value;
+            var fileContents = File.ReadAllBytes(filePath).Where(b => b != '\r').ToArray(); // Normalize newlines between Windows and Linux
+            var expectedFingerprint = string.Join("", sha256.ComputeHash(fileContents).Take(5).Select(b => b.ToString("x2")));
 
-            Assert.Equal(expectedFingerprint, foundFingerprint);
+            Assert.Equal(expectedFingerprint, fingerprint);
         }
     }
 }

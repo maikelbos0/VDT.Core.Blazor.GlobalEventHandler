@@ -1,12 +1,10 @@
 ﻿let handlers = {};
 
-function register(dotNetObjectReference, win) {
-    win = win || window;
-
+function register(dotNetObjectReference) {
     handlers[dotNetObjectReference] = GetEventHandlers(dotNetObjectReference);
 
     for (const type in handlers[dotNetObjectReference]) {
-        win.addEventListener(type, handlers[dotNetObjectReference][type]);
+        window.addEventListener(type, handlers[dotNetObjectReference][type]);
     }
 }
 
@@ -80,11 +78,9 @@ function getScrollEventHandler(dotNetObjectReference) {
     }
 }
 
-function unregister(dotNetObjectReference, win) {
-    win = win || window;
-
+function unregister(dotNetObjectReference) {
     for (const type in handlers[dotNetObjectReference]) {
-        win.removeEventListener(type, handlers[dotNetObjectReference][type]);
+        window.removeEventListener(type, handlers[dotNetObjectReference][type]);
     }
 
     delete handlers[dotNetObjectReference];

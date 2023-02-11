@@ -1,0 +1,38 @@
+﻿@page "/DocumentEvents"
+
+<GlobalEventHandler OnResize="OnResize" OnScroll="OnScroll" />
+
+<h1>Documents events</h1>
+
+<p>
+    This component includes event handlers for window resize and scroll. Scroll or resize this window to see a demonstration.
+</p>
+
+<h2><code>OnResize</code> event</h2>
+
+<p>
+    The <code>OnResize</code> event occurs when the browser window has been resized.
+</p>
+
+<EventDisplay EventArgs="resizeEventArgs" />
+
+<h2><code>OnScroll</code> event</h2>
+
+<p>
+    The <code>OnScroll</code> event occurs when the browser window content has been scrolled.
+</p>
+
+<EventDisplay EventArgs="scrollEventArgs" />
+
+@code {
+    private ResizeEventArgs? resizeEventArgs;
+    private ScrollEventArgs? scrollEventArgs;
+
+    public void OnResize(ResizeEventArgs args) {
+        resizeEventArgs = args;
+    }
+
+    public void OnScroll(ScrollEventArgs args) {
+        scrollEventArgs = args;
+    }
+}

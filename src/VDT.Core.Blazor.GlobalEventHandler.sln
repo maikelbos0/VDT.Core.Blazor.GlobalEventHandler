@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.Blazor.GlobalEvent
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VDT.Core.Blazor.GlobalEventHandler.Tests", "VDT.Core.Blazor.GlobalEventHandler.Tests\VDT.Core.Blazor.GlobalEventHandler.Tests.csproj", "{2D2BEAB1-7469-4877-B8C2-50415F507674}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VDT.Core.Blazor.GlobalEventHandler.Examples", "VDT.Core.Blazor.GlobalEventHandler.Examples\VDT.Core.Blazor.GlobalEventHandler.Examples.csproj", "{1600F356-F806-426C-B7A7-546B6AFBDA50}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2D2BEAB1-7469-4877-B8C2-50415F507674}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D2BEAB1-7469-4877-B8C2-50415F507674}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D2BEAB1-7469-4877-B8C2-50415F507674}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1600F356-F806-426C-B7A7-546B6AFBDA50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1600F356-F806-426C-B7A7-546B6AFBDA50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1600F356-F806-426C-B7A7-546B6AFBDA50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1600F356-F806-426C-B7A7-546B6AFBDA50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

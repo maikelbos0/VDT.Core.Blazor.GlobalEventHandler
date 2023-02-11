@@ -1,31 +1,29 @@
 ﻿let handlers = {};
 
-function register(dotNetObjectReference, win) {
-    win = win || window;
-
+function register(dotNetObjectReference) {
     handlers[dotNetObjectReference] = GetEventHandlers(dotNetObjectReference);
 
     for (const type in handlers[dotNetObjectReference]) {
-        win.addEventListener(type, handlers[dotNetObjectReference][type]);
+        window.addEventListener(type, handlers[dotNetObjectReference][type]);
     }
 }
 
 function GetEventHandlers(dotNetObjectReference) {
     return {
-        'keydown': getKeyboardEventHandler(dotNetObjectReference, 'keydown', 'InvokeKeyDown'),
-        'keyup': getKeyboardEventHandler(dotNetObjectReference, 'keyup', 'InvokeKeyUp'),
+        'keydown': getKeyboardEventHandler(dotNetObjectReference, 'InvokeKeyDown'),
+        'keyup': getKeyboardEventHandler(dotNetObjectReference, 'InvokeKeyUp'),
         'resize': getResizeEventHandler(dotNetObjectReference),
-        'click': getMouseEventHandler(dotNetObjectReference, 'click', 'InvokeClick'),
-        'mousedown': getMouseEventHandler(dotNetObjectReference, 'mousedown', 'InvokeMouseDown'),
-        'mouseup': getMouseEventHandler(dotNetObjectReference, 'mouseup', 'InvokeMouseUp'),
-        'mousemove': getMouseEventHandler(dotNetObjectReference, 'mousemove', 'InvokeMouseMove'),
-        'contextmenu': getMouseEventHandler(dotNetObjectReference, 'contextmenu', 'InvokeContextMenu'),
-        'dblclick': getMouseEventHandler(dotNetObjectReference, 'dblclick', 'InvokeDoubleClick'),
+        'click': getMouseEventHandler(dotNetObjectReference, 'InvokeClick'),
+        'mousedown': getMouseEventHandler(dotNetObjectReference, 'InvokeMouseDown'),
+        'mouseup': getMouseEventHandler(dotNetObjectReference, 'InvokeMouseUp'),
+        'mousemove': getMouseEventHandler(dotNetObjectReference, 'InvokeMouseMove'),
+        'contextmenu': getMouseEventHandler(dotNetObjectReference, 'InvokeContextMenu'),
+        'dblclick': getMouseEventHandler(dotNetObjectReference, 'InvokeDoubleClick'),
         'scroll': getScrollEventHandler(dotNetObjectReference)
     };
 }
 
-function getKeyboardEventHandler(dotNetObjectReference, type, handlerReference) {
+function getKeyboardEventHandler(dotNetObjectReference, handlerReference) {
     return function (e) {
         dotNetObjectReference.invokeMethodAsync(handlerReference, {
             altKey: e.altKey,
@@ -36,12 +34,12 @@ function getKeyboardEventHandler(dotNetObjectReference, type, handlerReference) 
             metaKey: e.metaKey,
             repeat: e.repeat,
             shiftKey: e.shiftKey,
-            type: type
+            type: e.type
         });
     }
 }
 
-function getMouseEventHandler(dotNetObjectReference, type, handlerReference) {
+function getMouseEventHandler(dotNetObjectReference, handlerReference) {
     return function (e) {
         dotNetObjectReference.invokeMethodAsync(handlerReference, {
             altKey: e.altKey,
@@ -57,7 +55,7 @@ function getMouseEventHandler(dotNetObjectReference, type, handlerReference) {
             screenX: e.screenX,
             screenY: e.screenY,
             shiftKey: e.shiftKey,
-            type: type
+            type: e.type
         });
     }
 }
@@ -80,11 +78,9 @@ function getScrollEventHandler(dotNetObjectReference) {
     }
 }
 
-function unregister(dotNetObjectReference, win) {
-    win = win || window;
-
+function unregister(dotNetObjectReference) {
     for (const type in handlers[dotNetObjectReference]) {
-        win.removeEventListener(type, handlers[dotNetObjectReference][type]);
+        window.removeEventListener(type, handlers[dotNetObjectReference][type]);
     }
 
     delete handlers[dotNetObjectReference];

@@ -1,0 +1,35 @@
+﻿@page "/TouchEvents"
+
+<GlobalEventHandler OnTouchStart="OnTouchStart" />
+
+<h1>Touch events</h1>
+
+<p>
+    @*TODO*@
+    This component includes event handlers for click, mouse down, mouse up, double click, context menu click (right click) and mouse move. Click any mouse 
+    button or move your mouse for a demonstration.
+</p>
+
+<h2><code>OnTouchStart</code> event</h2>
+
+<p>
+    The <code>OnTouchStart</code> event occurs when one or more touch points are placed on the touch surface.
+</p>
+
+<EventDisplay EventArgs="touchStartEventArgs" />
+
+
+@code {
+    private TouchEventArgs? touchStartEventArgs;
+
+    public void OnTouchStart(TouchEventArgs args) {
+        touchStartEventArgs = args;
+    }
+    /*
+    https://developer.mozilla.org/en-US/docs/Web/API/Touch_events
+    Element: touchcancel
+    Element: touchend
+    Element: touchmove
+    Element: touchstart
+    */
+}

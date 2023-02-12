@@ -57,6 +57,11 @@ namespace VDT.Core.Blazor.GlobalEventHandler {
         [Parameter] public EventCallback<MouseEventArgs> OnMouseMove { get; set; }
 
         /// <summary>
+        /// A callback that will be invoked when one or more touch points are placed on the touch surface
+        /// </summary>
+        [Parameter] public EventCallback<TouchEventArgs> OnTouchStart { get; set; }
+
+        /// <summary>
         /// A callback that will be invoked when the browser window has been resized
         /// </summary>
         [Parameter] public EventCallback<ResizeEventArgs> OnResize { get; set; }
@@ -65,7 +70,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler {
         /// A callback that will be invoked when the browser window content has been scrolled
         /// </summary>
         [Parameter] public EventCallback<ScrollEventArgs> OnScroll { get; set; }
-
+        
         /// <summary>
         /// Invoke the callback for the key down event
         /// </summary>
@@ -121,6 +126,13 @@ namespace VDT.Core.Blazor.GlobalEventHandler {
         /// <param name="args">Mouse event information</param>
         /// <returns>A task that represents the asynchronous operation</returns>
         [JSInvokable] public async Task InvokeMouseMove(MouseEventArgs args) => await OnMouseMove.InvokeAsync(args);
+
+        /// <summary>
+        /// Invoke the callback for the touch start event
+        /// </summary>
+        /// <param name="args">Touch event information</param>
+        /// <returns>A task that represents the asynchronous operation</returns>
+        [JSInvokable] public async Task InvokeTouchStart(TouchEventArgs args) => await OnTouchStart.InvokeAsync(args);
 
         /// <summary>
         /// Invoke the callback for the resize event

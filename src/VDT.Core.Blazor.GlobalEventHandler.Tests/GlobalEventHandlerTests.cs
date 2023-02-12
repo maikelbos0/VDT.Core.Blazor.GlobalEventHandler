@@ -90,19 +90,6 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
         }
 
         [Fact]
-        public async Task GlobalEventHandler_InvokeResize_Invokes_OnResize_Handler() {
-            ResizeEventArgs expected = new ResizeEventArgs();
-            ResizeEventArgs? actual = null;
-            var subject = new GlobalEventHandler() {
-                OnResize = EventCallback.Factory.Create<ResizeEventArgs>(this, (args) => actual = args)
-            };
-
-            await subject.InvokeResize(expected);
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
         public async Task GlobalEventHandler_InvokeClick_Invokes_OnClick_Handler() {
             MouseEventArgs expected = new MouseEventArgs();
             MouseEventArgs? actual = null;
@@ -111,6 +98,32 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
             };
 
             await subject.InvokeClick(expected);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task GlobalEventHandler_InvokeContextMenu_Invokes_OnContextMenu_Handler() {
+            MouseEventArgs expected = new MouseEventArgs();
+            MouseEventArgs? actual = null;
+            var subject = new GlobalEventHandler() {
+                OnContextMenu = EventCallback.Factory.Create<MouseEventArgs>(this, (args) => actual = args)
+            };
+
+            await subject.InvokeContextMenu(expected);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task GlobalEventHandler_InvokeDoubleClick_Invokes_OnDoubleClick_Handler() {
+            MouseEventArgs expected = new MouseEventArgs();
+            MouseEventArgs? actual = null;
+            var subject = new GlobalEventHandler() {
+                OnDoubleClick = EventCallback.Factory.Create<MouseEventArgs>(this, (args) => actual = args)
+            };
+
+            await subject.InvokeDoubleClick(expected);
 
             Assert.Equal(expected, actual);
         }
@@ -155,32 +168,6 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
         }
 
         [Fact]
-        public async Task GlobalEventHandler_InvokeContextMenu_Invokes_OnContextMenu_Handler() {
-            MouseEventArgs expected = new MouseEventArgs();
-            MouseEventArgs? actual = null;
-            var subject = new GlobalEventHandler() {
-                OnContextMenu = EventCallback.Factory.Create<MouseEventArgs>(this, (args) => actual = args)
-            };
-
-            await subject.InvokeContextMenu(expected);
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public async Task GlobalEventHandler_InvokeDoubleClick_Invokes_OnDoubleClick_Handler() {
-            MouseEventArgs expected = new MouseEventArgs();
-            MouseEventArgs? actual = null;
-            var subject = new GlobalEventHandler() {
-                OnDoubleClick = EventCallback.Factory.Create<MouseEventArgs>(this, (args) => actual = args)
-            };
-
-            await subject.InvokeDoubleClick(expected);
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
         public async Task GlobalEventHandler_InvokeTouchStart_Invokes_OnTouchStart_Handler() {
             TouchEventArgs expected = new TouchEventArgs();
             TouchEventArgs? actual = null;
@@ -189,6 +176,19 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
             };
 
             await subject.InvokeTouchStart(expected);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task GlobalEventHandler_InvokeResize_Invokes_OnResize_Handler() {
+            ResizeEventArgs expected = new ResizeEventArgs();
+            ResizeEventArgs? actual = null;
+            var subject = new GlobalEventHandler() {
+                OnResize = EventCallback.Factory.Create<ResizeEventArgs>(this, (args) => actual = args)
+            };
+
+            await subject.InvokeResize(expected);
 
             Assert.Equal(expected, actual);
         }

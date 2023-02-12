@@ -1,13 +1,11 @@
 ﻿@page "/TouchEvents"
 
-<GlobalEventHandler OnTouchStart="OnTouchStart" />
+<GlobalEventHandler OnTouchStart="OnTouchStart" OnTouchEnd="OnTouchEnd" OnTouchCancel="OnTouchCancel" OnTouchMove="OnTouchMove" />
 
 <h1>Touch events</h1>
 
 <p>
-    @*TODO*@
-    This component includes event handlers for click, mouse down, mouse up, double click, context menu click (right click) and mouse move. Click any mouse 
-    button or move your mouse for a demonstration.
+    This component includes event handlers for touch start, touch end, touch cancel and touch move. Touch the screen for a demonstration.
 </p>
 
 <h2><code>OnTouchStart</code> event</h2>
@@ -18,18 +16,49 @@
 
 <EventDisplay EventArgs="touchStartEventArgs" />
 
+<h2><code>OnTouchEnd</code> event</h2>
+
+<p>
+    The <code>OnTouchEnd</code> event occurs when one or more touch points are removed from the touch surface.
+</p>
+
+<EventDisplay EventArgs="touchEndEventArgs" />
+
+<h2><code>OnTouchCancel</code> event</h2>
+
+<p>
+    The <code>OnTouchCancel</code> event occurs when one or more touch points have been disrupted in an implementation-specific manner.
+</p>
+
+<EventDisplay EventArgs="touchCancelEventArgs" />
+
+<h2><code>OnTouchMove</code> event</h2>
+
+<p>
+    The <code>OnTouchMove</code> event occurs when one or more touch points are moved along the touch surface.
+</p>
+
+<EventDisplay EventArgs="touchMoveEventArgs" />
 
 @code {
     private TouchEventArgs? touchStartEventArgs;
+    private TouchEventArgs? touchEndEventArgs;
+    private TouchEventArgs? touchCancelEventArgs;
+    private TouchEventArgs? touchMoveEventArgs;
 
     public void OnTouchStart(TouchEventArgs args) {
         touchStartEventArgs = args;
     }
-    /*
-    https://developer.mozilla.org/en-US/docs/Web/API/Touch_events
-    Element: touchcancel
-    Element: touchend
-    Element: touchmove
-    Element: touchstart
-    */
+
+    public void OnTouchEnd(TouchEventArgs args) {
+        touchEndEventArgs = args;
+    }
+
+    public void OnTouchCancel(TouchEventArgs args) {
+        touchCancelEventArgs = args;
+    }
+
+    public void OnTouchMove(TouchEventArgs args) {
+        touchMoveEventArgs = args;
+    }
 }

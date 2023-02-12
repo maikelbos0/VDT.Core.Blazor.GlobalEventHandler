@@ -62,6 +62,21 @@ namespace VDT.Core.Blazor.GlobalEventHandler {
         [Parameter] public EventCallback<TouchEventArgs> OnTouchStart { get; set; }
 
         /// <summary>
+        /// A callback that will be invoked when one or more touch points are removed from the touch surface
+        /// </summary>
+        [Parameter] public EventCallback<TouchEventArgs> OnTouchEnd { get; set; }
+
+        /// <summary>
+        /// A callback that will be invoked when one or more touch points have been disrupted in an implementation-specific manner
+        /// </summary>
+        [Parameter] public EventCallback<TouchEventArgs> OnTouchCancel { get; set; }
+
+        /// <summary>
+        /// A callback that will be invoked when one or more touch points are moved along the touch surface
+        /// </summary>
+        [Parameter] public EventCallback<TouchEventArgs> OnTouchMove { get; set; }
+
+        /// <summary>
         /// A callback that will be invoked when the browser window has been resized
         /// </summary>
         [Parameter] public EventCallback<ResizeEventArgs> OnResize { get; set; }
@@ -133,6 +148,27 @@ namespace VDT.Core.Blazor.GlobalEventHandler {
         /// <param name="args">Touch event information</param>
         /// <returns>A task that represents the asynchronous operation</returns>
         [JSInvokable] public async Task InvokeTouchStart(TouchEventArgs args) => await OnTouchStart.InvokeAsync(args);
+
+        /// <summary>
+        /// Invoke the callback for the touch end event
+        /// </summary>
+        /// <param name="args">Touch event information</param>
+        /// <returns>A task that represents the asynchronous operation</returns>
+        [JSInvokable] public async Task InvokeTouchEnd(TouchEventArgs args) => await OnTouchEnd.InvokeAsync(args);
+
+        /// <summary>
+        /// Invoke the callback for the touch cancel event
+        /// </summary>
+        /// <param name="args">Touch event information</param>
+        /// <returns>A task that represents the asynchronous operation</returns>
+        [JSInvokable] public async Task InvokeTouchCancel(TouchEventArgs args) => await OnTouchCancel.InvokeAsync(args);
+
+        /// <summary>
+        /// Invoke the callback for the touch move event
+        /// </summary>
+        /// <param name="args">Touch event information</param>
+        /// <returns>A task that represents the asynchronous operation</returns>
+        [JSInvokable] public async Task InvokeTouchMove(TouchEventArgs args) => await OnTouchMove.InvokeAsync(args);
 
         /// <summary>
         /// Invoke the callback for the resize event

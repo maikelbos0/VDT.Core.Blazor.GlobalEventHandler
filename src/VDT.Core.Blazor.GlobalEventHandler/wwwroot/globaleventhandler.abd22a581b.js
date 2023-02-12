@@ -19,6 +19,9 @@ function GetEventHandlers(dotNetObjectReference) {
         'mouseup': getMouseEventHandler(dotNetObjectReference, 'InvokeMouseUp'),
         'mousemove': getMouseEventHandler(dotNetObjectReference, 'InvokeMouseMove'),
         'touchstart': GetTouchEventHandler(dotNetObjectReference, 'InvokeTouchStart'),
+        'touchend': GetTouchEventHandler(dotNetObjectReference, 'InvokeTouchEnd'),
+        'touchcancel': GetTouchEventHandler(dotNetObjectReference, 'InvokeTouchCancel'),
+        'touchmove': GetTouchEventHandler(dotNetObjectReference, 'InvokeTouchMove'),
         'resize': getResizeEventHandler(dotNetObjectReference),
         'scroll': getScrollEventHandler(dotNetObjectReference)
     };

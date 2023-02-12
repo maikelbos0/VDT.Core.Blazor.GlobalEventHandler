@@ -181,6 +181,45 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
         }
 
         [Fact]
+        public async Task GlobalEventHandler_InvokeTouchEnd_Invokes_OnTouchEnd_Handler() {
+            TouchEventArgs expected = new TouchEventArgs();
+            TouchEventArgs? actual = null;
+            var subject = new GlobalEventHandler() {
+                OnTouchEnd = EventCallback.Factory.Create<TouchEventArgs>(this, (args) => actual = args)
+            };
+
+            await subject.InvokeTouchEnd(expected);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task GlobalEventHandler_InvokeTouchCancel_Invokes_OnTouchCancel_Handler() {
+            TouchEventArgs expected = new TouchEventArgs();
+            TouchEventArgs? actual = null;
+            var subject = new GlobalEventHandler() {
+                OnTouchCancel = EventCallback.Factory.Create<TouchEventArgs>(this, (args) => actual = args)
+            };
+
+            await subject.InvokeTouchCancel(expected);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task GlobalEventHandler_InvokeTouchMove_Invokes_OnTouchMove_Handler() {
+            TouchEventArgs expected = new TouchEventArgs();
+            TouchEventArgs? actual = null;
+            var subject = new GlobalEventHandler() {
+                OnTouchMove = EventCallback.Factory.Create<TouchEventArgs>(this, (args) => actual = args)
+            };
+
+            await subject.InvokeTouchMove(expected);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public async Task GlobalEventHandler_InvokeResize_Invokes_OnResize_Handler() {
             ResizeEventArgs expected = new ResizeEventArgs();
             ResizeEventArgs? actual = null;

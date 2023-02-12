@@ -8,16 +8,14 @@
 
 	<PropertyGroup>
 		<PackageId>VDT.Core.Blazor.GlobalEventHandler</PackageId>
-		<Version>1.1.4</Version>
+		<Version>1.2.0</Version>
 		<Title>VDT.Core.Blazor.GlobalEventHandler</Title>
 		<Description>Blazor component that allows you to handle global window level events in your application</Description>
-		<PackageReleaseNotes>- Added example project
-- Simplified javascript module
-- Added fingerprint to javascript module</PackageReleaseNotes>
+		<PackageReleaseNotes>- Added support for touch events</PackageReleaseNotes>
 		<Authors>Maikel Bos</Authors>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Copyright>Copyright © 2021 Maikel Bos</Copyright>
-		<PackageTags>Blazor component, blazor, events, event handling, event handler, keydown, keyup, window events, global events, window event handlers, global event handlers</PackageTags>
+		<PackageTags>Blazor component, blazor, events, event handling, event handler, keydown, keyup, click, contextmenu, dblclick, mousedown, mouseup, touchstart, touchend, touchcancel, touchmove, resize, scroll, window events, global events, window event handlers, global event handlers</PackageTags>
 		<PackageProjectUrl>https://github.com/maikelbos0/VDT.Core.Blazor.GlobalEventHandler</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>

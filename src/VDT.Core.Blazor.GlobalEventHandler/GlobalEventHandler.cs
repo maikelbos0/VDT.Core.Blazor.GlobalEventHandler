@@ -27,14 +27,19 @@ namespace VDT.Core.Blazor.GlobalEventHandler {
         [Parameter] public EventCallback<KeyboardEventArgs> OnKeyUp { get; set; }
 
         /// <summary>
-        /// A callback that will be invoked when the window is resized
-        /// </summary>
-        [Parameter] public EventCallback<ResizeEventArgs> OnResize { get; set; }
-
-        /// <summary>
         /// A callback that will be invoked when a mouse button is clicked anywhere in the window
         /// </summary>
         [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+        /// <summary>
+        /// A callback that will be invoked when a context menu is requested anywhere in the window; normally by using the right mouse button
+        /// </summary>
+        [Parameter] public EventCallback<MouseEventArgs> OnContextMenu { get; set; }
+
+        /// <summary>
+        /// A callback that will be invoked when a mouse button is double clicked anywhere in the window
+        /// </summary>
+        [Parameter] public EventCallback<MouseEventArgs> OnDoubleClick { get; set; }
 
         /// <summary>
         /// A callback that will be invoked when a mouse button is pressed anywhere in the window
@@ -52,14 +57,9 @@ namespace VDT.Core.Blazor.GlobalEventHandler {
         [Parameter] public EventCallback<MouseEventArgs> OnMouseMove { get; set; }
 
         /// <summary>
-        /// A callback that will be invoked when a context menu is requested anywhere in the window; normally by using the right mouse button
+        /// A callback that will be invoked when the window is resized
         /// </summary>
-        [Parameter] public EventCallback<MouseEventArgs> OnContextMenu { get; set; }
-
-        /// <summary>
-        /// A callback that will be invoked when a mouse button is double clicked anywhere in the window
-        /// </summary>
-        [Parameter] public EventCallback<MouseEventArgs> OnDoubleClick { get; set; }
+        [Parameter] public EventCallback<ResizeEventArgs> OnResize { get; set; }
 
         /// <summary>
         /// A callback that will be invoked when the document is scrolled
@@ -81,18 +81,25 @@ namespace VDT.Core.Blazor.GlobalEventHandler {
         [JSInvokable] public async Task InvokeKeyUp(KeyboardEventArgs args) => await OnKeyUp.InvokeAsync(args);
 
         /// <summary>
-        /// Invoke the callback for the resize event
-        /// </summary>
-        /// <param name="args">Resize event information</param>
-        /// <returns>A task that represents the asynchronous operation</returns>
-        [JSInvokable] public async Task InvokeResize(ResizeEventArgs args) => await OnResize.InvokeAsync(args);
-
-        /// <summary>
         /// Invoke the callback for the click event
         /// </summary>
         /// <param name="args">Mouse event information</param>
         /// <returns>A task that represents the asynchronous operation</returns>
         [JSInvokable] public async Task InvokeClick(MouseEventArgs args) => await OnClick.InvokeAsync(args);
+
+        /// <summary>
+        /// Invoke the callback for the context menu event
+        /// </summary>
+        /// <param name="args">Mouse event information</param>
+        /// <returns>A task that represents the asynchronous operation</returns>
+        [JSInvokable] public async Task InvokeContextMenu(MouseEventArgs args) => await OnContextMenu.InvokeAsync(args);
+
+        /// <summary>
+        /// Invoke the callback for the double click event
+        /// </summary>
+        /// <param name="args">Mouse event information</param>
+        /// <returns>A task that represents the asynchronous operation</returns>
+        [JSInvokable] public async Task InvokeDoubleClick(MouseEventArgs args) => await OnDoubleClick.InvokeAsync(args);
 
         /// <summary>
         /// Invoke the callback for the mouse down event
@@ -116,18 +123,11 @@ namespace VDT.Core.Blazor.GlobalEventHandler {
         [JSInvokable] public async Task InvokeMouseMove(MouseEventArgs args) => await OnMouseMove.InvokeAsync(args);
 
         /// <summary>
-        /// Invoke the callback for the context menu event
+        /// Invoke the callback for the resize event
         /// </summary>
-        /// <param name="args">Mouse event information</param>
+        /// <param name="args">Resize event information</param>
         /// <returns>A task that represents the asynchronous operation</returns>
-        [JSInvokable] public async Task InvokeContextMenu(MouseEventArgs args) => await OnContextMenu.InvokeAsync(args);
-
-        /// <summary>
-        /// Invoke the callback for the double click event
-        /// </summary>
-        /// <param name="args">Mouse event information</param>
-        /// <returns>A task that represents the asynchronous operation</returns>
-        [JSInvokable] public async Task InvokeDoubleClick(MouseEventArgs args) => await OnDoubleClick.InvokeAsync(args);
+        [JSInvokable] public async Task InvokeResize(ResizeEventArgs args) => await OnResize.InvokeAsync(args);
 
         /// <summary>
         /// Invoke the callback for the scroll event

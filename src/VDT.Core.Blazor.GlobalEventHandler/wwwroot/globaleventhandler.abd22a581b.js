@@ -12,13 +12,13 @@ function GetEventHandlers(dotNetObjectReference) {
     return {
         'keydown': getKeyboardEventHandler(dotNetObjectReference, 'InvokeKeyDown'),
         'keyup': getKeyboardEventHandler(dotNetObjectReference, 'InvokeKeyUp'),
-        'resize': getResizeEventHandler(dotNetObjectReference),
         'click': getMouseEventHandler(dotNetObjectReference, 'InvokeClick'),
+        'contextmenu': getMouseEventHandler(dotNetObjectReference, 'InvokeContextMenu'),
+        'dblclick': getMouseEventHandler(dotNetObjectReference, 'InvokeDoubleClick'),
         'mousedown': getMouseEventHandler(dotNetObjectReference, 'InvokeMouseDown'),
         'mouseup': getMouseEventHandler(dotNetObjectReference, 'InvokeMouseUp'),
         'mousemove': getMouseEventHandler(dotNetObjectReference, 'InvokeMouseMove'),
-        'contextmenu': getMouseEventHandler(dotNetObjectReference, 'InvokeContextMenu'),
-        'dblclick': getMouseEventHandler(dotNetObjectReference, 'InvokeDoubleClick'),
+        'resize': getResizeEventHandler(dotNetObjectReference),
         'scroll': getScrollEventHandler(dotNetObjectReference)
     };
 }

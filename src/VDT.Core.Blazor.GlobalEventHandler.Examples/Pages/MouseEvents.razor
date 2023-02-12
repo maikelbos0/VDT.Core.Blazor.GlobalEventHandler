@@ -12,10 +12,26 @@
 <h2><code>OnClick</code> event</h2>
 
 <p>
-    The <code>OnClick</code> event occurs when when the user clicks anywhere in the document.
+    The <code>OnClick</code> event occurs when the user clicks anywhere in the document.
 </p>
 
 <EventDisplay EventArgs="clickEventArgs" />
+
+<h2><code>OnContextMenu</code> event</h2>
+
+<p>
+    The <code>OnContextMenu</code> event occurs when the user presses the right mouse button anywhere in the document.
+</p>
+
+<EventDisplay EventArgs="contextMenuEventArgs" />
+
+<h2><code>OnDoubleClick</code> event</h2>
+
+<p>
+    The <code>OnDoubleClick</code> event occurs when the user double clicks anywhere in the document.
+</p>
+
+<EventDisplay EventArgs="doubleClickEventArgs" />
 
 <h2><code>OnMouseDown</code> event</h2>
 
@@ -41,32 +57,24 @@
 
 <EventDisplay EventArgs="mouseMoveEventArgs" />
 
-<h2><code>OnContextMenu</code> event</h2>
-
-<p>
-    The <code>OnContextMenu</code> event occurs when the user presses the right mouse button anywhere in the document.
-</p>
-
-<EventDisplay EventArgs="contextMenuEventArgs" />
-
-<h2><code>OnDoubleClick</code> event</h2>
-
-<p>
-    The <code>OnDoubleClick</code> event occurs when the user double clicks anywhere in the document.
-</p>
-
-<EventDisplay EventArgs="doubleClickEventArgs" />
-
 @code {
     private MouseEventArgs? clickEventArgs;
+    private MouseEventArgs? contextMenuEventArgs;
+    private MouseEventArgs? doubleClickEventArgs;
     private MouseEventArgs? mouseDownEventArgs;
     private MouseEventArgs? mouseUpEventArgs;
     private MouseEventArgs? mouseMoveEventArgs;
-    private MouseEventArgs? contextMenuEventArgs;
-    private MouseEventArgs? doubleClickEventArgs;
 
     public void OnClick(MouseEventArgs args) {
         clickEventArgs = args;
+    }
+
+    public void OnContextMenu(MouseEventArgs args) {
+        contextMenuEventArgs = args;
+    }
+
+    public void OnDoubleClick(MouseEventArgs args) {
+        doubleClickEventArgs = args;
     }
 
     public void OnMouseDown(MouseEventArgs args) {
@@ -79,13 +87,5 @@
 
     public void OnMouseMove(MouseEventArgs args) {
         mouseMoveEventArgs = args;
-    }
-
-    public void OnContextMenu(MouseEventArgs args) {
-        contextMenuEventArgs = args;
-    }
-
-    public void OnDoubleClick(MouseEventArgs args) {
-        doubleClickEventArgs = args;
     }
 }

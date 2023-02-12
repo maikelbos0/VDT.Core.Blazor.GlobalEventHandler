@@ -12,13 +12,17 @@ function GetEventHandlers(dotNetObjectReference) {
     return {
         'keydown': getKeyboardEventHandler(dotNetObjectReference, 'InvokeKeyDown'),
         'keyup': getKeyboardEventHandler(dotNetObjectReference, 'InvokeKeyUp'),
-        'resize': getResizeEventHandler(dotNetObjectReference),
         'click': getMouseEventHandler(dotNetObjectReference, 'InvokeClick'),
+        'contextmenu': getMouseEventHandler(dotNetObjectReference, 'InvokeContextMenu'),
+        'dblclick': getMouseEventHandler(dotNetObjectReference, 'InvokeDoubleClick'),
         'mousedown': getMouseEventHandler(dotNetObjectReference, 'InvokeMouseDown'),
         'mouseup': getMouseEventHandler(dotNetObjectReference, 'InvokeMouseUp'),
         'mousemove': getMouseEventHandler(dotNetObjectReference, 'InvokeMouseMove'),
-        'contextmenu': getMouseEventHandler(dotNetObjectReference, 'InvokeContextMenu'),
-        'dblclick': getMouseEventHandler(dotNetObjectReference, 'InvokeDoubleClick'),
+        'touchstart': GetTouchEventHandler(dotNetObjectReference, 'InvokeTouchStart'),
+        'touchend': GetTouchEventHandler(dotNetObjectReference, 'InvokeTouchEnd'),
+        'touchcancel': GetTouchEventHandler(dotNetObjectReference, 'InvokeTouchCancel'),
+        'touchmove': GetTouchEventHandler(dotNetObjectReference, 'InvokeTouchMove'),
+        'resize': getResizeEventHandler(dotNetObjectReference),
         'scroll': getScrollEventHandler(dotNetObjectReference)
     };
 }
@@ -57,6 +61,33 @@ function getMouseEventHandler(dotNetObjectReference, handlerReference) {
             shiftKey: e.shiftKey,
             type: e.type
         });
+    }
+}
+
+function GetTouchEventHandler(dotNetObjectReference, handlerReference) {
+    return function (e) {
+        dotNetObjectReference.invokeMethodAsync(handlerReference, {
+            altKey: e.altKey,
+            changedTouches: Array.from(e.changedTouches).map(MapTouchPoint),
+            ctrlKey: e.ctrlKey,
+            detail: e.detail,
+            shiftKey: e.shiftKey,
+            targetTouches: Array.from(e.targetTouches).map(MapTouchPoint),
+            touches: Array.from(e.touches).map(MapTouchPoint),
+            type: e.type
+        });
+    }
+
+    function MapTouchPoint(touchPoint) {
+        return {
+            identifier: touchPoint.identifier,
+            screenX: touchPoint.screenX,
+            screenY: touchPoint.screenY,
+            clientX: touchPoint.clientX,
+            clientY: touchPoint.clientY,
+            pageX: touchPoint.pageX,
+            pageY: touchPoint.pageY,
+        };
     }
 }
 

@@ -181,6 +181,19 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
         }
 
         [Fact]
+        public async Task GlobalEventHandler_InvokeTouchStart_Invokes_OnTouchStart_Handler() {
+            TouchEventArgs expected = new TouchEventArgs();
+            TouchEventArgs? actual = null;
+            var subject = new GlobalEventHandler() {
+                OnTouchStart = EventCallback.Factory.Create<TouchEventArgs>(this, (args) => actual = args)
+            };
+
+            await subject.InvokeTouchStart(expected);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public async Task GlobalEventHandler_InvokeScroll_Invokes_OnScroll_Handler() {
             ScrollEventArgs expected = new ScrollEventArgs();
             ScrollEventArgs? actual = null;

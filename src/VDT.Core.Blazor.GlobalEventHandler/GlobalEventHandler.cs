@@ -17,52 +17,52 @@ namespace VDT.Core.Blazor.GlobalEventHandler {
         [Inject] internal IJSRuntime JSRuntime { get; set; } = null!;
 
         /// <summary>
-        /// A callback that will be invoked when a key is pressed anywhere in the window
+        /// A callback that will be invoked when the user presses a key on the keyboard
         /// </summary>
         [Parameter] public EventCallback<KeyboardEventArgs> OnKeyDown { get; set; }
 
         /// <summary>
-        /// A callback that will be invoked when a pressed key is released anywhere in the window
+        /// A callback that will be invoked when the user releases a key on the keyboard
         /// </summary>
         [Parameter] public EventCallback<KeyboardEventArgs> OnKeyUp { get; set; }
 
         /// <summary>
-        /// A callback that will be invoked when a mouse button is clicked anywhere in the window
+        /// A callback that will be invoked when the user clicks anywhere in the document
         /// </summary>
         [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
 
         /// <summary>
-        /// A callback that will be invoked when a context menu is requested anywhere in the window; normally by using the right mouse button
+        /// A callback that will be invoked when the user presses the right mouse button anywhere in the document
         /// </summary>
         [Parameter] public EventCallback<MouseEventArgs> OnContextMenu { get; set; }
 
         /// <summary>
-        /// A callback that will be invoked when a mouse button is double clicked anywhere in the window
+        /// A callback that will be invoked when the user double clicks anywhere in the document
         /// </summary>
         [Parameter] public EventCallback<MouseEventArgs> OnDoubleClick { get; set; }
 
         /// <summary>
-        /// A callback that will be invoked when a mouse button is pressed anywhere in the window
+        /// A callback that will be invoked when the user presses a mouse button anywhere in the document
         /// </summary>
         [Parameter] public EventCallback<MouseEventArgs> OnMouseDown { get; set; }
 
         /// <summary>
-        /// A callback that will be invoked when a pressed mouse button is released anywhere in the window
+        /// A callback that will be invoked when the user releases a mouse button anywhere in the document
         /// </summary>
         [Parameter] public EventCallback<MouseEventArgs> OnMouseUp { get; set; }
 
         /// <summary>
-        /// A callback that will be invoked when the mouse is moved anywhere in the window
+        /// A callback that will be invoked when the user moves the mouse anywhere in the document
         /// </summary>
         [Parameter] public EventCallback<MouseEventArgs> OnMouseMove { get; set; }
 
         /// <summary>
-        /// A callback that will be invoked when the window is resized
+        /// A callback that will be invoked when the browser window has been resized
         /// </summary>
         [Parameter] public EventCallback<ResizeEventArgs> OnResize { get; set; }
 
         /// <summary>
-        /// A callback that will be invoked when the document is scrolled
+        /// A callback that will be invoked when the browser window content has been scrolled
         /// </summary>
         [Parameter] public EventCallback<ScrollEventArgs> OnScroll { get; set; }
 

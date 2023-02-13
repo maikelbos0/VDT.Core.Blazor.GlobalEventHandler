@@ -29,8 +29,10 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
             var module = Substitute.For<IJSObjectReference>();
             runtime.InvokeAsync<IJSObjectReference>("import", new object[] { GlobalEventHandler.ModuleLocation }).ReturnsForAnyArgs(module);
 
-            var subject = new TestGlobalEventHandler();
-            subject.JSRuntime = runtime;
+            var subject = new TestGlobalEventHandler {
+                JSRuntime = runtime
+            };
+
             await subject.OnAfterRenderAsync(true);
 
             await module.Received().InvokeVoidAsync("register", Arg.Is<object[]>(args => Assert.Single(args) is DotNetObjectReference<GlobalEventHandler>));
@@ -42,8 +44,10 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
             var module = Substitute.For<IJSObjectReference>();
             runtime.InvokeAsync<IJSObjectReference>("import", new object[] { GlobalEventHandler.ModuleLocation }).ReturnsForAnyArgs(module);
 
-            var subject = new TestGlobalEventHandler();
-            subject.JSRuntime = runtime;
+            var subject = new TestGlobalEventHandler {
+                JSRuntime = runtime
+            };
+
             await subject.OnAfterRenderAsync(false);
 
             await module.DidNotReceiveWithAnyArgs().InvokeVoidAsync(Arg.Any<string>(), Arg.Any<object[]>());
@@ -65,7 +69,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
 
         [Fact]
         public async Task GlobalEventHandler_InvokeKeyDown_Invokes_OnKeyDown_Handler() {
-            KeyboardEventArgs expected = new KeyboardEventArgs();
+            KeyboardEventArgs expected = new();
             KeyboardEventArgs? actual = null;
             var subject = new GlobalEventHandler() {
                 OnKeyDown = EventCallback.Factory.Create<KeyboardEventArgs>(this, (args) => actual = args)
@@ -78,7 +82,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
 
         [Fact]
         public async Task GlobalEventHandler_InvokeKeyUp_Invokes_OnKeyUp_Handler() {
-            KeyboardEventArgs expected = new KeyboardEventArgs();
+            KeyboardEventArgs expected = new();
             KeyboardEventArgs? actual = null;
             var subject = new GlobalEventHandler() {
                 OnKeyUp = EventCallback.Factory.Create<KeyboardEventArgs>(this, (args) => actual = args)
@@ -91,7 +95,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
 
         [Fact]
         public async Task GlobalEventHandler_InvokeClick_Invokes_OnClick_Handler() {
-            MouseEventArgs expected = new MouseEventArgs();
+            MouseEventArgs expected = new();
             MouseEventArgs? actual = null;
             var subject = new GlobalEventHandler() {
                 OnClick = EventCallback.Factory.Create<MouseEventArgs>(this, (args) => actual = args)
@@ -104,7 +108,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
 
         [Fact]
         public async Task GlobalEventHandler_InvokeContextMenu_Invokes_OnContextMenu_Handler() {
-            MouseEventArgs expected = new MouseEventArgs();
+            MouseEventArgs expected = new();
             MouseEventArgs? actual = null;
             var subject = new GlobalEventHandler() {
                 OnContextMenu = EventCallback.Factory.Create<MouseEventArgs>(this, (args) => actual = args)
@@ -117,7 +121,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
 
         [Fact]
         public async Task GlobalEventHandler_InvokeDoubleClick_Invokes_OnDoubleClick_Handler() {
-            MouseEventArgs expected = new MouseEventArgs();
+            MouseEventArgs expected = new();
             MouseEventArgs? actual = null;
             var subject = new GlobalEventHandler() {
                 OnDoubleClick = EventCallback.Factory.Create<MouseEventArgs>(this, (args) => actual = args)
@@ -130,7 +134,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
 
         [Fact]
         public async Task GlobalEventHandler_InvokeMouseDown_Invokes_OnMouseDown_Handler() {
-            MouseEventArgs expected = new MouseEventArgs();
+            MouseEventArgs expected = new();
             MouseEventArgs? actual = null;
             var subject = new GlobalEventHandler() {
                 OnMouseDown = EventCallback.Factory.Create<MouseEventArgs>(this, (args) => actual = args)
@@ -143,7 +147,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
 
         [Fact]
         public async Task GlobalEventHandler_InvokeMouseUp_Invokes_OnMouseUp_Handler() {
-            MouseEventArgs expected = new MouseEventArgs();
+            MouseEventArgs expected = new();
             MouseEventArgs? actual = null;
             var subject = new GlobalEventHandler() {
                 OnMouseUp = EventCallback.Factory.Create<MouseEventArgs>(this, (args) => actual = args)
@@ -156,7 +160,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
 
         [Fact]
         public async Task GlobalEventHandler_InvokeMouseMove_Invokes_OnMouseMove_Handler() {
-            MouseEventArgs expected = new MouseEventArgs();
+            MouseEventArgs expected = new();
             MouseEventArgs? actual = null;
             var subject = new GlobalEventHandler() {
                 OnMouseMove = EventCallback.Factory.Create<MouseEventArgs>(this, (args) => actual = args)
@@ -169,7 +173,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
 
         [Fact]
         public async Task GlobalEventHandler_InvokeTouchStart_Invokes_OnTouchStart_Handler() {
-            TouchEventArgs expected = new TouchEventArgs();
+            TouchEventArgs expected = new();
             TouchEventArgs? actual = null;
             var subject = new GlobalEventHandler() {
                 OnTouchStart = EventCallback.Factory.Create<TouchEventArgs>(this, (args) => actual = args)
@@ -182,7 +186,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
 
         [Fact]
         public async Task GlobalEventHandler_InvokeTouchEnd_Invokes_OnTouchEnd_Handler() {
-            TouchEventArgs expected = new TouchEventArgs();
+            TouchEventArgs expected = new();
             TouchEventArgs? actual = null;
             var subject = new GlobalEventHandler() {
                 OnTouchEnd = EventCallback.Factory.Create<TouchEventArgs>(this, (args) => actual = args)
@@ -195,7 +199,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
 
         [Fact]
         public async Task GlobalEventHandler_InvokeTouchCancel_Invokes_OnTouchCancel_Handler() {
-            TouchEventArgs expected = new TouchEventArgs();
+            TouchEventArgs expected = new();
             TouchEventArgs? actual = null;
             var subject = new GlobalEventHandler() {
                 OnTouchCancel = EventCallback.Factory.Create<TouchEventArgs>(this, (args) => actual = args)
@@ -208,7 +212,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
 
         [Fact]
         public async Task GlobalEventHandler_InvokeTouchMove_Invokes_OnTouchMove_Handler() {
-            TouchEventArgs expected = new TouchEventArgs();
+            TouchEventArgs expected = new();
             TouchEventArgs? actual = null;
             var subject = new GlobalEventHandler() {
                 OnTouchMove = EventCallback.Factory.Create<TouchEventArgs>(this, (args) => actual = args)
@@ -221,7 +225,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
 
         [Fact]
         public async Task GlobalEventHandler_InvokeResize_Invokes_OnResize_Handler() {
-            ResizeEventArgs expected = new ResizeEventArgs();
+            ResizeEventArgs expected = new();
             ResizeEventArgs? actual = null;
             var subject = new GlobalEventHandler() {
                 OnResize = EventCallback.Factory.Create<ResizeEventArgs>(this, (args) => actual = args)
@@ -234,7 +238,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
 
         [Fact]
         public async Task GlobalEventHandler_InvokeScroll_Invokes_OnScroll_Handler() {
-            ScrollEventArgs expected = new ScrollEventArgs();
+            ScrollEventArgs expected = new();
             ScrollEventArgs? actual = null;
             var subject = new GlobalEventHandler() {
                 OnScroll = EventCallback.Factory.Create<ScrollEventArgs>(this, (args) => actual = args)

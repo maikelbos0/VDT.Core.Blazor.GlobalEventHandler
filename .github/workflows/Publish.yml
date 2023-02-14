@@ -61,6 +61,14 @@ jobs:
         echo "code_coverage_summary=$code_coverage_summary" >> $GITHUB_ENV
       working-directory: .
 
+    - name: Test event
+      run: |
+        sudo apt-get install jq 
+        event_data=$(cat '${{ github.event_path }}')
+        event_data="${event_data//$'\n'/''}"
+        event_data="${event_data//$'\r'/''}"
+        echo "$event_path"
+
     - name: Publish code coverage summary
       if: always()
       run: |

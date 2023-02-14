@@ -86,7 +86,7 @@ jobs:
       run: |
         current_version=$(grep -Po "\d+\.\d+\.\d+" <<< $(find . -name "*.nupkg"))
         echo "current_version=$current_version" >> $GITHUB_ENV
-
+    
     - name: Get published versions
       if: github.event_name == 'push'
       run: |
@@ -95,6 +95,16 @@ jobs:
         published_versions="${published_versions//$'\r'/''}"
         echo "published_versions=$published_versions" >> $GITHUB_ENV
 
+    - name: Publish package test already published
+      #if: github.event_name == 'push'
+      run: |
+        current_version=$(grep -Po "\d+\.\d+\.\d+" <<< $(find . -name "*.nupkg"))
+        published_versions=$(curl https://api.nuget.org/v3-flatcontainer/VDT.Core.Blazor.GlobalEventHandler/index.json | jq '.versions')
+        if [[ $published_versions == *\""$current_version"\"* ]]
+        then
+          echo "Publishing version $current_version"                
+        fi                
+    
     - name: Publish package
       if: github.event_name == 'push' && contains(fromJson(env.published_versions).versions, env.current_version) == false
       run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.NUGETAPIKEY }} --source https://api.nuget.org/v3/index.json

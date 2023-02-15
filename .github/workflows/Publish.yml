@@ -80,31 +80,13 @@ jobs:
         https://api.github.com/repos/maikelbos0/VDT.Core.Blazor.GlobalEventHandler/check-runs \
         -d $'{"name":"Code coverage summary","head_sha":"${{ github.sha }}","status":"completed","conclusion":"success","output":{"title":"Code coverage summary","summary":"${{ env.code_coverage_summary }}"}}'
 
-    - name: Get current version
-      id: get_current_version
+    - name: Publish package
       if: github.event_name == 'push'
-      run: |
-        current_version=$(grep -Po "\d+\.\d+\.\d+" <<< $(find . -name "*.nupkg"))
-        echo "current_version=$current_version" >> $GITHUB_ENV
-    
-    - name: Get published versions
-      if: github.event_name == 'push'
-      run: |
-        published_versions=$(curl https://api.nuget.org/v3-flatcontainer/VDT.Core.Blazor.GlobalEventHandler/index.json)
-        published_versions="${published_versions//$'\n'/''}"
-        published_versions="${published_versions//$'\r'/''}"
-        echo "published_versions=$published_versions" >> $GITHUB_ENV
-
-    - name: Publish package test already published
-      #if: github.event_name == 'push'
       run: |
         current_version=$(grep -Po "\d+\.\d+\.\d+" <<< $(find . -name "*.nupkg"))
         published_versions=$(curl https://api.nuget.org/v3-flatcontainer/VDT.Core.Blazor.GlobalEventHandler/index.json | jq '.versions')
-        if [[ $published_versions == *\""$current_version"\"* ]]
+        if [[ $published_versions != *\""$current_version"\"* ]]
         then
           echo "Publishing version $current_version"                
-        fi                
-    
-    - name: Publish package
-      if: github.event_name == 'push' && contains(fromJson(env.published_versions).versions, env.current_version) == false
-      run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.NUGETAPIKEY }} --source https://api.nuget.org/v3/index.json
+          dotnet nuget push **/*.nupkg --api-key ${{ secrets.NUGETAPIKEY }} --source https://api.nuget.org/v3/index.json
+        fi

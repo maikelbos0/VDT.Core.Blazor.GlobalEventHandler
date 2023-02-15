@@ -67,7 +67,7 @@ jobs:
         event_data=$(cat '${{ github.event_path }}')
         event_data="${event_data//$'\n'/''}"
         event_data="${event_data//$'\r'/''}"
-        echo "$event_path"
+        echo "$event_data"
 
     - name: Publish code coverage summary
       if: always()

@@ -2,7 +2,7 @@ name: Build & publish package
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, Build-Action ]
   pull_request:
     branches: [ main ]
 
@@ -88,5 +88,5 @@ jobs:
         if [[ $published_versions != *\""$current_version"\"* ]]
         then
           echo "Publishing version $current_version"                
-          dotnet nuget push **/*.nupkg --api-key ${{ secrets.NUGETAPIKEY }} --source https://api.nuget.org/v3/index.json
+          #dotnet nuget push **/*.nupkg --api-key ${{ secrets.NUGETAPIKEY }} --source https://api.nuget.org/v3/index.json
         fi

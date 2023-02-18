@@ -51,6 +51,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
             await subject.OnAfterRenderAsync(false);
 
             await module.DidNotReceiveWithAnyArgs().InvokeVoidAsync(Arg.Any<string>(), Arg.Any<object[]>());
+            Assert.Fail("");
         }
 
         [Fact]

@@ -32,10 +32,6 @@ jobs:
       run: find . -name "*.xslt"
       working-directory: .
 
-    - name: Show md
-      run: find . -name "*.md"
-      working-directory: .
-
     - name: Restore
       run: dotnet restore
 
@@ -44,6 +40,12 @@ jobs:
 
     - name: Test
       run: dotnet test --configuration Release --no-build --logger "trx;LogFileName=test-results.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=TestResults/coverage-results.xml
+
+    - name: Create test results
+      if: always()
+      run: |
+        sudo apt-get install -y xsltproc
+        find '.' -name '*.trx' -exec cat {} + | xsltproc '../helpers/test-results.xslt' '-'
 
     - name: Publish test report
       uses: dorny/test-reporter@v1.6.0

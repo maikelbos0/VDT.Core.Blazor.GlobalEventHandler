@@ -46,7 +46,7 @@ jobs:
     - name: Publish test results
       if: always()
       run: |
-        test_results=$(find '.' -name "*.trx" | xargs xsltproc '../helpers/test-results.xslt') # todo add name of test run to xslt
+        test_results=$(find '.' -name "*.trx" | sort | xargs -I fn xsltproc --stringparam fileName 'fn' '../helpers/test-results.xslt' 'fn')
         if [ $(xmlstarlet sel -N x="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -c 'count(//x:UnitTestResult[@outcome="Failed"])' -n $(find '.' -name '*.trx')) = '0' ]
         then 
           conclusion='success'
@@ -60,7 +60,7 @@ jobs:
     - name: Publish code coverage results
       if: always()
       run: |
-        coverage_results=$(find '.' -name "*coverage*.xml" | xargs xsltproc '../helpers/coverage-results.xslt') # todo add name of test run to xslt
+        coverage_results=$(find '.' -name "*coverage*.xml" | sort | xargs -I fn xsltproc --stringparam fileName 'fn' '../helpers/coverage-results.xslt' 'fn')
         sha=$(cat '${{ github.event_path }}' | jq -r '.after')
         request=$(jq --null-input --arg sha "$sha" --arg coverage_results "$coverage_results" '{"name":"Code coverage results","head_sha":$sha,"status":"completed","conclusion":"success","output":{"title":"Code coverage results","summary":$coverage_results}}')
         curl -s -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/maikelbos0/VDT.Core.Blazor.GlobalEventHandler/check-runs -d "$request"

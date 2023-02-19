@@ -46,14 +46,11 @@ jobs:
       run: |
         sudo apt-get install -y xsltproc
         sudo apt-get install -y xmlstarlet
-        test_results=$(find '.' -name '*.trx' -exec cat {} + | xsltproc '../helpers/test-results.xslt' '-')
-        test_results="${test_results//$'\n'/'\n'}"
+        test_results=$(find '.' -name "*.trx" | xargs xsltproc '../helpers/test-results.xslt') # todo add name of test run to xslt
+        test_results="${test_results//'\'/'\\'}"
+        test_results="${test_results//$'\n'/'\n'}" # todo find cleaner way to escape json string
         test_results="${test_results//$'\r'/'\r'}"
         test_results="${test_results//'"'/'\"'}"
-        coverage_results=$(find '.' -name '*coverage*.xml' -exec cat {} + | xsltproc '../helpers/coverage-results.xslt' '-')
-        coverage_results="${coverage_results//$'\n'/'\n'}"
-        coverage_results="${coverage_results//$'\r'/'\r'}"
-        coverage_results="${coverage_results//'"'/'\"'}"
         if [ $(xmlstarlet sel -N x="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" -t -c 'count(//x:UnitTestResult[@outcome="Failed"])' -n $(find '.' -name '*.trx')) = '0' ]
         then 
           conclusion='success'
@@ -62,29 +59,20 @@ jobs:
         fi
         sha=$(cat '${{ github.event_path }}' | jq -r '.after')
         curl -s -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/maikelbos0/VDT.Core.Blazor.GlobalEventHandler/check-runs \
-          -d "{\"name\":\"Test results\",\"head_sha\":\"$sha\",\"status\":\"completed\",\"conclusion\":\"$conclusion\",\"output\":{\"title\":\"Test results\",\"summary\":\"$test_results$coverage_results\"}}"
+          -d "{\"name\":\"Test results\",\"head_sha\":\"$sha\",\"status\":\"completed\",\"conclusion\":\"$conclusion\",\"output\":{\"title\":\"Test results\",\"summary\":\"$test_results\"}}"
 
-    - name: Create code coverage summary
-      uses: irongut/CodeCoverageSummary@v1.3.0
+    - name: Publish code coverage results
       if: always()
-      with:
-        filename: "**/coverage-results.xml"
-        badge: true
-        format: markdown
-        output: both
-        thresholds: '60 80'
-
-    - name: Publish code coverage summary
-      if: always()
-      run: |
-        sha=$(cat '${{ github.event_path }}' | jq -r '.after')
-        code_coverage_summary=$(cat code-coverage-results.md) 
-        code_coverage_summary="${code_coverage_summary//$'\n'/'\n'}"
-        code_coverage_summary="${code_coverage_summary//$'\r'/'\r'}"
-        code_coverage_summary="${code_coverage_summary//'"'/'\"'}"
+      run: | # todo do i need to install again?
+        sudo apt-get install -y xsltproc
+        coverage_results=$(find '.' -name "*coverage*.xml" | xargs xsltproc '../helpers/coverage-results.xslt') # todo add name of test run to xslt
+        coverage_results="${coverage_results//'\'/'\\'}"
+        coverage_results="${coverage_results//$'\n'/'\n'}" # todo find cleaner way to escape json string
+        coverage_results="${coverage_results//$'\r'/'\r'}"
+        coverage_results="${coverage_results//'"'/'\"'}"
+        sha=$(cat '${{ github.event_path }}' | jq -r '.after') # todo move to separate step?
         curl -s -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/maikelbos0/VDT.Core.Blazor.GlobalEventHandler/check-runs \
-          -d "{\"name\":\"Code coverage summary\",\"head_sha\":\"$sha\",\"status\":\"completed\",\"conclusion\":\"success\",\"output\":{\"title\":\"Code coverage summary\",\"summary\":\"$code_coverage_summary\"}}"
-      working-directory: . 
+          -d "{\"name\":\"Code coverage results\",\"head_sha\":\"$sha\",\"status\":\"completed\",\"conclusion\":\"success\",\"output\":{\"title\":\"Code coverage results\",\"summary\":\"$coverage_results\"}}"
 
     - name: Publish package
       if: github.event_name == 'push'

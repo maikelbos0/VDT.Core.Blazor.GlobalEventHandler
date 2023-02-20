@@ -65,14 +65,23 @@ jobs:
       if: always()
       run: |
         summary=''
+        threshold=$((99))
+        conclusion='success'
         for file in $(find '.' -name "*coverage*.xml" | sort)
         do
           name=$(grep -Po '(?<=\./).*?(?=/)' <<< $file)
-          results=$(xsltproc --stringparam name "$name" '../helpers/coverage-results.xslt' "$file")          
+          results=$(xsltproc --stringparam name "$name" '../helpers/coverage-results.xslt' "$file")
           summary="$summary$results"
+          if [[ $(($(xmlstarlet sel -t -c 'round(number(/coverage/@line-rate) * 100)' -n 'VDT.Core.Blazor.GlobalEventHandler.Tests/TestResults/coverage-results.xml'))) -lt $threshold ]]
+          then
+            conclusion='failure'
+          elif [[ $(($(xmlstarlet sel -t -c 'round(number(/coverage/@branch-rate) * 100)' -n 'VDT.Core.Blazor.GlobalEventHandler.Tests/TestResults/coverage-results.xml'))) -lt $threshold ]]
+          then
+            conclusion='failure'
+          fi          
         done
         sha=$(cat '${{ github.event_path }}' | jq -r '.after')
-        request=$(jq --null-input --arg sha "$sha" --arg summary "$summary" '{"name":"Code coverage results","head_sha":$sha,"status":"completed","conclusion":"success","output":{"title":"Code coverage results","summary":$summary}}')
+        request=$(jq --null-input --arg sha "$sha" --arg conclusion "$conclusion" --arg summary "$summary" '{"name":"Code coverage results","head_sha":$sha,"status":"completed","conclusion":$conclusion,"output":{"title":"Code coverage results","summary":$summary}}')
         curl -s -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/maikelbos0/VDT.Core.Blazor.GlobalEventHandler/check-runs -d "$request"
 
     - name: Publish package

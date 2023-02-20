@@ -70,7 +70,7 @@ jobs:
         for file in $(find '.' -name "*coverage*.xml" | sort)
         do
           name=$(grep -Po '(?<=\./).*?(?=/)' <<< $file)
-          results=$(xsltproc --stringparam name "$name" '../helpers/coverage-results.xslt' "$file")
+          results=$(xsltproc --stringparam name "$name" --stringparam threshold "$threshold" '../helpers/coverage-results.xslt' "$file")
           summary="$summary$results"
           if [[ $(($(xmlstarlet sel -t -c 'round(number(/coverage/@line-rate) * 100)' -n 'VDT.Core.Blazor.GlobalEventHandler.Tests/TestResults/coverage-results.xml'))) -lt $threshold ]]
           then

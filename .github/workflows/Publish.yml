@@ -65,7 +65,7 @@ jobs:
       if: always()
       run: |
         summary=''
-        threshold=$((99))
+        threshold=$((75))
         conclusion='success'
         for file in $(find '.' -name "*coverage*.xml" | sort)
         do

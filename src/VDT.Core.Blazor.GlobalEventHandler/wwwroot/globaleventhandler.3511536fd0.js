@@ -92,19 +92,21 @@ function GetTouchEventHandler(dotNetObjectReference, handlerReference) {
 }
 
 function getResizeEventHandler(dotNetObjectReference) {
-    return function () {
+    return function (e) {
         dotNetObjectReference.invokeMethodAsync('InvokeResize', {
             width: window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
-            height: window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+            height: window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight,
+            type: e.type
         });
     }
 }
 
 function getScrollEventHandler(dotNetObjectReference) {
-    return function () {
+    return function (e) {
         dotNetObjectReference.invokeMethodAsync('InvokeScroll', {
             scrollX: window.scrollX,
-            scrollY: window.scrollY
+            scrollY: window.scrollY,
+            type: e.type
         });
     }
 }

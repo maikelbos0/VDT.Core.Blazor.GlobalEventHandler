@@ -1,11 +1,11 @@
 ﻿@page "/DocumentEvents"
 
-<GlobalEventHandler OnResize="OnResize" OnScroll="OnScroll" />
+<GlobalEventHandler OnResize="OnResize" OnScroll="OnScroll" OnOffline="OnOffline" OnOnline="OnOnline" />
 
 <h1>Documents events</h1>
 
 <p>
-    This component includes event handlers for window resize and scroll. Scroll or resize this window to see a demonstration.
+    This component includes event handlers for window resize and scroll, and browser offline and online. Scroll or resize this window or toggle the browser's online status to see a demonstration.
 </p>
 
 <h2><code>OnResize</code> event</h2>
@@ -24,9 +24,27 @@
 
 <EventDisplay EventArgs="scrollEventArgs" />
 
+<h2><code>OnOffline</code> event</h2>
+
+<p>
+    The <code>OnOffline</code> event occurs when the browser loses access to the network and is unable to access networked resources.
+</p>
+
+<EventDisplay EventArgs="offlineEventArgs" />
+
+<h2><code>OnOnline</code> event</h2>
+
+<p>
+    The <code>OnOnline</code> event occurs when the browser gains access to the network and might be able to access networked resources.
+</p>
+
+<EventDisplay EventArgs="onlineEventArgs" />
+
 @code {
     private ResizeEventArgs? resizeEventArgs;
     private ScrollEventArgs? scrollEventArgs;
+    private WindowEventArgs? offlineEventArgs;
+    private WindowEventArgs? onlineEventArgs;
 
     public void OnResize(ResizeEventArgs args) {
         resizeEventArgs = args;
@@ -34,5 +52,13 @@
 
     public void OnScroll(ScrollEventArgs args) {
         scrollEventArgs = args;
+    }
+
+    public void OnOffline(WindowEventArgs args) {
+        offlineEventArgs = args;
+    }
+
+    public void OnOnline(WindowEventArgs args) {
+        onlineEventArgs = args;
     }
 }

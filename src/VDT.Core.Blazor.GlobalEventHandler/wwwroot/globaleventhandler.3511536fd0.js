@@ -23,7 +23,9 @@ function GetEventHandlers(dotNetObjectReference) {
         'touchcancel': getTouchEventHandler(dotNetObjectReference, 'InvokeTouchCancel'),
         'touchmove': getTouchEventHandler(dotNetObjectReference, 'InvokeTouchMove'),
         'resize': getResizeEventHandler(dotNetObjectReference),
-        'scroll': getScrollEventHandler(dotNetObjectReference)
+        'scroll': getScrollEventHandler(dotNetObjectReference),
+        'offline': getOnlineStatusEventHandler(dotNetObjectReference, 'InvokeOffline'),
+        'online': getOnlineStatusEventHandler(dotNetObjectReference, 'InvokeOnline')
     };
 }
 
@@ -106,6 +108,14 @@ function getScrollEventHandler(dotNetObjectReference) {
         dotNetObjectReference.invokeMethodAsync('InvokeScroll', {
             scrollX: window.scrollX,
             scrollY: window.scrollY,
+            type: e.type
+        });
+    }
+}
+
+function getOnlineStatusEventHandler(dotNetObjectReference, handlerReference) {
+    return function (e) {
+        dotNetObjectReference.invokeMethodAsync(handlerReference, {
             type: e.type
         });
     }

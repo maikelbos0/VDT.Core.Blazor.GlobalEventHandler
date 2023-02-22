@@ -18,10 +18,10 @@ function GetEventHandlers(dotNetObjectReference) {
         'mousedown': getMouseEventHandler(dotNetObjectReference, 'InvokeMouseDown'),
         'mouseup': getMouseEventHandler(dotNetObjectReference, 'InvokeMouseUp'),
         'mousemove': getMouseEventHandler(dotNetObjectReference, 'InvokeMouseMove'),
-        'touchstart': GetTouchEventHandler(dotNetObjectReference, 'InvokeTouchStart'),
-        'touchend': GetTouchEventHandler(dotNetObjectReference, 'InvokeTouchEnd'),
-        'touchcancel': GetTouchEventHandler(dotNetObjectReference, 'InvokeTouchCancel'),
-        'touchmove': GetTouchEventHandler(dotNetObjectReference, 'InvokeTouchMove'),
+        'touchstart': getTouchEventHandler(dotNetObjectReference, 'InvokeTouchStart'),
+        'touchend': getTouchEventHandler(dotNetObjectReference, 'InvokeTouchEnd'),
+        'touchcancel': getTouchEventHandler(dotNetObjectReference, 'InvokeTouchCancel'),
+        'touchmove': getTouchEventHandler(dotNetObjectReference, 'InvokeTouchMove'),
         'resize': getResizeEventHandler(dotNetObjectReference),
         'scroll': getScrollEventHandler(dotNetObjectReference)
     };
@@ -64,7 +64,7 @@ function getMouseEventHandler(dotNetObjectReference, handlerReference) {
     }
 }
 
-function GetTouchEventHandler(dotNetObjectReference, handlerReference) {
+function getTouchEventHandler(dotNetObjectReference, handlerReference) {
     return function (e) {
         dotNetObjectReference.invokeMethodAsync(handlerReference, {
             altKey: e.altKey,

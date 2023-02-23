@@ -42,6 +42,9 @@ jobs:
     - name: Test
       run: dotnet test --configuration Release --no-build --logger "trx;LogFileName=test-results.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=TestResults/coverage-results.xml
 
+    - name: Find sha
+      run: cat '${{ github.event_path }}'
+
     - name: Publish test results
       if: always()
       run: |

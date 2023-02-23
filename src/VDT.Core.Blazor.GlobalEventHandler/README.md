@@ -29,6 +29,8 @@ that you want to handle. The available events are:
 - `OnTouchMove` which provides an optional `TouchEventargs` parameter
 - `OnResize` which provides an optional `ResizeEventArgs` parameter
 - `OnScroll` which provides an optional `ScrollEventArgs` parameter
+- `OnOffline` which provides an optional `WindowEventArgs` parameter
+- `OnOnline` which provides an optional `WindowEventArgs` parameter
 
 ### Example
 

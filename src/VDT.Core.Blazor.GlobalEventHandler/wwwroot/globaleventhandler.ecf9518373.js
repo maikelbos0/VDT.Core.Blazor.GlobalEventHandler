@@ -18,12 +18,14 @@ function GetEventHandlers(dotNetObjectReference) {
         'mousedown': getMouseEventHandler(dotNetObjectReference, 'InvokeMouseDown'),
         'mouseup': getMouseEventHandler(dotNetObjectReference, 'InvokeMouseUp'),
         'mousemove': getMouseEventHandler(dotNetObjectReference, 'InvokeMouseMove'),
-        'touchstart': GetTouchEventHandler(dotNetObjectReference, 'InvokeTouchStart'),
-        'touchend': GetTouchEventHandler(dotNetObjectReference, 'InvokeTouchEnd'),
-        'touchcancel': GetTouchEventHandler(dotNetObjectReference, 'InvokeTouchCancel'),
-        'touchmove': GetTouchEventHandler(dotNetObjectReference, 'InvokeTouchMove'),
+        'touchstart': getTouchEventHandler(dotNetObjectReference, 'InvokeTouchStart'),
+        'touchend': getTouchEventHandler(dotNetObjectReference, 'InvokeTouchEnd'),
+        'touchcancel': getTouchEventHandler(dotNetObjectReference, 'InvokeTouchCancel'),
+        'touchmove': getTouchEventHandler(dotNetObjectReference, 'InvokeTouchMove'),
         'resize': getResizeEventHandler(dotNetObjectReference),
-        'scroll': getScrollEventHandler(dotNetObjectReference)
+        'scroll': getScrollEventHandler(dotNetObjectReference),
+        'offline': getOnlineStatusEventHandler(dotNetObjectReference, 'InvokeOffline'),
+        'online': getOnlineStatusEventHandler(dotNetObjectReference, 'InvokeOnline')
     };
 }
 
@@ -64,7 +66,7 @@ function getMouseEventHandler(dotNetObjectReference, handlerReference) {
     }
 }
 
-function GetTouchEventHandler(dotNetObjectReference, handlerReference) {
+function getTouchEventHandler(dotNetObjectReference, handlerReference) {
     return function (e) {
         dotNetObjectReference.invokeMethodAsync(handlerReference, {
             altKey: e.altKey,
@@ -92,19 +94,29 @@ function GetTouchEventHandler(dotNetObjectReference, handlerReference) {
 }
 
 function getResizeEventHandler(dotNetObjectReference) {
-    return function () {
+    return function (e) {
         dotNetObjectReference.invokeMethodAsync('InvokeResize', {
             width: window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
-            height: window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+            height: window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight,
+            type: e.type
         });
     }
 }
 
 function getScrollEventHandler(dotNetObjectReference) {
-    return function () {
+    return function (e) {
         dotNetObjectReference.invokeMethodAsync('InvokeScroll', {
             scrollX: window.scrollX,
-            scrollY: window.scrollY
+            scrollY: window.scrollY,
+            type: e.type
+        });
+    }
+}
+
+function getOnlineStatusEventHandler(dotNetObjectReference, handlerReference) {
+    return function (e) {
+        dotNetObjectReference.invokeMethodAsync(handlerReference, {
+            type: e.type
         });
     }
 }

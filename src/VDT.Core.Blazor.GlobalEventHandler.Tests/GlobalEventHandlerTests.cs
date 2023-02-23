@@ -237,6 +237,32 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
         }
 
         [Fact]
+        public async Task GlobalEventHandler_InvokeOffline_Invokes_OnOffline_Handler() {
+            WindowEventArgs expected = new();
+            WindowEventArgs? actual = null;
+            var subject = new GlobalEventHandler() {
+                OnOffline = EventCallback.Factory.Create<WindowEventArgs>(this, (args) => actual = args)
+            };
+
+            await subject.InvokeOffline(expected);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task GlobalEventHandler_InvokeOnline_Invokes_OnOnline_Handler() {
+            WindowEventArgs expected = new();
+            WindowEventArgs? actual = null;
+            var subject = new GlobalEventHandler() {
+                OnOnline = EventCallback.Factory.Create<WindowEventArgs>(this, (args) => actual = args)
+            };
+
+            await subject.InvokeOnline(expected);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public async Task GlobalEventHandler_InvokeScroll_Invokes_OnScroll_Handler() {
             ScrollEventArgs expected = new();
             ScrollEventArgs? actual = null;

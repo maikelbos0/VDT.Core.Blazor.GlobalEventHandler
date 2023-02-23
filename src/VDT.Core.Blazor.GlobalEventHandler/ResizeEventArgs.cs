@@ -4,7 +4,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler {
     /// <summary>
     /// Supplies information about a window resize event that is being raised
     /// </summary>
-    public class ResizeEventArgs : EventArgs {
+    public class ResizeEventArgs : WindowEventArgs {
         /// <summary>
         /// Number of pixels that the window is wide after resizing
         /// </summary>

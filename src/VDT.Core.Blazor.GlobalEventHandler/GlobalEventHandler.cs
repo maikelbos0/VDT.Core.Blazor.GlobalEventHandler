@@ -9,7 +9,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler {
     /// Allows components to subscribe to window-level javascript events
     /// </summary>
     public class GlobalEventHandler : ComponentBase, IAsyncDisposable {
-        internal const string ModuleLocation = "./_content/VDT.Core.Blazor.GlobalEventHandler/globaleventhandler.3511536fd0.js";
+        internal const string ModuleLocation = "./_content/VDT.Core.Blazor.GlobalEventHandler/globaleventhandler.ecf9518373.js";
 
         private IJSObjectReference? moduleReference;
         private DotNetObjectReference<GlobalEventHandler>? dotNetObjectReference;
@@ -45,7 +45,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler {
         /// A callback that will be invoked when the user presses a mouse button anywhere in the document
         /// </summary>
         [Parameter] public EventCallback<MouseEventArgs> OnMouseDown { get; set; }
-
+        
         /// <summary>
         /// A callback that will be invoked when the user releases a mouse button anywhere in the document
         /// </summary>
@@ -85,7 +85,17 @@ namespace VDT.Core.Blazor.GlobalEventHandler {
         /// A callback that will be invoked when the browser window content has been scrolled
         /// </summary>
         [Parameter] public EventCallback<ScrollEventArgs> OnScroll { get; set; }
-        
+
+        /// <summary>
+        /// A callback that will be invoked when the browser loses access to the network and is unable to access networked resources
+        /// </summary>
+        [Parameter] public EventCallback<WindowEventArgs> OnOffline { get; set; }
+
+        /// <summary>
+        /// A callback that will be invoked when the browser gains access to the network and might be able to access networked resources
+        /// </summary>
+        [Parameter] public EventCallback<WindowEventArgs> OnOnline { get; set; }
+
         /// <summary>
         /// Invoke the callback for the key down event
         /// </summary>
@@ -183,6 +193,20 @@ namespace VDT.Core.Blazor.GlobalEventHandler {
         /// <param name="args">Scroll event information</param>
         /// <returns>A task that represents the asynchronous operation</returns>
         [JSInvokable] public async Task InvokeScroll(ScrollEventArgs args) => await OnScroll.InvokeAsync(args);
+
+        /// <summary>
+        /// Invoke the callback for the offline event
+        /// </summary>
+        /// <param name="args">Event information</param>
+        /// <returns>A task that represents the asynchronous operation</returns>
+        [JSInvokable] public async Task InvokeOffline(WindowEventArgs args) => await OnOffline.InvokeAsync(args);
+
+        /// <summary>
+        /// Invoke the callback for the online event
+        /// </summary>
+        /// <param name="args">Event information</param>
+        /// <returns>A task that represents the asynchronous operation</returns>
+        [JSInvokable] public async Task InvokeOnline(WindowEventArgs args) => await OnOnline.InvokeAsync(args);
 
         /// <inheritdoc/>
         protected override bool ShouldRender() => false;

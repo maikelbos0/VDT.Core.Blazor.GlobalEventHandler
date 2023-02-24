@@ -72,10 +72,10 @@ jobs:
           name=$(grep -Po '(?<=\./).*?(?=/)' <<< $file)
           results=$(xsltproc --stringparam name "$name" --stringparam threshold "$threshold" '../helpers/coverage-results.xslt' "$file")
           summary="$summary$results"
-          if [[ $(($(xmlstarlet sel -t -c 'round(number(/coverage/@line-rate) * 100)' -n 'VDT.Core.Blazor.GlobalEventHandler.Tests/TestResults/coverage-results.xml'))) -lt $threshold ]]
+          if [[ $(($(xmlstarlet sel -t -c 'round(number(/coverage/@line-rate) * 100)' -n "$file"))) -lt $threshold ]]
           then
             conclusion='failure'
-          elif [[ $(($(xmlstarlet sel -t -c 'round(number(/coverage/@branch-rate) * 100)' -n 'VDT.Core.Blazor.GlobalEventHandler.Tests/TestResults/coverage-results.xml'))) -lt $threshold ]]
+          elif [[ $(($(xmlstarlet sel -t -c 'round(number(/coverage/@branch-rate) * 100)' -n "$file"))) -lt $threshold ]]
           then
             conclusion='failure'
           fi          

@@ -8,10 +8,11 @@
 
 	<PropertyGroup>
 		<PackageId>VDT.Core.Blazor.GlobalEventHandler</PackageId>
-		<Version>2.1.0</Version>
+		<Version>2.1.1</Version>
 		<Title>VDT.Core.Blazor.GlobalEventHandler</Title>
+		<PackageIcon>icon_128.png</PackageIcon>
 		<Description>Blazor component that allows you to handle global window level events in your application</Description>
-		<PackageReleaseNotes>- Added support for browser offline / online events</PackageReleaseNotes>
+		<PackageReleaseNotes>- Added icon</PackageReleaseNotes>
 		<Authors>Maikel Bos</Authors>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Copyright>Copyright © 2021 Maikel Bos</Copyright>
@@ -31,6 +32,7 @@
 
 	<ItemGroup>
 		<None Include="README.md" pack="true" PackagePath="." />
+		<None Include="icon_128.png" pack="true" PackagePath="." />
 	</ItemGroup>
 
 	<ItemGroup Condition="$(TargetFramework) == 'net6.0'">

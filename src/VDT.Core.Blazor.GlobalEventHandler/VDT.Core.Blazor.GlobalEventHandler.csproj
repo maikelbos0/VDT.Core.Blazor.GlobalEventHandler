@@ -8,11 +8,11 @@
 
 	<PropertyGroup>
 		<PackageId>VDT.Core.Blazor.GlobalEventHandler</PackageId>
-		<Version>2.1.1</Version>
+		<Version>2.2.0</Version>
 		<Title>VDT.Core.Blazor.GlobalEventHandler</Title>
 		<PackageIcon>icon_128.png</PackageIcon>
 		<Description>Blazor component that allows you to handle global window level events in your application</Description>
-		<PackageReleaseNotes>- Added icon</PackageReleaseNotes>
+		<PackageReleaseNotes>- Downgraded dependency Microsoft.AspNetCore.Components.Web to only require the needed major version</PackageReleaseNotes>
 		<Authors>Maikel Bos</Authors>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Copyright>Copyright © 2021 Maikel Bos</Copyright>
@@ -36,11 +36,11 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="$(TargetFramework) == 'net6.0'">
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.14" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.0" />
 	</ItemGroup>
 
 	<ItemGroup Condition="$(TargetFramework) == 'net7.0'">
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.3" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

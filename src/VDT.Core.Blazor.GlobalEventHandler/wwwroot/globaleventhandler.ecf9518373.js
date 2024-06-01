@@ -1,10 +1,10 @@
 ﻿let handlers = {};
 
 function register(dotNetObjectReference) {
-    handlers[dotNetObjectReference] = GetEventHandlers(dotNetObjectReference);
+    handlers[dotNetObjectReference._id] = GetEventHandlers(dotNetObjectReference);
 
-    for (const type in handlers[dotNetObjectReference]) {
-        window.addEventListener(type, handlers[dotNetObjectReference][type]);
+    for (const type in handlers[dotNetObjectReference._id]) {
+        window.addEventListener(type, handlers[dotNetObjectReference._id][type]);
     }
 }
 
@@ -122,11 +122,11 @@ function getOnlineStatusEventHandler(dotNetObjectReference, handlerReference) {
 }
 
 function unregister(dotNetObjectReference) {
-    for (const type in handlers[dotNetObjectReference]) {
-        window.removeEventListener(type, handlers[dotNetObjectReference][type]);
+    for (const type in handlers[dotNetObjectReference._id]) {
+        window.removeEventListener(type, handlers[dotNetObjectReference._id][type]);
     }
 
-    delete handlers[dotNetObjectReference];
+    delete handlers[dotNetObjectReference._id];
 }
 
 export { register, unregister };

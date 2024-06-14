@@ -27,7 +27,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
         public async Task GlobalEventHandler_OnAfterRenderAsync_Calls_JS_Module_Register_On_First_Render() {
             var runtime = Substitute.For<IJSRuntime>();
             var module = Substitute.For<IJSObjectReference>();
-            runtime.InvokeAsync<IJSObjectReference>("import", new object[] { GlobalEventHandler.ModuleLocation }).ReturnsForAnyArgs(module);
+            runtime.InvokeAsync<IJSObjectReference>("import", [GlobalEventHandler.ModuleLocation]).ReturnsForAnyArgs(module);
 
             var subject = new TestGlobalEventHandler {
                 JSRuntime = runtime
@@ -42,7 +42,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
         public async Task GlobalEventHandler_OnAfterRenderAsync_Does_Not_Call_JS_Module_Register_After_First_Render() {
             var runtime = Substitute.For<IJSRuntime>();
             var module = Substitute.For<IJSObjectReference>();
-            runtime.InvokeAsync<IJSObjectReference>("import", new object[] { GlobalEventHandler.ModuleLocation }).ReturnsForAnyArgs(module);
+            runtime.InvokeAsync<IJSObjectReference>("import", [GlobalEventHandler.ModuleLocation]).ReturnsForAnyArgs(module);
 
             var subject = new TestGlobalEventHandler {
                 JSRuntime = runtime
@@ -57,7 +57,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
         public async Task GlobalEventHandler_DisposeAsync_Calls_JS_Module_Unregister() {
             var runtime = Substitute.For<IJSRuntime>();
             var module = Substitute.For<IJSObjectReference>();
-            runtime.InvokeAsync<IJSObjectReference>("import", new object[] { GlobalEventHandler.ModuleLocation }).ReturnsForAnyArgs(module);
+            runtime.InvokeAsync<IJSObjectReference>("import", [GlobalEventHandler.ModuleLocation]).ReturnsForAnyArgs(module);
 
             await using (var subject = new TestGlobalEventHandler()) {
                 subject.JSRuntime = runtime;
@@ -288,14 +288,11 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
 
         [Fact]
         public void GlobalEventHandler_Module_Has_Correct_Fingerprint() {
-            using var sha256 = SHA256.Create();
-
-            // TODO: find a more reliable way to get the location of the javascript module
             var filePath = Directory.GetFiles(Path.Combine("..", "..", "..", "..", "VDT.Core.Blazor.GlobalEventHandler", "wwwroot"), "globaleventhandler.*.js").Single();
             var fingerprintFinder = new Regex("globaleventhandler\\.([a-f0-9]+)\\.js$", RegexOptions.IgnoreCase);
             var fingerprint = fingerprintFinder.Match(filePath).Groups[1].Value;
             var fileContents = File.ReadAllBytes(filePath).Where(b => b != '\r').ToArray(); // Normalize newlines between Windows and Linux
-            var expectedFingerprint = string.Join("", sha256.ComputeHash(fileContents).Take(5).Select(b => b.ToString("x2")));
+            var expectedFingerprint = string.Join("", SHA256.HashData(fileContents).Take(5).Select(b => b.ToString("x2")));
 
             Assert.Equal(expectedFingerprint, fingerprint);
         }

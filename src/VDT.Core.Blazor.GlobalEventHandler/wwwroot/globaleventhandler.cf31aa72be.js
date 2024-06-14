@@ -60,6 +60,8 @@ function getMouseEventHandler(dotNetObjectReference, handlerReference) {
             offsetY: e.offsetY,
             screenX: e.screenX,
             screenY: e.screenY,
+            pageX: e.pageX,
+            pageY: e.pageY,
             shiftKey: e.shiftKey,
             type: e.type
         });

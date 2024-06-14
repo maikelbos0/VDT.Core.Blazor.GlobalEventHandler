@@ -9,7 +9,7 @@ namespace VDT.Core.Blazor.GlobalEventHandler {
     /// Allows components to subscribe to window-level javascript events
     /// </summary>
     public class GlobalEventHandler : ComponentBase, IAsyncDisposable {
-        internal const string ModuleLocation = "./_content/VDT.Core.Blazor.GlobalEventHandler/globaleventhandler.cf31aa72be.js";
+        internal const string ModuleLocation = "./_content/VDT.Core.Blazor.GlobalEventHandler/globaleventhandler.23cf67a45e.js";
 
         private IJSObjectReference? moduleReference;
         private DotNetObjectReference<GlobalEventHandler>? dotNetObjectReference;

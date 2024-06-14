@@ -8,11 +8,11 @@
 
 	<PropertyGroup>
 		<PackageId>VDT.Core.Blazor.GlobalEventHandler</PackageId>
-		<Version>3.1.0</Version>
+		<Version>3.2.0</Version>
 		<Title>VDT.Core.Blazor.GlobalEventHandler</Title>
 		<PackageIcon>icon_128.png</PackageIcon>
 		<Description>Blazor component that allows you to handle global window level events in your application</Description>
-		<PackageReleaseNotes>- Fixed issue with unregistering multiple event handlers</PackageReleaseNotes>
+		<PackageReleaseNotes>- Fixed mouse event pageX/Y and movementX/Y properties</PackageReleaseNotes>
 		<Authors>Maikel Bos</Authors>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Copyright>Copyright © 2021 Maikel Bos</Copyright>

@@ -8,11 +8,12 @@
 
 	<PropertyGroup>
 		<PackageId>VDT.Core.Blazor.GlobalEventHandler</PackageId>
-		<Version>3.2.0</Version>
+		<Version>4.0.0</Version>
 		<Title>VDT.Core.Blazor.GlobalEventHandler</Title>
 		<PackageIcon>icon_128.png</PackageIcon>
 		<Description>Blazor component that allows you to handle global window level events in your application</Description>
-		<PackageReleaseNotes>- Fixed mouse event pageX/Y and movementX/Y properties</PackageReleaseNotes>
+		<PackageReleaseNotes>- Removed .net 6.0 and .net 7.0 support
+- Added explicit .net 9.0 support</PackageReleaseNotes>
 		<Authors>Maikel Bos</Authors>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Copyright>Copyright © 2021 Maikel Bos</Copyright>

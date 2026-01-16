@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using NSubstitute;
+using System;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -279,7 +279,6 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
         public void GlobalEventHandler_ModuleLocation_Is_Correct() {
             var fileName = Path.GetFileName(GlobalEventHandler.ModuleLocation);
 
-            // TODO: find a more reliable way to get the location of the javascript module
             var expectedFilePath = Directory.GetFiles(Path.Combine("..", "..", "..", "..", "VDT.Core.Blazor.GlobalEventHandler", "wwwroot"), "globaleventhandler.*.js").Single();
             var expectedFileName = Path.GetFileName(expectedFilePath);
 
@@ -289,10 +288,9 @@ namespace VDT.Core.Blazor.GlobalEventHandler.Tests {
         [Fact]
         public void GlobalEventHandler_Module_Has_Correct_Fingerprint() {
             var filePath = Directory.GetFiles(Path.Combine("..", "..", "..", "..", "VDT.Core.Blazor.GlobalEventHandler", "wwwroot"), "globaleventhandler.*.js").Single();
-            var fingerprintFinder = new Regex("globaleventhandler\\.([a-f0-9]+)\\.js$", RegexOptions.IgnoreCase);
-            var fingerprint = fingerprintFinder.Match(filePath).Groups[1].Value;
+            var fingerprint = Path.GetFileNameWithoutExtension(filePath)[19..];
             var fileContents = File.ReadAllBytes(filePath).Where(b => b != '\r').ToArray(); // Normalize newlines between Windows and Linux
-            var expectedFingerprint = string.Join("", SHA256.HashData(fileContents).Take(5).Select(b => b.ToString("x2")));
+            var expectedFingerprint = Convert.ToHexStringLower([.. SHA256.HashData(fileContents).Take(5)]);
 
             Assert.Equal(expectedFingerprint, fingerprint);
         }

@@ -19,9 +19,6 @@
 		<PackageProjectUrl>https://github.com/maikelbos0/VDT.Core.Blazor.GlobalEventHandler</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	</PropertyGroup>
-
-	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 
